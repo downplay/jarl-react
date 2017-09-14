@@ -1,5 +1,21 @@
 {
     "name": "downtools",
     "version": "0.0.1",
-    "description": "Miscellaneous helpers for React"
+    "description": "Miscellaneous helpers for React",
+    "scripts": {
+        "test": "jest"
+    },
+    "dependencies": {
+        "downstyle": "^0.1.1",
+        "hoist-non-react-statics": "^2.0.0"
+    },
+    "devDependencies": {
+        "babel-jest": "^21.0.2",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "jest": "^21.1.0",
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "react-test-renderer": "^15.6.1"
+    }
 }
