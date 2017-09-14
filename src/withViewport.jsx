@@ -39,7 +39,7 @@ const withViewport = ({
         }
 
         handleResize = () => {
-            this.setState(getState());
+            this.setState(getState(browserlessWidth, browserlessHeight));
         };
 
         render() {
