@@ -4,7 +4,7 @@ import hoistStatics from "hoist-non-react-statics";
 const DEFAULT_BROWSERLESS_WIDTH = 1920;
 const DEFAULT_BROWSERLESS_HEIGHT = 1080;
 
-const getState = () =>
+const getState = (width, height) =>
     typeof window !== "undefined"
         ? {
               width: window.innerWidth,
@@ -12,11 +12,14 @@ const getState = () =>
           }
         : {
               browserless: true,
-              width: DEFAULT_BROWSERLESS_WIDTH,
-              height: DEFAULT_BROWSERLESS_HEIGHT
+              width,
+              height
           };
 
-const withViewport = () => Element => {
+const withViewport = ({
+    browserlessWidth = DEFAULT_BROWSERLESS_WIDTH,
+    browserlessHeight = DEFAULT_BROWSERLESS_HEIGHT
+}) => Element => {
     const displayName = Element.displayName || Element.name || "Component";
 
     const Wrapped = class WithViewport extends Component {
