@@ -117,3 +117,22 @@ test("In rehydrate mode, width and height eventually take overidden values", don
         done();
     });
 });
+
+test("Browser resize updates the viewport", done => {
+    const otherWidth = 5678;
+    const otherHeight = 1234;
+    const Wrapped = withViewport()(MockEntity);
+    const entity = mount(<Wrapped />);
+    window.innerWidth = otherWidth;
+    window.innerHeight = otherHeight;
+    window.dispatchEvent(new Event("resize"));
+    setImmediate(() => {
+        expect(entity.find(MockEntity).node.props.viewportWidth).toBe(
+            otherWidth
+        );
+        expect(entity.find(MockEntity).node.props.viewportHeight).toBe(
+            otherHeight
+        );
+        done();
+    });
+});
