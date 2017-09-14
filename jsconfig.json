@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "experimentalDecorators": true
+    },
+    "exclude": [
+        "dist",
+        "node_modules",
+        "bower_components"
+    ],
+    "include": [
+        "source",
+        "examples"
+    ]
+}
