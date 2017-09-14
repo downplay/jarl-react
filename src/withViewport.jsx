@@ -4,6 +4,8 @@ import hoistStatics from "hoist-non-react-statics";
 const DEFAULT_BROWSERLESS_WIDTH = 1920;
 const DEFAULT_BROWSERLESS_HEIGHT = 1080;
 
+const DOM_RESIZE_EVENT = "resize";
+
 const getState = (width, height) =>
     typeof window !== "undefined"
         ? {
@@ -29,11 +31,11 @@ const withViewport = ({
         state = getState();
 
         componentDidMount() {
-            window.addEventListener("resize", this.handleResize);
+            window.addEventListener(DOM_RESIZE_EVENT, this.handleResize);
         }
 
         componentWillUnmount() {
-            window.removeEventListener("resize", this.handleResize);
+            window.removeEventListener(DOM_RESIZE_EVENT, this.handleResize);
         }
 
         handleResize = () => {
