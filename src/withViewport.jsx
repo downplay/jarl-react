@@ -7,21 +7,8 @@ const DEFAULT_BROWSERLESS_HEIGHT = 1080;
 
 const DOM_RESIZE_EVENT = "resize";
 
-// Gets either the real or fake width and height
-const getState = (width, height) =>
-    typeof window !== "undefined"
-        ? {
-              width: window.innerWidth,
-              height: window.innerHeight
-          }
-        : {
-              browserless: true,
-              width,
-              height
-          };
-
 let handledRehydration = false;
-let handlingRehyrdation = false;
+let handlingRehydration = false;
 
 // HOC signature
 const withViewport = ({
@@ -39,21 +26,61 @@ const withViewport = ({
         static WrappedComponent = Element;
 
         // Initialize state
-        state = getState();
+        state = this.getState();
 
-        // Bind resize listener
         componentDidMount() {
+            // Bind resize listener
             window.addEventListener(DOM_RESIZE_EVENT, this.handleResize);
+            // SSR rehydration support
+            // On the very first render, which we assume is for the rehydration run through,
+            // use the server default (in getState). Then trigger an actual resize and
+            // set the handled flag so this path is never touched again.
+            // Note: Some fragility here. This works for the typical SSR use case
+            // where rehydration only ever happens once, synchronously and globally.
+            // I can't think of the scenario where this would break but someone can
+            // prove me wrong.
+            if (!handleRehydration || handledRehydration) {
+                return;
+            }
+            if (!handlingRehydration) {
+                handlingRehydration = true;
+                setImmediate(() => {
+                    handledRehydration = true;
+                    this.handleResize();
+                });
+            } else {
+                setImmediate(this.handleResize);
+            }
         }
 
-        // Unbind resize listener when component unmounts
         componentWillUnmount() {
+            // Unbind resize listener when component unmounts
             window.removeEventListener(DOM_RESIZE_EVENT, this.handleResize);
+        }
+
+        // Gets either the real or fake width and height
+        getState(width, height) {
+            let ignoreWindow = false;
+            if (!handledRehydration && handleRehydration) {
+                ignoreWindow = true;
+            }
+
+            // Return the actual state that will be injected into props
+            return !ignoreWindow && typeof window !== "undefined"
+                ? {
+                      width: window.innerWidth,
+                      height: window.innerHeight
+                  }
+                : {
+                      browserless: true,
+                      width: browserlessWidth,
+                      height: browserlessHeight
+                  };
         }
 
         // Update local state on resize
         handleResize = () => {
-            this.setState(getState(browserlessWidth, browserlessHeight));
+            this.setState(this.getState());
         };
 
         render() {
