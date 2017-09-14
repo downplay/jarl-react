@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { shallow } from "enzyme";
-import withViewport from "../withViewport";
+import withViewport, {
+    DEFAULT_BROWSERLESS_WIDTH,
+    DEFAULT_BROWSERLESS_HEIGHT
+} from "../withViewport";
+
+const JSDOM_DEFAULT_WIDTH = 1024;
+const JSDOM_DEFAULT_HEIGHT = 768;
 
 class MockEntity extends Component {
     render() {
@@ -11,13 +17,57 @@ class MockEntity extends Component {
 test("Wrapped entity is rendered", () => {
     const Wrapped = withViewport()(MockEntity);
     const entity = shallow(<Wrapped />);
-    console.lgo(window);
     expect(entity.find(MockEntity).length).toBe(1);
 });
 
 test("Wrapped entity receives window width and height", () => {
     const Wrapped = withViewport()(MockEntity);
     const entity = shallow(<Wrapped />);
-    expect(entity.find(MockEntity).node.props.viewportWidth).toBe(1024);
-    expect(entity.find(MockEntity).node.props.viewportHeight).toBe(768);
+    expect(entity.find(MockEntity).node.props.viewportWidth).toBe(
+        JSDOM_DEFAULT_WIDTH
+    );
+    expect(entity.find(MockEntity).node.props.viewportHeight).toBe(
+        JSDOM_DEFAULT_HEIGHT
+    );
+});
+
+test("In rehydrate mode, width and height are defaults", () => {
+    const Wrapped = withViewport({ handleRehydration: true })(MockEntity);
+    const entity = shallow(<Wrapped />);
+    expect(entity.find(MockEntity).node.props.viewportWidth).toBe(
+        DEFAULT_BROWSERLESS_WIDTH
+    );
+    expect(entity.find(MockEntity).node.props.viewportHeight).toBe(
+        DEFAULT_BROWSERLESS_HEIGHT
+    );
+});
+
+test("Default width and height can be overridden", () => {
+    const otherWidth = 5678;
+    const otherHeight = 1234;
+    const Wrapped = withViewport({
+        browserlessWidth: otherWidth,
+        browserlessHeight: otherHeight,
+        handleRehydration: true
+    })(MockEntity);
+    const entity = shallow(<Wrapped />);
+    expect(entity.find(MockEntity).node.props.viewportWidth).toBe(otherWidth);
+    expect(entity.find(MockEntity).node.props.viewportHeight).toBe(otherHeight);
+});
+
+test("Cannot override width and height if not rehydrating", () => {
+    const otherWidth = 5678;
+    const otherHeight = 1234;
+    const Wrapped = withViewport({
+        browserlessWidth: otherWidth,
+        browserlessHeight: otherHeight,
+        handleRehydration: false
+    })(MockEntity);
+    const entity = shallow(<Wrapped />);
+    expect(entity.find(MockEntity).node.props.viewportWidth).toBe(
+        JSDOM_DEFAULT_WIDTH
+    );
+    expect(entity.find(MockEntity).node.props.viewportHeight).toBe(
+        JSDOM_DEFAULT_HEIGHT
+    );
 });
