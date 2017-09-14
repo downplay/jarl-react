@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import hoistStatics from "hoist-non-react-statics";
 
 // Define some constants
-const DEFAULT_BROWSERLESS_WIDTH = 1920;
-const DEFAULT_BROWSERLESS_HEIGHT = 1080;
+export const DEFAULT_BROWSERLESS_WIDTH = 1920;
+export const DEFAULT_BROWSERLESS_HEIGHT = 1080;
 
 const DOM_RESIZE_EVENT = "resize";
 
@@ -11,11 +11,14 @@ let handledRehydration = false;
 let handlingRehydration = false;
 
 // HOC signature
-const withViewport = ({
-    browserlessWidth = DEFAULT_BROWSERLESS_WIDTH,
-    browserlessHeight = DEFAULT_BROWSERLESS_HEIGHT,
-    handleRehydration = false
-}) => Element => {
+const withViewport = (options = {}) => Element => {
+    // Extract options and set defaults
+    const {
+        browserlessWidth = DEFAULT_BROWSERLESS_WIDTH,
+        browserlessHeight = DEFAULT_BROWSERLESS_HEIGHT,
+        handleRehydration = false
+    } = options;
+
     // Get friendly display name to be shown in React devtools
     const displayName = Element.displayName || Element.name || "Component";
 
