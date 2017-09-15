@@ -20,6 +20,8 @@
         "hoist-non-react-statics": "^2.0.0"
     },
     "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.0",
         "babel-eslint": "^8.0.0",
         "babel-jest": "^21.0.2",
         "babel-plugin-add-react-displayname": "^0.0.4",
