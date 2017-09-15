@@ -4,4 +4,4 @@ import fs from "fs-extra";
     fs.copySync(file, `dist/${file}`)
 );
 
-fs.copySync("docs", "dist/docs");
+//fs.copySync("docs", "dist/docs");

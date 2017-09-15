@@ -71,13 +71,13 @@ const withViewport = (options = {}) => Element => {
             // Return the actual state that will be injected into props
             return !ignoreWindow && typeof window !== "undefined"
                 ? {
-                      width: window.innerWidth,
-                      height: window.innerHeight
+                      viewportWidth: window.innerWidth,
+                      viewportHeight: window.innerHeight
                   }
                 : {
-                      browserless: true,
-                      width: browserlessWidth,
-                      height: browserlessHeight
+                      isBrowserless: true,
+                      viewportWidth: browserlessWidth,
+                      viewportHeight: browserlessHeight
                   };
         }
 
@@ -90,11 +90,7 @@ const withViewport = (options = {}) => Element => {
             const { children, ...others } = this.props;
             // Pass props onto wrapped element
             return (
-                <Element
-                    {...others}
-                    viewportWidth={this.state.width}
-                    viewportHeight={this.state.height}
-                >
+                <Element {...others} {...this.state}>
                     {children}
                 </Element>
             );

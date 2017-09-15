@@ -14,13 +14,13 @@ class MockEntity extends Component {
     }
 }
 
-test("Wrapped entity is rendered", () => {
+test("Wrapped component is rendered", () => {
     const Wrapped = withViewport()(MockEntity);
     const entity = shallow(<Wrapped />);
     expect(entity.find(MockEntity).length).toBe(1);
 });
 
-test("Wrapped entity receives window width and height", () => {
+test("Wrapped component receives window width and height", () => {
     const Wrapped = withViewport()(MockEntity);
     const entity = shallow(<Wrapped />);
     expect(entity.find(MockEntity).node.props.viewportWidth).toBe(
@@ -29,6 +29,14 @@ test("Wrapped entity receives window width and height", () => {
     expect(entity.find(MockEntity).node.props.viewportHeight).toBe(
         JSDOM_DEFAULT_HEIGHT
     );
+});
+
+const MockSFC = props => null;
+
+test("Wrapped SFC is rendered", () => {
+    const Wrapped = withViewport()(MockSFC);
+    const entity = shallow(<Wrapped />);
+    expect(entity.find(MockSFC).length).toBe(1);
 });
 
 test("In rehydrate mode, width and height are defaults", () => {
@@ -53,6 +61,14 @@ test("Default width and height can be overridden", () => {
     const entity = shallow(<Wrapped />);
     expect(entity.find(MockEntity).node.props.viewportWidth).toBe(otherWidth);
     expect(entity.find(MockEntity).node.props.viewportHeight).toBe(otherHeight);
+});
+
+test("Set isBrowserless in SSR rehydration mode", () => {
+    const Wrapped = withViewport({
+        handleRehydration: true
+    })(MockEntity);
+    const entity = shallow(<Wrapped />);
+    expect(entity.find(MockEntity).node.props.isBrowserless).toBe(true);
 });
 
 test("Cannot override width and height if not rehydrating", () => {

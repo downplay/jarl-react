@@ -8,7 +8,7 @@ const plugins = [
     babel(babelrc({ path: ".babelrc.rollup.json", addModuleOptions: false }))
 ];
 
-const modules = ["withViewport"];
+const modules = ["index", "withViewport"];
 
 export default modules
     .map(name =>
