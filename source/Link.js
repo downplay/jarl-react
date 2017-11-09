@@ -31,7 +31,10 @@ export default class Link extends Component {
     render() {
         const { children, to, href, activeClassName, ...others } = this.props;
         let className = this.props.className;
-        if (activeClassName && this.context.navigationContext.isActive(this.props.to)) {
+        if (
+            activeClassName &&
+            this.context.navigationContext.isActive(this.props.to)
+        ) {
             className = `${className} ${activeClassName}`;
         }
         return (

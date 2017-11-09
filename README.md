@@ -8,7 +8,6 @@ Just Another Router Library for React.
 yarn add jarl-react
 ```
 
-
 ## Tests
 
 ```

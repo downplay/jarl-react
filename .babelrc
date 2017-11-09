@@ -17,7 +17,7 @@
             "babel-plugin-module-resolver",
             {
                 "alias": {
-                    "downtools": "./source/index"
+                    "jarl-react": "./source/index"
                 }
             }
         ]
