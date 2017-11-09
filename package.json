@@ -9,7 +9,8 @@
         "test": "jest",
         "scrub": "babel-node ./build/scrub.js",
         "assemble": "babel-node ./build/assemble.js",
-        "build": "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
+        "build":
+            "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
         "build-rollup": "rollup -c",
         "dev-rollup": "rollup -c -w"
     },
@@ -35,7 +36,8 @@
         "react": "^15.0.0 || ^16.0.0 || ^17.0.0"
     },
     "dependencies": {
-        "hoist-non-react-statics": "^2.0.0"
+        "hoist-non-react-statics": "^2.0.0",
+        "url-pattern": "^1.0.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

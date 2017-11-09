@@ -3,7 +3,7 @@ import UrlPattern from "url-pattern";
 class RouteMapper {
     routes = [];
 
-    constructor(routes) {
+    constructor(routes = []) {
         this.mapPatterns(routes);
     }
 

@@ -9,5 +9,5 @@ class MockEntity extends Component {
 }
 
 test("it constructs", () => {
-    expect(new RouteMapper()).toBeInstanceOf(RouterMapper);
+    expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
 });
