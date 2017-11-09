@@ -19,12 +19,13 @@ export default modules
             dest: `dist/${name}.umd.js`,
             format: "umd",
             moduleName: name,
+            // TODO: Why do I still need to specify externals?
             external: ["react", "prop-types"],
             globals: {
                 react: "React",
                 "prop-types": "PropTypes"
             },
-            plugins: plugins.concat([commonjs(), resolve()])
+            plugins: plugins.concat([resolve(), commonjs()])
         })
     )
     .concat(
@@ -36,12 +37,11 @@ export default modules
             // the `targets` option which can specify `dest` and `format`)
             ({
                 entry: `source/${name}.js`,
-                external: ["react", "prop-types", "url-pattern"],
                 targets: [
                     { dest: `dist/${name}.cjs.js`, format: "cjs" },
                     { dest: `dist/${name}.mjs`, format: "es" }
                 ],
-                plugins
+                plugins: plugins.concat([commonjs()])
             })
         )
     );
