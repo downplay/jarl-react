@@ -1,6 +1,7 @@
 import babel from "rollup-plugin-babel";
 import babelrc from "babelrc-rollup";
 import commonjs from "rollup-plugin-commonjs";
+import resolve from "rollup-plugin-node-resolve";
 
 import pkg from "./package.json";
 
@@ -8,7 +9,7 @@ const plugins = [
     babel(babelrc({ path: ".babelrc.rollup.json", addModuleOptions: false }))
 ];
 
-const modules = ["index"];
+const modules = ["index", "redux/index"];
 
 export default modules
     .map(name =>
@@ -23,7 +24,7 @@ export default modules
                 react: "React",
                 "prop-types": "PropTypes"
             },
-            plugins: [commonjs()].concat(plugins)
+            plugins: plugins.concat([commonjs()])
         })
     )
     .concat(

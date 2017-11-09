@@ -9,8 +9,7 @@
         "test": "jest",
         "scrub": "babel-node ./build/scrub.js",
         "assemble": "babel-node ./build/assemble.js",
-        "build":
-            "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
+        "build": "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
         "build-rollup": "rollup -c",
         "dev-rollup": "rollup -c -w"
     },
@@ -33,8 +32,8 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "react": "^15.0.0 || ^16.0.0 || ^17.0.0",
-        "prop-types": "^15.0.0 || ^16.0.0 || ^17.0.0"
+        "prop-types": "^15.0.0 || ^16.0.0 || ^17.0.0",
+        "react": "^15.0.0 || ^16.0.0 || ^17.0.0"
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0",
