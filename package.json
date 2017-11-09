@@ -9,8 +9,7 @@
         "test": "jest",
         "scrub": "babel-node ./build/scrub.js",
         "assemble": "babel-node ./build/assemble.js",
-        "build":
-            "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
+        "build": "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
         "build-rollup": "rollup -c",
         "dev-rollup": "rollup -c -w"
     },
