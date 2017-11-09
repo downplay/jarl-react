@@ -1,7 +1,7 @@
 {
-    "name": "downtools",
-    "version": "0.1.0",
-    "description": "Miscellaneous helpers for React",
+    "name": "jarl-react",
+    "version": "0.0.1",
+    "description": "Just Another Router Library for React",
     "main": "index.cjs.js",
     "module": "index.mjs",
     "browser": "index.umd.js",
@@ -18,21 +18,22 @@
         "react",
         "reactjs",
         "hoc",
-        "styles",
-        "theming",
+        "routing",
+        "router",
         "components",
         "tools",
-        "viewport",
-        "resize"
+        "url",
+        "history",
+        "ssr"
     ],
     "author": "Peter Hurst",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/downplay/downstyle.git"
+        "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "react": "^0.14.0 || ^15.0.0 || ^16.0.0"
+        "react": "^15.0.0 || ^16.0.0 || ^17.0.0"
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0"
