@@ -24,7 +24,7 @@ export default modules
                 react: "React",
                 "prop-types": "PropTypes"
             },
-            plugins: plugins.concat([commonjs()])
+            plugins: plugins.concat([commonjs(), resolve()])
         })
     )
     .concat(
