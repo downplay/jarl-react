@@ -8,7 +8,7 @@ const plugins = [
     babel(babelrc({ path: ".babelrc.rollup.json", addModuleOptions: false }))
 ];
 
-const modules = ["index", "Link", "NavigationProvider", "RouteMapper"];
+const modules = ["index"];
 
 export default modules
     .map(name =>
@@ -18,9 +18,10 @@ export default modules
             dest: `dist/${name}.umd.js`,
             format: "umd",
             moduleName: name,
-            external: ["react"],
+            external: ["react", "prop-types"],
             globals: {
-                react: "React"
+                react: "React",
+                "prop-types": "PropTypes"
             },
             plugins: [commonjs()].concat(plugins)
         })
@@ -34,8 +35,7 @@ export default modules
             // the `targets` option which can specify `dest` and `format`)
             ({
                 entry: `source/${name}.js`,
-                external: ["react"],
-                // external: ["ms"],
+                external: ["react", "prop-types", "url-pattern"],
                 targets: [
                     { dest: `dist/${name}.cjs.js`, format: "cjs" },
                     { dest: `dist/${name}.mjs`, format: "es" }
