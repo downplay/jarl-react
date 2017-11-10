@@ -2,6 +2,11 @@
 
 Just Another Router Library for React.
 
+## Documentation
+
+See docs here:
+https://github.com/downplay/jarl-react/tree/master/docs
+
 ## Install
 
 ```
@@ -19,7 +24,7 @@ yarn test
 
 ## Version History
 
-### Next version
+### 0.0.5
 
 * Initial release
 
