@@ -1,9 +1,10 @@
 {
     "name": "jarl-react",
-    "version": "0.0.2",
+    "version": "0.0.5",
     "description": "Just Another Router Library for React",
     "main": "index.cjs.js",
     "module": "index.mjs",
+    "jsnext:main": "index.mjs",
     "browser": "index.umd.js",
     "scripts": {
         "test": "jest",
@@ -12,8 +13,7 @@
         "build":
             "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
         "build-rollup": "rollup -c",
-        "dev-rollup": "rollup -c -w",
-        "publish": "cd dist && npm publish"
+        "dev-rollup": "rollup -c -w"
     },
     "keywords": [
         "react",

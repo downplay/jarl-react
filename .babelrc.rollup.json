@@ -9,8 +9,15 @@
         "babel-preset-react"
     ],
     "plugins": [
+        [
+            "babel-plugin-transform-runtime",
+            {
+                "helpers": true,
+                "polyfill": false,
+                "regenerator": true
+            }
+        ],
         "babel-plugin-transform-class-properties",
-        "babel-plugin-transform-object-rest-spread",
-        "external-helpers"
+        "babel-plugin-transform-object-rest-spread"
     ]
 }

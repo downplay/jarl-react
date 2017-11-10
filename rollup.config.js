@@ -6,10 +6,22 @@ import resolve from "rollup-plugin-node-resolve";
 import pkg from "./package.json";
 
 const plugins = [
-    babel(babelrc({ path: ".babelrc.rollup.json", addModuleOptions: false }))
+    babel(
+        Object.assign(
+            {},
+            babelrc({
+                path: ".babelrc.rollup.json",
+                addModuleOptions: false
+            }),
+            {
+                exclude: "node_modules/**",
+                runtimeHelpers: true
+            }
+        )
+    )
 ];
 
-const modules = ["index", "redux/index"];
+const modules = ["index", "redux"];
 
 export default modules
     .map(name =>
@@ -37,11 +49,18 @@ export default modules
             // the `targets` option which can specify `dest` and `format`)
             ({
                 entry: `source/${name}.js`,
+                external: [
+                    "react",
+                    "prop-types",
+                    "url-pattern",
+                    "hoist-non-react-statics"
+                ],
                 targets: [
+                    { dest: `dist/${name}.js`, format: "cjs" },
                     { dest: `dist/${name}.cjs.js`, format: "cjs" },
                     { dest: `dist/${name}.mjs`, format: "es" }
                 ],
-                plugins: plugins.concat([commonjs()])
+                plugins: plugins.concat([resolve(), commonjs()])
             })
         )
     );

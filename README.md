@@ -19,7 +19,7 @@ yarn test
 
 ## Version History
 
-### 0.0.1
+### Next version
 
 * Initial release
 
