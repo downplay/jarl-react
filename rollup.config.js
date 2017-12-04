@@ -24,24 +24,7 @@ const plugins = [
 const modules = ["index", "redux"];
 
 export default modules
-    .map(name =>
-        // browser-friendly UMD build
-        ({
-            entry: `source/${name}.js`,
-            dest: `dist/${name}.umd.js`,
-            format: "umd",
-            moduleName: name,
-            // TODO: Why do I still need to specify externals?
-            external: ["react", "prop-types"],
-            globals: {
-                react: "React",
-                "prop-types": "PropTypes"
-            },
-            plugins: plugins.concat([resolve(), commonjs()])
-        })
-    )
-    .concat(
-        modules.map(name =>
+        .map(name =>
             // CommonJS (for Node) and ES module (for bundlers) build.
             // (We could have three entries in the configuration array
             // instead of two, but it's quicker to generate multiple
@@ -57,10 +40,7 @@ export default modules
                 ],
                 targets: [
                     { dest: `dist/${name}.js`, format: "cjs" },
-                    { dest: `dist/${name}.cjs.js`, format: "cjs" },
-                    { dest: `dist/${name}.mjs`, format: "es" }
+                    { dest: `dist/${name}.cjs.js`, format: "cjs" }
                 ],
                 plugins: plugins.concat([resolve(), commonjs()])
-            })
-        )
-    );
+            }));
