@@ -51,7 +51,11 @@ export default class NavigationProvider extends Component {
         this.doNavigation(location.pathname);
     };
 
-    handleNavigation = url => {
+    handleNavigation = to => {
+        const url = typeof to === "string" ? to : this.handleResolve(to);
+        if (!url) {
+            throw new Error(`Could not resolve state: ${to}`);
+        }
         this.props.history.push(url);
     };
 
