@@ -1,6 +1,6 @@
 import { NAVIGATE_START, NAVIGATE_END, NAVIGATE_TRANSITION_IN, NAVIGATE_TRANSITION_COMPLETE } from "./defines";
 
-const navigationReducer = (state = { isNavigating: false, isEntering: false }, action = {}) => {
+const navigationReducer = (state = { isNavigating: false, isEntering: false, location: {}, path: '' }, action = {}) => {
     switch (action.type) {
         case NAVIGATE_START:
             return { ...state, isNavigating: true, isEntering: false };
@@ -9,8 +9,8 @@ const navigationReducer = (state = { isNavigating: false, isEntering: false }, a
                 ...state,
                 isNavigating: false,
                 isEntering: true,
-                site: action.destination.site,
-                page: action.destination.page
+                path: action.path,
+                location: action.destination
             };
         case NAVIGATE_TRANSITION_IN:
             return {

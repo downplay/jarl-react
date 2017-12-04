@@ -59,7 +59,7 @@ export default class NavigationProvider extends Component {
         const { branch, state } = this.props.routes.match(url);
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
-            promise = this.props.onNavigateStart(state) || promise;
+            promise = this.props.onNavigateStart(state, url) || promise;
         }
         const promises = [promise];
         for (const leaf of branch) {
@@ -70,7 +70,7 @@ export default class NavigationProvider extends Component {
         // TODO: Gather branch data and perform auth
         Promise.all(promises).then(() => {
             if (this.props.onNavigateEnd) {
-                this.props.onNavigateEnd(state);
+                this.props.onNavigateEnd(state, url);
             }
         });
     };
