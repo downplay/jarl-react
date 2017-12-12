@@ -24,6 +24,11 @@ yarn test
 
 ## Version History
 
+### 0.0.8
+
+* Link now supports string values for `to` prop
+* Add enzyme config and a Link test
+
 ### 0.0.5
 
 * Initial release

@@ -7,12 +7,12 @@ const Element = "a";
 
 export default class Link extends Component {
     static propTypes = {
+        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
         activeClassName: PropTypes.string
     };
 
     static defaultProps = {
         to: null,
-        href: null,
         activeClassName: ""
     };
 
@@ -29,20 +29,25 @@ export default class Link extends Component {
     resolveUrl = state => this.context.navigationContext.resolve(state);
 
     render() {
-        const { children, to, href, activeClassName, ...others } = this.props;
-        let className = this.props.className;
-        if (
+        const {
+            children,
+            to,
+            activeClassName,
+            className,
+            ...others
+        } = this.props;
+        const combinedClassNames =
             activeClassName &&
             this.context.navigationContext.isActive(this.props.to)
-        ) {
-            className = `${className} ${activeClassName}`;
-        }
+                ? `${className} ${activeClassName}`
+                : className;
+        const href = typeof to === "string" ? to : this.resolveUrl(to);
         return (
             <Element
-                href={to ? this.resolveUrl(to) : href}
+                href={href}
                 onClick={to && this.handleClick}
                 {...others}
-                className={className}
+                className={combinedClassNames}
             >
                 {children}
             </Element>
