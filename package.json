@@ -1,6 +1,6 @@
 {
     "name": "jarl-react",
-    "version": "0.1.1",
+    "version": "0.1.3",
     "description": "Just Another Router Library for React",
     "main": "index.cjs.js",
     "scripts": {

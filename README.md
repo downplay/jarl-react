@@ -24,6 +24,10 @@ yarn test
 
 ## Version History
 
+### 0.1.2
+
+* Don't completely override Link's own onClick handler
+
 ### 0.1.1
 
 * Call onClick handler when Link is clicked (e.g. allowing consumers to call `event.stopPropagation()`)

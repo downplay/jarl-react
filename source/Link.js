@@ -40,6 +40,7 @@ export default class Link extends Component {
             to,
             activeClassName,
             className,
+            onClick,
             ...others
         } = this.props;
         const combinedClassNames =
@@ -51,8 +52,8 @@ export default class Link extends Component {
         return (
             <Element
                 href={href}
-                onClick={to && this.handleClick}
                 {...others}
+                onClick={to && this.handleClick}
                 className={combinedClassNames}
             >
                 {children}
