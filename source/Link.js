@@ -8,12 +8,14 @@ const Element = "a";
 export default class Link extends Component {
     static propTypes = {
         to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-        activeClassName: PropTypes.string
+        activeClassName: PropTypes.string,
+        onClick: PropTypes.func
     };
 
     static defaultProps = {
         to: null,
-        activeClassName: ""
+        activeClassName: "",
+        onClick: null
     };
 
     static contextTypes = {
@@ -22,6 +24,10 @@ export default class Link extends Component {
 
     handleClick = e => {
         e.preventDefault();
+        if (this.props.onClick) {
+            // TODO: Return false to cancel navigation?
+            this.props.onClick(e);
+        }
         this.context.navigationContext.navigate(this.resolveUrl(this.props.to));
     };
 

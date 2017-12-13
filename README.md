@@ -24,7 +24,11 @@ yarn test
 
 ## Version History
 
-### 0.1
+### 0.1.1
+
+* Call onClick handler when Link is clicked (e.g. allowing consumers to call `event.stopPropagation()`)
+
+### 0.1.0
 
 * Routes with dynamic path segments now resolve to URLs correctly
 

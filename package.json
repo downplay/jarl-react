@@ -1,20 +1,19 @@
 {
     "name": "jarl-react",
-    "version": "0.0.9",
+    "version": "0.1.1",
     "description": "Just Another Router Library for React",
     "main": "index.cjs.js",
     "scripts": {
         "test": "jest",
         "scrub": "babel-node ./build/scrub.js",
         "assemble": "babel-node ./build/assemble.js",
-        "build": "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
+        "build":
+            "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
         "build-rollup": "rollup -c",
         "dev-rollup": "rollup -c -w"
     },
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
