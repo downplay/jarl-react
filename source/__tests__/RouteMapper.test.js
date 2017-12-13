@@ -14,6 +14,14 @@ const basicRoutes = () =>
         }
     ]);
 
+const dynamicRoutes = () =>
+    new RouteMapper([
+        {
+            path: "/foo/:id",
+            state: { foo: "bar" }
+        }
+    ]);
+
 describe("RouteMapper", () => {
     test("it constructs", () => {
         expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
@@ -31,5 +39,10 @@ describe("RouteMapper", () => {
         expect(path).toEqual("/");
         const path2 = basicRoutes().resolve({ page: "about" });
         expect(path2).toEqual("/about");
+    });
+
+    test("it resolves dynamic routes", () => {
+        const path = dynamicRoutes().resolve({ foo: "bar", id: "baz" });
+        expect(path).toEqual("/foo/baz");
     });
 });

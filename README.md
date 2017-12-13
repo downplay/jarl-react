@@ -24,6 +24,10 @@ yarn test
 
 ## Version History
 
+### 0.1
+
+* Routes with dynamic path segments now resolve to URLs correctly
+
 ### 0.0.8
 
 * Link now supports string values for `to` prop

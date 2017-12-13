@@ -68,7 +68,10 @@ class RouteMapper {
             let ok = true;
             const entries = Object.entries(state);
             for (const [key, value] of entries) {
-                if (key in route.state && route.state[key] === value) {
+                if (
+                    (key in route.state && route.state[key] === value) ||
+                    route.pattern.names.indexOf(key) >= 0
+                ) {
                     keys = keys.filter(k => k !== key);
                 } else {
                     ok = false;
