@@ -1,5 +1,9 @@
 import UrlPattern from "url-pattern";
 
+const trimRegex = /(^\/+|$\/+)/g;
+const trimSlashes = segment => segment.replace(trimRegex, "");
+const joinPaths = (...paths) => `/${paths.map(trimSlashes).join("/")}`;
+
 class RouteMapper {
     routes = [];
 
@@ -10,10 +14,14 @@ class RouteMapper {
     mapPatterns(routes, parent) {
         // Instance the pattern and store the route
         for (const route of routes) {
+            const path = parent
+                ? joinPaths(parent.path, route.path)
+                : route.path;
             this.routes.push({
                 ...route,
+                path,
                 parent,
-                pattern: new UrlPattern(route.path)
+                pattern: new UrlPattern(path)
             });
             // Flatten nested routes
             if (route.routes) {

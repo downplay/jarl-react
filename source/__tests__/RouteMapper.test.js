@@ -22,6 +22,20 @@ const dynamicRoutes = () =>
         }
     ]);
 
+const childRoutes = () =>
+    new RouteMapper([
+        {
+            path: "/foo",
+            state: { foo: true },
+            routes: [
+                {
+                    path: "/bar",
+                    state: { bar: true }
+                }
+            ]
+        }
+    ]);
+
 describe("RouteMapper", () => {
     test("it constructs", () => {
         expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
@@ -44,5 +58,17 @@ describe("RouteMapper", () => {
     test("it resolves dynamic routes", () => {
         const path = dynamicRoutes().resolve({ foo: "bar", id: "baz" });
         expect(path).toEqual("/foo/baz");
+    });
+
+    test("it matches parent route", () => {
+        const routes = childRoutes();
+        const match = routes.match("/foo");
+        expect(match.state).toEqual({ foo: true });
+    });
+
+    test("it matches child route", () => {
+        const routes = childRoutes();
+        const match = routes.match("/foo/bar");
+        expect(match.state).toEqual({ foo: true, bar: true });
     });
 });
