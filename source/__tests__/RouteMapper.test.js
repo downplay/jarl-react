@@ -11,6 +11,10 @@ const basicRoutes = () =>
         {
             path: "/about",
             state: { page: "about" }
+        },
+        {
+            path: "/about/",
+            state: { page: "about" }
         }
     ]);
 
@@ -36,6 +40,13 @@ const childRoutes = () =>
         }
     ]);
 
+const dynamicRootRoutes = () =>
+    new RouteMapper([
+        {
+            path: "/:id"
+        }
+    ]);
+
 describe("RouteMapper", () => {
     test("it constructs", () => {
         expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
@@ -55,9 +66,26 @@ describe("RouteMapper", () => {
         expect(path2).toEqual("/about");
     });
 
+    test("it doesn't resolve partial state", () => {
+        const routes = new RouteMapper([
+            {
+                path: "/",
+                state: { foo: true, bar: true }
+            }
+        ]);
+        const path = routes.resolve({ foo: true });
+        expect(path).toEqual(null);
+    });
+
     test("it resolves dynamic routes", () => {
         const path = dynamicRoutes().resolve({ foo: "bar", id: "baz" });
         expect(path).toEqual("/foo/baz");
+    });
+
+    test("it resolve dynamic route alone", () => {
+        const routes = dynamicRootRoutes();
+        const path = routes.resolve({ id: "bar" });
+        expect(path).toEqual("/bar");
     });
 
     test("it matches parent route", () => {
@@ -70,5 +98,23 @@ describe("RouteMapper", () => {
         const routes = childRoutes();
         const match = routes.match("/foo/bar");
         expect(match.state).toEqual({ foo: true, bar: true });
+    });
+
+    test("it resolves parent route", () => {
+        const routes = childRoutes();
+        const path = routes.resolve({ foo: true });
+        expect(path).toEqual("/foo");
+    });
+
+    test("it resolves child route", () => {
+        const routes = childRoutes();
+        const path = routes.resolve({ foo: true, bar: true });
+        expect(path).toEqual("/foo/bar");
+    });
+
+    test("it doesn't resolve child route fragment", () => {
+        const routes = childRoutes();
+        const path = routes.resolve({ bar: true });
+        expect(path).toEqual(null);
     });
 });
