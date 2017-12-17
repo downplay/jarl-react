@@ -24,6 +24,11 @@ yarn test
 
 ## Version History
 
+### Next version
+
+* Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
+* Better errors on stringification failure to debug state problems
+
 ### 0.1.2
 
 * Don't completely override Link's own onClick handler

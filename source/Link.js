@@ -28,11 +28,13 @@ export default class Link extends Component {
             // TODO: Return false to cancel navigation?
             this.props.onClick(e);
         }
-        this.context.navigationContext.navigate(this.resolveUrl(this.props.to));
+        this.context.navigationContext.navigate(
+            this.stringifyUrl(this.props.to)
+        );
     };
 
     // TODO: memoize for better performance?
-    resolveUrl = state => this.context.navigationContext.resolve(state);
+    stringifyUrl = state => this.context.navigationContext.stringify(state);
 
     render() {
         const {
@@ -48,7 +50,7 @@ export default class Link extends Component {
             this.context.navigationContext.isActive(this.props.to)
                 ? `${className} ${activeClassName}`
                 : className;
-        const href = typeof to === "string" ? to : this.resolveUrl(to);
+        const href = typeof to === "string" ? to : this.stringifyUrl(to);
         return (
             <Element
                 href={href}
