@@ -12,7 +12,8 @@
         "build-dev":
             "cross-env NODE_ENV=development npm-run-all scrub dev-rollup assemble",
         "build-rollup": "rollup -c",
-        "dev-rollup": "rollup -c -w"
+        "dev-rollup": "rollup -c -w",
+        "cypress": "cypress open"
     },
     "jest": {
         "setupFiles": ["raf/polyfill"],
@@ -65,6 +66,7 @@
         "babel-runtime": "^6.26.0",
         "babelrc-rollup": "^3.0.0",
         "cross-env": "^5.0.5",
+        "cypress": "^1.3.0",
         "enzyme": "^3.2.0",
         "enzyme-adapter-react-16": "^1.1.0",
         "eslint": "^4.6.1",
