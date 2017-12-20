@@ -4,6 +4,30 @@ const trimRegex = /(^\/+|$\/+)/g;
 const trimSlashes = segment => segment.replace(trimRegex, "");
 const joinPaths = (...paths) => `/${paths.map(trimSlashes).join("/")}`;
 
+const populateKeys = (keyMap, route) => {
+    const setKey = key => {
+        keyMap[key] = true;
+    };
+    Object.keys(route.state).forEach(setKey);
+    route.pattern.names.forEach(setKey);
+    if (route.parent) {
+        populateKeys(keyMap, route.parent);
+    }
+};
+
+const routeResolvesKey = (route, key, value) => {
+    if (
+        (key in route.state && route.state[key] === value) ||
+        route.pattern.names.indexOf(key) >= 0
+    ) {
+        return true;
+    }
+    if (route.parent) {
+        return routeResolvesKey(route.parent, key, value);
+    }
+    return false;
+};
+
 class RouteMapper {
     routes = [];
 
@@ -68,38 +92,16 @@ class RouteMapper {
      *
      * @param {*} state
      */
-    resolve(state, current) {
+    stringify(state, current) {
         for (const route of this.routes) {
             // TODO: invoke functions
-            //       Does resolve potentially become asynchronous?
+            //       Does stringify potentially become asynchronous?
             if (route.resolve) {
                 route.resolve(state, current);
             }
             const keyMap = {};
-            const setKeys = key => {
-                keyMap[key] = true;
-            };
-            const populateKeys = resolver => {
-                Object.keys(resolver.state).forEach(setKeys);
-                resolver.pattern.names.forEach(setKeys);
-                if (resolver.parent) {
-                    populateKeys(resolver.parent);
-                }
-            };
-            populateKeys(route);
+            populateKeys(keyMap, route);
             let ok = true;
-            const routeResolvesKey = (resolver, key, value) => {
-                if (
-                    (key in resolver.state && resolver.state[key] === value) ||
-                    resolver.pattern.names.indexOf(key) >= 0
-                ) {
-                    return true;
-                }
-                if (resolver.parent) {
-                    return routeResolvesKey(resolver.parent, key, value);
-                }
-                return false;
-            };
             for (const key of Object.keys(state)) {
                 if (routeResolvesKey(route, key, state[key])) {
                     keyMap[key] = false;

@@ -34,7 +34,12 @@ yarn test
 
 ## Version History
 
-### Next release
+### Next version
+
+* Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
+* Better errors on stringification failure to debug state problems
+
+### 0.2.0
 
 * Added route matching and path resolution for nested routes
 

@@ -5,9 +5,17 @@ import RouteMapper from "./RouteMapper";
 
 export const navigationContextShape = PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    resolve: PropTypes.func.isRequired,
+    stringify: PropTypes.func.isRequired,
     getState: PropTypes.func.isRequired
 }).isRequired;
+
+const safeJsonStringify = o => {
+    try {
+        return JSON.stringify(o);
+    } catch (e) {
+        return "[Circular reference]";
+    }
+};
 
 export default class NavigationProvider extends Component {
     static propTypes = {
@@ -31,7 +39,7 @@ export default class NavigationProvider extends Component {
         return {
             navigationContext: {
                 navigate: this.handleNavigation,
-                resolve: this.handleResolve,
+                stringify: this.handleStringify,
                 getState: this.handleGetState,
                 isActive: this.handleIsActive
             }
@@ -52,9 +60,11 @@ export default class NavigationProvider extends Component {
     };
 
     handleNavigation = to => {
-        const url = typeof to === "string" ? to : this.handleResolve(to);
+        const url = typeof to === "string" ? to : this.handleStringify(to);
         if (!url) {
-            throw new Error(`Could not resolve state: ${to}`);
+            throw new Error(
+                `Could not stringify state: ${safeJsonStringify(to)}`
+            );
         }
         this.props.history.push(url);
     };
@@ -79,20 +89,14 @@ export default class NavigationProvider extends Component {
         });
     };
 
-    handleResolve = state => this.props.routes.resolve(state, this.props.state);
+    handleStringify = state =>
+        this.props.routes.stringify(state, this.props.state);
 
     handleGetState = () => this.props.state;
 
     // TODO: Support partial paths (optionally)
-    handleIsActive = state => this.props.history.location.pathname === this.handleResolve(state);
-    // TODO: Ideally would check against the results of two resolutions instead of just the current url.
-    // Also the use of "state" is slightly conflicting with a) redux/react state, and b) browser history state
-    // which is yet another thing. Might be better to call this "context"? "datums"?
-    // This version didn't work because right now optional state parts cause resolution to fail;
-    // {page: "contact"} resolves to /contact but {page: "contact", site: "main"} doesn't resolve to anything.
-    // Maybe I should be handling this a much simpler way but it should be easy to create similar scenarios
-    // without breaking everything.
-    // return this.handleResolve(state) === this.handleResolve(this.props.state);
+    handleIsActive = state =>
+        this.handleStringify(state) === this.handleStringify(this.props.state);
 
     render() {
         return this.props.children;

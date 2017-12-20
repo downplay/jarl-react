@@ -59,32 +59,32 @@ describe("RouteMapper", () => {
         expect(match2.state).toEqual({ page: "about" });
     });
 
-    test("it resolves routes", () => {
-        const path = basicRoutes().resolve({ page: "home" });
+    test("it stringifies routes", () => {
+        const path = basicRoutes().stringify({ page: "home" });
         expect(path).toEqual("/");
-        const path2 = basicRoutes().resolve({ page: "about" });
+        const path2 = basicRoutes().stringify({ page: "about" });
         expect(path2).toEqual("/about");
     });
 
-    test("it doesn't resolve partial state", () => {
+    test("it doesn't stringify partial state", () => {
         const routes = new RouteMapper([
             {
                 path: "/",
                 state: { foo: true, bar: true }
             }
         ]);
-        const path = routes.resolve({ foo: true });
+        const path = routes.stringify({ foo: true });
         expect(path).toEqual(null);
     });
 
-    test("it resolves dynamic routes", () => {
-        const path = dynamicRoutes().resolve({ foo: "bar", id: "baz" });
+    test("it stringifies dynamic routes", () => {
+        const path = dynamicRoutes().stringify({ foo: "bar", id: "baz" });
         expect(path).toEqual("/foo/baz");
     });
 
-    test("it resolve dynamic route alone", () => {
+    test("it stringifies dynamic route alone", () => {
         const routes = dynamicRootRoutes();
-        const path = routes.resolve({ id: "bar" });
+        const path = routes.stringify({ id: "bar" });
         expect(path).toEqual("/bar");
     });
 
@@ -100,21 +100,21 @@ describe("RouteMapper", () => {
         expect(match.state).toEqual({ foo: true, bar: true });
     });
 
-    test("it resolves parent route", () => {
+    test("it stringifies parent route", () => {
         const routes = childRoutes();
-        const path = routes.resolve({ foo: true });
+        const path = routes.stringify({ foo: true });
         expect(path).toEqual("/foo");
     });
 
-    test("it resolves child route", () => {
+    test("it stringifies child route", () => {
         const routes = childRoutes();
-        const path = routes.resolve({ foo: true, bar: true });
+        const path = routes.stringify({ foo: true, bar: true });
         expect(path).toEqual("/foo/bar");
     });
 
-    test("it doesn't resolve child route fragment", () => {
+    test("it doesn't stringify child route fragment", () => {
         const routes = childRoutes();
-        const path = routes.resolve({ bar: true });
+        const path = routes.stringify({ bar: true });
         expect(path).toEqual(null);
     });
 });
