@@ -8,16 +8,28 @@ configure({ adapter: new Adapter() });
 import Link from "../Link";
 import MockProvider from "./mocks/MockProvider";
 
+import { basicRoutes } from "./RouteMapper.test";
+
 // TODO: Test click handling
 
 describe("<Link/>", () => {
-    test("it renders with a string URL", () => {
-        const anchor = render(
+    test("renders a URL from a string", () => {
+        const link = render(
             <MockProvider>
                 <Link to="/">Home</Link>
             </MockProvider>
         );
-        expect(anchor.prop("href")).toEqual("/");
-        expect(anchor.text()).toEqual("Home");
+        expect(link.prop("href")).toEqual("/");
+        expect(link.text()).toEqual("Home");
+    });
+
+    test("renders a URL from a state object", () => {
+        const link = render(
+            <MockProvider routes={basicRoutes()}>
+                <Link to={{ page: "home" }}>Home</Link>
+            </MockProvider>
+        );
+        expect(link.prop("href")).toEqual("/");
+        expect(link.text()).toEqual("Home");
     });
 });

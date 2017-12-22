@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { shallow, mount } from "enzyme";
 import RouteMapper from "../RouteMapper";
 
-const basicRoutes = () =>
+export const basicRoutes = () =>
     new RouteMapper([
         {
             path: "/",
