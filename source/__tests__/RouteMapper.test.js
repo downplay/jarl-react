@@ -113,4 +113,10 @@ describe("RouteMapper", () => {
         const path = routes.stringify({ bar: true });
         expect(path).toEqual(null);
     });
+
+    test("it decodes URI components", () => {
+        const routes = dynamicRootRoutes();
+        const match = routes.match("/Some%20Thing");
+        expect(match.state).toEqual({ id: "Some Thing" });
+    });
 });
