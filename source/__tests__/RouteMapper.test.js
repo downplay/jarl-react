@@ -11,10 +11,6 @@ const basicRoutes = () =>
         {
             path: "/about",
             state: { page: "about" }
-        },
-        {
-            path: "/about/",
-            state: { page: "about" }
         }
     ]);
 

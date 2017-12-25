@@ -12,14 +12,6 @@
     ],
     "plugins": [
         "babel-plugin-transform-class-properties",
-        "babel-plugin-transform-object-rest-spread",
-        [
-            "babel-plugin-module-resolver",
-            {
-                "alias": {
-                    "jarl-react": "./source/index"
-                }
-            }
-        ]
+        "babel-plugin-transform-object-rest-spread"
     ]
 }

@@ -23,7 +23,8 @@ export default class NavigationProvider extends Component {
         onNavigateStart: PropTypes.func,
         onNavigateEnd: PropTypes.func,
         state: PropTypes.object,
-        history: PropTypes.object.isRequired
+        history: PropTypes.object.isRequired,
+        context: PropTypes.func
     };
 
     static defaultProps = {
@@ -47,8 +48,14 @@ export default class NavigationProvider extends Component {
     }
 
     componentDidMount() {
-        // Listen for changes to the current location.
+        // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.routes !== this.props.routes) {
+            this.ensureRouteMapper(nextProps.routes);
+        }
     }
 
     componentWillUnmount() {
