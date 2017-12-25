@@ -7,17 +7,17 @@
         "test": "jest",
         "scrub": "babel-node ./build/scrub.js",
         "assemble": "babel-node ./build/assemble.js",
-        "build": "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
-        "build-dev": "cross-env NODE_ENV=development npm-run-all scrub dev-rollup assemble",
+        "build":
+            "cross-env NODE_ENV=production npm-run-all scrub build-rollup assemble",
+        "build-dev":
+            "cross-env NODE_ENV=development npm-run-all scrub dev-rollup assemble",
         "build-rollup": "rollup -c",
         "dev-rollup": "rollup -c -w",
         "cypress": "cypress open",
         "demo": "parcel demo/demo1/index.html"
     },
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
@@ -43,8 +43,7 @@
         "react": "^15.0.0 || ^16.0.0 || ^17.0.0"
     },
     "dependencies": {
-        "hoist-non-react-statics": "^2.0.0",
-        "url-pattern": "^1.0.3"
+        "hoist-non-react-statics": "^2.0.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

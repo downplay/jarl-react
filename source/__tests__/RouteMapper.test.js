@@ -1,47 +1,14 @@
 import React, { Component } from "react";
 import { shallow, mount } from "enzyme";
 import RouteMapper from "../RouteMapper";
-
-export const basicRoutes = () =>
-    new RouteMapper([
-        {
-            path: "/",
-            state: { page: "home" }
-        },
-        {
-            path: "/about",
-            state: { page: "about" }
-        }
-    ]);
-
-const dynamicRoutes = () =>
-    new RouteMapper([
-        {
-            path: "/foo/:id",
-            state: { foo: "bar" }
-        }
-    ]);
-
-const childRoutes = () =>
-    new RouteMapper([
-        {
-            path: "/foo",
-            state: { foo: true },
-            routes: [
-                {
-                    path: "/bar",
-                    state: { bar: true }
-                }
-            ]
-        }
-    ]);
-
-const dynamicRootRoutes = () =>
-    new RouteMapper([
-        {
-            path: "/:id"
-        }
-    ]);
+import {
+    basicRoutes,
+    childRoutes,
+    dynamicRootRoutes,
+    dynamicRoutes,
+    wildcardIndexedRoutes,
+    wildcardRoutes
+} from "./dummy/routes";
 
 describe("RouteMapper", () => {
     test("it constructs", () => {
@@ -118,5 +85,21 @@ describe("RouteMapper", () => {
         const routes = dynamicRootRoutes();
         const match = routes.match("/Some%20Thing");
         expect(match.state).toEqual({ id: "Some Thing" });
+    });
+
+    test("match wildcard paths", () => {
+        const routes = wildcardRoutes();
+        const match = routes.match("/test");
+        expect(match.state).toEqual({ path: "test" });
+        const match2 = routes.match("/test/foo/1");
+        expect(match2.state).toEqual({ path: "test/foo/1" });
+    });
+
+    test("match nested wildcard paths", () => {
+        const routes = wildcardIndexedRoutes();
+        const match = routes.match("/foo/bar");
+        expect(match.state).toEqual({ first: "foo", second: "bar" });
+        const match2 = routes.match("/test");
+        expect(match2.state).toEqual(null);
     });
 });

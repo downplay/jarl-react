@@ -1,4 +1,4 @@
-import UrlPattern from "url-pattern";
+import UrlPattern from "./lib/url-pattern";
 
 const trimRegex = /(^\/+|$\/+)/g;
 const trimSlashes = segment => segment.replace(trimRegex, "");

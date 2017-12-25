@@ -6,6 +6,10 @@ const routes = [
     {
         path: "/about",
         state: { page: "about" }
+    },
+    {
+        // TODO: 404 and wildcard example in a separate demo?
+        path: "/*:missingPath"
     }
 ];
 

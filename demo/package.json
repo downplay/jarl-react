@@ -1,12 +1,10 @@
 {
-    "name": "jarl-react-demos",
-    "version": "0.1",
+    "name": "jarl-react-demo",
+    "version": "0.0.1",
     "dependencies": {
         "babel-plugin-emotion": "^8.0.12",
         "emotion": "^8.0.12",
         "history": "^4.7.2",
-        "react": "^16.2.0",
-        "react-dom": "^16.2.0",
         "react-emotion": "^8.0.12",
         "react-redux": "^5.0.6",
         "redux": "^3.7.2"

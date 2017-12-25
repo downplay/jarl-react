@@ -5,7 +5,7 @@ import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
 import NotFound from "./pages/NotFound";
 
-const renderPage = page => {
+const renderPage = (page, missingPath) => {
     switch (page) {
         case "home":
             return <HomePage />;
@@ -13,14 +13,14 @@ const renderPage = page => {
             return <AboutPage />;
         default:
             // Handle missing pages
-            return <NotFound />;
+            return <NotFound missingPath={missingPath} />;
     }
 };
 
 /**
  * JARL injects the `page` prop from state via withState HOC
  */
-const Pages = ({ page, ...props }) => (
+const Pages = ({ page, missingPath }) => (
     <article>
         <nav>
             <ul>
@@ -32,7 +32,7 @@ const Pages = ({ page, ...props }) => (
                 </li>
             </ul>
         </nav>
-        {renderPage(page)}
+        {renderPage(page, missingPath)}
     </article>
 );
 

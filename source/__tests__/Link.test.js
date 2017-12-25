@@ -8,7 +8,7 @@ configure({ adapter: new Adapter() });
 import Link from "../Link";
 import MockProvider from "./mocks/MockProvider";
 
-import { basicRoutes } from "./RouteMapper.test";
+import { basicRoutes } from "./dummy/routes";
 
 // TODO: Test click handling
 
