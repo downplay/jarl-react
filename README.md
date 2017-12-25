@@ -2,6 +2,16 @@
 
 Just Another Router Library for React.
 
+## Philosophy
+
+* URLs are a public API into your appplication
+* Routes define a mapping between URL and state
+* Routing is a core part of your application logic
+* A router should not dictate state mechanism nor navigation lifecycle
+* Data dependencies are closely bound to routes
+
+Putting all of this together, I wanted a router
+
 ## Documentation
 
 See docs here:
@@ -28,6 +38,10 @@ yarn test
 
 * Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
 * Better errors on stringification failure to debug state problems
+
+### 0.2.0
+
+* Added route matching and path resolution for nested routes
 
 ### 0.1.2
 
