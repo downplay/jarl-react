@@ -25,10 +25,14 @@ const Pages = ({ page, missingPath }) => (
         <nav>
             <ul>
                 <li>
-                    <Link to={{ page: "home" }}>Home</Link>
+                    <Link to={{ page: "home" }} data-test="home-link">
+                        Home
+                    </Link>
                 </li>
                 <li>
-                    <Link to={{ page: "about" }}>About</Link>
+                    <Link to={{ page: "about" }} data-test="about-link">
+                        About
+                    </Link>
                 </li>
             </ul>
         </nav>
