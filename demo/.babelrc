@@ -8,8 +8,9 @@
             "babel-plugin-module-resolver",
             {
                 "alias": {
-                    "jarl-react/redux": "./source/redux",
-                    "jarl-react": "./source/index"
+                    "jarl-react-redux":
+                        "./packages/jarl-react-redux/source/index",
+                    "jarl-react": "./packages/jarl-react/source/index"
                 }
             }
         ]

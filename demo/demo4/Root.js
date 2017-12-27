@@ -2,7 +2,7 @@ import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { hot } from "react-hot-loader";
 
-import { Provider } from "jarl-react/redux";
+import { Provider } from "jarl-react-redux";
 
 import Pages from "./Pages";
 
