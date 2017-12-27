@@ -4,12 +4,11 @@
         "experimentalDecorators": true
     },
     "exclude": [
-        "dist",
         "node_modules",
         "bower_components"
     ],
     "include": [
-        "source",
-        "examples"
+        "packages",
+        "demo"
     ]
 }

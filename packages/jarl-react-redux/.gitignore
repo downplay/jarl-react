@@ -1,6 +1,5 @@
 es
 node_modules
 umd
-lib
 /*.js
 !rollup.config.js
