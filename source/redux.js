@@ -1,4 +1,7 @@
+export { default as Provider } from "./redux/Provider";
+
 export { default as reducer } from "./redux/reducer";
+
 export {
     navigate as navigateThunk,
     navigateStart,

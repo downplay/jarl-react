@@ -16,7 +16,8 @@ of application structure, and not requiring learning a component API for
 basic conditional rendering tasks. For instance, JARL does not have a `Route`
 component: a vanilla JavaScript `switch` statement is perfectly adequate!
 
-Cautionary note: I am still evolving the API based on my own real use-cases
+Cautionary note: I am still evolving the API based on my own real use-cases. Expect
+more things to change, but also many new features.
 
 ## Documentation
 
@@ -71,9 +72,9 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 * Better errors on stringification failure to debug state problems
 * Breaking: Rename withRouting->withNavigate. This HOC only injects a `navigate` function so the name was confusing
 * Add a new withState HOC to inject the current route's state
-* Added many tests!
+* Added many tests! Including E2E tests with cypress
 * Started writing some proper documentation, updated README a bit
-* Switched to custom build of `url-pattern` to support named wildcards
+* Switched to custom build of `url-pattern` to support named wildcards with syntax: `/*:name`
 
 ### 0.2.0
 

@@ -56,7 +56,7 @@ describe("Demo 1 - basic routing", () => {
         cy.get("[data-test=marker]").should("exist");
     });
 
-    it("clicking anchor refreshes page", () => {
+    it("clicking anchor reloads page", () => {
         cy.visit(`${root}/`);
         cy.get("[data-test=marker-button]").click();
         cy.get("[data-test=marker-anchor]").click();
