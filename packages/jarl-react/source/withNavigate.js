@@ -10,15 +10,18 @@ const withNavigateFactory = hocFactory(
                 navigationContext: navigationContextShape
             };
             render() {
-                let generatedProps = {
+                const generatedProps = {
                     navigate: this.context.navigationContext.navigate
                 };
-                if (mapper) {
-                    generatedProps = mapper(generatedProps);
-                }
-                return <WrappedComponent {...this.props} {...generatedProps} />;
+                return (
+                    <WrappedComponent
+                        {...this.props}
+                        {...mapper(generatedProps)}
+                    />
+                );
             }
-        }
+        },
+    () => state => state
 );
 
 export default withNavigateFactory;

@@ -66,7 +66,11 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 
 ## Version History
 
-### Next version
+### 0.3.1
+
+* Fix withNavigate's default props mapper
+
+### 0.3.0
 
 * Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
 * Better errors on stringification failure to debug state problems
