@@ -73,13 +73,14 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 ### 0.3.0
 
 * Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
-* Better errors on stringification failure to debug state problems
 * Breaking: Rename withRouting->withNavigate. This HOC only injects a `navigate` function so the name was confusing
+* Breaking: Restructured to monorepo design with `lerna`. Redux extensions are now in separate `jarl-react-redux` package
+* Properly sorted out build targets (CJS, UMD, ES) in both packages
+* Better errors on stringification failure to debug state problems
 * Add a new withState HOC to inject the current route's state
 * Added many tests! Including E2E tests with cypress
 * Started writing some proper documentation, updated README a bit
 * Switched to custom build of `url-pattern` to support named wildcards with syntax: `/*:name`
-* Breaking: Restructured to monorepo design with `lerna`. Redux extensions are now in separate `jarl-react-redux` package
 
 ### 0.2.0
 
