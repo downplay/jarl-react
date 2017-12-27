@@ -1,6 +1,6 @@
-export { default as Provider } from "./redux/Provider";
+export { default as Provider } from "./Provider";
 
-export { default as reducer } from "./redux/reducer";
+export { default as reducer } from "./reducer";
 
 export {
     navigate as navigateThunk,
@@ -8,7 +8,7 @@ export {
     navigateEnd,
     navigateTransitionIn,
     navigateTransitionComplete
-} from "./redux/actions";
+} from "./actions";
 
 export {
     NAVIGATE,
@@ -17,4 +17,4 @@ export {
     NAVIGATE_END,
     NAVIGATE_TRANSITION_IN,
     NAVIGATE_TRANSITION_COMPLETE
-} from "./redux/defines";
+} from "./defines";
