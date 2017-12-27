@@ -3,16 +3,6 @@
     "plugins": [
         "react-hot-loader/babel",
         "babel-plugin-transform-class-properties",
-        "babel-plugin-transform-object-rest-spread",
-        [
-            "babel-plugin-module-resolver",
-            {
-                "alias": {
-                    "jarl-react-redux":
-                        "./packages/jarl-react-redux/source/index",
-                    "jarl-react": "./packages/jarl-react/source/index"
-                }
-            }
-        ]
+        "babel-plugin-transform-object-rest-spread"
     ]
 }
