@@ -1,5 +1,8 @@
 import babel from "rollup-plugin-babel";
 import uglify from "rollup-plugin-uglify";
+// Also required to uglify some ES2015 code
+// https://github.com/TrySound/rollup-plugin-uglify/issues/37
+import { minify } from "uglify-es";
 import replace from "rollup-plugin-replace";
 import commonjs from "rollup-plugin-commonjs";
 import resolve from "rollup-plugin-node-resolve";
@@ -8,9 +11,10 @@ const config = {
     input: "source/index.js",
     name: "JarlReact",
     globals: {
-        react: "React"
+        react: "React",
+        "prop-types": "PropTypes"
     },
-    external: ["react"],
+    external: ["react", "prop-types"],
     plugins: [
         babel({
             exclude: "node_modules/**"
@@ -26,7 +30,7 @@ const config = {
 };
 
 if (process.env.NODE_ENV === "production") {
-    config.plugins.push(uglify());
+    config.plugins.push(uglify({}, minify));
 }
 
 export default config;

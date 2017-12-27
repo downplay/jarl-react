@@ -2,6 +2,11 @@
     "name": "jarl-react-redux",
     "version": "0.3.0",
     "description": "Redux integration for jarl-react",
+    "main": "index.js",
+    "module": "es/index.js",
+    "browserify": {
+        "transform": ["loose-envify"]
+    },
     "scripts": {
         "test": "jest",
         "build": "node ./tools/build.js",
@@ -33,7 +38,8 @@
         "tools",
         "url",
         "history",
-        "ssr"
+        "ssr",
+        "redux"
     ],
     "author": "Peter Hurst",
     "license": "MIT",
@@ -42,7 +48,8 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "react": ">=15"
+        "react": ">=15",
+        "prop-types": ">=15"
     },
     "dependencies": {
         "jarl-react": "^0.3.0"
@@ -65,6 +72,7 @@
         "rollup-plugin-commonjs": "^8.2.6",
         "rollup-plugin-node-resolve": "^3.0.0",
         "rollup-plugin-replace": "^2.0.0",
-        "rollup-plugin-uglify": "^2.0.1"
+        "rollup-plugin-uglify": "^2.0.1",
+        "uglify-es": "^3.3.2"
     }
 }
