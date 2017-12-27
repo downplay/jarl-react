@@ -75,6 +75,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 * Added many tests! Including E2E tests with cypress
 * Started writing some proper documentation, updated README a bit
 * Switched to custom build of `url-pattern` to support named wildcards with syntax: `/*:name`
+* Breaking: Restructured to monorepo design with `lerna`. Redux extensions are now in separate `jarl-react-redux` package
 
 ### 0.2.0
 
