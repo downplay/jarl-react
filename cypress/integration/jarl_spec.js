@@ -15,6 +15,13 @@ describe("Demo 1 - basic routing", () => {
         cy.get("[data-test=header]").should("contain", "About");
     });
 
+    it("trigger 404 page", () => {
+        cy.visit(`${root}/foo/bar`);
+        cy.title().should("include", "demo 1");
+        cy.get("[data-test=header]").should("contain", "404");
+        cy.get("[data-test=mordor]").should("contain", "foo/bar");
+    });
+
     it("navigate to about page", () => {
         cy.visit(`${root}/`);
         cy.get("[data-test=about-link]").click();
@@ -43,19 +50,24 @@ describe("Demo 1 - basic routing", () => {
         cy.get("[data-test=header]").should("contain", "About");
     });
 
-    it("prove that page didn't refresh", () => {
+    it("set some transient state", () => {
         cy.visit(`${root}/`);
-        const about = cy.get("[data-test=about-link]");
-        about.should("contain", "About");
-        // Mutate the link text
-        console.log(about.get()); //.innerHtml = "About Test";
-        about.should("contain", "About Test");
-        // Now navigate
-        about.click();
-        cy.get("[data-test=header]").should("contain", "About");
-        // If the render updated properly, the mutated
-        // link should still be mutated
-        const about2 = cy.get("[data-test=about-link]");
-        about2.should("contain", "About");
+        cy.get("[data-test=marker-button]").click();
+        cy.get("[data-test=marker]").should("exist");
+    });
+
+    it("clicking anchor refreshes page", () => {
+        cy.visit(`${root}/`);
+        cy.get("[data-test=marker-button]").click();
+        cy.get("[data-test=marker-anchor]").click();
+        cy.get("[data-test=marker]").should("not.exist");
+    });
+
+    it("clicking Link doesn't reload page", () => {
+        cy.visit(`${root}/`);
+        cy.get("[data-test=marker-button]").click();
+        cy.get("[data-test=about-link]").click();
+        // Marker should still exist as state should have been retained
+        cy.get("[data-test=marker]").should("exist");
     });
 });
