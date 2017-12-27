@@ -1,4 +1,4 @@
-# jarl-react
+# jarl-react 0.3.0
 
 Just Another Router Library for React.
 
