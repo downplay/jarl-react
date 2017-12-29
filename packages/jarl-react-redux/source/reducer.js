@@ -1,28 +1,47 @@
-import { NAVIGATE_START, NAVIGATE_END, NAVIGATE_TRANSITION_IN, NAVIGATE_TRANSITION_COMPLETE } from "./defines";
+import {
+    NAVIGATE_START,
+    NAVIGATE_END,
+    NAVIGATE_TRANSITION_BEGIN,
+    NAVIGATE_TRANSITION_IN,
+    NAVIGATE_TRANSITION_COMPLETE
+} from "./actionTypes";
 
-const navigationReducer = (state = { isNavigating: false, isEntering: false, location: {}, path: '' }, action = {}) => {
+const navigationReducer = (
+    state = {
+        isNavigating: false,
+        isEntering: false,
+        isTransitioning: false,
+        location: {},
+        path: "",
+        destination: null
+    },
+    action = {}
+) => {
     switch (action.type) {
         case NAVIGATE_START:
-            return { ...state, isNavigating: true, isEntering: false };
+            return { ...state, isNavigating: true };
         case NAVIGATE_END:
             return {
                 ...state,
                 isNavigating: false,
-                isEntering: true,
                 path: action.path,
                 location: action.destination
+            };
+        case NAVIGATE_TRANSITION_BEGIN:
+            return {
+                ...state,
+                isEntering: true,
+                isTransitioning: true
             };
         case NAVIGATE_TRANSITION_IN:
             return {
                 ...state,
-                isNavigating: false,
                 isEntering: false
             };
         case NAVIGATE_TRANSITION_COMPLETE:
             return {
                 ...state,
-                isNavigating: false,
-                isEntering: false
+                isTransitioning: false
             };
         default:
             return state;

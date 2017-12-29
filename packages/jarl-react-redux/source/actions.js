@@ -3,7 +3,7 @@ import {
     NAVIGATE_END,
     NAVIGATE_TRANSITION_IN,
     NAVIGATE_TRANSITION_COMPLETE
-} from "./defines";
+} from "./actionTypes";
 
 export const navigateStart = (state, path) => ({
     type: NAVIGATE_START,

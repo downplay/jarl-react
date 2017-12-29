@@ -4,22 +4,12 @@ const routes = [
         state: { page: "home" }
     },
     {
-        path: "/product",
-        state: { page: "product" },
-        routes: [
-            {
-                path: "/details",
-                state: { tab: "details" }
-            },
-            {
-                path: "/ratings",
-                state: { tab: "ratings" }
-            },
-            {
-                path: "/gallery/:imageId",
-                state: { tab: "gallery" }
-            }
-        ]
+        path: "/gallery",
+        state: { page: "product" }
+    },
+    {
+        path: "/gallery?preload",
+        state: { page: "product", preload: true }
     }
 ];
 
