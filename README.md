@@ -1,4 +1,4 @@
-# jarl-react
+# jarl-react 0.3.0
 
 Just Another Router Library for React.
 
@@ -10,7 +10,14 @@ Just Another Router Library for React.
 * A router should not dictate state mechanism nor navigation lifecycle
 * Data dependencies are closely bound to routes
 
-Putting all of this together, I wanted a router
+Putting all of this together, I wanted a router that performs the simple-sounding
+task of keeping the URL and the state in sync, whilst not getting in the way
+of application structure, and not requiring learning a component API for
+basic conditional rendering tasks. For instance, JARL does not have a `Route`
+component: a vanilla JavaScript `switch` statement is perfectly adequate!
+
+Cautionary note: I am still evolving the API based on my own real use-cases. Expect
+more things to change, but also many new features.
 
 ## Documentation
 
@@ -23,21 +30,57 @@ https://github.com/downplay/jarl-react/tree/master/docs
 yarn add jarl-react
 ```
 
-## Tests
+## Tests & Demos
 
 ```
 git clone https://github.com/downplay/jarl-react
 cd jarl-react
 yarn
+```
+
+To run unit tests:
+
+```
 yarn test
 ```
 
+To run demo:
+
+```
+yarn demo
+```
+
+To run e2e tests (using [cypress.io](https://cypress.io)):
+
+```
+yarn e2e
+```
+
+## Credits
+
+Pattern matching by `url-pattern`: https://github.com/snd/url-pattern (MIT license)
+
+(Currently using custom build at this fork: https://github.com/downplay/url-pattern)
+
+Some ideas and inspiration from `redux-first-router`: https://github.com/faceyspacey/redux-first-router
+
 ## Version History
 
-### Next version
+### 0.3.1
+
+* Fix withNavigate's default props mapper
+
+### 0.3.0
 
 * Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
+* Breaking: Rename withRouting->withNavigate. This HOC only injects a `navigate` function so the name was confusing
+* Breaking: Restructured to monorepo design with `lerna`. Redux extensions are now in separate `jarl-react-redux` package
+* Properly sorted out build targets (CJS, UMD, ES) in both packages
 * Better errors on stringification failure to debug state problems
+* Add a new withState HOC to inject the current route's state
+* Added many tests! Including E2E tests with cypress
+* Started writing some proper documentation, updated README a bit
+* Switched to custom build of `url-pattern` to support named wildcards with syntax: `/*:name`
 
 ### 0.2.0
 
