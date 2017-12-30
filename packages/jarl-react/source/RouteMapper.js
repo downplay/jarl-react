@@ -61,7 +61,7 @@ class RouteMapper {
      * @param {string} path
      */
     match(path) {
-        let state = {};
+        let state = null;
         const branch = [];
 
         const reduceState = route => {
@@ -75,9 +75,13 @@ class RouteMapper {
             const match = route.pattern.match(path);
             if (match) {
                 // Got a match, apply new state over collected state
+                const decoded = {};
+                for (const key of Object.keys(match)) {
+                    decoded[key] = decodeURIComponent(match[key]);
+                }
                 // TODO: Handle state funcs, auth
                 branch.push({ route, match });
-                state = { ...state, ...route.state, ...match };
+                state = { ...route.state, ...decoded };
                 if (route.parent) {
                     reduceState(route.parent);
                 }

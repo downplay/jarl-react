@@ -9,7 +9,7 @@ export const navigationContextShape = PropTypes.shape({
     getState: PropTypes.func.isRequired
 }).isRequired;
 
-const safeJsonStringify = o => {
+export const safeJsonStringify = o => {
     try {
         return JSON.stringify(o);
     } catch (e) {
