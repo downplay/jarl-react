@@ -1,3 +1,5 @@
+/* global describe test expect */
+
 import reducer from "../reducer";
 import { navigateEnd } from "../actions";
 

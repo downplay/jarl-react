@@ -5,9 +5,7 @@
     "main": "index.js",
     "module": "es/index.js",
     "browserify": {
-        "transform": [
-            "loose-envify"
-        ]
+        "transform": ["loose-envify"]
     },
     "scripts": {
         "test": "jest",
@@ -27,9 +25,7 @@
         "reducer.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
@@ -52,11 +48,12 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "prop-types": ">=15",
         "react": ">=15"
     },
     "dependencies": {
-        "jarl-react": "^0.3.1"
+        "invariant": "^2.2.2",
+        "jarl-react": "^0.3.1",
+        "prop-types": "^15.6.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

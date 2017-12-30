@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { NavigationProvider, RouteMapper } from "jarl-react";
+import invariant from "invariant";
+
+import { NavigationProvider, RouteMapper, safeJsonStringify } from "jarl-react";
 
 import { navigateStart, navigateEnd, navigateTransitionIn } from "./actions";
 
@@ -9,6 +11,17 @@ class Provider extends Component {
      */
     constructor(props) {
         super(props);
+        invariant(props.store, "Provider must receive a store");
+        invariant(
+            typeof props.store.getState === "function",
+            "Provider must be given a Redux store"
+        );
+        invariant(
+            props.routes &&
+                (props.routes instanceof RouteMapper ||
+                    Array.isArray(props.routes)),
+            "Invalid routes property: must be an array or a RouteMapper instance"
+        );
         this.ensureRouteMapper(props.routes);
         const state = this.getNavigationState();
         if (!state.location) {
@@ -18,7 +31,7 @@ class Provider extends Component {
                 // Dispatch to set up initial redux state immediately
                 // TODO: This feels like a bad pattern, not sure
                 // best thing do to though, needs review.
-                this.props.store.dispatch(navigateEnd(state));
+                this.props.store.dispatch(navigateEnd(match.state));
             }
         }
     }
@@ -61,11 +74,11 @@ class Provider extends Component {
     };
 
     render() {
-        const { store, history, routes, children } = this.props;
+        const { store, history, children } = this.props;
         const navigation = this.getNavigationState();
         return (
             <NavigationProvider
-                routes={routes}
+                routes={this.routeMapper}
                 state={navigation}
                 history={history}
                 onNavigateStart={this.handleNavigateStart}

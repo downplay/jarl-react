@@ -66,6 +66,12 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 
 ## Version History
 
+### Next version
+
+* Easier integration with and a new demo for Redux
+* `<Provider/>` component in `jarl-react-redux` is a standard integration that will (probably) do what you need
+* Named matches now automatically run through decodeURIComponent to handle non-ASCII characters properly
+
 ### 0.3.1
 
 * Fix withNavigate's default props mapper
