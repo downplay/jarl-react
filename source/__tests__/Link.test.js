@@ -13,23 +13,25 @@ import { basicRoutes } from "./RouteMapper.test";
 // TODO: Test click handling
 
 describe("<Link/>", () => {
-    test("renders a URL from a string", () => {
-        const link = render(
+    test("renders an anchor from a URL", () => {
+        const anchor = render(
             <MockProvider>
                 <Link to="/">Home</Link>
             </MockProvider>
         );
-        expect(link.prop("href")).toEqual("/");
-        expect(link.text()).toEqual("Home");
+        expect(anchor.find("a").length).toEqual(1);
+        expect(anchor.prop("href")).toEqual("/");
+        expect(anchor.text()).toEqual("Home");
     });
 
-    test("renders a URL from a state object", () => {
-        const link = render(
+    test("renders an anchor from a state object", () => {
+        const anchor = render(
             <MockProvider routes={basicRoutes()}>
                 <Link to={{ page: "home" }}>Home</Link>
             </MockProvider>
         );
-        expect(link.prop("href")).toEqual("/");
-        expect(link.text()).toEqual("Home");
+        expect(anchor.find("a").length).toEqual(1);
+        expect(anchor.prop("href")).toEqual("/");
+        expect(anchor.text()).toEqual("Home");
     });
 });
