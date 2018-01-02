@@ -1,16 +1,43 @@
-/* global describe test expect */
+/* global describe test expect jest */
 import React from "react";
 import { configure, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import { NavigationProvider } from "jarl-react";
+import { NavigationProvider, RouteMapper } from "jarl-react";
 
 import Provider from "../Provider";
 
 configure({ adapter: new Adapter() });
 
+expect.extend({
+    toBeInstanceOf(received, argument) {
+        const pass = received instanceof argument;
+        if (pass) {
+            return {
+                message: () =>
+                    `expected ${received} not to be instance of ${argument}`,
+                pass: true
+            };
+        }
+        return {
+            message: () => `expected ${received} to be insance of ${argument}`,
+            pass: false
+        };
+    }
+});
+
 const mockStore = () => ({
-    getState: () => ({})
+    getState: () => ({ navigation: {} }),
+    dispatch: jest.fn()
+});
+
+const mockHistory = pathname => ({ location: pathname });
+
+const create = (pathname = "/") => ({
+    store: mockStore(),
+    history: mockHistory(pathname),
+    children: <div />,
+    context: jest.fn()
 });
 
 describe("<Provider/>", () => {
@@ -37,10 +64,29 @@ describe("<Provider/>", () => {
     });
 
     test("renders a NavigationProvider", () => {
-        const provider = shallow(<Provider routes={[]} store={mockStore()} />);
+        const { store, history, children, context } = create();
+        const provider = shallow(
+            <Provider
+                routes={[]}
+                store={store}
+                history={history}
+                context={context}
+            >
+                {children}
+            </Provider>
+        );
         const childProvider = provider.find(NavigationProvider);
 
         expect(childProvider.length).toEqual(1);
-        expect(childProvider.props()).toEqual({});
+        const props = childProvider.props();
+        expect(props).toMatchObject({
+            context,
+            history,
+            children,
+            state: {},
+            routes: expect.any(RouteMapper),
+            onNavigateStart: expect.any(Function),
+            onNavigateEnd: expect.any(Function)
+        });
     });
 });

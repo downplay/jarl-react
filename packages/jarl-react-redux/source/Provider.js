@@ -22,6 +22,11 @@ class Provider extends Component {
                     Array.isArray(props.routes)),
             "Invalid routes property: must be an array or a RouteMapper instance"
         );
+        invariant(
+            typeof props.store.getState === "function",
+            "Provider must be given a Redux store"
+        );
+        invariant(props.history, "Provider must receive a history object");
         this.ensureRouteMapper(props.routes);
         const state = this.getNavigationState();
         if (!state.location) {
@@ -74,21 +79,19 @@ class Provider extends Component {
     };
 
     render() {
-        const { store, history, children } = this.props;
+        const { store, routes, ...others } = this.props;
         const navigation = this.getNavigationState();
         return (
             <NavigationProvider
+                {...others}
                 routes={this.routeMapper}
                 state={navigation}
-                history={history}
                 onNavigateStart={this.handleNavigateStart}
                 onNavigateEnd={this.handleNavigateEnd}
                 context={() => ({
                     store
                 })}
-            >
-                {children}
-            </NavigationProvider>
+            />
         );
     }
 }
