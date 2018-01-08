@@ -68,9 +68,14 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 
 ### Next version
 
+* Use empty location `{}` for default Redux state
+
+### 0.3.2
+
 * Easier integration with and a new demo for Redux
 * `<Provider/>` component in `jarl-react-redux` is a standard integration that will (probably) do what you need
 * Named matches now automatically run through decodeURIComponent to handle non-ASCII characters properly
+* Correctly reattach to history in CWRP (necessary for React Hot Reload among other things)
 
 ### 0.3.1
 

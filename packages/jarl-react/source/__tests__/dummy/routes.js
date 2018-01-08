@@ -54,3 +54,10 @@ export const wildcardIndexedRoutes = () =>
             path: "/*:first/*:second"
         }
     ]);
+
+export const queryStringRoutes = () =>
+    new RouteMapper([
+        {
+            path: "?foo"
+        }
+    ]);

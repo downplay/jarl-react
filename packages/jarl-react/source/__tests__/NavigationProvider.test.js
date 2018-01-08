@@ -1,9 +1,8 @@
 /* global describe test expect */
-import React from "react";
-import { configure, shallow } from "enzyme";
+import { configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import NavigationProvider, { safeJsonStringify } from "../NavigationProvider";
+import { safeJsonStringify } from "../NavigationProvider";
 
 configure({ adapter: new Adapter() });
 

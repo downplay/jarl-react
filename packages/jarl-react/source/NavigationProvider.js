@@ -52,6 +52,13 @@ export default class NavigationProvider extends Component {
         this.unlisten = this.props.history.listen(this.handleHistory);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.history !== this.props.history) {
+            this.unlisten();
+            this.unlisten = this.props.history.listen(this.handleHistory);
+        }
+    }
+
     componentWillUnmount() {
         this.unlisten();
     }

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { shallow, mount } from "enzyme";
+/* global describe test expect */
+
 import RouteMapper from "../RouteMapper";
 import {
     basicRoutes,

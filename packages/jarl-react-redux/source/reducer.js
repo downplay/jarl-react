@@ -11,7 +11,7 @@ const navigationReducer = (
         isNavigating: false,
         isEntering: false,
         isTransitioning: false,
-        location: null,
+        location: {},
         path: "",
         destination: null
     },
