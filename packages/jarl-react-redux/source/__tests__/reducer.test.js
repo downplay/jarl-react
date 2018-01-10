@@ -9,7 +9,7 @@ describe("reducer", () => {
             isEntering: false,
             isNavigating: false,
             isTransitioning: false,
-            location: null,
+            location: {},
             destination: null,
             path: ""
         });

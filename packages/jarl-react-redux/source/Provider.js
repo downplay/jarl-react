@@ -89,7 +89,8 @@ class Provider extends Component {
                 onNavigateStart={this.handleNavigateStart}
                 onNavigateEnd={this.handleNavigateEnd}
                 context={() => ({
-                    store
+                    dispatch: store.dispatch,
+                    getState: store.getState
                 })}
             />
         );

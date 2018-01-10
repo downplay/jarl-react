@@ -80,13 +80,13 @@ describe("<Provider/>", () => {
         expect(childProvider.length).toEqual(1);
         const props = childProvider.props();
         expect(props).toMatchObject({
-            context,
             history,
             children,
-            state: {},
-            routes: expect.any(RouteMapper),
-            onNavigateStart: expect.any(Function),
-            onNavigateEnd: expect.any(Function)
+            state: {}
         });
+        expect(props.routes).toEqual(expect.any(RouteMapper));
+        expect(props.context).toEqual(expect.any(Function));
+        expect(props.onNavigateStart).toEqual(expect.any(Function));
+        expect(props.onNavigateEnd).toEqual(expect.any(Function));
     });
 });
