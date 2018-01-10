@@ -7,19 +7,48 @@ import {
     dynamicRootRoutes,
     dynamicRoutes,
     wildcardIndexedRoutes,
-    wildcardRoutes
+    wildcardRoutes,
+    queryStringRoutes
 } from "./dummy/routes";
+
+const nullMatch = {
+    branch: [],
+    state: null
+};
 
 describe("RouteMapper", () => {
     test("it constructs", () => {
         expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
     });
 
-    test("it matches routes", () => {
-        const match = basicRoutes().match("/");
-        expect(match.state).toEqual({ page: "home" });
-        const match2 = basicRoutes().match("/about");
-        expect(match2.state).toEqual({ page: "about" });
+    test.only("it matches routes", () => {
+        const routes = basicRoutes();
+        {
+            const match = routes.match("/");
+            expect(match.state).toEqual({ page: "home" });
+            expect(match.branch).toEqual([
+                {
+                    route: {
+                        path: "/",
+                        state: { page: "home" }
+                    },
+                    match: {}
+                }
+            ]);
+        }
+        {
+            const match = routes.match("/about");
+            expect(match.state).toEqual({ page: "about" });
+            expect(match.branch).toEqual([
+                {
+                    route: {
+                        path: "/about",
+                        state: { page: "about" }
+                    },
+                    match: {}
+                }
+            ]);
+        }
     });
 
     test("it stringifies routes", () => {
@@ -100,6 +129,38 @@ describe("RouteMapper", () => {
         const match = routes.match("/foo/bar");
         expect(match.state).toEqual({ first: "foo", second: "bar" });
         const match2 = routes.match("/test");
-        expect(match2.state).toEqual(null);
+        expect(match2).toEqual(nullMatch);
+    });
+
+    describe.only("query strings", () => {
+        test("don't match plain path", () => {
+            const routes = queryStringRoutes();
+            const match = routes.match("/");
+            expect(match).toEqual(nullMatch);
+        });
+
+        test("match query key", () => {
+            const routes = queryStringRoutes();
+            const match = routes.match("/?foo");
+            expect(match.state).toEqual({ foo: true });
+        });
+
+        test("match query key value", () => {
+            const routes = queryStringRoutes();
+            const match = routes.match("/?foo=bar");
+            expect(match.state).toEqual({ foobar: true });
+        });
+
+        test("match two queries", () => {
+            const routes = queryStringRoutes();
+            const match = routes.match("/?foo=bar&bar=foo");
+            expect(match.state).toEqual({ foo: true, bar: true });
+        });
+
+        test("reverse query order", () => {
+            const routes = queryStringRoutes();
+            const match = routes.match("/?bar=foo&foo=bar");
+            expect(match.state).toEqual({ foo: true, bar: true });
+        });
     });
 });

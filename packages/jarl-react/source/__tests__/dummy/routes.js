@@ -58,6 +58,15 @@ export const wildcardIndexedRoutes = () =>
 export const queryStringRoutes = () =>
     new RouteMapper([
         {
-            path: "?foo"
+            path: "/?foo",
+            state: { foo: true }
+        },
+        {
+            path: "/?foo=bar",
+            state: { foobar: true }
+        },
+        {
+            path: "/?foo=bar&bar=foo",
+            state: { foo: true, bar: true }
         }
     ]);

@@ -43,6 +43,7 @@ class RouteMapper {
                 : route.path;
             const mappedRoute = {
                 ...route,
+                route,
                 path,
                 parent,
                 state: route.state || {},
@@ -80,7 +81,7 @@ class RouteMapper {
                     decoded[key] = decodeURIComponent(match[key]);
                 }
                 // TODO: Handle state funcs, auth
-                branch.push({ route, match });
+                branch.push({ route: route.route, match: decoded });
                 state = { ...route.state, ...decoded };
                 if (route.parent) {
                     reduceState(route.parent);
