@@ -68,5 +68,15 @@ export const queryStringRoutes = () =>
         {
             path: "/?foo=bar&bar=foo",
             state: { foo: true, bar: true }
+        },
+        {
+            path: "/?nested",
+            state: { nested: true },
+            routes: [
+                {
+                    path: "/?tested",
+                    state: { tested: true }
+                }
+            ]
         }
     ]);

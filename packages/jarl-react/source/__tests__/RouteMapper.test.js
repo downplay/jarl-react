@@ -133,38 +133,62 @@ describe("RouteMapper", () => {
     });
 
     describe.only("query strings", () => {
-        test("throw when too many question marks", () => {
-            expect(() => new RouteMapper([{ path: "/foo?bar?baz" }])).toThrow();
+        describe("match", () => {
+            test("throw when too many question marks", () => {
+                expect(
+                    () => new RouteMapper([{ path: "/foo?bar?baz" }])
+                ).toThrow();
+            });
+
+            test("don't match plain path", () => {
+                const routes = queryStringRoutes();
+                const match = routes.match("/");
+                expect(match).toEqual(nullMatch);
+            });
+
+            test("match query key", () => {
+                const routes = queryStringRoutes();
+                const match = routes.match("/?foo");
+                expect(match.state).toEqual({ foo: true });
+            });
+
+            test("match query key value", () => {
+                const routes = queryStringRoutes();
+                const match = routes.match("/?foo=bar");
+                expect(match.state).toEqual({ foobar: true });
+            });
+
+            test("match two queries", () => {
+                const routes = queryStringRoutes();
+                const match = routes.match("/?foo=bar&bar=foo");
+                expect(match.state).toEqual({ foo: true, bar: true });
+            });
+
+            test("reverse query order", () => {
+                const routes = queryStringRoutes();
+                const match = routes.match("/?bar=foo&foo=bar");
+                expect(match.state).toEqual({ foo: true, bar: true });
+            });
+
+            test("merge nested queries", () => {
+                const routes = queryStringRoutes();
+                const match = routes.match("/?nested&tested");
+                expect(match.state).toEqual({ nested: true, tested: true });
+            });
         });
 
-        test("don't match plain path", () => {
-            const routes = queryStringRoutes();
-            const match = routes.match("/");
-            expect(match).toEqual(nullMatch);
-        });
+        describe("stringify", () => {
+            test("stringify simple query", () => {
+                const routes = queryStringRoutes();
+                const path = routes.stringify({ foo: true });
+                expect(path).toEqual("/?foo");
+            });
 
-        test("match query key", () => {
-            const routes = queryStringRoutes();
-            const match = routes.match("/?foo");
-            expect(match.state).toEqual({ foo: true });
-        });
-
-        test("match query key value", () => {
-            const routes = queryStringRoutes();
-            const match = routes.match("/?foo=bar");
-            expect(match.state).toEqual({ foobar: true });
-        });
-
-        test("match two queries", () => {
-            const routes = queryStringRoutes();
-            const match = routes.match("/?foo=bar&bar=foo");
-            expect(match.state).toEqual({ foo: true, bar: true });
-        });
-
-        test("reverse query order", () => {
-            const routes = queryStringRoutes();
-            const match = routes.match("/?bar=foo&foo=bar");
-            expect(match.state).toEqual({ foo: true, bar: true });
+            test("stringify another query", () => {
+                const routes = queryStringRoutes();
+                const path = routes.stringify({ foo: true, bar: true });
+                expect(path).toEqual("/?foo");
+            });
         });
     });
 });
