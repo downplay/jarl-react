@@ -1,9 +1,8 @@
-import UrlPattern from "./lib/url-pattern";
 import qs from "qs";
+import UrlPattern from "./lib/url-pattern";
 
-const trimRegex = /(^\/+|$\/+)/g;
-const trimSlashes = segment => segment.replace(trimRegex, "");
-const joinPaths = (...paths) => `/${paths.map(trimSlashes).join("/")}`;
+const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
+export const joinPaths = (...paths) => removeSlashDupes(`/${paths.join("/")}`);
 
 const populateKeys = (keyMap, route) => {
     const setKey = key => {

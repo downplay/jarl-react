@@ -1,6 +1,6 @@
 /* global describe test expect */
 
-import RouteMapper from "../RouteMapper";
+import RouteMapper, { joinPaths } from "../RouteMapper";
 import {
     basicRoutes,
     childRoutes,
@@ -16,12 +16,18 @@ const nullMatch = {
     state: null
 };
 
+describe("joinPaths", () => {
+    test("it joins two route paths", () => {
+        expect(joinPaths("/", "/")).toEqual("/");
+    });
+});
+
 describe("RouteMapper", () => {
     test("it constructs", () => {
         expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
     });
 
-    test.only("it matches routes", () => {
+    test("it matches routes", () => {
         const routes = basicRoutes();
         {
             const match = routes.match("/");
@@ -132,7 +138,7 @@ describe("RouteMapper", () => {
         expect(match2).toEqual(nullMatch);
     });
 
-    describe.only("query strings", () => {
+    describe("query strings", () => {
         describe("match", () => {
             test("throw when too many question marks", () => {
                 expect(

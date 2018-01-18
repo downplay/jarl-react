@@ -23,6 +23,16 @@ export const dynamicRoutes = () =>
 export const childRoutes = () =>
     new RouteMapper([
         {
+            path: "/",
+            state: { nested: true },
+            routes: [
+                {
+                    path: "/",
+                    state: { tested: true }
+                }
+            ]
+        },
+        {
             path: "/foo",
             state: { foo: true },
             routes: [
