@@ -18,7 +18,8 @@ const populateKeys = (keyMap, route) => {
 const routeResolvesKey = (route, key, value) => {
     if (
         (key in route.state && route.state[key] === value) ||
-        route.pattern.names.indexOf(key) >= 0
+        route.pattern.names.indexOf(key) >= 0 ||
+        Object.hasOwnProperty.call(route.query, key)
     ) {
         return true;
     }
@@ -154,7 +155,9 @@ class RouteMapper {
                 }
             }
             if (ok && !Object.keys(keyMap).some(key => keyMap[key])) {
-                return route.pattern.stringify(state);
+                const pathPart = route.pattern.stringify(state);
+                const queryPart = qs.stringify(route.query, state);
+                return queryPart ? `${pathPart}?${queryPart}` : pathPart;
             }
         }
         return null;

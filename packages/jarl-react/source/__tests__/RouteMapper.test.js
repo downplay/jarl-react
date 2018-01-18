@@ -154,6 +154,12 @@ describe("RouteMapper", () => {
 
             test("match query key", () => {
                 const routes = queryStringRoutes();
+                const match = routes.match("/?foo=");
+                expect(match.state).toEqual({ foo: true });
+            });
+
+            test("equals is optional for empty string", () => {
+                const routes = queryStringRoutes();
                 const match = routes.match("/?foo");
                 expect(match.state).toEqual({ foo: true });
             });
@@ -187,13 +193,14 @@ describe("RouteMapper", () => {
             test("stringify simple query", () => {
                 const routes = queryStringRoutes();
                 const path = routes.stringify({ foo: true });
-                expect(path).toEqual("/?foo");
+                // Note: Would be nice if qs omitted '=' sign for neatness but this is fine
+                expect(path).toEqual("/?foo=");
             });
 
             test("stringify another query", () => {
                 const routes = queryStringRoutes();
                 const path = routes.stringify({ foo: true, bar: true });
-                expect(path).toEqual("/?foo");
+                expect(path).toEqual("/?foo=bar&bar=foo");
             });
         });
     });
