@@ -1,6 +1,5 @@
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { hot } from "react-hot-loader";
 
 import { Provider } from "jarl-react-redux";
 
@@ -16,4 +15,4 @@ const Root = ({ history, routes }) => (
     </ReduxProvider>
 );
 
-export default hot(module)(Root);
+export default Root;
