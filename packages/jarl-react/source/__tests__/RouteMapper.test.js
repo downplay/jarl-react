@@ -133,6 +133,10 @@ describe("RouteMapper", () => {
     });
 
     describe.only("query strings", () => {
+        test("throw when too many question marks", () => {
+            expect(() => new RouteMapper([{ path: "/foo?bar?baz" }])).toThrow();
+        });
+
         test("don't match plain path", () => {
             const routes = queryStringRoutes();
             const match = routes.match("/");

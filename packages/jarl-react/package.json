@@ -60,7 +60,8 @@
         "react": ">=15"
     },
     "dependencies": {
-        "hoist-non-react-statics": "^2.0.0"
+        "hoist-non-react-statics": "^2.0.0",
+        "qs": "^6.5.1"
     },
     "devDependencies": {
         "babel-jest": "^22.0.4",

@@ -1,4 +1,5 @@
 import UrlPattern from "./lib/url-pattern";
+import qs from "qs";
 
 const trimRegex = /(^\/+|$\/+)/g;
 const trimSlashes = segment => segment.replace(trimRegex, "");
@@ -28,6 +29,38 @@ const routeResolvesKey = (route, key, value) => {
     return false;
 };
 
+const splitPath = path => {
+    const split = path.split("?");
+    if (split.length > 2) {
+        throw new Error(
+            `Path may only contain one query string delimiter: ${path}`
+        );
+    }
+    return [split[0], split[1] ? qs.parse(split[1]) : {}];
+};
+
+function areEqualShallow(a, b) {
+    for (const key in a) {
+        if (!(key in b) || a[key] !== b[key]) {
+            return false;
+        }
+    }
+    for (const key in b) {
+        if (!(key in a) || a[key] !== b[key]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+const matchQuery = (pattern, query) => {
+    // Shallow equality only for now
+    if (!areEqualShallow(pattern, query)) {
+        return null;
+    }
+    return query;
+};
+
 class RouteMapper {
     routes = [];
 
@@ -38,14 +71,18 @@ class RouteMapper {
     mapPatterns(routes, parent) {
         // Instance the pattern and store the route
         for (const route of routes) {
-            const path = parent
-                ? joinPaths(parent.path, route.path)
-                : route.path;
+            const [childPath, childQuery] = splitPath(route.path);
+
+            const path = parent ? joinPaths(parent.path, childPath) : childPath;
+            const query = parent
+                ? { ...parent.query, ...childQuery }
+                : childQuery;
             const mappedRoute = {
                 ...route,
                 route,
                 path,
                 parent,
+                query,
                 state: route.state || {},
                 pattern: new UrlPattern(path)
             };
@@ -61,10 +98,11 @@ class RouteMapper {
      * Matches the path recursively against the route definitions
      * @param {string} path
      */
-    match(path) {
+    match(fullPath) {
         let state = null;
         const branch = [];
 
+        const [path, query] = splitPath(fullPath);
         const reduceState = route => {
             state = { ...route.state, ...state };
             if (route.parent) {
@@ -73,12 +111,13 @@ class RouteMapper {
         };
 
         for (const route of this.routes) {
-            const match = route.pattern.match(path);
-            if (match) {
+            const pathMatch = route.pattern.match(path);
+            const queryMatch = matchQuery(route.query, query);
+            if (pathMatch && queryMatch) {
                 // Got a match, apply new state over collected state
                 const decoded = {};
-                for (const key of Object.keys(match)) {
-                    decoded[key] = decodeURIComponent(match[key]);
+                for (const key of Object.keys(pathMatch)) {
+                    decoded[key] = decodeURIComponent(pathMatch[key]);
                 }
                 // TODO: Handle state funcs, auth
                 branch.push({ route: route.route, match: decoded });
