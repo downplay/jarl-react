@@ -98,7 +98,7 @@ export default class NavigationProvider extends Component {
         this.props.history.push(url);
     };
 
-    doNavigation = url => {
+    doNavigation(url) {
         const { branch, state } = this.state.routes.match(url);
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
@@ -116,7 +116,7 @@ export default class NavigationProvider extends Component {
                 this.props.onNavigateEnd(state, url);
             }
         });
-    };
+    }
 
     handleStringify = state =>
         this.state.routes.stringify(state, this.props.state);

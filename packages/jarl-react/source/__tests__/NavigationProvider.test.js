@@ -1,4 +1,4 @@
-/* global describe test expect beforeEach jest */
+/* global describe test expect beforeEach afterEach jest */
 import React from "react";
 import { configure, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
@@ -10,8 +10,15 @@ configure({ adapter: new Adapter() });
 
 describe("<NavigationProvider/>", () => {
     let mockHistory;
+    let routes;
 
     beforeEach(() => {
+        routes = [
+            {
+                path: "/",
+                state: { page: "index" }
+            }
+        ];
         mockHistory = {
             listen: jest.fn(),
             location: {
@@ -21,15 +28,42 @@ describe("<NavigationProvider/>", () => {
     });
 
     test("converts array to RouteMapper", () => {
-        const routes = [
-            {
-                path: "/",
-                state: { page: "index" }
-            }
-        ];
         const provider = shallow(
             <NavigationProvider routes={routes} history={mockHistory} />
         );
         expect(provider.state("routes")).toEqual(expect.any(RouteMapper));
+    });
+
+    describe("initial navigation", () => {
+        let doNavigation;
+
+        beforeEach(() => {
+            doNavigation = jest.spyOn(
+                NavigationProvider.prototype,
+                "doNavigation"
+            );
+        });
+
+        afterEach(() => {
+            doNavigation.mockClear();
+        });
+
+        test("performed normally", () => {
+            shallow(
+                <NavigationProvider routes={routes} history={mockHistory} />
+            );
+            expect(doNavigation).toHaveBeenCalledWith("/");
+        });
+
+        test("is disabled with `performInitialNavigation`", () => {
+            shallow(
+                <NavigationProvider
+                    routes={routes}
+                    history={mockHistory}
+                    performInitialNavigation={false}
+                />
+            );
+            expect(doNavigation).not.toHaveBeenCalled();
+        });
     });
 });
