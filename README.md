@@ -73,6 +73,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 * Big sort out of the demos
 * Added property to NavigationProvider: `performInitialNavigation`
 * Added property to NavigationProvider: `basePath`
+* New `withContext` HOC to get access to `stringify` and other functions from the provider
 
 ### 0.3.2
 

@@ -5,3 +5,4 @@ export { default as RouteMapper } from "./RouteMapper";
 export { default as withActive } from "./withActive";
 export { default as withNavigate } from "./withNavigate";
 export { default as withState } from "./withState";
+export { default as withContext } from "./withContext";
