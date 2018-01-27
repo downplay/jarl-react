@@ -16,25 +16,19 @@ const routes = [
     {
         path: "/:demoName",
         state: { page: "demo" },
-        // TODO: Implement resolvers
         resolve: ({ demoName }) => {
             if (!demos[demoName]) {
                 return false;
             }
             return { demo: demos[demoName] };
-        }
-    },
-    // TODO: Implement optional parameters to remove duplication
-    {
-        path: "/:demoName/*:rest",
-        state: { page: "demo" },
-        // TODO: Implement resolvers
-        resolve: ({ demoName }) => {
-            if (!demos[demoName]) {
-                return false;
+        },
+        // TODO: Implement optional parameters to remove duplication
+        routes: [
+            {
+                path: "/*:rest",
+                state: { page: "demo", subPage: true }
             }
-            return { demo: demos[demoName] };
-        }
+        ]
     },
     {
         path: "/*:missingPath",
@@ -90,7 +84,7 @@ class Root extends Component {
                 onNavigateEnd={this.handleNavigateEnd}
                 state={this.state.routing}
             >
-                <Helmet titleTemplate="JARL Demos" />
+                <Helmet titleTemplate="JARL Demos | %s" />
                 {this.renderDemo()}
             </NavigationProvider>
         );

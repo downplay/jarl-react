@@ -209,7 +209,7 @@ describe("RouteMapper", () => {
         });
     });
 
-    describe.only("resolvers", () => {
+    describe("resolvers", () => {
         let routes;
         beforeEach(() => {
             routes = new RouteMapper([
