@@ -2,7 +2,7 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 import invariant from "invariant";
 
-import RouteMapper from "./RouteMapper";
+import RouteMapper, { joinPaths } from "./RouteMapper";
 import safeJsonStringify from "./tool/safeJsonStringify";
 
 export const navigationContextShape = PropTypes.shape({
@@ -34,7 +34,8 @@ export default class NavigationProvider extends Component {
         onNavigateEnd: null,
         state: null,
         context: () => ({}),
-        performInitialNavigation: true
+        performInitialNavigation: true,
+        basePath: ""
     };
 
     static childContextTypes = { navigationContext: navigationContextShape };
@@ -69,7 +70,7 @@ export default class NavigationProvider extends Component {
         // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
         if (this.props.performInitialNavigation) {
-            this.doNavigation(this.props.history.location.pathname);
+            this.doNavigation(this.getCurrentPath());
         }
     }
 
@@ -82,7 +83,7 @@ export default class NavigationProvider extends Component {
                 () => {
                     // Note: performInitialNavigation is intentionally ignored, if a different
                     // set of routes are loaded then we definitely need to resolve data etc
-                    this.doNavigation(this.props.history.location.pathname);
+                    this.doNavigation(this.getCurrentPath());
                 }
             );
         }
@@ -96,8 +97,16 @@ export default class NavigationProvider extends Component {
         this.unlisten();
     }
 
+    getCurrentPath(path = this.props.history.location.pathname) {
+        invariant(
+            path.indexOf(this.props.basePath) === 0,
+            `The 'basePath' property must be found at the start of the current path in history. Received: '${path}'`
+        );
+        return joinPaths(path.substring(this.props.basePath.length));
+    }
+
     handleHistory = (location, action) => {
-        this.doNavigation(location.pathname);
+        this.doNavigation(this.getCurrentPath(location.pathname));
     };
 
     handleNavigation = to => {

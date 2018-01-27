@@ -79,5 +79,17 @@ describe("<NavigationProvider/>", () => {
             );
             expect(doNavigation).not.toHaveBeenCalled();
         });
+
+        test("basePath is honoured", () => {
+            mockHistory.location.pathname = "/foo";
+            shallow(
+                <NavigationProvider
+                    routes={routes}
+                    history={mockHistory}
+                    basePath="/foo"
+                />
+            );
+            expect(doNavigation).toHaveBeenCalledWith("/");
+        });
     });
 });
