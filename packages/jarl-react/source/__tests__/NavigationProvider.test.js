@@ -27,11 +27,25 @@ describe("<NavigationProvider/>", () => {
         };
     });
 
-    test("converts array to RouteMapper", () => {
-        const provider = shallow(
-            <NavigationProvider routes={routes} history={mockHistory} />
-        );
-        expect(provider.state("routes")).toEqual(expect.any(RouteMapper));
+    describe("constructor", () => {
+        test("errors with no routes", () => {
+            expect(() => {
+                shallow(<NavigationProvider />);
+            }).toThrow(/Invalid routes property/);
+        });
+
+        test("errors with no history", () => {
+            expect(() => {
+                shallow(<NavigationProvider routes={[]} />);
+            }).toThrow(/Provider must receive a history object/);
+        });
+
+        test("converts array to RouteMapper", () => {
+            const provider = shallow(
+                <NavigationProvider routes={routes} history={mockHistory} />
+            );
+            expect(provider.state("routes")).toEqual(expect.any(RouteMapper));
+        });
     });
 
     describe("initial navigation", () => {

@@ -51,18 +51,6 @@ describe("<Provider/>", () => {
         }).toThrow(/Provider must be given a Redux store/);
     });
 
-    test("errors with no routes", () => {
-        expect(() => {
-            shallow(<Provider store={mockStore()} />);
-        }).toThrow(/Invalid routes property/);
-    });
-
-    test("errors with no history", () => {
-        expect(() => {
-            shallow(<Provider store={mockStore()} routes={[]} />);
-        }).toThrow(/Provider must receive a history object/);
-    });
-
     test("renders a NavigationProvider", () => {
         const { store, history, children, context } = create();
         const provider = shallow(
