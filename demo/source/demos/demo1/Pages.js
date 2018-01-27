@@ -39,7 +39,7 @@ class Pages extends Component {
 
         return (
             <article>
-                <Helmet titleTemplate="JARL Basic Routing Demo | %s" />
+                <Helmet titleTemplate="%s | Basic Routing | JARL Demos" />
                 <nav>
                     <ul>
                         <li>

@@ -1,12 +1,13 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { Page, Header, Body } from "../../../layout";
 
 const About = () => (
-    <Fragment>
-        <header>
-            <h1 data-test="header">About</h1>
+    <Page>
+        <Header>About</Header>
+        <Body>
             <p>About this site</p>
-        </header>
-    </Fragment>
+        </Body>
+    </Page>
 );
 
 export default About;

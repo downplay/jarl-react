@@ -1,4 +1,4 @@
-/* global Cypress cy describe it */
+/* global cy describe it */
 
 const root = "http://localhost:1234";
 

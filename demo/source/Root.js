@@ -24,6 +24,18 @@ const routes = [
             return { demo: demos[demoName] };
         }
     },
+    // TODO: Implement optional parameters to remove duplication
+    {
+        path: "/:demoName/*:rest",
+        state: { page: "demo" },
+        // TODO: Implement resolvers
+        resolve: ({ demoName }) => {
+            if (!demos[demoName]) {
+                return false;
+            }
+            return { demo: demos[demoName] };
+        }
+    },
     {
         path: "/*:missingPath",
         state: { page: "notFound" }
