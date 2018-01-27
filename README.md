@@ -69,6 +69,10 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 ### Next version
 
 * Use empty location `{}` for default Redux state
+* NavigationProvider's `routes` property can now accept an array instead of a RouteMapper
+* Big sort out of the demos
+* Added property to NavigationProvider: `performInitialNavigation`
+* Added property to NavigationProvider: `basePath`
 
 ### 0.3.2
 
