@@ -1,10 +1,10 @@
 /* global Cypress cy describe it */
 
-const root = "http://localhost:1234";
+const root = "http://localhost:1234/basicRouting";
 
 describe("Demo 1 - basic routing", () => {
     it("load home page", () => {
-        cy.visit(`${root}/`);
+        cy.visit(`${root}`);
         cy.title().should("include", "demo 1");
         cy.get("[data-test=header]").should("contain", "Home");
     });

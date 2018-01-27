@@ -5,16 +5,30 @@ import { NavigationProvider } from "jarl-react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
+import * as demos from "./demos";
+
+console.log(demos);
+
 const splitPathBase = path => {
     const parts = path.split("/");
-    const [empty, base] = parts;
-    return `/${base}`;
+    return `/${parts[1]}`;
 };
 
 const routes = [
     {
         path: "/",
         state: { page: "index" }
+    },
+    {
+        path: "/:demoName",
+        state: { page: "demo" },
+        // TODO: Implement resolvers
+        resolve: ({ demoName }) => {
+            if (!demos[demoName]) {
+                return false;
+            }
+            return { demo: demos[demoName] };
+        }
     },
     {
         path: "/*:missingPath",
@@ -39,13 +53,16 @@ class Root extends Component {
     };
 
     renderDemo() {
-        switch (this.state.routing.page) {
+        const { page, demoName, missingPath } = this.state.routing;
+        switch (page) {
             case "index":
                 return <Index basePath={splitPathBase(this.state.path)} />;
+            case "demo": {
+                const { Root: DemoRoot, routes: demoRoutes } = demos[demoName];
+                return <DemoRoot routes={demoRoutes} history={history} />;
+            }
             default:
-                return (
-                    <NotFound missingPath={this.state.routing.missingPath} />
-                );
+                return <NotFound missingPath={missingPath} />;
         }
     }
 
