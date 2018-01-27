@@ -10,6 +10,7 @@ dist
 
 # Babel runtime cache
 babel-cache
+.cache
 
 # Runtime data
 pids

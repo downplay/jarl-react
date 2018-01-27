@@ -797,6 +797,10 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
+command-exists@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/command-exists/-/command-exists-1.2.2.tgz#12819c64faf95446ec0ae07fe6cafb6eb3708b22"
+
 commander@2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
@@ -1146,6 +1150,10 @@ domutils@^1.5.1:
   dependencies:
     dom-serializer "0"
     domelementtype "1"
+
+dotenv@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
 
 ecc-jsbn@~0.1.1:
   version "0.1.1"
@@ -1978,15 +1986,17 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jarl-react-redux@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/jarl-react-redux/-/jarl-react-redux-0.3.1.tgz#2f9852379046c0ba3c76848583aa824abea705e1"
+jarl-react-redux@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/jarl-react-redux/-/jarl-react-redux-0.3.3.tgz#43f96c2006e3ca9567c383f331513c58aeb592f9"
   dependencies:
-    jarl-react "^0.3.1"
+    invariant "^2.2.2"
+    jarl-react "^0.3.3"
+    prop-types "^15.6.0"
 
-jarl-react@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-0.3.1.tgz#939d85a33f7044198e4a1719b64d76ecfb593d1c"
+jarl-react@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-0.3.3.tgz#da93efc59505181e1d1ade0bbed4eef8b8131ba7"
   dependencies:
     hoist-non-react-statics "^2.0.0"
 
@@ -2352,6 +2362,10 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
+node-forge@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.1.tgz#9da611ea08982f4b94206b3beb4cc9665f20c300"
+
 node-libs-browser@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/node-libs-browser/-/node-libs-browser-2.1.0.tgz#5f94263d404f6e44767d726901fff05478d600df"
@@ -2538,9 +2552,9 @@ pako@~1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
-parcel-bundler@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/parcel-bundler/-/parcel-bundler-1.3.1.tgz#ac2bd4f1acdef60503511cb30e7da7ca239a040e"
+parcel-bundler@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/parcel-bundler/-/parcel-bundler-1.5.1.tgz#6329100030fe2916cc0ad09bc619a303005382de"
   dependencies:
     babel-core "^6.25.0"
     babel-generator "^6.25.0"
@@ -2550,9 +2564,11 @@ parcel-bundler@^1.3.1:
     browser-resolve "^1.11.2"
     chalk "^2.1.0"
     chokidar "^1.7.0"
+    command-exists "^1.2.2"
     commander "^2.11.0"
     cross-spawn "^5.1.0"
     cssnano "^3.10.0"
+    dotenv "^4.0.0"
     get-port "^3.2.0"
     glob "^7.1.2"
     htmlnano "^0.1.6"
@@ -2561,6 +2577,7 @@ parcel-bundler@^1.3.1:
     json5 "^0.5.1"
     micromatch "^3.0.4"
     mkdirp "^0.5.1"
+    node-forge "^0.7.1"
     node-libs-browser "^2.0.0"
     opn "^5.1.0"
     physical-cpu-count "^2.0.0"
@@ -2570,9 +2587,12 @@ parcel-bundler@^1.3.1:
     resolve "^1.4.0"
     sanitize-filename "^1.6.1"
     serve-static "^1.12.4"
+    source-map "0.6.1"
+    toml "^2.3.3"
+    tomlify-j0.4 "^3.0.0"
     uglify-es "^3.2.1"
     v8-compile-cache "^1.1.0"
-    worker-farm "^1.4.1"
+    worker-farm "^1.5.2"
     ws "^3.3.3"
 
 parse-asn1@^5.0.0:
@@ -3431,13 +3451,13 @@ source-map@0.5.6:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
+source-map@0.6.1, source-map@^0.6.1, source-map@~0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
+
 source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.1:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
-
-source-map@^0.6.1, source-map@~0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
 sourcemapped-stacktrace@^1.1.6:
   version "1.1.8"
@@ -3661,6 +3681,14 @@ to-regex@^3.0.1:
     extend-shallow "^2.0.1"
     regex-not "^1.0.0"
 
+toml@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/toml/-/toml-2.3.3.tgz#8d683d729577cb286231dfc7a8affe58d31728fb"
+
+tomlify-j0.4@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tomlify-j0.4/-/tomlify-j0.4-3.0.0.tgz#99414d45268c3a3b8bf38be82145b7bba34b7473"
+
 touch@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/touch/-/touch-1.0.0.tgz#449cbe2dbae5a8c8038e30d71fa0ff464947c4de"
@@ -3864,7 +3892,7 @@ wordwrap@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
 
-worker-farm@^1.4.1:
+worker-farm@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/worker-farm/-/worker-farm-1.5.2.tgz#32b312e5dc3d5d45d79ef44acc2587491cd729ae"
   dependencies:
