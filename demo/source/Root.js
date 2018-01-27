@@ -2,10 +2,23 @@ import React, { Component } from "react";
 import createHistory from "history/createBrowserHistory";
 import { NavigationProvider } from "jarl-react";
 
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+
+const splitPathBase = path => {
+    const parts = path.split("/");
+    const [empty, base] = parts;
+    return `/${base}`;
+};
+
 const routes = [
     {
         path: "/",
         state: { page: "index" }
+    },
+    {
+        path: "/*:missingPath",
+        state: { page: "notFound" }
     }
 ];
 
@@ -16,7 +29,7 @@ const history = createHistory();
  * them to act as self-contained sites.
  */
 class Root extends Component {
-    state = {};
+    state = { routing: {} };
 
     handleNavigateEnd = (state, path) => {
         this.setState({
@@ -26,11 +39,13 @@ class Root extends Component {
     };
 
     renderDemo() {
-        switch (this.state.page) {
+        switch (this.state.routing.page) {
             case "index":
-                return <Index />;
+                return <Index basePath={splitPathBase(this.state.path)} />;
             default:
-                return <NotFound />;
+                return (
+                    <NotFound missingPath={this.state.routing.missingPath} />
+                );
         }
     }
 
