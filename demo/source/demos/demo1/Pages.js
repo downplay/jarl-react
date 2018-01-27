@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import { withState, Link } from "jarl-react";
 
 import HomePage from "./pages/Home";
@@ -38,6 +39,7 @@ class Pages extends Component {
 
         return (
             <article>
+                <Helmet titleTemplate="JARL Basic Routing Demo | %s" />
                 <nav>
                     <ul>
                         <li>

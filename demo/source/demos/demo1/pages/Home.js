@@ -1,12 +1,13 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { Page, Header, Body } from "../../../layout";
 
 const Home = () => (
-    <Fragment>
-        <header>
-            <h1 data-test="header">Home</h1>
+    <Page>
+        <Header>Home</Header>
+        <Body>
             <p>Welcome to the home page!</p>
-        </header>
-    </Fragment>
+        </Body>
+    </Page>
 );
 
 export default Home;

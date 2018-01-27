@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import Helmet from "react-helmet";
 import createHistory from "history/createBrowserHistory";
 import { NavigationProvider } from "jarl-react";
 
@@ -6,13 +7,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 import * as demos from "./demos";
-
-console.log(demos);
-
-const splitPathBase = path => {
-    const parts = path.split("/");
-    return `/${parts[1]}`;
-};
 
 const routes = [
     {
@@ -41,14 +35,16 @@ const history = createHistory();
 /**
  * Custom top-level routing; routes to each separate demo and allows
  * them to act as self-contained sites.
+ *
+ * This is a valid case for needing to nest multiple RouteProviders
+ * with different configurations. The basePath
  */
 class Root extends Component {
     state = { routing: {} };
 
-    handleNavigateEnd = (state, path) => {
+    handleNavigateEnd = state => {
         this.setState({
-            routing: state,
-            path
+            routing: state
         });
     };
 
@@ -56,10 +52,18 @@ class Root extends Component {
         const { page, demoName, missingPath } = this.state.routing;
         switch (page) {
             case "index":
-                return <Index basePath={splitPathBase(this.state.path)} />;
+                return <Index />;
             case "demo": {
                 const { Root: DemoRoot, routes: demoRoutes } = demos[demoName];
-                return <DemoRoot routes={demoRoutes} history={history} />;
+                return (
+                    <Fragment>
+                        <DemoRoot
+                            routes={demoRoutes}
+                            history={history}
+                            basePath={`/${demoName}`}
+                        />
+                    </Fragment>
+                );
             }
             default:
                 return <NotFound missingPath={missingPath} />;
@@ -74,6 +78,7 @@ class Root extends Component {
                 onNavigateEnd={this.handleNavigateEnd}
                 state={this.state.routing}
             >
+                <Helmet titleTemplate="JARL Demos" />
                 {this.renderDemo()}
             </NavigationProvider>
         );
