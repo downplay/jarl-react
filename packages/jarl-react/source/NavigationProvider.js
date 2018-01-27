@@ -23,14 +23,16 @@ export default class NavigationProvider extends Component {
         onNavigateEnd: PropTypes.func,
         state: PropTypes.object,
         history: PropTypes.object.isRequired,
-        context: PropTypes.func
+        context: PropTypes.func,
+        performInitialNavigation: PropTypes.bool
     };
 
     static defaultProps = {
         onNavigateStart: null,
         onNavigateEnd: null,
         state: null,
-        context: () => ({})
+        context: () => ({}),
+        performInitialNavigation: true
     };
 
     static childContextTypes = { navigationContext: navigationContextShape };
@@ -56,6 +58,9 @@ export default class NavigationProvider extends Component {
     componentDidMount() {
         // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
+        if (this.props.performInitialNavigation) {
+            this.doNavigation(this.props.history.location.pathname);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -65,7 +70,7 @@ export default class NavigationProvider extends Component {
                     routes: ensureRouteMapper(nextProps.routes)
                 },
                 () => {
-                    this.doNavigation(this.props.history.location.path);
+                    this.doNavigation(this.props.history.location.pathname);
                 }
             );
         }

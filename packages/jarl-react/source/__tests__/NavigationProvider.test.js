@@ -13,7 +13,10 @@ describe("<NavigationProvider/>", () => {
 
     beforeEach(() => {
         mockHistory = {
-            listen: jest.fn()
+            listen: jest.fn(),
+            location: {
+                pathname: "/"
+            }
         };
     });
 
