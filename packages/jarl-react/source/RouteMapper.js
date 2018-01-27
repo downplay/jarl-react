@@ -1,8 +1,14 @@
 import qs from "qs";
 import UrlPattern from "./lib/url-pattern";
 
+// Removes any double slashes
 const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
-export const joinPaths = (...paths) => removeSlashDupes(`/${paths.join("/")}`);
+// Maybe remove the trailing slash from the end
+const removeTrailingSlash = path =>
+    path.length > 1 ? path.substring(0, path.length - 1) : path;
+// Join together any number of URL path segments and preserve consistent slashes
+export const joinPaths = (...paths) =>
+    removeTrailingSlash(removeSlashDupes(`/${paths.join("/")}/`));
 
 const populateKeys = (keyMap, route) => {
     const setKey = key => {

@@ -20,6 +20,10 @@ describe("joinPaths", () => {
     test("it joins two route paths", () => {
         expect(joinPaths("/", "/")).toEqual("/");
     });
+
+    test("it doesn't have a trailing slaahs", () => {
+        expect(joinPaths("/foo", "/")).toEqual("/foo");
+    });
 });
 
 describe("RouteMapper", () => {

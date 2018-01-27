@@ -50,7 +50,7 @@ export default class Link extends Component {
             this.context.navigationContext.isActive(this.props.to)
                 ? `${className} ${activeClassName}`
                 : className;
-        const href = typeof to === "string" ? to : this.stringifyUrl(to);
+        const href = this.stringifyUrl(to);
         return (
             <Element
                 href={href}

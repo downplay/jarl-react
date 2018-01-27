@@ -29,8 +29,25 @@ describe("<Link/>", () => {
                 <Link to={{ page: "home" }}>Home</Link>
             </MockProvider>
         );
-        // expect(anchor.find("a").length).toEqual(1);
         expect(anchor.prop("href")).toEqual("/");
         expect(anchor.text()).toEqual("Home");
+    });
+
+    test("basePath is prepended to URL", () => {
+        const anchor = render(
+            <MockProvider routes={basicRoutes()} basePath="/foo">
+                <Link to={{ page: "home" }}>Home</Link>
+            </MockProvider>
+        );
+        expect(anchor.prop("href")).toEqual("/foo");
+    });
+
+    test("paths are concatenated correctly", () => {
+        const anchor = render(
+            <MockProvider routes={basicRoutes()} basePath="/foo">
+                <Link to={{ page: "about" }}>Home</Link>
+            </MockProvider>
+        );
+        expect(anchor.prop("href")).toEqual("/foo/about");
     });
 });

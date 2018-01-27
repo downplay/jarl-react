@@ -139,8 +139,13 @@ export default class NavigationProvider extends Component {
         });
     }
 
-    handleStringify = state =>
-        this.state.routes.stringify(state, this.props.state);
+    handleStringify = state => {
+        const stringified =
+            typeof state === "string"
+                ? state
+                : this.state.routes.stringify(state, this.props.state);
+        return joinPaths(this.props.basePath, stringified);
+    };
 
     handleGetState = () => this.props.state;
 
