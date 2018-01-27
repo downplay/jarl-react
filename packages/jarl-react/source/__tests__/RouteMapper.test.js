@@ -24,7 +24,7 @@ describe("joinPaths", () => {
 
 describe("RouteMapper", () => {
     test("it constructs", () => {
-        expect(new RouteMapper()).toBeInstanceOf(RouteMapper);
+        expect(new RouteMapper()).toEqual(expect.any(RouteMapper));
     });
 
     test("it matches routes", () => {

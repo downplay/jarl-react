@@ -9,23 +9,6 @@ import Provider from "../Provider";
 
 configure({ adapter: new Adapter() });
 
-expect.extend({
-    toBeInstanceOf(received, argument) {
-        const pass = received instanceof argument;
-        if (pass) {
-            return {
-                message: () =>
-                    `expected ${received} not to be instance of ${argument}`,
-                pass: true
-            };
-        }
-        return {
-            message: () => `expected ${received} to be insance of ${argument}`,
-            pass: false
-        };
-    }
-});
-
 const mockStore = () => ({
     getState: () => ({ navigation: {} }),
     dispatch: jest.fn()
@@ -72,7 +55,7 @@ describe("<Provider/>", () => {
             children,
             state: {}
         });
-        expect(props.routes).toEqual(expect.any(RouteMapper));
+        expect(props.routes).toEqual([]);
         expect(props.context).toEqual(expect.any(Function));
         expect(props.onNavigateStart).toEqual(expect.any(Function));
         expect(props.onNavigateEnd).toEqual(expect.any(Function));
