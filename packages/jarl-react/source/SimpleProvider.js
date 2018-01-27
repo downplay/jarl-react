@@ -19,17 +19,14 @@ export default class SimpleProvider extends Component {
     };
 
     render() {
-        const { children, routes, ...others } = this.props;
+        const { ...others } = this.props;
 
         return (
             <NavigationProvider
                 {...others}
-                routes={this.routeMapper}
                 state={this.state.navigationState}
                 onNavigateEnd={this.handleNavigateEnd}
-            >
-                {children}
-            </NavigationProvider>
+            />
         );
     }
 }
