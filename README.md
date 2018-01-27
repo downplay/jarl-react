@@ -1,4 +1,4 @@
-# jarl-react 0.3.0
+# jarl-react next
 
 Just Another Router Library for React.
 
@@ -13,11 +13,8 @@ Just Another Router Library for React.
 Putting all of this together, I wanted a router that performs the simple-sounding
 task of keeping the URL and the state in sync, whilst not getting in the way
 of application structure, and not requiring learning a component API for
-basic conditional rendering tasks. For instance, JARL does not have a `Route`
-component: a vanilla JavaScript `switch` statement is perfectly adequate!
-
-Cautionary note: I am still evolving the API based on my own real use-cases. Expect
-more things to change, but also many new features.
+basic conditional rendering tasks. For example, JARL does not have a `Route`
+component: you can simply inspect your state and render using `if` and `switch`
 
 ## Documentation
 
@@ -74,6 +71,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 * Added property to NavigationProvider: `performInitialNavigation`
 * Added property to NavigationProvider: `basePath`
 * New `withContext` HOC to get access to `stringify` and other functions from the provider
+* Additional logic can now be added to route matching use `resolve` property on your routes
 
 ### 0.3.2
 

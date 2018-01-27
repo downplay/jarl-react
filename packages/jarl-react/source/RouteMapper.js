@@ -1,5 +1,6 @@
 import qs from "qs";
 import UrlPattern from "./lib/url-pattern";
+import { constants } from "fs";
 
 // Removes any double slashes
 const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
@@ -83,12 +84,28 @@ class RouteMapper {
             const query = parent
                 ? { ...parent.query, ...childQuery }
                 : childQuery;
+            // Make sure we resolve right up the parent hierarchy
+            let resolve = route.resolve || (parent && parent.resolve);
+            if (route.resolve && parent) {
+                resolve = state => {
+                    const result = parent.resolve(state);
+                    if (result === false) {
+                        return false;
+                    }
+                    return { ...result, ...route.resolve(state) };
+                };
+            }
+            // No-op resolve
+            if (!resolve) {
+                resolve = () => ({});
+            }
             const mappedRoute = {
                 ...route,
                 route,
                 path,
                 parent,
                 query,
+                resolve,
                 state: route.state || {},
                 pattern: new UrlPattern(path)
             };
@@ -120,18 +137,26 @@ class RouteMapper {
             const pathMatch = route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
             if (pathMatch && queryMatch) {
-                // Got a match, apply new state over collected state
+                // Got a match, compile state from what we know
                 const decoded = {};
                 for (const key of Object.keys(pathMatch)) {
                     decoded[key] = decodeURIComponent(pathMatch[key]);
                 }
                 // TODO: Handle state funcs, auth
-                branch.push({ route: route.route, match: decoded });
                 state = { ...route.state, ...decoded };
                 if (route.parent) {
                     reduceState(route.parent);
                 }
-                break;
+                // Call any additional resolution logic
+                const resolved = route.resolve(decoded);
+                if (resolved) {
+                    state = { ...state, ...resolved };
+                    branch.push({ route: route.route, match: decoded });
+                    return {
+                        branch,
+                        state: { ...route.state, ...decoded, ...resolved }
+                    };
+                }
             }
         }
         return { branch, state };

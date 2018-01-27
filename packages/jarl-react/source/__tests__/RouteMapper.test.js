@@ -1,4 +1,4 @@
-/* global describe test expect */
+/* global describe test expect beforeEach */
 
 import RouteMapper, { joinPaths } from "../RouteMapper";
 import {
@@ -206,6 +206,51 @@ describe("RouteMapper", () => {
                 const path = routes.stringify({ foo: true, bar: true });
                 expect(path).toEqual("/?foo=bar&bar=foo");
             });
+        });
+    });
+
+    describe.only("resolvers", () => {
+        let routes;
+        beforeEach(() => {
+            routes = new RouteMapper([
+                {
+                    path: "/",
+                    state: {},
+                    resolve: () => ({ resolved: true })
+                },
+                {
+                    path: "/dates/:date",
+                    state: {},
+                    resolve: ({ date }) => {
+                        const parsed = new Date(date);
+                        if (parsed.toString() === "Invalid Date") {
+                            return false;
+                        }
+                        return {
+                            date: parsed
+                        };
+                    }
+                },
+                {
+                    path: "/dates/*:bad",
+                    state: { badDate: true }
+                }
+            ]);
+        });
+
+        test("run resolve function", () => {
+            const { state } = routes.match("/");
+            expect(state.resolved).toEqual(true);
+        });
+
+        test("resolve one value into another", () => {
+            const { state } = routes.match("/dates/2018-05-03");
+            expect(state.date).toEqual(new Date("2018-05-03"));
+        });
+
+        test("fall through on fail resolve", () => {
+            const { state } = routes.match("/dates/foobarbaz");
+            expect(state.badDate).toEqual(true);
         });
     });
 });

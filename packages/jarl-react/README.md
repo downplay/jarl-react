@@ -1,6 +1,6 @@
-# jarl-react 0.3.0
+# jarl-react
 
-Just Another Router Library for React.
+JARL: Just Another Router Library for React.
 
 ## This Package
 
