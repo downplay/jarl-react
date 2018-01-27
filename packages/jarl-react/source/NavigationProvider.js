@@ -2,6 +2,7 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 
 import RouteMapper from "./RouteMapper";
+import safeJsonStringify from "./tool/safeJsonStringify";
 
 export const navigationContextShape = PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -9,17 +10,15 @@ export const navigationContextShape = PropTypes.shape({
     getState: PropTypes.func.isRequired
 }).isRequired;
 
-export const safeJsonStringify = o => {
-    try {
-        return JSON.stringify(o);
-    } catch (e) {
-        return "[Circular reference]";
-    }
-};
+const ensureRouteMapper = (routes = []) =>
+    routes instanceof RouteMapper ? routes : new RouteMapper(routes);
 
 export default class NavigationProvider extends Component {
     static propTypes = {
-        routes: PropTypes.instanceOf(RouteMapper).isRequired,
+        routes: PropTypes.oneOfType([
+            PropTypes.instanceOf(RouteMapper),
+            PropTypes.array
+        ]).isRequired,
         onNavigateStart: PropTypes.func,
         onNavigateEnd: PropTypes.func,
         state: PropTypes.object,
@@ -35,6 +34,13 @@ export default class NavigationProvider extends Component {
     };
 
     static childContextTypes = { navigationContext: navigationContextShape };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            routes: ensureRouteMapper(props.routes)
+        };
+    }
 
     getChildContext() {
         return {
@@ -53,6 +59,16 @@ export default class NavigationProvider extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.routes !== this.props.routes) {
+            this.setState(
+                {
+                    routes: ensureRouteMapper(nextProps.routes)
+                },
+                () => {
+                    this.doNavigation(this.props.history.location.path);
+                }
+            );
+        }
         if (nextProps.history !== this.props.history) {
             this.unlisten();
             this.unlisten = this.props.history.listen(this.handleHistory);
@@ -78,7 +94,7 @@ export default class NavigationProvider extends Component {
     };
 
     doNavigation = url => {
-        const { branch, state } = this.props.routes.match(url);
+        const { branch, state } = this.state.routes.match(url);
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
             promise = this.props.onNavigateStart(state, url) || promise;
@@ -98,7 +114,7 @@ export default class NavigationProvider extends Component {
     };
 
     handleStringify = state =>
-        this.props.routes.stringify(state, this.props.state);
+        this.state.routes.stringify(state, this.props.state);
 
     handleGetState = () => this.props.state;
 
@@ -107,6 +123,6 @@ export default class NavigationProvider extends Component {
         this.handleStringify(state) === this.handleStringify(this.props.state);
 
     render() {
-        return this.props.children;
+        return this.props.children || null;
     }
 }
