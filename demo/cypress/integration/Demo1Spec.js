@@ -18,7 +18,7 @@ describe("Demo 1 - basic routing", () => {
 
     it("trigger 404 page", () => {
         cy.visit(`${root}/foo/bar`);
-        cy.title().should("include", "demo 1");
+        cy.title().should("include", "404");
         cy.get("[data-test=header]").should("contain", "404");
         cy.get("[data-test=mordor]").should("contain", "foo/bar");
     });

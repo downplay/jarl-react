@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import { withState, Link } from "jarl-react";
+import { compose } from "recompose";
+
+import { withState, withContext, Link } from "jarl-react";
 
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -34,7 +36,7 @@ class Pages extends Component {
 
     render() {
         // JARL injects the `page` prop from state via withState HOC
-        const { page, missingPath } = this.props;
+        const { page, missingPath, stringify } = this.props;
         const { showMarker } = this.state;
 
         return (
@@ -61,7 +63,7 @@ class Pages extends Component {
                         in state. Navigating via JARL&rsquo;s Link component
                         should not cause this state to reset, however clicking a
                         normal anchor will.
-                        <a data-test="marker-anchor" href="/about">
+                        <a data-test="marker-anchor" href={stringify("/about")}>
                             Here is an anchor to test that!
                         </a>
                     </div>
@@ -78,4 +80,7 @@ class Pages extends Component {
     }
 }
 
-export default withState()(Pages);
+export default compose(
+    withContext(({ stringify }) => ({ stringify })),
+    withState()
+)(Pages);
