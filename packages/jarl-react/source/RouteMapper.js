@@ -127,7 +127,7 @@ class RouteMapper {
 
         const [path, query] = splitPath(fullPath);
         const reduceState = route => {
-            state = { ...route.state, ...state };
+            state = { ...state, ...route.state };
             if (route.parent) {
                 reduceState(route.parent);
             }
@@ -147,14 +147,16 @@ class RouteMapper {
                 if (route.parent) {
                     reduceState(route.parent);
                 }
+
                 // Call any additional resolution logic
                 const resolved = route.resolve(decoded);
+
                 if (resolved) {
                     state = { ...state, ...resolved };
                     branch.push({ route: route.route, match: decoded });
                     return {
                         branch,
-                        state: { ...route.state, ...decoded, ...resolved }
+                        state: { ...route.state, ...state, ...resolved }
                     };
                 }
             }
