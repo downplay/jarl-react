@@ -229,6 +229,7 @@ describe("RouteMapper", () => {
                     rest: { charlie: "kelly" }
                 });
             });
+
             describe("nesting wildcards", () => {
                 beforeEach(() => {
                     routes = new RouteMapper([
@@ -239,7 +240,6 @@ describe("RouteMapper", () => {
                         {
                             path: "/:demoName?*=:all",
                             state: { page: "demo" },
-                            // TODO: Implement optional parameters to remove duplication
                             routes: [
                                 {
                                     path: "/*:rest?*=:all",
@@ -254,8 +254,8 @@ describe("RouteMapper", () => {
                     ]);
                 });
 
-                test("match nested querystring", () => {
-                    // This specific case is taken from queryString demos
+                test("nested wildcard query string", () => {
+                    // This specific case is taken from demo shell
                     const result = routes.match("/queryStrings/search?q=test");
                     expect(result.state).toEqual({
                         page: "demo",
@@ -263,6 +263,56 @@ describe("RouteMapper", () => {
                         rest: "search",
                         all: { q: "test" },
                         subPage: true
+                    });
+                });
+            });
+
+            describe("query string fragment", () => {
+                beforeEach(() => {
+                    // Also taken from the demos, in queryStrings
+                    routes = new RouteMapper([
+                        {
+                            // This optional query match will be applied to all routes via nesting
+                            path: "?theme=(:themeName)",
+                            state: {},
+                            routes: [
+                                {
+                                    path: "/",
+                                    state: { page: "home" }
+                                },
+                                {
+                                    // This fallback is needed to match the /search url without ?q
+                                    path: "/search",
+                                    state: { page: "search" }
+                                },
+                                {
+                                    // Because this parameter is non-optional so we only hit this route when there is a search
+                                    path: "/search?q=:searchTerm",
+                                    state: { page: "search" }
+                                },
+                                {
+                                    // 404 wildcard route
+                                    path: "/*:missingPath"
+                                }
+                            ]
+                        }
+                    ]);
+                });
+
+                test("nested match without optional", () => {
+                    // This specific case is taken from queryString demos
+                    const result = routes.match("/");
+                    expect(result.state).toEqual({
+                        page: "home"
+                    });
+                });
+
+                test("match base query string fragment", () => {
+                    // This specific case is taken from queryString demos
+                    const result = routes.match("/?theme=bar");
+                    expect(result.state).toEqual({
+                        page: "home",
+                        themeName: "bar"
                     });
                 });
             });
@@ -312,7 +362,7 @@ describe("RouteMapper", () => {
                 expect(path).toEqual("/mixed/fruit?sort=color");
             });
 
-            test("stringify wildcard querystring", () => {
+            test("stringify wildcard query string", () => {
                 const path = routes.stringify({
                     status: 404,
                     missingPath: "wildcard",

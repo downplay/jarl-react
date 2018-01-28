@@ -27,7 +27,9 @@ const populateKeys = (keyMap, route) => {
         keyMap[key] = true;
     };
     Object.keys(route.state).forEach(setKey);
-    route.pattern.names.forEach(setKey);
+    if (route.pattern) {
+        route.pattern.names.forEach(setKey);
+    }
     Object.keys(route.query).forEach(key => {
         const q = route.query[key];
         // TODO: Bit of a mess to sort out regarding optional here and above
@@ -120,7 +122,7 @@ const matchQuery = (pattern, query) => {
             // the path constructs should disappear, and just traverse the AST
             // manually ourselves, mainly the issues are in checking for optionals, but also
             // processing key names. Then could have scenarios like ':year(-:month(-:day))' both in
-            // querystrings and in path segments.
+            // query strings and in path segments.
             const wildCardKey = getQueryWildcardStateKey(pattern["*"]);
             state = {
                 ...state,
@@ -208,7 +210,7 @@ class RouteMapper {
                 state: parent
                     ? { ...parent.state, ...route.state }
                     : { ...route.state },
-                pattern: new UrlPattern(path)
+                pattern: path ? new UrlPattern(path) : null
             };
             this.routes.push(mappedRoute);
             // Flatten nested routes
@@ -229,7 +231,7 @@ class RouteMapper {
         const [path, query] = splitPath(fullPath);
 
         for (const route of this.routes) {
-            const pathMatch = route.pattern.match(path);
+            const pathMatch = route.pattern && route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
 
             if (pathMatch && queryMatch) {

@@ -68,7 +68,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 ### Next version
 
 * Major: official support for query strings (adds dependency on `qs` from `hapijs`)
-* Support most of path syntax within querystrings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)&*=:rest`
+* Support most of path syntax within query strings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)&*=:rest`
 * Added property to NavigationProvider: `performInitialNavigation`
 * Added property to NavigationProvider: `basePath`
 * Breaking: renamed `withState` HOC to `withLocation` to avoid naming conflict with `recompose` (and `state` in general)
@@ -76,6 +76,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 * Additional logic can now be added to route matching use `resolve` property on your routes
 * Use empty location `{}` for default Redux state
 * NavigationProvider's `routes` property can now accept an array instead of a RouteMapper
+* Allow `path` to be empty on routes; these can be used as containers to apply state, resolvers, query fragments in a grouped fashion; see `themes` in the `queryStrings` demo!
 * Big sort out of the demos! A lot more use cases are now demonstrated and working properly
 * Added tests to many things
 
