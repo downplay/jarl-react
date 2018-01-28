@@ -6,7 +6,7 @@ import hocFactory from "./hocFactory";
 const noop = state => state;
 
 const withStateFactory = hocFactory(
-    ({ options: mapStateToProps = noop(), WrappedComponent }) =>
+    ({ options: mapStateToProps = noop, WrappedComponent }) =>
         class WithState extends Component {
             static contextTypes = {
                 navigationContext: navigationContextShape
