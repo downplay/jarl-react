@@ -8,7 +8,10 @@
     "env": {
         "development": {
             "plugins": [
-                ["babel-plugin-emotion", { sourceMap: true, autoLabel: true }]
+                [
+                    "babel-plugin-emotion",
+                    { "sourceMap": true, "autoLabel": true }
+                ]
             ]
         },
         "production": {

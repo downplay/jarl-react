@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Helmet from "react-helmet";
 import createHistory from "history/createBrowserHistory";
 import { NavigationProvider } from "jarl-react";
@@ -74,7 +74,7 @@ class Root extends Component {
                     <Index />
                 ) : (
                     <NotFound missingPath={missingPath} query={query} />
-                )}{" "}
+                )}
             </Layout>
         );
     }
