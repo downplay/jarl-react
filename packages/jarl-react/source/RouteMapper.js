@@ -27,9 +27,7 @@ const populateKeys = (keyMap, route) => {
         keyMap[key] = true;
     };
     Object.keys(route.state).forEach(setKey);
-    if (route.pattern) {
-        route.pattern.names.forEach(setKey);
-    }
+    route.pattern.names.forEach(setKey);
     Object.keys(route.query).forEach(key => {
         const q = route.query[key];
         // TODO: Bit of a mess to sort out regarding optional here and above
@@ -265,6 +263,11 @@ class RouteMapper {
      */
     stringify(state) {
         for (const route of this.routes) {
+            // TODO: Consider that patternless routes
+            // don't actually need to be in the route map
+            if (!route.pattern) {
+                continue;
+            }
             const keyMap = {};
             populateKeys(keyMap, route);
             let ok = true;
