@@ -28,16 +28,14 @@ const populateKeys = (keyMap, route) => {
     };
     Object.keys(route.state).forEach(setKey);
     route.pattern.names.forEach(setKey);
-    Object.values(route.query).forEach(q => {
+    Object.keys(route.query).forEach(key => {
+        const q = route.query[key];
         // TODO: Bit of a mess to sort out regarding optional here and above
-        if (!isUrlPattern(q) || isOptional(q)) {
+        if (key === "*" || !isUrlPattern(q) || isOptional(q)) {
             return;
         }
         q.names.forEach(setKey);
     });
-    if (route.parent) {
-        populateKeys(keyMap, route.parent);
-    }
 };
 
 const routeResolvesKey = (route, key, value) => {
@@ -51,9 +49,6 @@ const routeResolvesKey = (route, key, value) => {
         )
     ) {
         return true;
-    }
-    if (route.parent) {
-        return routeResolvesKey(route.parent, key, value);
     }
     return false;
 };
@@ -139,20 +134,41 @@ const matchQuery = (pattern, query) => {
     return state;
 };
 
+const stringifyQueryValue = (state, pattern) =>
+    isUrlPattern(pattern) ? pattern.stringify(state).substring(1) : pattern;
+
 const hydrateQuery = (pattern, state) => {
     const query = {};
     for (const key of Object.keys(pattern)) {
-        const value = isUrlPattern(pattern[key])
-            ? pattern[key].stringify(state).substring(1)
-            : pattern[key];
-        if (isOptional(pattern[key]) && !value) {
-            continue;
+        if (key === "*") {
+            // If there's a wildcard, merge all captured props onto the query
+            const wildKey = getQueryWildcardStateKey(pattern["*"]);
+            const rest = state[wildKey];
+            for (const namedKey of Object.keys(rest)) {
+                query[namedKey] = stringifyQueryValue(
+                    { [wildKey]: rest[namedKey] },
+                    pattern["*"]
+                );
+            }
+        } else {
+            // Merge normal property onto query
+            const value = stringifyQueryValue(state, pattern[key]);
+            if (isOptional(pattern[key]) && !value) {
+                continue;
+            }
+            query[key] = value;
         }
-        query[key] = value;
     }
     return query;
 };
 
+/**
+ * Responsible for processing and storying a route table,
+ * and performing matching and serialization of URLs
+ *
+ * TODO: This class should be broken down into functional parser components
+ * It's too big and unwieldy to debug effectively now
+ */
 class RouteMapper {
     routes = [];
 
@@ -189,7 +205,9 @@ class RouteMapper {
                 parent,
                 query,
                 resolve,
-                state: route.state || {},
+                state: parent
+                    ? { ...parent.state, ...route.state }
+                    : { ...route.state },
                 pattern: new UrlPattern(path)
             };
             this.routes.push(mappedRoute);
@@ -210,13 +228,6 @@ class RouteMapper {
 
         const [path, query] = splitPath(fullPath);
 
-        const reduceState = route => {
-            state = { ...state, ...route.state };
-            if (route.parent) {
-                reduceState(route.parent);
-            }
-        };
-
         for (const route of this.routes) {
             const pathMatch = route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
@@ -228,9 +239,6 @@ class RouteMapper {
                 }
                 // TODO: Handle state funcs, auth
                 state = { ...route.state, ...decoded, ...queryMatch };
-                if (route.parent) {
-                    reduceState(route.parent);
-                }
 
                 // Call any additional resolution logic
                 const resolved = route.resolve(decoded);

@@ -221,7 +221,7 @@ describe("RouteMapper", () => {
                 });
             });
 
-            test("match wildcard route", () => {
+            test("match wildcard querystring", () => {
                 const match = routes.match("/wildcard?charlie=kelly");
                 expect(match.state).toEqual({
                     status: 404,
@@ -264,6 +264,24 @@ describe("RouteMapper", () => {
                     home: true
                 });
                 expect(path).toEqual("/");
+            });
+
+            test("stringify mixed pattern", () => {
+                const path = routes.stringify({
+                    mixed: true,
+                    category: "fruit",
+                    field: "color"
+                });
+                expect(path).toEqual("/mixed/fruit?sort=color");
+            });
+
+            test("stringify wildcard querystring", () => {
+                const path = routes.stringify({
+                    status: 404,
+                    missingPath: "wildcard",
+                    rest: { charlie: "kelly" }
+                });
+                expect(path).toEqual("/wildcard?charlie=kelly");
             });
         });
     });

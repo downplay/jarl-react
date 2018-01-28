@@ -102,6 +102,10 @@ export const queryStringRoutes = () =>
             ]
         },
         {
+            path: "/mixed/:category?sort=:field",
+            state: { mixed: true }
+        },
+        {
             path: "/?q=:searchTerm",
             state: { search: true }
         },
