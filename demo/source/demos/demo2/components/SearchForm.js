@@ -9,7 +9,7 @@ class SearchForm extends Component {
     };
 
     handleClick = () => {
-        this.props.navigate({ page: "search", searchText: this.props.text });
+        this.props.navigate({ page: "search", searchTerm: this.props.text });
     };
 
     render() {

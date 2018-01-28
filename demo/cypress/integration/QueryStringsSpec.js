@@ -19,6 +19,6 @@ describe("Demo 2 - query strings", () => {
             .focus()
             .type("foo");
         cy.get("[data-test=search-button]").click();
-        cy.url().should("contain", "/q?searchTerm=foo");
+        cy.url().should("contain", "/search?q=foo");
     });
 });
