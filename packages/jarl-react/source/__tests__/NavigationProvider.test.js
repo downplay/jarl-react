@@ -85,5 +85,11 @@ describe("<NavigationProvider/>", () => {
             );
             expect(doNavigation).toHaveBeenCalledWith("/");
         });
+
+        test("pathname and search are joined", () => {
+            history.location.search = "?foo=bar";
+            shallow(<NavigationProvider routes={routes} history={history} />);
+            expect(doNavigation).toHaveBeenCalledWith("/?foo=bar");
+        });
     });
 });

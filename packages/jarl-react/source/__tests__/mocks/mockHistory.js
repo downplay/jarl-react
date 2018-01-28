@@ -1,9 +1,10 @@
 /* global jest */
 
-const mockHistory = (pathname = "/") => ({
+const mockHistory = (pathname = "/", search = "") => ({
     listen: jest.fn(),
     location: {
-        pathname
+        pathname,
+        search
     },
     push: jest.fn()
 });

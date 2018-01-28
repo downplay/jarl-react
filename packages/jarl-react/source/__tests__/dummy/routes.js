@@ -73,7 +73,15 @@ export const queryStringRoutes = () =>
         },
         {
             path: "/plain?foo",
-            state: { plain: true }
+            state: { plain: false }
+        },
+        {
+            path: "/overload",
+            state: { overload: true }
+        },
+        {
+            path: "/overload?foo",
+            state: { overload: true, foo: true }
         },
         {
             path: "/?foo=bar",
@@ -94,7 +102,7 @@ export const queryStringRoutes = () =>
             ]
         },
         {
-            path: "/?q=:term",
+            path: "/?q=:searchTerm",
             state: { search: true }
         },
         {

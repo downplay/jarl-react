@@ -170,6 +170,11 @@ describe("RouteMapper", () => {
                 expect(match.state).toEqual({ foo: true });
             });
 
+            test("match overloaded route", () => {
+                const match = routes.match("/overload?foo");
+                expect(match.state).toEqual({ overload: true, foo: true });
+            });
+
             test("match query key value", () => {
                 const match = routes.match("/?foo=bar");
                 expect(match.state).toEqual({ foobar: true });
@@ -194,7 +199,7 @@ describe("RouteMapper", () => {
                 const match = routes.match("/?q=something");
                 expect(match.state).toEqual({
                     search: true,
-                    term: "something"
+                    searchTerm: "something"
                 });
             });
 
@@ -229,7 +234,7 @@ describe("RouteMapper", () => {
             test("stringify a named query token", () => {
                 const path = routes.stringify({
                     search: true,
-                    term: "something"
+                    searchTerm: "something"
                 });
                 expect(path).toEqual("/?q=something");
             });

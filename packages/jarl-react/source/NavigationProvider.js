@@ -97,16 +97,22 @@ export default class NavigationProvider extends Component {
         this.unlisten();
     }
 
-    getCurrentPath(path = this.props.history.location.pathname) {
+    getCurrentPath(
+        path = this.props.history.location.pathname +
+            this.props.history.location.search
+    ) {
         invariant(
             path.indexOf(this.props.basePath) === 0,
             `The 'basePath' property must be found at the start of the current path in history. Received: '${path}'`
         );
+        // TODO: Also merge query string
         return joinPaths(path.substring(this.props.basePath.length));
     }
 
     handleHistory = (location, action) => {
-        this.doNavigation(this.getCurrentPath(location.pathname));
+        this.doNavigation(
+            this.getCurrentPath(location.pathname + location.search)
+        );
     };
 
     handleNavigation = to => {
@@ -134,7 +140,7 @@ export default class NavigationProvider extends Component {
         // TODO: Gather branch data and perform auth
         Promise.all(promises).then(() => {
             if (this.props.onNavigateEnd) {
-                this.props.onNavigateEnd(state, url);
+                this.props.onNavigateEnd(state, url, branch);
             }
         });
     }

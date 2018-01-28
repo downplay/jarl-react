@@ -14,8 +14,11 @@ export default class SimpleProvider extends Component {
     /**
      * Use local component state to store navigation state
      */
-    handleNavigateEnd = state => {
+    handleNavigateEnd = (state, path, branch) => {
         this.setState({ navigationState: state });
+        if (this.props.onNavigateEnd) {
+            this.props.onNavigateEnd(state, path, branch);
+        }
     };
 
     render() {

@@ -15,9 +15,9 @@ const mockStore = () => ({
     dispatch: jest.fn()
 });
 
-const create = (pathname = "/") => ({
+const create = (pathname, search) => ({
     store: mockStore(),
-    history: mockHistory(pathname),
+    history: mockHistory(pathname, search),
     children: <div />,
     context: jest.fn()
 });
