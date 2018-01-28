@@ -59,27 +59,30 @@ Pattern matching by `url-pattern`: https://github.com/snd/url-pattern (MIT licen
 
 (Currently using custom build at this fork: https://github.com/downplay/url-pattern)
 
+Query string parsing by `qs`: https://github.com/ljharb/qs
+
 Some ideas and inspiration from `redux-first-router`: https://github.com/faceyspacey/redux-first-router
 
 ## Version History
 
 ### Next version
 
-* Major: official support for query strings (using `qs` from `hapijs`)
-* Support path syntax fully within querystrings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)`
-* Use empty location `{}` for default Redux state
-* NavigationProvider's `routes` property can now accept an array instead of a RouteMapper
-* Big sort out of the demos
+* Major: official support for query strings (adds dependency on `qs` from `hapijs`)
+* Support most of path syntax within querystrings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)&*=:rest`
 * Added property to NavigationProvider: `performInitialNavigation`
 * Added property to NavigationProvider: `basePath`
 * New `withContext` HOC to get access to `stringify` and other functions from the provider
 * Additional logic can now be added to route matching use `resolve` property on your routes
+* Use empty location `{}` for default Redux state
+* NavigationProvider's `routes` property can now accept an array instead of a RouteMapper
+* Big sort out of the demos! A lot more use cases are now demonstrated and working properly
+* Added tests to many things
 
 ### 0.3.2
 
 * Easier integration with and a new demo for Redux
 * `<Provider/>` component in `jarl-react-redux` is a standard integration that will (probably) do what you need
-* Named matches now automatically run through decodeURIComponent to handle non-ASCII characters properly
+* Named matches now automatically run through decodeURIComponent to handle special characters properly
 * Correctly reattach to history in CWRP (necessary for React Hot Reload among other things)
 
 ### 0.3.1

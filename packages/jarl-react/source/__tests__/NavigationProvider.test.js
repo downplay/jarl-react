@@ -18,6 +18,10 @@ describe("<NavigationProvider/>", () => {
             {
                 path: "/",
                 state: { page: "index" }
+            },
+            {
+                path: "/?foo=bar",
+                state: { page: "foo" }
             }
         ];
         history = mockHistory();

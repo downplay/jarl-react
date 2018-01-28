@@ -108,5 +108,9 @@ export const queryStringRoutes = () =>
         {
             path: "/?optional=(:optional)",
             state: { home: true }
+        },
+        {
+            path: "/*:missingPath?*=:rest",
+            state: { status: 404 }
         }
     ]);

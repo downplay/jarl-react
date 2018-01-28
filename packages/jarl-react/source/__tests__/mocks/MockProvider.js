@@ -1,14 +1,17 @@
 import React from "react";
 
-import { RouteMapper, NavigationProvider } from "../..";
+import { NavigationProvider } from "../..";
 import mockHistory from "./mockHistory";
 
-export default ({ children, ...props }) => (
-    <NavigationProvider
-        routes={new RouteMapper()}
-        history={mockHistory()}
-        {...props}
-    >
+const indexRoute = [
+    {
+        path: "/",
+        state: { home: true }
+    }
+];
+
+export default ({ routes = indexRoute, children, ...props }) => (
+    <NavigationProvider routes={routes} history={mockHistory()} {...props}>
         {...children}
     </NavigationProvider>
 );

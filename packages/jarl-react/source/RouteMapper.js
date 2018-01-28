@@ -17,6 +17,11 @@ const isOptional = pattern =>
     pattern.ast.length > 1 &&
     pattern.ast[1].tag === "optional";
 
+const getQueryWildcardStateKey = ({ ast }) => {
+    const names = UrlPattern.astNodeToNames(ast);
+    return names[0] || "?";
+};
+
 const populateKeys = (keyMap, route) => {
     const setKey = key => {
         keyMap[key] = true;
@@ -87,10 +92,10 @@ const matches = (pattern, value) => {
 const matchQuery = (pattern, query) => {
     let state = {};
     for (const key in pattern) {
-        if (!(key in query) && !isOptional(pattern[key])) {
+        if (!(key === "*" || key in query || isOptional(pattern[key]))) {
             return false;
         }
-        if (isOptional(pattern[key]) && !query[key]) {
+        if (key === "*" || (isOptional(pattern[key]) && !query[key])) {
             continue;
         }
         const match = matches(pattern[key], query[key]);
@@ -99,18 +104,37 @@ const matchQuery = (pattern, query) => {
         }
         state = { ...state, ...match };
     }
+
     for (const key in query) {
-        if (!(key in pattern)) {
+        if (!(pattern["*"] || key in pattern)) {
             return false;
         }
         if (isOptional(pattern[key]) && !query[key]) {
             continue;
         }
-        const match = matches(pattern[key], query[key]);
+        const match = matches(pattern[key in pattern ? key : "*"], query[key]);
         if (!match) {
             return false;
         }
-        state = { ...state, ...match };
+        if (key in pattern) {
+            // Normally spread match over state
+            state = { ...state, ...match };
+        } else {
+            // For wildcard case, merge onto a child object
+            // TODO: A lot of the special casing (and limitations) of some of
+            // the path constructs should disappear, and just traverse the AST
+            // manually ourselves, mainly the issues are in checking for optionals, but also
+            // processing key names. Then could have scenarios like ':year(-:month(-:day))' both in
+            // querystrings and in path segments.
+            const wildCardKey = getQueryWildcardStateKey(pattern["*"]);
+            state = {
+                ...state,
+                [wildCardKey]: {
+                    ...state[wildCardKey],
+                    ...{ [key]: match[wildCardKey] }
+                }
+            };
+        }
     }
     return state;
 };

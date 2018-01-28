@@ -157,7 +157,10 @@ describe("RouteMapper", () => {
 
             test("don't match plain path", () => {
                 const match = routes.match("/plain");
-                expect(match).toEqual(nullMatch);
+                expect(match.state).toEqual({
+                    status: 404,
+                    missingPath: "plain"
+                });
             });
 
             test("match query key", () => {
@@ -215,6 +218,15 @@ describe("RouteMapper", () => {
                 const match = routes.match("/");
                 expect(match.state).toEqual({
                     home: true
+                });
+            });
+
+            test("match wildcard route", () => {
+                const match = routes.match("/wildcard?charlie=kelly");
+                expect(match.state).toEqual({
+                    status: 404,
+                    missingPath: "wildcard",
+                    rest: { charlie: "kelly" }
                 });
             });
         });

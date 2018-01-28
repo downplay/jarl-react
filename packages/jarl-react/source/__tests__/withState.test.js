@@ -10,7 +10,7 @@ import MockProvider from "./mocks/MockProvider";
 
 configure({ adapter: new Adapter() });
 
-describe("withNavigate", () => {
+describe("withState", () => {
     let mockComponent;
     beforeEach(() => {
         mockComponent = () => <div />;
