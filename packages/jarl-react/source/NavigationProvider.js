@@ -127,6 +127,10 @@ export default class NavigationProvider extends Component {
 
     doNavigation(url) {
         const { branch, state } = this.state.routes.match(url);
+        if (!state) {
+            // TODO: Is this the best strategy for failed nav?
+            throw new Error(`Unmatched URL '${url}'`);
+        }
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
             promise = this.props.onNavigateStart(state, url) || promise;
