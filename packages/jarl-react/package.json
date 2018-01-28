@@ -5,12 +5,10 @@
     "main": "index.js",
     "module": "es/index.js",
     "browserify": {
-        "transform": [
-            "loose-envify"
-        ]
+        "transform": ["loose-envify"]
     },
     "scripts": {
-        "test": "jest",
+        "test": "jest --watch",
         "build": "node ./tools/build.js",
         "watch": "babel ./source -d . --ignore __tests__ --watch",
         "prepublishOnly": "node ./tools/build.js",
@@ -29,12 +27,11 @@
         "SimpleProvider.js",
         "withActive.js",
         "withNavigate.js",
-        "withState.js"
+        "withState.js",
+        "withContext.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
