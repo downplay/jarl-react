@@ -72,6 +72,10 @@ export const queryStringRoutes = () =>
             state: { foo: true }
         },
         {
+            path: "/plain?foo",
+            state: { plain: true }
+        },
+        {
             path: "/?foo=bar",
             state: { foobar: true }
         },

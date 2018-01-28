@@ -10,18 +10,30 @@ const removeTrailingSlash = path =>
 export const joinPaths = (...paths) =>
     removeTrailingSlash(removeSlashDupes(`/${paths.join("/")}/`));
 
+const isUrlPattern = pattern => pattern && pattern.match && pattern.stringify;
+
+const isOptional = pattern =>
+    isUrlPattern(pattern) &&
+    pattern.ast.length > 1 &&
+    pattern.ast[1].tag === "optional";
+
 const populateKeys = (keyMap, route) => {
     const setKey = key => {
         keyMap[key] = true;
     };
     Object.keys(route.state).forEach(setKey);
     route.pattern.names.forEach(setKey);
+    Object.values(route.query).forEach(q => {
+        // TODO: Bit of a mess to sort out regarding optional here and above
+        if (!isUrlPattern(q) || isOptional(q)) {
+            return;
+        }
+        q.names.forEach(setKey);
+    });
     if (route.parent) {
         populateKeys(keyMap, route.parent);
     }
 };
-
-const isUrlPattern = pattern => pattern.match && pattern.stringify;
 
 const routeResolvesKey = (route, key, value) => {
     if (
@@ -75,8 +87,11 @@ const matches = (pattern, value) => {
 const matchQuery = (pattern, query) => {
     let state = {};
     for (const key in pattern) {
-        if (!(key in query)) {
+        if (!(key in query) && !isOptional(pattern[key])) {
             return false;
+        }
+        if (isOptional(pattern[key]) && !query[key]) {
+            continue;
         }
         const match = matches(pattern[key], query[key]);
         if (!match) {
@@ -85,8 +100,11 @@ const matchQuery = (pattern, query) => {
         state = { ...state, ...match };
     }
     for (const key in query) {
-        if (!(key in pattern) || !matches(pattern[key], query[key])) {
+        if (!(key in pattern)) {
             return false;
+        }
+        if (isOptional(pattern[key]) && !query[key]) {
+            continue;
         }
         const match = matches(pattern[key], query[key]);
         if (!match) {
@@ -100,9 +118,13 @@ const matchQuery = (pattern, query) => {
 const hydrateQuery = (pattern, state) => {
     const query = {};
     for (const key of Object.keys(pattern)) {
-        query[key] = isUrlPattern(pattern[key])
+        const value = isUrlPattern(pattern[key])
             ? pattern[key].stringify(state).substring(1)
             : pattern[key];
+        if (isOptional(pattern[key]) && !value) {
+            continue;
+        }
+        query[key] = value;
     }
     return query;
 };
@@ -159,10 +181,11 @@ class RouteMapper {
      * @param {string} path
      */
     match(fullPath) {
-        let state = null;
+        let state = {};
         const branch = [];
 
         const [path, query] = splitPath(fullPath);
+
         const reduceState = route => {
             state = { ...state, ...route.state };
             if (route.parent) {
@@ -189,16 +212,15 @@ class RouteMapper {
                 const resolved = route.resolve(decoded);
 
                 if (resolved) {
-                    state = { ...state, ...resolved };
                     branch.push({ route: route.route, match: decoded });
                     return {
                         branch,
-                        state: { ...route.state, ...state, ...resolved }
+                        state: { ...state, ...resolved }
                     };
                 }
             }
         }
-        return { branch, state };
+        return { branch, state: null };
     }
 
     /**

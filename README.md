@@ -66,6 +66,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 ### Next version
 
 * Major: official support for query strings (using `qs` from `hapijs`)
+* Support path syntax fully within querystrings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)`
 * Use empty location `{}` for default Redux state
 * NavigationProvider's `routes` property can now accept an array instead of a RouteMapper
 * Big sort out of the demos

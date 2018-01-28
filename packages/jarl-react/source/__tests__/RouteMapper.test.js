@@ -143,12 +143,12 @@ describe("RouteMapper", () => {
     });
 
     describe("query strings", () => {
-        describe("match", () => {
-            let routes;
-            beforeEach(() => {
-                routes = queryStringRoutes();
-            });
+        let routes;
+        beforeEach(() => {
+            routes = queryStringRoutes();
+        });
 
+        describe("match", () => {
             test("throw when too many question marks", () => {
                 expect(
                     () => new RouteMapper([{ path: "/foo?bar?baz" }])
@@ -156,7 +156,7 @@ describe("RouteMapper", () => {
             });
 
             test("don't match plain path", () => {
-                const match = routes.match("/");
+                const match = routes.match("/plain");
                 expect(match).toEqual(nullMatch);
             });
 
@@ -205,20 +205,48 @@ describe("RouteMapper", () => {
                     optional: "banana"
                 });
             });
+
+            test("match without optional query", () => {
+                const match = routes.match("/");
+                expect(match.state).toEqual({
+                    home: true
+                });
+            });
         });
 
         describe("stringify", () => {
             test("stringify simple query", () => {
-                const routes = queryStringRoutes();
                 const path = routes.stringify({ foo: true });
                 // Note: Would be nice if qs omitted '=' sign for neatness but this is fine
                 expect(path).toEqual("/?foo=");
             });
 
             test("stringify another query", () => {
-                const routes = queryStringRoutes();
                 const path = routes.stringify({ foo: true, bar: true });
                 expect(path).toEqual("/?foo=bar&bar=foo");
+            });
+
+            test("stringify a named query token", () => {
+                const path = routes.stringify({
+                    search: true,
+                    term: "something"
+                });
+                expect(path).toEqual("/?q=something");
+            });
+
+            test("stringify optional query token", () => {
+                const path = routes.stringify({
+                    home: true,
+                    optional: "banana"
+                });
+                expect(path).toEqual("/?optional=banana");
+            });
+
+            test("stringify without optional", () => {
+                const path = routes.stringify({
+                    home: true
+                });
+                expect(path).toEqual("/");
             });
         });
     });
