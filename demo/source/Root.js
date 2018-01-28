@@ -6,6 +6,8 @@ import { NavigationProvider } from "jarl-react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
+import { Layout } from "./layout";
+
 import * as demos from "./demos";
 
 const routes = [
@@ -56,24 +58,25 @@ class Root extends Component {
 
     renderDemo() {
         const { page, demoName, missingPath } = this.state.routing;
-        switch (page) {
-            case "index":
-                return <Index />;
-            case "demo": {
-                const { Root: DemoRoot, routes: demoRoutes } = demos[demoName];
-                return (
-                    <Fragment>
-                        <DemoRoot
-                            routes={demoRoutes}
-                            history={history}
-                            basePath={`/${demoName}`}
-                        />
-                    </Fragment>
-                );
-            }
-            default:
-                return <NotFound missingPath={missingPath} />;
+        if (page === "demo") {
+            const { Root: DemoRoot, routes: demoRoutes } = demos[demoName];
+            return (
+                <DemoRoot
+                    routes={demoRoutes}
+                    history={history}
+                    basePath={`/${demoName}`}
+                />
+            );
         }
+        return (
+            <Layout>
+                {page === "index" ? (
+                    <Index />
+                ) : (
+                    <NotFound missingPath={missingPath} />
+                )}{" "}
+            </Layout>
+        );
     }
 
     render() {

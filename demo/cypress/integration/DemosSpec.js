@@ -2,7 +2,7 @@
 
 const root = "http://localhost:1234";
 
-describe("Demo Shell", () => {
+describe("Demos Shell", () => {
     it("loads home page", () => {
         cy.visit(`${root}`);
         cy.title().should("include", "JARL Demos");

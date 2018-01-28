@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Page, Header, Body } from "../../../layout";
-import SearchForm from "../components";
+import SearchForm from "../components/SearchForm";
 
 const Search = ({ searchTerm }) => (
     <Page>
