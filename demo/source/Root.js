@@ -16,7 +16,7 @@ const routes = [
         state: { page: "index" }
     },
     {
-        path: "/:demoName",
+        path: "/:demoName?*=:all",
         state: { page: "demo" },
         resolve: ({ demoName }) => {
             if (!demos[demoName]) {
@@ -27,13 +27,13 @@ const routes = [
         // TODO: Implement optional parameters to remove duplication
         routes: [
             {
-                path: "/*:rest",
-                state: { page: "demo", subPage: true }
+                path: "/*:rest?*=:all",
+                state: { subPage: true }
             }
         ]
     },
     {
-        path: "/*:missingPath",
+        path: "/*:missingPath?*=:query",
         state: { page: "notFound" }
     }
 ];
@@ -57,7 +57,7 @@ class Root extends Component {
     };
 
     renderDemo() {
-        const { page, demoName, missingPath } = this.state.routing;
+        const { page, demoName, missingPath, query } = this.state.routing;
         if (page === "demo") {
             const { Root: DemoRoot, routes: demoRoutes } = demos[demoName];
             return (
@@ -73,7 +73,7 @@ class Root extends Component {
                 {page === "index" ? (
                     <Index />
                 ) : (
-                    <NotFound missingPath={missingPath} />
+                    <NotFound missingPath={missingPath} query={query} />
                 )}{" "}
             </Layout>
         );

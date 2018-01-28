@@ -4,11 +4,13 @@ const routes = [
         state: { page: "home" }
     },
     {
-        path: "/search",
+        // The parameter is non-optional to hit this route
+        path: "/search?q=:searchTerm",
         state: { page: "search" }
     },
     {
-        path: "/search?q=:searchTerm",
+        // Fallback is needed to match the /search url without ?q
+        path: "/search",
         state: { page: "search" }
     },
     {

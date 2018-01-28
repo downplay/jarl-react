@@ -20,5 +20,7 @@ describe("Demo 2 - query strings", () => {
             .type("foo");
         cy.get("[data-test=search-button]").click();
         cy.url().should("contain", "/search?q=foo");
+        cy.get("[data-test=header").should("contain", "Search");
+        cy.get("[data-test=search-results").should("contain", "foo");
     });
 });

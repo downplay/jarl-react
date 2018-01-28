@@ -6,10 +6,9 @@ const Search = ({ searchTerm }) => (
     <Page>
         <Header>Search</Header>
         <Body>
-            {searchTerm ? (
-                <Fragment>Results for {searchTerm}</Fragment>
-            ) : (
-                <SearchForm />
+            <SearchForm />
+            {searchTerm && (
+                <div data-test="search-results">Results for {searchTerm}</div>
             )}
         </Body>
     </Page>
