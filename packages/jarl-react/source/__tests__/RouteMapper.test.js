@@ -315,6 +315,14 @@ describe("RouteMapper", () => {
                         themeName: "bar"
                     });
                 });
+
+                test("stringify correctly", () => {
+                    const path = routes.stringify({
+                        page: "home",
+                        themeName: "bar"
+                    });
+                    expect(path).toEqual("/?theme=bar");
+                });
             });
         });
 
