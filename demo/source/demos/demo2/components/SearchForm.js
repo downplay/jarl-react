@@ -33,6 +33,7 @@ class SearchForm extends Component {
     }
 }
 
-export default compose(withState("text", "setText", ""), withNavigate())(
-    SearchForm
-);
+export default compose(
+    withState("text", "setText", ({ initialValue }) => initialValue || ""),
+    withNavigate()
+)(SearchForm);

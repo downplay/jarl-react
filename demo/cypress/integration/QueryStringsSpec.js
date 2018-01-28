@@ -22,5 +22,6 @@ describe("Demo 2 - query strings", () => {
         cy.url().should("contain", "/search?q=foo");
         cy.get("[data-test=header").should("contain", "Search");
         cy.get("[data-test=search-results").should("contain", "foo");
+        cy.get("[data-test=search-text").should("have.attr", "value", "foo");
     });
 });
