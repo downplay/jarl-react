@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Page, Header, Body } from "../../../layout";
 import SearchForm from "../components/SearchForm";
 
