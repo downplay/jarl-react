@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { compose, withState } from "recompose";
 
-import { withNavigate } from "jarl-react";
+import { withNavigate, withLocation } from "jarl-react";
 
 class SearchForm extends Component {
     handleChange = event => {
@@ -9,7 +9,11 @@ class SearchForm extends Component {
     };
 
     handleClick = () => {
-        this.props.navigate({ page: "search", searchTerm: this.props.text });
+        this.props.navigate({
+            page: "search",
+            searchTerm: this.props.text,
+            themeName: this.props.themeName
+        });
     };
 
     render() {
@@ -35,5 +39,8 @@ class SearchForm extends Component {
 
 export default compose(
     withState("text", "setText", ({ initialValue }) => initialValue || ""),
-    withNavigate()
+    // Inject a navigate function
+    withNavigate(),
+    // Also inspect location so we can preserve themeName
+    withLocation(({ themeName }) => ({ themeName }))
 )(SearchForm);

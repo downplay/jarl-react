@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "emotion": "^8.0.12",
+        "emotion-theming": "^8.0.12",
         "history": "^4.7.2",
         "jarl-react": "^0.3.3",
         "jarl-react-redux": "^0.3.3",

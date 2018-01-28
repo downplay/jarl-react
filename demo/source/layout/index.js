@@ -4,12 +4,19 @@ import Helmet from "react-helmet";
 
 import { withActive, Link } from "jarl-react";
 
-const PageElement = styled.article``;
+const PageElement = styled.article`
+    background-color: ${props =>
+        props.theme ? props.theme.back : "transparent"};
+    color: ${props => (props.theme ? props.theme.fore : "transparent")};
+`;
+
 export const Page = ({ children }) => (
     <PageElement data-test="page">{children}</PageElement>
 );
 
-const HeaderElement = styled.h1``;
+const HeaderElement = styled.h1`
+    color: ${props => (props.theme ? props.theme.fore : "transparent")};
+`;
 
 export const Header = ({ children }) => (
     <Fragment>
