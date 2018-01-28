@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { compose } from "recompose";
 
-import { withState } from "jarl-react";
+import { withLocation } from "jarl-react";
 
 import { Layout, Menu, MenuItem } from "../../layout";
 
@@ -10,7 +10,7 @@ import HomePage from "./pages/Home";
 import SearchPage from "./pages/Search";
 import NotFound from "../../pages/NotFound";
 
-// The properties are injected via the withState HOC
+// The properties are injected via the withLocation HOC
 const renderPage = ({ page, searchTerm, missingPath }) => {
     switch (page) {
         case "home":
@@ -42,4 +42,4 @@ class Pages extends Component {
     }
 }
 
-export default compose(withState())(Pages);
+export default withLocation()(Pages);

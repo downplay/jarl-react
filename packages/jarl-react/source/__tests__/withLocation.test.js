@@ -4,20 +4,20 @@ import React from "react";
 import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import withState from "../withState";
+import withLocation from "../withLocation";
 
 import MockProvider from "./mocks/MockProvider";
 
 configure({ adapter: new Adapter() });
 
-describe("withState", () => {
+describe("withLocation", () => {
     let mockComponent;
     beforeEach(() => {
         mockComponent = () => <div />;
     });
 
     test("passes arbitrary state to component", () => {
-        const TestComponent = withState()(mockComponent);
+        const TestComponent = withLocation()(mockComponent);
         const mockState = { foo: Symbol("bar") };
         const output = mount(
             <MockProvider state={mockState}>
@@ -30,7 +30,7 @@ describe("withState", () => {
     });
 
     test("passes state to other props", () => {
-        const TestComponent = withState(({ foo }) => ({ baz: foo }))(
+        const TestComponent = withLocation(({ foo }) => ({ baz: foo }))(
             mockComponent
         );
         const mockState = { foo: Symbol("bar") };

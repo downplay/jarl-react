@@ -71,6 +71,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 * Support most of path syntax within querystrings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)&*=:rest`
 * Added property to NavigationProvider: `performInitialNavigation`
 * Added property to NavigationProvider: `basePath`
+* Breaking: renamed `withState` HOC to `withLocation` to avoid naming conflict with `recompose` (and `state` in general)
 * New `withContext` HOC to get access to `stringify` and other functions from the provider
 * Additional logic can now be added to route matching use `resolve` property on your routes
 * Use empty location `{}` for default Redux state

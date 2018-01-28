@@ -27,7 +27,7 @@
         "SimpleProvider.js",
         "withActive.js",
         "withNavigate.js",
-        "withState.js",
+        "withLocation.js",
         "withContext.js"
     ],
     "jest": {

@@ -1,5 +1,5 @@
 import React from "react";
-import { withState, Link } from "jarl-react";
+import { withLocation, Link } from "jarl-react";
 
 import HomePage from "./pages/Home";
 import ProductPage from "./pages/Product";
@@ -17,7 +17,7 @@ const renderPage = (page, missingPath) => {
 };
 
 /**
- * JARL injects the `page` prop from state via withState HOC
+ * JARL injects the `page` prop from state via withLocation HOC
  */
 const Pages = ({ page, missingPath }) => (
     <article>
@@ -35,4 +35,4 @@ const Pages = ({ page, missingPath }) => (
     </article>
 );
 
-export default withState()(Pages);
+export default withLocation()(Pages);

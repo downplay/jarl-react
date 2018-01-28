@@ -4,5 +4,5 @@ export { default as SimpleProvider } from "./SimpleProvider";
 export { default as RouteMapper } from "./RouteMapper";
 export { default as withActive } from "./withActive";
 export { default as withNavigate } from "./withNavigate";
-export { default as withState } from "./withState";
+export { default as withLocation } from "./withLocation";
 export { default as withContext } from "./withContext";

@@ -5,9 +5,9 @@ import hocFactory from "./hocFactory";
 
 const noop = state => state;
 
-const withStateFactory = hocFactory(
+const withLocationFactory = hocFactory(
     ({ options: mapStateToProps = noop, WrappedComponent }) =>
-        class WithState extends Component {
+        class WithLocation extends Component {
             static contextTypes = {
                 navigationContext: navigationContextShape
             };
@@ -24,4 +24,4 @@ const withStateFactory = hocFactory(
         }
 );
 
-export default withStateFactory;
+export default withLocationFactory;

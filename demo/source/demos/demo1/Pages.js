@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { compose } from "recompose";
 
-import { withState, withContext, Link } from "jarl-react";
+import { withLocation, withContext, Link } from "jarl-react";
 
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -35,7 +35,7 @@ class Pages extends Component {
     };
 
     render() {
-        // JARL injects the `page` prop from state via withState HOC
+        // JARL injects the `page` prop from state via withLocation HOC
         const { page, missingPath, stringify } = this.props;
         const { showMarker } = this.state;
 
@@ -82,5 +82,5 @@ class Pages extends Component {
 
 export default compose(
     withContext(({ stringify }) => ({ stringify })),
-    withState()
+    withLocation()
 )(Pages);
