@@ -7,7 +7,6 @@ import Adapter from "enzyme-adapter-react-16";
 import withState from "../withState";
 
 import MockProvider from "./mocks/MockProvider";
-import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
 

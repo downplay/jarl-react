@@ -88,5 +88,13 @@ export const queryStringRoutes = () =>
                     state: { tested: true }
                 }
             ]
+        },
+        {
+            path: "/?q=:term",
+            state: { search: true }
+        },
+        {
+            path: "/?optional=(:optional)",
+            state: { home: true }
         }
     ]);

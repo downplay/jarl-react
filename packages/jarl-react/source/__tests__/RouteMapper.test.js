@@ -144,6 +144,11 @@ describe("RouteMapper", () => {
 
     describe("query strings", () => {
         describe("match", () => {
+            let routes;
+            beforeEach(() => {
+                routes = queryStringRoutes();
+            });
+
             test("throw when too many question marks", () => {
                 expect(
                     () => new RouteMapper([{ path: "/foo?bar?baz" }])
@@ -151,45 +156,54 @@ describe("RouteMapper", () => {
             });
 
             test("don't match plain path", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/");
                 expect(match).toEqual(nullMatch);
             });
 
             test("match query key", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/?foo=");
                 expect(match.state).toEqual({ foo: true });
             });
 
             test("equals is optional for empty string", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/?foo");
                 expect(match.state).toEqual({ foo: true });
             });
 
             test("match query key value", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/?foo=bar");
                 expect(match.state).toEqual({ foobar: true });
             });
 
             test("match two queries", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/?foo=bar&bar=foo");
                 expect(match.state).toEqual({ foo: true, bar: true });
             });
 
             test("reverse query order", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/?bar=foo&foo=bar");
                 expect(match.state).toEqual({ foo: true, bar: true });
             });
 
             test("merge nested queries", () => {
-                const routes = queryStringRoutes();
                 const match = routes.match("/?nested&tested");
                 expect(match.state).toEqual({ nested: true, tested: true });
+            });
+
+            test("match named query token", () => {
+                const match = routes.match("/?q=something");
+                expect(match.state).toEqual({
+                    search: true,
+                    term: "something"
+                });
+            });
+
+            test("match optional query token", () => {
+                const match = routes.match("/?optional=banana");
+                expect(match.state).toEqual({
+                    home: true,
+                    optional: "banana"
+                });
             });
         });
 
