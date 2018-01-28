@@ -19,6 +19,7 @@ class SearchForm extends Component {
                     type="text"
                     onChange={this.handleChange}
                     value={this.props.text}
+                    data-test="search-text"
                 />
                 <button
                     type="button"

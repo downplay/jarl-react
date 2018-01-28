@@ -8,6 +8,17 @@ describe("Demo 2 - query strings", () => {
         cy.title().should("include", "Query Strings");
         cy.title().should("include", "Home");
         cy.get("[data-test=header]").should("contain", "Home");
+        cy.get("[data-test=search-text]").should("exist");
         cy.get("[data-test=search-button]").should("exist");
+    });
+
+    it("searches", () => {
+        cy.visit(`${root}`);
+        cy
+            .get("[data-test=search-text]")
+            .focus()
+            .type("foo");
+        cy.get("[data-test=search-button]").click();
+        cy.url().should("contain", "/q?searchTerm=foo");
     });
 });
