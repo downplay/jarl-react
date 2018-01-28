@@ -182,7 +182,7 @@ class RouteMapper {
             const [childPath, childQuery] = splitPath(route.path);
             const path = parent ? joinPaths(parent.path, childPath) : childPath;
             let query = convertToPatterns(childQuery);
-            query = parent ? { ...parent.query, ...childQuery } : query;
+            query = parent ? { ...parent.query, ...query } : query;
             // Make sure we resolve right up the parent hierarchy
             let resolve = route.resolve || (parent && parent.resolve);
             if (route.resolve && parent) {
@@ -231,6 +231,7 @@ class RouteMapper {
         for (const route of this.routes) {
             const pathMatch = route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
+
             if (pathMatch && queryMatch) {
                 // Got a match, compile state from what we know
                 const decoded = {};

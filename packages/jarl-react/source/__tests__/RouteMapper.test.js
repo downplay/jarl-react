@@ -229,6 +229,43 @@ describe("RouteMapper", () => {
                     rest: { charlie: "kelly" }
                 });
             });
+            describe("nesting wildcards", () => {
+                beforeEach(() => {
+                    routes = new RouteMapper([
+                        {
+                            path: "/",
+                            state: { page: "index" }
+                        },
+                        {
+                            path: "/:demoName?*=:all",
+                            state: { page: "demo" },
+                            // TODO: Implement optional parameters to remove duplication
+                            routes: [
+                                {
+                                    path: "/*:rest?*=:all",
+                                    state: { subPage: true }
+                                }
+                            ]
+                        },
+                        {
+                            path: "/*:missingPath?*=:query",
+                            state: { page: "notFound" }
+                        }
+                    ]);
+                });
+
+                test("match nested querystring", () => {
+                    // This specific case is taken from queryString demos
+                    const result = routes.match("/queryStrings/search?q=test");
+                    expect(result.state).toEqual({
+                        page: "demo",
+                        demoName: "queryStrings",
+                        rest: "search",
+                        all: { q: "test" },
+                        subPage: true
+                    });
+                });
+            });
         });
 
         describe("stringify", () => {
