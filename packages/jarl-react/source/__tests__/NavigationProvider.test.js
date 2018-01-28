@@ -5,11 +5,12 @@ import Adapter from "enzyme-adapter-react-16";
 
 import NavigationProvider from "../NavigationProvider";
 import RouteMapper from "../RouteMapper";
+import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
 
 describe("<NavigationProvider/>", () => {
-    let mockHistory;
+    let history;
     let routes;
 
     beforeEach(() => {
@@ -19,12 +20,7 @@ describe("<NavigationProvider/>", () => {
                 state: { page: "index" }
             }
         ];
-        mockHistory = {
-            listen: jest.fn(),
-            location: {
-                pathname: "/"
-            }
-        };
+        history = mockHistory();
     });
 
     describe("constructor", () => {
@@ -42,7 +38,7 @@ describe("<NavigationProvider/>", () => {
 
         test("converts array to RouteMapper", () => {
             const provider = shallow(
-                <NavigationProvider routes={routes} history={mockHistory} />
+                <NavigationProvider routes={routes} history={history} />
             );
             expect(provider.state("routes")).toEqual(expect.any(RouteMapper));
         });
@@ -63,9 +59,7 @@ describe("<NavigationProvider/>", () => {
         });
 
         test("performed normally", () => {
-            shallow(
-                <NavigationProvider routes={routes} history={mockHistory} />
-            );
+            shallow(<NavigationProvider routes={routes} history={history} />);
             expect(doNavigation).toHaveBeenCalledWith("/");
         });
 
@@ -73,7 +67,7 @@ describe("<NavigationProvider/>", () => {
             shallow(
                 <NavigationProvider
                     routes={routes}
-                    history={mockHistory}
+                    history={history}
                     performInitialNavigation={false}
                 />
             );
@@ -81,11 +75,11 @@ describe("<NavigationProvider/>", () => {
         });
 
         test("basePath is honoured", () => {
-            mockHistory.location.pathname = "/foo";
+            history.location.pathname = "/foo";
             shallow(
                 <NavigationProvider
                     routes={routes}
-                    history={mockHistory}
+                    history={history}
                     basePath="/foo"
                 />
             );

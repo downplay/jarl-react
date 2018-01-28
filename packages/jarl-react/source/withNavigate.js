@@ -30,15 +30,9 @@ const withNavigateFactory = hocFactory(
                       };
                 // TODO: Optimise that generatedProps is a new object
                 // every render
-                return (
-                    <WrappedComponent
-                        {...this.props}
-                        {...mapper(generatedProps)}
-                    />
-                );
+                return <WrappedComponent {...this.props} {...generatedProps} />;
             }
-        },
-    () => state => state
+        }
 );
 
 export default withNavigateFactory;

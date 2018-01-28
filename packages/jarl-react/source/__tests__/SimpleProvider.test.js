@@ -3,13 +3,12 @@ import React from "react";
 import { configure, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import { NavigationProvider, RouteMapper } from "../";
+import { NavigationProvider } from "../";
 
 import SimpleProvider from "../SimpleProvider";
+import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
-
-const mockHistory = pathname => ({ location: pathname });
 
 const create = (pathname = "/") => ({
     history: mockHistory(pathname),

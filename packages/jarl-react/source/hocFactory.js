@@ -1,8 +1,6 @@
 import hoistStatics from "hoist-non-react-statics";
 
-const hocFactory = (classBuilder, defaultOptions) => (
-    options = defaultOptions ? defaultOptions() : {}
-) => WrappedComponent => {
+const hocFactory = classBuilder => options => WrappedComponent => {
     const HocComponent = classBuilder({ options, WrappedComponent });
 
     HocComponent.WrappedComponent = WrappedComponent;

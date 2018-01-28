@@ -3,8 +3,10 @@ import React, { Component } from "react";
 import { navigationContextShape } from "./NavigationProvider";
 import hocFactory from "./hocFactory";
 
+const noop = state => state;
+
 const withStateFactory = hocFactory(
-    ({ options: mapStateToProps, WrappedComponent }) =>
+    ({ options: mapStateToProps = noop(), WrappedComponent }) =>
         class WithState extends Component {
             static contextTypes = {
                 navigationContext: navigationContextShape
@@ -19,8 +21,7 @@ const withStateFactory = hocFactory(
                     />
                 );
             }
-        },
-    () => state => state
+        }
 );
 
 export default withStateFactory;
