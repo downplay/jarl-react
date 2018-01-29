@@ -1,14 +1,13 @@
 import React from "react";
-import { hot } from "react-hot-loader";
 
 import { SimpleProvider } from "jarl-react";
 
 import Pages from "./Pages";
 
-const Root = ({ history, routes }) => (
-    <SimpleProvider history={history} routes={routes}>
+const Root = ({ history, routes, basePath }) => (
+    <SimpleProvider history={history} routes={routes} basePath={basePath}>
         <Pages />
     </SimpleProvider>
 );
 
-export default hot(module)(Root);
+export default Root;

@@ -8,7 +8,7 @@ import React, { Fragment } from "react";
  */
 import { withLocation, Link } from "jarl-react";
 
-import { galleryData } from "../../../data";
+import { galleryData } from "../../../../data";
 
 export const toImage = imageId => ({
     page: "product",
