@@ -16,16 +16,16 @@
         "es",
         "umd",
         "lib",
-        "hocFactory.js",
         "index.js",
+        "hocFactory.js",
         "Link.js",
         "NavigationProvider.js",
         "RouteMapper.js",
         "SimpleProvider.js",
         "withActive.js",
+        "withContext.js",
         "withNavigate.js",
-        "withLocation.js",
-        "withContext.js"
+        "withLocation.js"
     ],
     "jest": {
         "setupFiles": ["raf/polyfill"],
