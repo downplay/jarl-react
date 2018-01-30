@@ -55,10 +55,7 @@ describe("<SimpleProvider/>", () => {
         );
         await wait(0);
         expect(onNavigateEnd).toHaveBeenCalledWith({ home: true }, "/", [
-            {
-                match: {},
-                route: { path: "/", state: { home: true } }
-            }
+            { path: "/", state: { home: true } }
         ]);
     });
 });

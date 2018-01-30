@@ -224,8 +224,6 @@ class RouteMapper {
      */
     match(fullPath) {
         let state = {};
-        const branch = [];
-
         const [path, query] = splitPath(fullPath);
 
         for (const route of this.routes) {
@@ -243,9 +241,10 @@ class RouteMapper {
 
                 // Call any additional resolution logic
                 const resolved = route.resolve(decoded);
-
                 if (resolved) {
-                    branch.push({ route: route.route, match: decoded });
+                    const unroll = (item, next) =>
+                        item ? [...unroll(next(item), next), item.route] : [];
+                    const branch = unroll(route, r => r.parent);
                     return {
                         branch,
                         state: { ...state, ...resolved }
@@ -253,7 +252,7 @@ class RouteMapper {
                 }
             }
         }
-        return { branch, state: null };
+        return { branch: [], state: null };
     }
 
     /**

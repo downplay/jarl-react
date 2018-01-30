@@ -9,9 +9,13 @@ import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
 
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 describe("<NavigationProvider/>", () => {
     let history;
     let routes;
+    let one;
+    let two;
 
     beforeEach(() => {
         routes = [
@@ -22,6 +26,24 @@ describe("<NavigationProvider/>", () => {
             {
                 path: "/?foo=bar",
                 state: { page: "foo" }
+            },
+            {
+                path: "/test-resolve",
+                state: { page: "test-resolve" },
+                resolve: () =>
+                    wait(10).then(() => {
+                        one = true;
+                    }),
+                routes: [
+                    {
+                        path: "/nested",
+                        state: { page: "test-resolve", nested: true },
+                        resolve: () =>
+                            wait(10).then(() => {
+                                two = true;
+                            })
+                    }
+                ]
             }
         ];
         history = mockHistory();
@@ -94,6 +116,49 @@ describe("<NavigationProvider/>", () => {
             history.location.search = "?foo=bar";
             shallow(<NavigationProvider routes={routes} history={history} />);
             expect(doNavigation).toHaveBeenCalledWith("/?foo=bar");
+        });
+    });
+
+    describe("doNavigation", () => {
+        test("resolve functions are executed", async () => {
+            const onNavigateStart = jest.fn();
+            const onNavigateEnd = jest.fn();
+
+            const provider = shallow(
+                <NavigationProvider
+                    routes={routes}
+                    history={history}
+                    onNavigateStart={onNavigateStart}
+                    onNavigateEnd={onNavigateEnd}
+                />
+            ).instance();
+            provider.doNavigation("/test-resolve");
+            expect(onNavigateStart).toHaveBeenCalled();
+            expect(onNavigateEnd).not.toHaveBeenCalled();
+            await wait(10);
+            expect(onNavigateEnd).toHaveBeenCalled();
+            expect(one).toEqual(true);
+        });
+
+        test("nested resolve functions are executed", async () => {
+            const onNavigateStart = jest.fn();
+            const onNavigateEnd = jest.fn();
+
+            const provider = shallow(
+                <NavigationProvider
+                    routes={routes}
+                    history={history}
+                    onNavigateStart={onNavigateStart}
+                    onNavigateEnd={onNavigateEnd}
+                />
+            ).instance();
+            provider.doNavigation("/test-resolve/nested");
+            expect(onNavigateStart).toHaveBeenCalled();
+            expect(onNavigateEnd).not.toHaveBeenCalled();
+            await wait(10);
+            expect(onNavigateEnd).toHaveBeenCalled();
+            expect(one).toEqual(true);
+            expect(two).toEqual(true);
         });
     });
 });

@@ -38,11 +38,8 @@ describe("RouteMapper", () => {
             expect(match.state).toEqual({ page: "home" });
             expect(match.branch).toEqual([
                 {
-                    route: {
-                        path: "/",
-                        state: { page: "home" }
-                    },
-                    match: {}
+                    path: "/",
+                    state: { page: "home" }
                 }
             ]);
         }
@@ -51,11 +48,8 @@ describe("RouteMapper", () => {
             expect(match.state).toEqual({ page: "about" });
             expect(match.branch).toEqual([
                 {
-                    route: {
-                        path: "/about",
-                        state: { page: "about" }
-                    },
-                    match: {}
+                    path: "/about",
+                    state: { page: "about" }
                 }
             ]);
         }

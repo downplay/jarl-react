@@ -133,15 +133,14 @@ export default class NavigationProvider extends Component {
         }
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
-            promise = this.props.onNavigateStart(state, url) || promise;
+            promise = this.props.onNavigateStart(state, url, branch) || promise;
         }
         const promises = [promise];
         for (const leaf of branch) {
-            if (leaf.route.data) {
-                promises.push(leaf.route.data(this.props.context()));
+            if (leaf.resolve) {
+                promises.push(leaf.resolve(this.props.context()));
             }
         }
-        // TODO: Gather branch data and perform auth
         Promise.all(promises).then(() => {
             if (this.props.onNavigateEnd) {
                 this.props.onNavigateEnd(state, url, branch);
