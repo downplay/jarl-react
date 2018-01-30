@@ -375,19 +375,19 @@ describe("RouteMapper", () => {
         });
     });
 
-    describe("resolvers", () => {
+    describe("matchers", () => {
         let routes;
         beforeEach(() => {
             routes = new RouteMapper([
                 {
                     path: "/",
                     state: {},
-                    resolve: () => ({ resolved: true })
+                    match: () => ({ matched: true })
                 },
                 {
                     path: "/dates/:date",
                     state: {},
-                    resolve: ({ date }) => {
+                    match: ({ date }) => {
                         const parsed = new Date(date);
                         if (parsed.toString() === "Invalid Date") {
                             return false;
@@ -406,7 +406,7 @@ describe("RouteMapper", () => {
 
         test("run resolve function", () => {
             const { state } = routes.match("/");
-            expect(state.resolved).toEqual(true);
+            expect(state.matched).toEqual(true);
         });
 
         test("resolve one value into another", () => {

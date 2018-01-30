@@ -18,7 +18,7 @@ const routes = [
     {
         path: "/:demoName?*=:all",
         state: { page: "demo" },
-        resolve: ({ demoName }) => {
+        match: ({ demoName }) => {
             if (!demos[demoName]) {
                 return false;
             }

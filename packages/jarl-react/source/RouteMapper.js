@@ -183,28 +183,29 @@ class RouteMapper {
             const path = parent ? joinPaths(parent.path, childPath) : childPath;
             let query = convertToPatterns(childQuery);
             query = parent ? { ...parent.query, ...query } : query;
-            // Make sure we resolve right up the parent hierarchy
-            let resolve = route.resolve || (parent && parent.resolve);
-            if (route.resolve && parent) {
-                resolve = state => {
-                    const result = parent.resolve(state);
+            // Make sure we apply match right up the parent hierarchy
+            let match = route.match || (parent && parent.match);
+            if (route.match && parent) {
+                match = state => {
+                    const result = parent.match(state);
                     if (result === false) {
                         return false;
                     }
-                    return { ...result, ...route.resolve(state) };
+                    return { ...result, ...route.match(state) };
                 };
             }
-            // No-op resolve
-            if (!resolve) {
-                resolve = () => ({});
+            // No-op match
+            if (!match) {
+                match = () => ({});
             }
+            // TODO: Similar reduction as above for both resolve and stringify
             const mappedRoute = {
                 ...route,
                 route,
                 path,
                 parent,
                 query,
-                resolve,
+                match,
                 state: parent
                     ? { ...parent.state, ...route.state }
                     : { ...route.state },
@@ -239,15 +240,15 @@ class RouteMapper {
                 // TODO: Handle state funcs, auth
                 state = { ...route.state, ...decoded, ...queryMatch };
 
-                // Call any additional resolution logic
-                const resolved = route.resolve(decoded);
-                if (resolved) {
+                // Call any additional matching logic
+                const matched = route.match(decoded);
+                if (matched) {
                     const unroll = (item, next) =>
                         item ? [...unroll(next(item), next), item.route] : [];
                     const branch = unroll(route, r => r.parent);
                     return {
                         branch,
-                        state: { ...state, ...resolved }
+                        state: { ...state, ...matched }
                     };
                 }
             }
