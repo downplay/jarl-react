@@ -33,7 +33,7 @@ export default class Link extends Component {
         );
     };
 
-    // TODO: memoize for better performance?
+    // PERF: Could perhaps be memoized. But needs to know if navcontext changed routes table.
     stringifyUrl = state => this.context.navigationContext.stringify(state);
 
     render() {

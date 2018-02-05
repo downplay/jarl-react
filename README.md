@@ -52,7 +52,7 @@ What is left to do before the version can become 1.0.0-alpha? The main points ar
 * Figure out how to support animated transitions (but maybe leave this until after 1.0.0)
 * Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
 * Query strings: support nesting and arrays. We use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
-* Query strings: support compound interpolations for optional query keys. This means multiple interpolations on a single token, a good example might be: `/range?start=:startYear-:startMonth-:startDay&end=(:endYear-:endMonth-:endDay)`. This will not work and is pretty hard to support right now.
+* Query strings: support compound interpolations for optional query keys. This means multiple interpolations on a single token, a good example might be: `/range?start=(:startYear-:startMonth-:startDay)&end=(:endYear-:endMonth-:endDay)`. This will not work and is pretty hard to support right now.
 * Publish demos somewhere!
 
 This might look a lot but we're really not far off! And much of this is "nice to have". My priority right now is getting some good documentation written so people can actually use this.
