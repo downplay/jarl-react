@@ -109,6 +109,10 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 
 ## Version History
 
+### 0.5.1
+
+* Fix: ES5 build was missing a file so imports would fail in some conditions
+
 ### 0.5.0
 
 * Major: official support for query strings (adds dependency on `qs` from `hapijs`)
