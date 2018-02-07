@@ -196,7 +196,7 @@ class RouteMapper {
             }
             // No-op match
             if (!match) {
-                match = () => ({});
+                match = state => state;
             }
             // TODO: Similar reduction as above for both resolve and stringify
             const mappedRoute = {
@@ -234,6 +234,7 @@ class RouteMapper {
             if (pathMatch && queryMatch) {
                 // Got a match, compile state from what we know
                 const decoded = {};
+                // TODO: Also decode query string? Do they get decoded by qs?
                 for (const key of Object.keys(pathMatch)) {
                     decoded[key] = decodeURIComponent(pathMatch[key]);
                 }
@@ -241,14 +242,14 @@ class RouteMapper {
                 state = { ...route.state, ...decoded, ...queryMatch };
 
                 // Call any additional matching logic
-                const matched = route.match(decoded);
+                const matched = route.match(state);
                 if (matched) {
                     const unroll = (item, next) =>
                         item ? [...unroll(next(item), next), item.route] : [];
                     const branch = unroll(route, r => r.parent);
                     return {
                         branch,
-                        state: { ...state, ...matched }
+                        state: matched
                     };
                 }
             }
@@ -270,9 +271,19 @@ class RouteMapper {
             }
             const keyMap = {};
             populateKeys(keyMap, route);
+            // Perform additional stringification transform
+            let checkState = state;
+            if (route.stringify) {
+                const stringState = route.stringify(state);
+                if (!stringState) {
+                    continue;
+                }
+                checkState = stringState;
+            }
             let ok = true;
-            for (const key of Object.keys(state)) {
-                if (routeResolvesKey(route, key, state[key])) {
+            // Now test against any route state we're aware of
+            for (const key of Object.keys(checkState)) {
+                if (routeResolvesKey(route, key, checkState[key])) {
                     keyMap[key] = false;
                 } else {
                     ok = false;
@@ -280,9 +291,9 @@ class RouteMapper {
                 }
             }
             if (ok && !Object.keys(keyMap).some(key => keyMap[key])) {
-                const pathPart = route.pattern.stringify(state);
+                const pathPart = route.pattern.stringify(checkState);
                 const queryPart = qs.stringify(
-                    hydrateQuery(route.query, state)
+                    hydrateQuery(route.query, checkState)
                 );
                 return queryPart ? `${pathPart}?${queryPart}` : pathPart;
             }

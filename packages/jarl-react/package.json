@@ -63,6 +63,7 @@
     "devDependencies": {
         "babel-jest": "^22.0.4",
         "babelrc-rollup": "^3.0.0",
+        "date-fns": "^1.29.0",
         "enzyme": "^3.2.0",
         "enzyme-adapter-react-16": "^1.1.0",
         "gzip-size": "^4.1.0",
