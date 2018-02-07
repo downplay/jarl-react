@@ -1,6 +1,6 @@
 {
     "name": "jarl-react",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "description": "Just Another Router Library for React",
     "main": "index.js",
     "module": "es/index.js",
@@ -16,6 +16,7 @@
         "es",
         "umd",
         "lib",
+        "tool",
         "index.js",
         "hocFactory.js",
         "Link.js",
