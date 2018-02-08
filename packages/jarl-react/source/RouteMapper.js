@@ -44,8 +44,10 @@ const routeResolvesKey = (route, key, value) => {
         // Check in main URL pattern
         (route.pattern && route.pattern.names.indexOf(key) >= 0) ||
         // Check in any query pattern
-        Object.values(route.query).some(
-            q => isUrlPattern(q) && q.names.indexOf(key) >= 0
+        Object.keys(route.query).some(
+            q =>
+                isUrlPattern(route.query[q]) &&
+                route.query[q].names.indexOf(key) >= 0
         )
     ) {
         return true;
