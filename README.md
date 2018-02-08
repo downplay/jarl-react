@@ -32,9 +32,157 @@ Some examples of state mapping:
 
 All routing can be described using this simple approach.
 
+## Concrete Example
+
+Add to your project:
+
+```
+yarn add jarl-react
+```
+
+Declare a routing table:
+
+```js
+const routes = [
+    // Home page route
+    {
+        path: "/",
+        // Model the state however you want!
+        // Here we decided to use a `page` property to
+        // switch between pages:
+        state: { page: "home" }
+    },
+    // Another static page
+    {
+        path: "/about",
+        state: { page: "about" }
+    },
+    // A dynamic URL for viewing products
+    {
+        path: "/products/:productId",
+        // The `productId` property be merged into state when the
+        // route matches
+        state: { page: "product" },
+        // Nested child routes are straightforward:
+        routes: [
+            {
+                path: "/comments",
+                // All the state will be merged down the branch,
+                // so we'll end up with the following:
+                // { page: "product", productId: <id>, tab: "comments" }
+                state: { tab: "comments" }
+            }
+        ]
+    },
+    // Dynamic (and in brackets for optional) query parameters:
+    {
+        path: "/search?q=:search&sort=(:sortKey)",
+        state: { page: "search" }
+    },
+    // Finally a catch-all `*` route for any bad URLs...
+    {
+        path: "/*:missingPath",
+        state: { page: "404" }
+    }
+];
+```
+
+Load the routes and a `history` implementation of your choice into your `NavigationProvider`:
+
+```js
+const history = createBrowserHistory();
+ReactDOM.render(
+    <NavigationProvider history={history} routes={routes}>
+        <App />
+    </NavigationProvider>,
+    rootElement
+);
+```
+
+(See [history] package for `createBrowserHistory` and more!)
+
+And finally in your `App` component you can inject the state to perform the actual routing:
+
+```js
+import { withLocation } from "jarl-react";
+
+// All our possible state variables are made available in the App
+const App = ({ page, productId, search, sortKey, tab, missingPath }) => {
+    // Our routing is just one big switch statement - no component needed!
+    switch (page) {
+        case "home":
+            return <HomePage />;
+        case "about":
+            return <AboutPage />;
+        case "product":
+            // Inside ProductPage we'll have a similar switch or some other
+            // conditional to maybe render a tab...
+            return <ProductPage productId={productId} tab={tab} />;
+        case "search":
+            return <SearchPage search={search} sortKey={sortKey} />;
+        case "404":
+            return <MissingPage path={missingPath} />;
+    }
+};
+
+// State is actually injected into App using the `withLocation` higher-order component
+export default withLocation()(App);
+```
+
+Wait, we missed something! How do you actually link to a page? JARL has a Link component much like other router libraries, but its unique feature is that we can actually generate URLs from exactly the same state objects as specified in our routing table. Your main menu might look like this:
+
+```js
+import { Link } from "jarl-react";
+
+const MainMenu = () => (
+  <nav>
+    <Link to={ page: "home" }>Home</Link>
+    <Link to={ page: "about" }>About</Link>
+    <Link to={ page: "product", productId: 123 }>Our Best Product Ever!</Link>
+    <SearchForm />
+  </nav>
+)
+```
+
+These links will use the routing table in reverse to stringify all the correct URLs to your pages, e.g. the product link will become `<a href="/product/123">`.
+
+The `SearchForm` component needs to handle links in a slightly different way, as it needs to programmatically navigate to the search page. It looks like this:
+
+```js
+// The `withNavigate` HOC will inject a function we can use for navigation
+import { withNavigate } from "jarl-react";
+
+class SearchForm extends React.Component {
+    state = { searchText: "" };
+
+    handleChange = (e) => {
+        // Standard controlled input state management
+        this.setState({searchText: e.target.value});
+    }
+
+    handleSearch = () => {
+        // Navigate function has been injected into props. Just pass it another state
+        // object -- JARL will figure out the correct URL, i.e. `/search?q=some%20text`
+        this.props.navigate({ page: "search", search: this.state.searchText });
+    }
+
+    render() {
+        <form>
+            <input type="text" value={this.state.searchText} onChange={this.handleChange} placeholder="Enter search term" />
+            <button onClick={this.handleSearch}>Search</button>
+        </form>
+    }
+)
+
+// Export class and decorate with the HOC
+export default withNavigate()(SearchForm);
+```
+
+That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. More advanced demos (such as data preloading, state mapping, Redux integration) will be showcased in the demo site...
+
 ## Latest release, status, roadmap
 
-`0.5.0` marks an important milestone - JARL is getting very close to feature
+`0.5.0` marked an important milestone - JARL is getting very close to feature
 completeness! This release brings a slew of new features: notably query string
 support, new properties `basePath` and `performInitialNavigation` on the `NavigationProvider`,
 and a new `withContext` HOC to gain access to JARL's `stringify` function.
@@ -43,12 +191,12 @@ What is left to do before the version can become 1.0.0-alpha? The main points ar
 
 * Documentation and demos. The current set of demos (and E2E tests) show off many features and
   scenarios but there is plenty missing, and documentation is drastically incomplete.
-* Match and stringify callbacks on routes
 * Redirects and authorisation on routes
 * Integrations:
     * React Native (probably just needs an alternate Link component)
     * Improve support for Redux, perhaps enabling navigation via dispatch, consider Saga support
 * Fix isActive to work on partial paths / query strings
+* A couple of new components: function-as-child versions of withLocation and Link
 * Figure out how to support animated transitions (but maybe leave this until after 1.0.0)
 * Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
 * Query strings: support nesting and arrays. We use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
@@ -59,17 +207,8 @@ This might look a lot but we're really not far off! And much of this is "nice to
 
 ## Documentation
 
-See what docs there are here:
-https://github.com/downplay/jarl-react/tree/master/docs
-
-Also, take a look through the source code of the demos - they provide the best available documentation right now!
+Lack of documentation is the biggest reason you shouldn't use this router right now. If you want to see some detail examples, take a look through the source code of the demos:
 https://github.com/downplay/jarl-react/tree/master/demo/source/demos
-
-## Install
-
-```
-yarn add jarl-react
-```
 
 ## Tests & Demos
 
@@ -107,7 +246,20 @@ Query string parsing by `qs`: https://github.com/ljharb/qs
 
 Some ideas and inspiration from `redux-first-router`: https://github.com/faceyspacey/redux-first-router
 
+And to some extent the [Autoroute](http://www.davidhayden.me/blog/autoroute-custom-patterns-and-route-regeneration-in-orchard-1.4) feature of Orchard CMS, which I was a contributor to many moons ago ;)
+
+Recommended browser history abstractions by `history`: https://github.com/ReactTraining/history
+
 ## Version History
+
+### Next
+
+* Added a half-decent example to the README
+
+### 0.6.0
+
+* Now supports `match` and `stringify` functions on routes. These allow custom transforming both ways between state and URLs, for example converting :year/:month/:day into a Date object and back again
+* Fix: Removed usage of Object.values due to no support in older browsers and requirement of a polyfill
 
 ### 0.5.1
 
