@@ -35,7 +35,8 @@ class Pages extends Component {
     };
 
     render() {
-        // JARL injects the `page` prop from state via withLocation HOC
+        // JARL injects the `page` prop from state via `withLocation` HOC
+        // and the `stringify` prop via `withContext`
         const { page, missingPath, stringify } = this.props;
         const { showMarker } = this.state;
 
@@ -81,6 +82,8 @@ class Pages extends Component {
 }
 
 export default compose(
-    withContext(({ stringify }) => ({ stringify })),
-    withLocation()
+    // Inject all fields from location state as props
+    withLocation(),
+    // Also inject the stringify function from the navigationContext
+    withContext(({ stringify }) => ({ stringify }))
 )(Pages);

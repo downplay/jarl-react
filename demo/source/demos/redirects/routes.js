@@ -41,10 +41,10 @@ const routes = [
                 // Happy path: when the content exists, resolve it to allow navigation
                 .then(content => ({ content, ...rest }))
                 // Catch because content doesn't exist; resolve this into a redirect
-                .catch(() =>
+                .catch(e =>
                     redirect({
                         page: "landing",
-                        reason: `Content was not found: '${slug}'`
+                        reason: e.message
                     })
                 )
     }
