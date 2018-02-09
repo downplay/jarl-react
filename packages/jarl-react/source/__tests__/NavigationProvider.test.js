@@ -160,15 +160,18 @@ describe("<NavigationProvider/>", () => {
                     onNavigateStart={onNavigateStart}
                     onNavigateEnd={onNavigateEnd}
                     onNavigateError={onNavigateError}
+                    performInitialNavigation={false}
                 />
             ).instance();
+            expect(onNavigateStart).not.toHaveBeenCalled();
         });
 
         test("resolve functions are executed", async () => {
             provider.doNavigation("/test-resolve");
             expect(onNavigateStart).toHaveBeenCalled();
             expect(onNavigateEnd).not.toHaveBeenCalled();
-            await wait(10);
+            // TODO: Maybe modify tests to use sinon
+            await wait(11);
             expect(onNavigateEnd).toHaveBeenCalled();
             expect(one).toEqual(true);
         });
@@ -177,7 +180,7 @@ describe("<NavigationProvider/>", () => {
             provider.doNavigation("/test-resolve/nested");
             expect(onNavigateStart).toHaveBeenCalled();
             expect(onNavigateEnd).not.toHaveBeenCalled();
-            await wait(10);
+            await wait(11);
             expect(onNavigateEnd).toHaveBeenCalled();
             expect(one).toEqual(true);
             expect(two).toEqual(true);
@@ -185,28 +188,46 @@ describe("<NavigationProvider/>", () => {
 
         test("redirect from state is followed", () => {
             provider.doNavigation("/test-redirect-state");
-            expect(onNavigateStart).toHaveBeenCalledWith(
-                { reason: "state" },
-                "/redirected"
+            expect(history.push).toHaveBeenCalledWith(
+                "/redirected?because=state"
             );
         });
 
         test("redirect from matcher is followed", () => {
             provider.doNavigation("/test-redirect-match");
-            expect(onNavigateStart).toHaveBeenCalledWith();
+            expect(history.push).toHaveBeenCalledWith(
+                "/redirected?because=match"
+            );
         });
 
-        test("redirect from resolver is followed", () => {
+        test("redirect from resolver is followed", async () => {
             provider.doNavigation("/test-redirect-resolve");
-            expect(onNavigateStart).toHaveBeenCalledWith();
+            expect(onNavigateStart).toHaveBeenCalled();
+            await wait(0);
+            expect(history.push).toHaveBeenCalledWith(
+                "/redirected?because=resolve"
+            );
         });
 
-        test("error in resolve is passed to handler", () => {
-            provider.doNavigation("/test-redirect-resolve?error");
-            expect(onNavigateEnd).not.toHaveBeenCalled();
-            expect(onNavigateError).not.toHaveBeenCalled();
+        test("error in resolve is passed to handler", async () => {
+            provider.doNavigation("/test-redirect-resolve?error=true");
+            expect(onNavigateStart).toHaveBeenCalled();
+            await wait(0);
+            expect(onNavigateError).toHaveBeenCalledWith({
+                branch: [
+                    {
+                        path: "/test-redirect-resolve?error=(:error)",
+                        resolve: expect.any(Function),
+                        state: {}
+                    }
+                ],
+                error: new Error("Something bad happened"),
+                path: "/test-redirect-resolve?error=true",
+                state: { error: "true" }
+            });
         });
 
-        test("catch circular redirects", () => {});
+        // TODO: Very important!
+        test.skip("prevents circular redirects", () => {});
     });
 });

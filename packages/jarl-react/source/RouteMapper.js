@@ -57,6 +57,8 @@ const routeResolvesKey = (route, key, value) => {
 };
 
 // TODO: This won't support qs's nested/array queries
+// TODO: Also no support for having truthy bool props with no
+// equals sign like /foo?boolProp
 const convertToPatterns = query => {
     const patterns = {};
     for (const key of Object.keys(query)) {
@@ -165,6 +167,11 @@ const hydrateQuery = (pattern, state) => {
     return query;
 };
 
+const unroll = (item, next) =>
+    item ? [...unroll(next(item), next), item.route] : [];
+
+const unrollBranch = route => unroll(route, r => r.parent);
+
 /**
  * Responsible for processing and storying a route table,
  * and performing matching and serialization of URLs
@@ -210,14 +217,14 @@ class RouteMapper {
             // It seems inconsistent that we can skip state redirects
             // TODO: Also consider are state redirects just overengineering
             // when all redirect cases can be handled in match regardless
-            let state = { route };
+            let { state } = route;
             if (!(state instanceof Redirect)) {
                 state =
                     !parent || parent instanceof Redirect
                         ? { ...state }
                         : { ...parent.state, ...state };
             }
-            // TODO: Similar reduction as above for both resolve and stringify
+            // TODO: Similar reductions as above for both resolve and stringify
             const mappedRoute = {
                 ...route,
                 route,
@@ -241,9 +248,7 @@ class RouteMapper {
      * @param {string} path
      */
     match(fullPath) {
-        let state = {};
         const [path, query] = splitPath(fullPath);
-
         for (const route of this.routes) {
             const pathMatch = route.pattern && route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
@@ -255,17 +260,16 @@ class RouteMapper {
                 for (const key of Object.keys(pathMatch)) {
                     decoded[key] = decodeURIComponent(pathMatch[key]);
                 }
-                // TODO: Handle state funcs, auth
-                state = { ...route.state, ...decoded, ...queryMatch };
-
+                const state =
+                    route.state instanceof Redirect
+                        ? route.state
+                        : { ...route.state, ...decoded, ...queryMatch };
                 // Call any additional matching logic
+                // Note: Matchers can still affect the redirect from state
                 const matched = route.match(state);
                 if (matched) {
-                    const unroll = (item, next) =>
-                        item ? [...unroll(next(item), next), item.route] : [];
-                    const branch = unroll(route, r => r.parent);
                     return {
-                        branch,
+                        branch: unrollBranch(route),
                         state: matched
                     };
                 }

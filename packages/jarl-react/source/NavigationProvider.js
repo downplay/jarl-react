@@ -138,9 +138,19 @@ export default class NavigationProvider extends Component {
         }
         const promises = [promise];
         // Run any resolvers on the route branch
+        // TODO: (Serious) no results of resolve are actually being used yet!
         for (const leaf of branch) {
             if (leaf.resolve) {
-                promises.push(leaf.resolve(this.props.context()).then());
+                promises.push(
+                    leaf.resolve(state, this.props.context()).then(
+                        // Convert redirect into a Promise rejection, this
+                        // ensures that the Promise chain is broken after a redirect
+                        result =>
+                            result instanceof Redirect
+                                ? Promise.reject(result)
+                                : result
+                    )
+                );
             }
         }
         // Wait for all promises to resolve, then navigation is over
@@ -154,8 +164,8 @@ export default class NavigationProvider extends Component {
                 // If a redirect was thrown, follow it
                 if (error instanceof Redirect) {
                     this.handleNavigation(error.to);
-                } else if (this.props.onNavigateEnd) {
-                    // Otherwise handle
+                } else if (this.props.onNavigateError) {
+                    // Otherwise send to error handler
                     this.props.onNavigateError({ error, state, path, branch });
                 } else {
                     // Unable to complete navigation, error not handled
