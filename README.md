@@ -99,7 +99,7 @@ ReactDOM.render(
 );
 ```
 
-(See [history] package for `createBrowserHistory` and more!)
+(See [history](https://github.com/ReactTraining/history) package for `createBrowserHistory` and other options!)
 
 And finally in your `App` component you can inject the state to perform the actual routing:
 
@@ -180,30 +180,31 @@ export default withNavigate()(SearchForm);
 
 That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. More advanced demos (such as data preloading, state mapping, Redux integration) will be showcased in the demo site...
 
-## Latest release, status, roadmap
+## Status and roadmap
 
-`0.5.0` marked an important milestone - JARL is getting very close to feature
-completeness! This release brings a slew of new features: notably query string
-support, new properties `basePath` and `performInitialNavigation` on the `NavigationProvider`,
-and a new `withContext` HOC to gain access to JARL's `stringify` function.
+JARL is a fully working and powerful routing library that already supports pretty much every use case enabled by other major routers (`react-router` being the de facto benchmark) and many scenarios they do not. But I do not quite feel
 
 What is left to do before the version can become 1.0.0-alpha? The main points are:
 
 * Documentation and demos. The current set of demos (and E2E tests) show off many features and
   scenarios but there is plenty missing, and documentation is drastically incomplete.
-* Redirects and authorisation on routes
+* Rethink nomenclature of `context` and `state`, these are overloaded terms, and this will be a breaking change in 1.0.0
 * Integrations:
     * React Native (probably just needs an alternate Link component)
     * Improve support for Redux, perhaps enabling navigation via dispatch, consider Saga support
-* Fix isActive to work on partial paths / query strings
+* Fix isActive to work via RouteMapper hierarchy to support partial paths and query strings
+* Publish demos somewhere!
+
+Some additional plans that are more "nice-to-have" and might wait until after 1.0.0 and possibly provided in separate packages:
+
+* Some code restructuring as some of the main classes have grown bloated and overly complex as functionality has been added in, making things harder to test and debug
 * A couple of new components: function-as-child versions of withLocation and Link
-* Figure out how to support animated transitions (but maybe leave this until after 1.0.0)
+* Figure out some support for animated transitions.
 * Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
 * Query strings: support nesting and arrays. We use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
 * Query strings: support compound interpolations for optional query keys. This means multiple interpolations on a single token, a good example might be: `/range?start=(:startYear-:startMonth-:startDay)&end=(:endYear-:endMonth-:endDay)`. This will not work and is pretty hard to support right now.
-* Publish demos somewhere!
 
-This might look a lot but we're really not far off! And much of this is "nice to have". My priority right now is getting some good documentation written so people can actually use this.
+. My priority right now is getting some good documentation written so people can actually use this.
 
 ## Documentation
 
@@ -254,6 +255,7 @@ Recommended browser history abstractions by `history`: https://github.com/ReactT
 
 ### Next
 
+* New feature: redirects. Can be triggered from `state`, `match`, or `resolve` by returning a `redirect` object
 * Added a half-decent example to the README
 
 ### 0.6.0
