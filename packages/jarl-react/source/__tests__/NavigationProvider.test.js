@@ -6,6 +6,7 @@ import Adapter from "enzyme-adapter-react-16";
 import NavigationProvider from "../NavigationProvider";
 import RouteMapper from "../RouteMapper";
 import mockHistory from "./mocks/mockHistory";
+import redirect from "../redirect";
 
 configure({ adapter: new Adapter() });
 
@@ -44,6 +45,29 @@ describe("<NavigationProvider/>", () => {
                             })
                     }
                 ]
+            },
+            {
+                path: "/redirected?because=:reason",
+                state: { page: "redirected" }
+            },
+            {
+                path: "/test-redirect-state",
+                state: redirect({ page: "redirected", reason: "state" })
+            },
+            {
+                path: "/test-redirect-match",
+                state: {},
+                match: () => redirect({ page: "redirected", reason: "match" })
+            },
+            {
+                path: "/test-redirect-resolve?error=(:error)",
+                state: {},
+                resolve: async ({ error }) => {
+                    if (error) {
+                        throw new Error("Something bad happened");
+                    }
+                    return redirect({ page: "redirected", reason: "resolve" });
+                }
             }
         ];
         history = mockHistory();
@@ -120,18 +144,27 @@ describe("<NavigationProvider/>", () => {
     });
 
     describe("doNavigation", () => {
-        test("resolve functions are executed", async () => {
-            const onNavigateStart = jest.fn();
-            const onNavigateEnd = jest.fn();
+        let onNavigateStart;
+        let onNavigateEnd;
+        let onNavigateError;
+        let provider;
 
-            const provider = shallow(
+        beforeEach(() => {
+            onNavigateStart = jest.fn();
+            onNavigateEnd = jest.fn();
+            onNavigateError = jest.fn();
+            provider = shallow(
                 <NavigationProvider
                     routes={routes}
                     history={history}
                     onNavigateStart={onNavigateStart}
                     onNavigateEnd={onNavigateEnd}
+                    onNavigateError={onNavigateError}
                 />
             ).instance();
+        });
+
+        test("resolve functions are executed", async () => {
             provider.doNavigation("/test-resolve");
             expect(onNavigateStart).toHaveBeenCalled();
             expect(onNavigateEnd).not.toHaveBeenCalled();
@@ -141,17 +174,6 @@ describe("<NavigationProvider/>", () => {
         });
 
         test("nested resolve functions are executed", async () => {
-            const onNavigateStart = jest.fn();
-            const onNavigateEnd = jest.fn();
-
-            const provider = shallow(
-                <NavigationProvider
-                    routes={routes}
-                    history={history}
-                    onNavigateStart={onNavigateStart}
-                    onNavigateEnd={onNavigateEnd}
-                />
-            ).instance();
             provider.doNavigation("/test-resolve/nested");
             expect(onNavigateStart).toHaveBeenCalled();
             expect(onNavigateEnd).not.toHaveBeenCalled();
@@ -160,5 +182,31 @@ describe("<NavigationProvider/>", () => {
             expect(one).toEqual(true);
             expect(two).toEqual(true);
         });
+
+        test("redirect from state is followed", () => {
+            provider.doNavigation("/test-redirect-state");
+            expect(onNavigateStart).toHaveBeenCalledWith(
+                { reason: "state" },
+                "/redirected"
+            );
+        });
+
+        test("redirect from matcher is followed", () => {
+            provider.doNavigation("/test-redirect-match");
+            expect(onNavigateStart).toHaveBeenCalledWith();
+        });
+
+        test("redirect from resolver is followed", () => {
+            provider.doNavigation("/test-redirect-resolve");
+            expect(onNavigateStart).toHaveBeenCalledWith();
+        });
+
+        test("error in resolve is passed to handler", () => {
+            provider.doNavigation("/test-redirect-resolve?error");
+            expect(onNavigateEnd).not.toHaveBeenCalled();
+            expect(onNavigateError).not.toHaveBeenCalled();
+        });
+
+        test("catch circular redirects", () => {});
     });
 });

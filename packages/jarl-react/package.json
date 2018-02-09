@@ -29,9 +29,7 @@
         "withLocation.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
@@ -58,7 +56,8 @@
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0",
-        "qs": "^6.5.1"
+        "qs": "^6.5.1",
+        "invariant": "^2.2.2"
     },
     "devDependencies": {
         "babel-jest": "^22.0.4",

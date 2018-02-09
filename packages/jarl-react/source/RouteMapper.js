@@ -1,5 +1,6 @@
 import qs from "qs";
 import UrlPattern from "./lib/url-pattern";
+import { Redirect } from "./redirect";
 
 // Removes any double slashes
 const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
@@ -185,13 +186,15 @@ class RouteMapper {
             const path = parent ? joinPaths(parent.path, childPath) : childPath;
             let query = convertToPatterns(childQuery);
             query = parent ? { ...parent.query, ...query } : query;
-            // Make sure we apply match right up the parent hierarchy
+            // Take either this matcher or the parent's one
             let match = route.match || (parent && parent.match);
+            // But if both existed compose them together
             if (route.match && parent) {
                 match = state => {
                     const result = parent.match(state);
-                    if (result === false) {
-                        return false;
+                    // Redirects and false returns will override any child routes
+                    if (result === false || result instanceof Redirect) {
+                        return result;
                     }
                     return { ...result, ...route.match(state) };
                 };
@@ -199,6 +202,20 @@ class RouteMapper {
             // No-op match
             if (!match) {
                 match = state => state;
+            }
+            // Handle possible redirect state. If the parent was a redirect,
+            // throw away, otherwise merge parent state
+            // TODO: This seems like an unintended consequence of nesting something
+            // under a redirect. State should still be merged from grandparents.
+            // It seems inconsistent that we can skip state redirects
+            // TODO: Also consider are state redirects just overengineering
+            // when all redirect cases can be handled in match regardless
+            let state = { route };
+            if (!(state instanceof Redirect)) {
+                state =
+                    !parent || parent instanceof Redirect
+                        ? { ...state }
+                        : { ...parent.state, ...state };
             }
             // TODO: Similar reduction as above for both resolve and stringify
             const mappedRoute = {
@@ -208,9 +225,7 @@ class RouteMapper {
                 parent,
                 query,
                 match,
-                state: parent
-                    ? { ...parent.state, ...route.state }
-                    : { ...route.state },
+                state,
                 pattern: path ? new UrlPattern(path) : null
             };
             this.routes.push(mappedRoute);
