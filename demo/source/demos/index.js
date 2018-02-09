@@ -1,5 +1,4 @@
-import * as demo1 from "./demo1";
-import * as demo2 from "./demo2";
+import * as basicRouting from "./basicRouting";
+import * as queryStrings from "./queryStrings";
 
-export { demo1 as basicRouting };
-export { demo2 as queryStrings };
+export { basicRouting, queryStrings };
