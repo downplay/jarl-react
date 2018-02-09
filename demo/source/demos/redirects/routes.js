@@ -1,4 +1,5 @@
 import { redirect } from "jarl-react";
+import api from "./api";
 
 const routes = [
     {
@@ -19,8 +20,8 @@ const routes = [
         // Synchronous conditional redirect. Here the match function returns a
         // redirect conditionally based on some global auth state. The auth
         // state in this case is passed via `NavigationProvider`'s `context` prop.
-        path: "/sync",
-        state: { page: "syncAuth" },
+        path: "/admin",
+        state: { page: "admin" },
         match: (state, { authenticated }) =>
             authenticated
                 ? state
@@ -30,12 +31,14 @@ const routes = [
         // Asynchronous redirect is performed through the `resolve` handler.
         // This allows us to return a Promise which can affect the final resolution
         // of a route, in this case possibly resolving to a redirect if the
-        // content doesn't exist.
-        path: "/async/:slug",
-        state: { page: "asyncAuth" },
+        // content doesn't exist. Redirect happens before we ever render the page
+        // in question: there will be no flash of an incomplete page.
+        path: "/content/:slug",
+        state: { page: "content" },
         resolve: ({ slug, ...rest }) =>
-            fakeApi
+            api
                 .get(slug)
+                // Happy path: when the content exists, resolve it to allow navigation
                 .then(content => ({ content, ...rest }))
                 // Catch because content doesn't exist; resolve this into a redirect
                 .catch(() =>
