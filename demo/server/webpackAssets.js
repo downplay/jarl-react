@@ -31,8 +31,8 @@ function filterExtension(assets, extension) {
         .map(s => `/scripts/${s}`);
 }
 
-async function webpackAssets() {
-    const assets = await parseWebpackAssetManifest();
+async function webpackAssets(context) {
+    const assets = await parseWebpackAssetManifest(context);
 
     return {
         scripts: filterExtension(assets, "js"),

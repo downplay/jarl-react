@@ -18,7 +18,6 @@ const webpackConfigClient = ({ basePath, mode, ...context }) => {
             cacheDirectory: path.resolve(basePath, ".cache"),
             ignore: ["dist", "node_modules/**/*"],
             plugins: [
-                "react-hot-loader/babel",
                 [
                     "babel-plugin-transform-runtime",
                     {

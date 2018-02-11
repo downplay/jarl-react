@@ -21,6 +21,7 @@
         "hocFactory.js",
         "Link.js",
         "NavigationProvider.js",
+        "redirect.js",
         "RouteMapper.js",
         "SimpleProvider.js",
         "withActive.js",
