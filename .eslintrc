@@ -40,6 +40,7 @@
         "import/no-mutable-exports": 0,
         "no-confusing-arrow": 0,
         "no-cond-assign": 0,
-        "no-mixed-operators": 0
+        "no-mixed-operators": 0,
+        "prefer-destructuring": 0
     }
 }
