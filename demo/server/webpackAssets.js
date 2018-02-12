@@ -26,9 +26,9 @@ async function parseWebpackAssetManifest({
 }
 
 function filterExtension(assets, extension) {
-    return Object.values(assets).filter(a =>
-        a.match(new RegExp(`\\.${extension}$`))
-    );
+    return Object.values(assets)
+        .filter(a => a.match(new RegExp(`\\.${extension}$`)))
+        .map(s => `/${s}`);
 }
 
 async function webpackAssets(context) {
