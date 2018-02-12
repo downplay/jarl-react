@@ -8,7 +8,9 @@ const context = {
     name: "JARL demos",
     mode: process.env.NODE_ENV || "development",
     port: 3210,
-    hmrPath: "__wat"
+    hmrPath: "__wat",
+    manifestName: "asset-manifest.json",
+    outputPath: "dist"
 };
 
 context.webpackConfig = webpackConfig(context);

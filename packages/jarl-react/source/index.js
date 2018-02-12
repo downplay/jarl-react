@@ -1,6 +1,6 @@
 export { default as NavigationProvider } from "./NavigationProvider";
-export { default as RouteMapper } from "./RouteMapper";
-export { default as redirect } from "./redirect";
+export { default as RouteMapper, joinPaths } from "./RouteMapper";
+export { default as redirect, Redirect } from "./redirect";
 export { default as Link } from "./Link";
 export { default as withActive } from "./withActive";
 export { default as withNavigate } from "./withNavigate";

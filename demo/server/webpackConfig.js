@@ -8,7 +8,7 @@ const makeWebpackConfig = ({
     basePath,
     target = "web",
     sourceEntry,
-    outputPath = "dist",
+    outputPath,
     babelConfig = {},
     isServer = false,
     outputFilename = "[name].[hash].js",
@@ -33,7 +33,6 @@ const makeWebpackConfig = ({
         output: {
             filename: outputFilename,
             path: path.resolve(basePath, outputPath),
-            publicPath: "/scripts/",
             sourcePrefix: ""
         },
         cache: true,
@@ -63,7 +62,7 @@ const makeWebpackConfig = ({
             rules: [
                 {
                     test: /\.jsx?$/,
-                    exclude: [/node_modules/, /dist/],
+                    exclude: [/node_modules/, /dist/, /packages/],
                     loaders: [
                         {
                             loader: "babel-loader",

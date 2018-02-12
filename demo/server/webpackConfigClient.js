@@ -5,18 +5,16 @@ import ExtractTextPlugin from "extract-text-webpack-plugin";
 
 import webpackConfig from "./webpackConfig";
 
-const webpackConfigClient = ({ basePath, mode, ...context }) => {
+const webpackConfigClient = context => {
+    const { mode, basePath, outputPath, manifestName } = context;
     const DEV = mode !== "production";
     const config = webpackConfig({
-        basePath,
-        mode,
         ...context,
         sourceEntry: "./source/index.js",
-        outputPath: "dist/client",
+        outputPath: "dist",
         babelConfig: {
             babelrc: false,
             cacheDirectory: path.resolve(basePath, ".cache"),
-            ignore: ["dist", "node_modules/**/*"],
             plugins: [
                 [
                     "babel-plugin-transform-runtime",
@@ -61,7 +59,7 @@ const webpackConfigClient = ({ basePath, mode, ...context }) => {
             // Force it to write to disk even when using webpack-dev-server, so it
             // can be read from express app
             writeToFileEmit: true,
-            fileName: "../bundle-manifest.json"
+            fileName: `../${outputPath}/${manifestName}`
         })
     );
 

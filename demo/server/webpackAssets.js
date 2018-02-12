@@ -7,11 +7,11 @@ function wait(ms) {
 
 async function parseWebpackAssetManifest({
     basePath,
-    buildPath,
+    outputPath,
     manifestName
 }) {
     const MAX_TRIES = 10;
-    const assetManifest = path.join(basePath, buildPath, manifestName);
+    const assetManifest = path.join(basePath, outputPath, manifestName);
     let tries = 0;
     while (tries < MAX_TRIES) {
         if (await fs.exists(assetManifest)) {
@@ -26,9 +26,9 @@ async function parseWebpackAssetManifest({
 }
 
 function filterExtension(assets, extension) {
-    return Object.values(assets)
-        .filter(a => a.match(new RegExp(`\\.${extension}$`)))
-        .map(s => `/scripts/${s}`);
+    return Object.values(assets).filter(a =>
+        a.match(new RegExp(`\\.${extension}$`))
+    );
 }
 
 async function webpackAssets(context) {

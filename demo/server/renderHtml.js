@@ -35,7 +35,7 @@ const renderHtml = ({
             ${styledTags}
         </head>
         <body ${bodyAttributes.toString()}>
-            <div id="react-root">${appHtml}</div>
+            <div id="root">${appHtml}</div>
             ${
                 initialState
                     ? `<script type="text/javascript">
