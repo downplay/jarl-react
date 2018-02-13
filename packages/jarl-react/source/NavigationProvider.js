@@ -123,7 +123,10 @@ export default class NavigationProvider extends Component {
     };
 
     doNavigation(path) {
-        const { branch, state } = this.state.routes.match(path);
+        const { branch, state } = this.state.routes.match(
+            path,
+            this.props.context()
+        );
         invariant(state, `Unmatched URL '${path}'`);
         // Check for and follow redirects
         if (state instanceof Redirect) {

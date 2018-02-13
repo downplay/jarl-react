@@ -247,7 +247,7 @@ class RouteMapper {
      * Matches the path recursively against the route definitions
      * @param {string} path
      */
-    match(fullPath) {
+    match(fullPath, context = {}) {
         const [path, query] = splitPath(fullPath);
         for (const route of this.routes) {
             const pathMatch = route.pattern && route.pattern.match(path);
@@ -266,7 +266,7 @@ class RouteMapper {
                         : { ...route.state, ...decoded, ...queryMatch };
                 // Call any additional matching logic
                 // Note: Matchers can still affect the redirect from state
-                const matched = route.match(state);
+                const matched = route.match(state, context);
                 if (matched) {
                     return {
                         branch: unrollBranch(route),

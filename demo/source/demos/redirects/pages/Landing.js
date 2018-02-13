@@ -19,7 +19,11 @@ const Landing = ({ reason, authenticated, onToggleLogin }) => (
                 To control the admin redirect, use this button to log in or out:
             </p>
             <p>
-                <button type="button" onClick={onToggleLogin}>
+                <button
+                    type="button"
+                    onClick={onToggleLogin}
+                    data-test="login-button"
+                >
                     {authenticated ? "Logout" : "Login"}
                 </button>
             </p>

@@ -60,6 +60,14 @@ describe("<NavigationProvider/>", () => {
                 match: () => redirect({ page: "redirected", reason: "match" })
             },
             {
+                path: "/test-match-state-context/:someState",
+                state: {},
+                match: ({ someState }, { callback }) => {
+                    callback(someState);
+                    return { someState };
+                }
+            },
+            {
                 path: "/test-redirect-resolve?error=(:error)",
                 state: {},
                 resolve: async ({ error }) => {
@@ -148,11 +156,13 @@ describe("<NavigationProvider/>", () => {
         let onNavigateEnd;
         let onNavigateError;
         let provider;
+        let contextCallback;
 
         beforeEach(() => {
             onNavigateStart = jest.fn();
             onNavigateEnd = jest.fn();
             onNavigateError = jest.fn();
+            contextCallback = jest.fn();
             provider = shallow(
                 <NavigationProvider
                     routes={routes}
@@ -161,6 +171,7 @@ describe("<NavigationProvider/>", () => {
                     onNavigateEnd={onNavigateEnd}
                     onNavigateError={onNavigateError}
                     performInitialNavigation={false}
+                    context={() => ({ callback: contextCallback })}
                 />
             ).instance();
             expect(onNavigateStart).not.toHaveBeenCalled();
@@ -198,6 +209,11 @@ describe("<NavigationProvider/>", () => {
             expect(history.push).toHaveBeenCalledWith(
                 "/redirected?because=match"
             );
+        });
+
+        test("state and context are passed into matcher", () => {
+            provider.doNavigation("/test-match-state-context/testfoo");
+            expect(contextCallback).toHaveBeenCalledWith("testfoo");
         });
 
         test("redirect from resolver is followed", async () => {
