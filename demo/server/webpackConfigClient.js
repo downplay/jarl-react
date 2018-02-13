@@ -28,6 +28,7 @@ const webpackConfigClient = context => {
                 "babel-plugin-transform-class-properties",
                 "babel-plugin-transform-object-rest-spread",
                 "babel-plugin-transform-react-stateless-component-name",
+                "babel-plugin-syntax-dynamic-import",
                 ["babel-plugin-emotion", { sourceMap: DEV, autoLabel: DEV }]
             ],
             presets: [

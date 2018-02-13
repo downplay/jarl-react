@@ -25,6 +25,10 @@ const demos = [
     {
         name: "Redux Integration",
         to: toDemo("reduxIntegration")
+    },
+    {
+        name: "Code Splitting",
+        to: toDemo("codeSplitting")
     }
 ];
 

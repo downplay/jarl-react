@@ -25,18 +25,14 @@ async function parseWebpackAssetManifest({
     return {};
 }
 
-function filterExtension(assets, extension) {
-    return Object.values(assets)
-        .filter(a => a.match(new RegExp(`\\.${extension}$`)))
-        .map(s => `/${s}`);
-}
+const withPath = asset => `/${asset}`;
 
 async function webpackAssets(context) {
     const assets = await parseWebpackAssetManifest(context);
 
     return {
-        scripts: filterExtension(assets, "js"),
-        styles: filterExtension(assets, "css")
+        scripts: [withPath(assets["bundle.js"])],
+        styles: assets["bundle.css"] ? [withPath(assets["bundle.css"])] : []
     };
 }
 

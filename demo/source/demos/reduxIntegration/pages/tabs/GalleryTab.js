@@ -25,7 +25,7 @@ const GalleryTab = ({ imageId }) => (
             <p>Image id {imageId} not found!</p>
         )}
         {Object.entries(galleryData).map(([id, image]) => (
-            <Link to={toImage(id)}>
+            <Link key={id} to={toImage(id)}>
                 <img width="100" src={image.url} alt="Gallery pic" />
             </Link>
         ))}
