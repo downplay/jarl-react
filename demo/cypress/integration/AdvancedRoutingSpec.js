@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:1234/advancedRouting";
+const root = "http://localhost:3210/advancedRouting";
 
 describe("Demo 3 - advanced routing", () => {
     it("loads home page", () => {

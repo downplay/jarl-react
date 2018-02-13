@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:1234/reduxIntegration";
+const root = "http://localhost:3210/reduxIntegration";
 
 describe("Demo 4 - Redux integration", () => {
     it("loads home page", () => {
