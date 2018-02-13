@@ -120,6 +120,16 @@ describe("RouteMapper", () => {
         expect(match.state).toEqual({ id: "Some Thing" });
     });
 
+    test("it decodes more URI components", () => {
+        const routes = dynamicRootRoutes();
+        const match = routes.match(
+            "/Content%20was%20not%20found%3A%20%27not-a-real-page%27"
+        );
+        expect(match.state).toEqual({
+            id: "Content was not found: 'not-a-real-page'"
+        });
+    });
+
     test("match wildcard paths", () => {
         const routes = wildcardRoutes();
         const match = routes.match("/test");
@@ -197,6 +207,25 @@ describe("RouteMapper", () => {
                 expect(match.state).toEqual({
                     search: true,
                     searchTerm: "something"
+                });
+            });
+
+            test("decodes URI components", () => {
+                const match = routes.match("/?q=something%20else");
+                expect(match.state).toEqual({
+                    search: true,
+                    searchTerm: "something else"
+                });
+            });
+
+            test("decodes more URI components", () => {
+                // Example taken from redirects demo, was failing on apostrophes
+                const match = routes.match(
+                    "/?q=Content%20was%20not%20found%3A%20%27not-a-real-page%27"
+                );
+                expect(match.state).toEqual({
+                    search: true,
+                    searchTerm: "Content was not found: 'not-a-real-page'"
                 });
             });
 

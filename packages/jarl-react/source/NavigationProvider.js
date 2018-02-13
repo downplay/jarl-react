@@ -158,9 +158,14 @@ export default class NavigationProvider extends Component {
         }
         // Wait for all promises to resolve, then navigation is over
         Promise.all(promises)
-            .then(() => {
+            .then(results => {
+                const finalState = results.reduce(
+                    (prevState, result = {}) => ({ ...prevState, ...result }),
+                    state
+                );
+                // TODO: Invariant if onNavigateEnd doesn't exist?
                 if (this.props.onNavigateEnd) {
-                    this.props.onNavigateEnd(state, path, branch);
+                    this.props.onNavigateEnd(finalState, path, branch);
                 }
             })
             .catch(error => {

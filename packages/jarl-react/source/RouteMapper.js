@@ -89,6 +89,12 @@ const matches = (pattern, value) => {
     return false;
 };
 
+// Some components weren't getting encoded even though they break pattern matching
+// (e.g. apostrophes)
+// https://stackoverflow.com/questions/18251399/why-doesnt-encodeuricomponent-encode-single-quotes-apostrophes
+const rfc3986EncodeURIComponent = str =>
+    encodeURIComponent(str).replace(/[!'()*]/g, escape);
+
 const matchQuery = (pattern, query) => {
     let state = {};
     for (const key in pattern) {
@@ -98,10 +104,19 @@ const matchQuery = (pattern, query) => {
         if (key === "*" || (isOptional(pattern[key]) && !query[key])) {
             continue;
         }
-        const match = matches(pattern[key], query[key]);
+        // `qs` decodes URI components, need to re-encode them for url-pattern's
+        // matching to work properly.
+        const match = matches(
+            pattern[key],
+            rfc3986EncodeURIComponent(query[key])
+        );
         if (!match) {
             return false;
         }
+        // Decode matched values again
+        Object.keys(match).forEach(k => {
+            match[k] = decodeURIComponent(match[k]);
+        });
         state = { ...state, ...match };
     }
 
@@ -112,10 +127,16 @@ const matchQuery = (pattern, query) => {
         if (isOptional(pattern[key]) && !query[key]) {
             continue;
         }
-        const match = matches(pattern[key in pattern ? key : "*"], query[key]);
+        const match = matches(
+            pattern[key in pattern ? key : "*"],
+            rfc3986EncodeURIComponent(query[key])
+        );
         if (!match) {
             return false;
         }
+        Object.keys(match).forEach(k => {
+            match[k] = decodeURIComponent(match[k]);
+        });
         if (key in pattern) {
             // Normally spread match over state
             state = { ...state, ...match };
@@ -256,7 +277,8 @@ class RouteMapper {
             if (pathMatch && queryMatch) {
                 // Got a match, compile state from what we know
                 const decoded = {};
-                // TODO: Also decode query string? Do they get decoded by qs?
+                // Decode special characters in pattern URI components; query strings
+                // are already decoded in matchQuery
                 for (const key of Object.keys(pathMatch)) {
                     decoded[key] = decodeURIComponent(pathMatch[key]);
                 }

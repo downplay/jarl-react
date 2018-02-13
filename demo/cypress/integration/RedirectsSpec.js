@@ -46,4 +46,31 @@ describe("JARL Demos - Redirects", () => {
         cy.url().should("eq", `${root}/admin`);
         cy.get("[data-test=body]").should("contain", "super secret admin page");
     });
+
+    it("goes to found content page", () => {
+        cy.visit(`${root}`);
+        cy
+            .get("[data-test=found-content-link] a")
+            .should("have.attr", "href", "/redirects/content/about-us")
+            .click();
+        cy.url().should("eq", `${root}/content/about-us`);
+        cy.get("[data-test=body]").should("contain", "a Norse or Danish chief");
+    });
+
+    it("redirects to missing content page", () => {
+        cy.visit(`${root}`);
+        cy
+            .get("[data-test=missing-content-link] a")
+            .should("have.attr", "href", "/redirects/content/not-a-real-page")
+            .click();
+        cy
+            .url()
+            .should(
+                "eq",
+                `${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+            );
+        cy
+            .get("[data-test=redirect-reason]")
+            .should("contain", "Content was not found: 'not-a-real-page'");
+    });
 });
