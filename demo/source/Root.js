@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import createHistory from "history/createBrowserHistory";
 import { NavigationProvider } from "jarl-react";
+import { hot } from "react-hot-loader";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -18,16 +19,15 @@ const routes = [
     {
         path: "/:demoName?*=:all",
         state: { page: "demo" },
-        resolve: ({ demoName }) => {
+        match: ({ demoName, ...rest }) => {
             if (!demos[demoName]) {
                 return false;
             }
-            return { demo: demos[demoName] };
+            return { ...rest, demoName, demo: demos[demoName] };
         },
-        // TODO: Implement optional parameters to remove duplication
         routes: [
             {
-                path: "/*:rest?*=:all",
+                path: "/*:rest",
                 state: { subPage: true }
             }
         ]
@@ -57,9 +57,10 @@ class Root extends Component {
     };
 
     renderDemo() {
-        const { page, demoName, missingPath, query } = this.state.routing;
+        const { page, demo, demoName, missingPath, query } = this.state.routing;
+
         if (page === "demo") {
-            const { Root: DemoRoot, routes: demoRoutes } = demos[demoName];
+            const { Root: DemoRoot, routes: demoRoutes } = demo;
             return (
                 <DemoRoot
                     routes={demoRoutes}
@@ -94,4 +95,4 @@ class Root extends Component {
     }
 }
 
-export default Root;
+export default hot(module)(Root);

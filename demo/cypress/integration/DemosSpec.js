@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:1234";
+const root = "http://localhost:3210";
 
 describe("Demos Shell", () => {
     it("loads home page", () => {

@@ -4,6 +4,7 @@ import invariant from "invariant";
 
 import RouteMapper, { joinPaths } from "./RouteMapper";
 import safeJsonStringify from "./tool/safeJsonStringify";
+import { Redirect } from "./redirect";
 
 export const navigationContextShape = PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -117,36 +118,66 @@ export default class NavigationProvider extends Component {
 
     handleNavigation = to => {
         const url = typeof to === "string" ? to : this.handleStringify(to);
-        if (!url) {
-            throw new Error(
-                `Could not stringify state: ${safeJsonStringify(to)}`
-            );
-        }
+        invariant(url, `Could not stringify state: ${safeJsonStringify(to)}`);
         this.props.history.push(url);
     };
 
-    doNavigation(url) {
-        const { branch, state } = this.state.routes.match(url);
-        if (!state) {
-            // TODO: Is this the best strategy for failed nav?
-            throw new Error(`Unmatched URL '${url}'`);
+    doNavigation(path) {
+        const { branch, state } = this.state.routes.match(path);
+        invariant(state, `Unmatched URL '${path}'`);
+        // Check for and follow redirects
+        if (state instanceof Redirect) {
+            this.handleNavigation(state.to);
+            return;
         }
+        // Complete navigation
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
-            promise = this.props.onNavigateStart(state, url) || promise;
+            promise =
+                this.props.onNavigateStart(state, path, branch) || promise;
         }
         const promises = [promise];
+        // Run any resolvers on the route branch
+        // TODO: (Serious) no results of resolve are actually being used yet!
         for (const leaf of branch) {
-            if (leaf.route.data) {
-                promises.push(leaf.route.data(this.props.context()));
+            if (leaf.resolve) {
+                promises.push(
+                    leaf.resolve(state, this.props.context()).then(
+                        // Convert redirect into a Promise rejection, this
+                        // ensures that the Promise chain is broken after a redirect
+                        result =>
+                            result instanceof Redirect
+                                ? Promise.reject(result)
+                                : result
+                    )
+                );
             }
         }
-        // TODO: Gather branch data and perform auth
-        Promise.all(promises).then(() => {
-            if (this.props.onNavigateEnd) {
-                this.props.onNavigateEnd(state, url, branch);
-            }
-        });
+        // Wait for all promises to resolve, then navigation is over
+        Promise.all(promises)
+            .then(() => {
+                if (this.props.onNavigateEnd) {
+                    this.props.onNavigateEnd(state, path, branch);
+                }
+            })
+            .catch(error => {
+                // If a redirect was thrown, follow it
+                if (error instanceof Redirect) {
+                    this.handleNavigation(error.to);
+                } else if (this.props.onNavigateError) {
+                    // Otherwise send to error handler
+                    this.props.onNavigateError({ error, state, path, branch });
+                } else {
+                    // Unable to complete navigation, error not handled
+                    /* eslint-disable no-console */
+                    console.error(
+                        `Unhandled resolve failure during navigation to ${path}.
+                         Handle the resolve with a redirect instead.`
+                    );
+                    console.error(error);
+                    /* eslint-enable no-console */
+                }
+            });
     }
 
     handleStringify = state => {

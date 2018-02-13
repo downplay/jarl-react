@@ -1,5 +1,5 @@
 /* global describe test expect beforeEach */
-
+import { format } from "date-fns";
 import RouteMapper, { joinPaths } from "../RouteMapper";
 import {
     basicRoutes,
@@ -38,11 +38,8 @@ describe("RouteMapper", () => {
             expect(match.state).toEqual({ page: "home" });
             expect(match.branch).toEqual([
                 {
-                    route: {
-                        path: "/",
-                        state: { page: "home" }
-                    },
-                    match: {}
+                    path: "/",
+                    state: { page: "home" }
                 }
             ]);
         }
@@ -51,11 +48,8 @@ describe("RouteMapper", () => {
             expect(match.state).toEqual({ page: "about" });
             expect(match.branch).toEqual([
                 {
-                    route: {
-                        path: "/about",
-                        state: { page: "about" }
-                    },
-                    match: {}
+                    path: "/about",
+                    state: { page: "about" }
                 }
             ]);
         }
@@ -381,19 +375,20 @@ describe("RouteMapper", () => {
         });
     });
 
-    describe("resolvers", () => {
+    // TODO: Nested match, nested stringify
+    describe("matchers", () => {
         let routes;
         beforeEach(() => {
             routes = new RouteMapper([
                 {
                     path: "/",
                     state: {},
-                    resolve: () => ({ resolved: true })
+                    match: () => ({ matched: true })
                 },
                 {
                     path: "/dates/:date",
                     state: {},
-                    resolve: ({ date }) => {
+                    match: ({ date }) => {
                         const parsed = new Date(date);
                         if (parsed.toString() === "Invalid Date") {
                             return false;
@@ -406,16 +401,24 @@ describe("RouteMapper", () => {
                 {
                     path: "/dates/*:bad",
                     state: { badDate: true }
+                },
+                {
+                    path: "/products/:productId",
+                    state: { page: "product" },
+                    match: ({ productId, ...rest }) =>
+                        productId === "123"
+                            ? { product: { id: "123" }, ...rest }
+                            : false
                 }
             ]);
         });
 
         test("run resolve function", () => {
             const { state } = routes.match("/");
-            expect(state.resolved).toEqual(true);
+            expect(state.matched).toEqual(true);
         });
 
-        test("resolve one value into another", () => {
+        test("transform one value into another", () => {
             const { state } = routes.match("/dates/2018-05-03");
             expect(state.date).toEqual(new Date("2018-05-03"));
         });
@@ -423,6 +426,88 @@ describe("RouteMapper", () => {
         test("fall through on fail resolve", () => {
             const { state } = routes.match("/dates/foobarbaz");
             expect(state.badDate).toEqual(true);
+        });
+
+        test("matches product id", () => {
+            const { state } = routes.match("/products/123");
+            expect(state).toEqual({
+                product: { id: "123" },
+                page: "product"
+            });
+        });
+
+        test("doesn't match bad product id", () => {
+            const { state } = routes.match("/products/1234");
+            expect(state).toEqual(null);
+        });
+    });
+
+    /**
+     * These tests apply the previous match rules in reverse
+     */
+    describe("stringifiers", () => {
+        let routes;
+        beforeEach(() => {
+            routes = new RouteMapper([
+                {
+                    path: "/",
+                    state: {},
+                    stringify: ({ matched }) => matched && {}
+                },
+                {
+                    path: "/dates/:date",
+                    state: {},
+                    stringify: ({ date }) =>
+                        date instanceof Date
+                            ? { date: format(date, "YYYY-MM-DD") }
+                            : false
+                },
+                {
+                    path: "/dates/*:bad",
+                    state: { badDate: true },
+                    stringify: ({ date }) =>
+                        date && { badDate: true, bad: date }
+                },
+                {
+                    path: "/products/:productId",
+                    state: { page: "product" },
+                    stringify: ({ product, ...rest }) =>
+                        product ? { productId: product.id, ...rest } : false
+                }
+            ]);
+        });
+
+        test("doesn't stringify no match", () => {
+            const path = routes.stringify({ matched: false });
+            expect(path).toEqual(null);
+        });
+
+        test("stringifies on match", () => {
+            const path = routes.stringify({ matched: true });
+            expect(path).toEqual("/");
+        });
+
+        test("formats date using stringifier", () => {
+            const path = routes.stringify({ date: new Date("2018-05-03") });
+            expect(path).toEqual("/dates/2018-05-03");
+        });
+
+        test("falls through to next stringifier", () => {
+            const path = routes.stringify({ date: "foobarbaz" });
+            expect(path).toEqual("/dates/foobarbaz");
+        });
+
+        test("doesn't stringify product id", () => {
+            const path = routes.stringify({ productId: "123" });
+            expect(path).toEqual(null);
+        });
+
+        test("stringifies on different state key", () => {
+            const path = routes.stringify({
+                page: "product",
+                product: { id: "123" }
+            });
+            expect(path).toEqual("/products/123");
         });
     });
 });

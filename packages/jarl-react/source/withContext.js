@@ -3,6 +3,15 @@ import React, { Component } from "react";
 import { navigationContextShape } from "./NavigationProvider";
 import hocFactory from "./hocFactory";
 
+/**
+ * Higher-order component to inject functions from the NavigationProvider's context
+ *
+ * Functions injected:
+ *
+ * - stringify(to): stringifies a state object into a URL
+ * - navigate(to): initiates navigation to a state, using history.push()
+ * - getState(): gets the current location state
+ */
 const withContextFactory = hocFactory(
     ({ options: mapper, WrappedComponent }) =>
         class WithContext extends Component {
@@ -10,10 +19,6 @@ const withContextFactory = hocFactory(
                 navigationContext: navigationContextShape
             };
             render() {
-                const finalProps = { ...this.props };
-                finalProps.active = this.props.to
-                    ? this.context.navigationContext.isActive(this.props.to)
-                    : false;
                 const contextProps = mapper
                     ? mapper(this.context.navigationContext)
                     : this.context.navigationContext;

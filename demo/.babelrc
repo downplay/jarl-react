@@ -1,21 +1,7 @@
 {
-    "presets": ["babel-preset-react", "babel-preset-env"],
+    "presets": ["babel-preset-env"],
     "plugins": [
-        "react-hot-loader/babel",
         "babel-plugin-transform-class-properties",
         "babel-plugin-transform-object-rest-spread"
-    ],
-    "env": {
-        "development": {
-            "plugins": [
-                [
-                    "babel-plugin-emotion",
-                    { "sourceMap": true, "autoLabel": true }
-                ]
-            ]
-        },
-        "production": {
-            "plugins": ["babel-plugin-emotion"]
-        }
-    }
+    ]
 }

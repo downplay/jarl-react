@@ -1,12 +1,9 @@
 {
     "name": "jarl-react",
-    "version": "0.3.3",
+    "version": "0.6.0",
     "description": "Just Another Router Library for React",
     "main": "index.js",
     "module": "es/index.js",
-    "browserify": {
-        "transform": ["loose-envify"]
-    },
     "scripts": {
         "test": "jest --watch",
         "build": "node ./tools/build.js",
@@ -19,16 +16,18 @@
         "es",
         "umd",
         "lib",
-        "hocFactory.js",
+        "tool",
         "index.js",
+        "hocFactory.js",
         "Link.js",
         "NavigationProvider.js",
+        "redirect.js",
         "RouteMapper.js",
         "SimpleProvider.js",
         "withActive.js",
+        "withContext.js",
         "withNavigate.js",
-        "withLocation.js",
-        "withContext.js"
+        "withLocation.js"
     ],
     "jest": {
         "setupFiles": ["raf/polyfill"],
@@ -58,15 +57,17 @@
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0",
-        "qs": "^6.5.1"
+        "qs": "^6.5.1",
+        "invariant": "^2.2.2"
     },
     "devDependencies": {
         "babel-jest": "^22.0.4",
         "babelrc-rollup": "^3.0.0",
+        "date-fns": "^1.29.0",
         "enzyme": "^3.2.0",
         "enzyme-adapter-react-16": "^1.1.0",
         "gzip-size": "^4.1.0",
-        "jest": "^21.2.1",
+        "jest": "^22.1.4",
         "pretty-bytes": "^4.0.2",
         "raf": "^3.4.0",
         "react": "^16.2.0",

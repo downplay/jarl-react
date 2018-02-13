@@ -62,7 +62,7 @@ class Pages extends Component {
                         Toggle Theme
                     </MenuItem>
                 </Menu>
-                {/* Wrap page in a ThemeProvider. We have made themename available globally. */}
+                {/* Wrap page in a ThemeProvider. All routes have access to themeName, via route nesting. */}
                 <ThemeProvider theme={whichTheme}>
                     {renderPage(this.props.location)}
                 </ThemeProvider>
@@ -71,5 +71,5 @@ class Pages extends Component {
     }
 }
 
-// Custom mapping function to inject location into
+// Custom mapping function to inject the entire location object instead of individual fields
 export default withLocation(location => ({ location }))(Pages);

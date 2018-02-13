@@ -1,5 +1,6 @@
 import qs from "qs";
 import UrlPattern from "./lib/url-pattern";
+import { Redirect } from "./redirect";
 
 // Removes any double slashes
 const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
@@ -44,8 +45,10 @@ const routeResolvesKey = (route, key, value) => {
         // Check in main URL pattern
         (route.pattern && route.pattern.names.indexOf(key) >= 0) ||
         // Check in any query pattern
-        Object.values(route.query).some(
-            q => isUrlPattern(q) && q.names.indexOf(key) >= 0
+        Object.keys(route.query).some(
+            q =>
+                isUrlPattern(route.query[q]) &&
+                route.query[q].names.indexOf(key) >= 0
         )
     ) {
         return true;
@@ -54,6 +57,8 @@ const routeResolvesKey = (route, key, value) => {
 };
 
 // TODO: This won't support qs's nested/array queries
+// TODO: Also no support for having truthy bool props with no
+// equals sign like /foo?boolProp
 const convertToPatterns = query => {
     const patterns = {};
     for (const key of Object.keys(query)) {
@@ -162,6 +167,11 @@ const hydrateQuery = (pattern, state) => {
     return query;
 };
 
+const unroll = (item, next) =>
+    item ? [...unroll(next(item), next), item.route] : [];
+
+const unrollBranch = route => unroll(route, r => r.parent);
+
 /**
  * Responsible for processing and storying a route table,
  * and performing matching and serialization of URLs
@@ -183,31 +193,46 @@ class RouteMapper {
             const path = parent ? joinPaths(parent.path, childPath) : childPath;
             let query = convertToPatterns(childQuery);
             query = parent ? { ...parent.query, ...query } : query;
-            // Make sure we resolve right up the parent hierarchy
-            let resolve = route.resolve || (parent && parent.resolve);
-            if (route.resolve && parent) {
-                resolve = state => {
-                    const result = parent.resolve(state);
-                    if (result === false) {
-                        return false;
+            // Take either this matcher or the parent's one
+            let match = route.match || (parent && parent.match);
+            // But if both existed compose them together
+            if (route.match && parent) {
+                match = state => {
+                    const result = parent.match(state);
+                    // Redirects and false returns will override any child routes
+                    if (result === false || result instanceof Redirect) {
+                        return result;
                     }
-                    return { ...result, ...route.resolve(state) };
+                    return { ...result, ...route.match(state) };
                 };
             }
-            // No-op resolve
-            if (!resolve) {
-                resolve = () => ({});
+            // No-op match
+            if (!match) {
+                match = state => state;
             }
+            // Handle possible redirect state. If the parent was a redirect,
+            // throw away, otherwise merge parent state
+            // TODO: This seems like an unintended consequence of nesting something
+            // under a redirect. State should still be merged from grandparents.
+            // It seems inconsistent that we can skip state redirects
+            // TODO: Also consider are state redirects just overengineering
+            // when all redirect cases can be handled in match regardless
+            let { state } = route;
+            if (!(state instanceof Redirect)) {
+                state =
+                    !parent || parent instanceof Redirect
+                        ? { ...state }
+                        : { ...parent.state, ...state };
+            }
+            // TODO: Similar reductions as above for both resolve and stringify
             const mappedRoute = {
                 ...route,
                 route,
                 path,
                 parent,
                 query,
-                resolve,
-                state: parent
-                    ? { ...parent.state, ...route.state }
-                    : { ...route.state },
+                match,
+                state,
                 pattern: path ? new UrlPattern(path) : null
             };
             this.routes.push(mappedRoute);
@@ -223,11 +248,7 @@ class RouteMapper {
      * @param {string} path
      */
     match(fullPath) {
-        let state = {};
-        const branch = [];
-
         const [path, query] = splitPath(fullPath);
-
         for (const route of this.routes) {
             const pathMatch = route.pattern && route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
@@ -235,25 +256,26 @@ class RouteMapper {
             if (pathMatch && queryMatch) {
                 // Got a match, compile state from what we know
                 const decoded = {};
+                // TODO: Also decode query string? Do they get decoded by qs?
                 for (const key of Object.keys(pathMatch)) {
                     decoded[key] = decodeURIComponent(pathMatch[key]);
                 }
-                // TODO: Handle state funcs, auth
-                state = { ...route.state, ...decoded, ...queryMatch };
-
-                // Call any additional resolution logic
-                const resolved = route.resolve(decoded);
-
-                if (resolved) {
-                    branch.push({ route: route.route, match: decoded });
+                const state =
+                    route.state instanceof Redirect
+                        ? route.state
+                        : { ...route.state, ...decoded, ...queryMatch };
+                // Call any additional matching logic
+                // Note: Matchers can still affect the redirect from state
+                const matched = route.match(state);
+                if (matched) {
                     return {
-                        branch,
-                        state: { ...state, ...resolved }
+                        branch: unrollBranch(route),
+                        state: matched
                     };
                 }
             }
         }
-        return { branch, state: null };
+        return { branch: [], state: null };
     }
 
     /**
@@ -270,9 +292,19 @@ class RouteMapper {
             }
             const keyMap = {};
             populateKeys(keyMap, route);
+            // Perform additional stringification transform
+            let checkState = state;
+            if (route.stringify) {
+                const stringState = route.stringify(state);
+                if (!stringState) {
+                    continue;
+                }
+                checkState = stringState;
+            }
             let ok = true;
-            for (const key of Object.keys(state)) {
-                if (routeResolvesKey(route, key, state[key])) {
+            // Now test against any route state we're aware of
+            for (const key of Object.keys(checkState)) {
+                if (routeResolvesKey(route, key, checkState[key])) {
                     keyMap[key] = false;
                 } else {
                     ok = false;
@@ -280,9 +312,9 @@ class RouteMapper {
                 }
             }
             if (ok && !Object.keys(keyMap).some(key => keyMap[key])) {
-                const pathPart = route.pattern.stringify(state);
+                const pathPart = route.pattern.stringify(checkState);
                 const queryPart = qs.stringify(
-                    hydrateQuery(route.query, state)
+                    hydrateQuery(route.query, checkState)
                 );
                 return queryPart ? `${pathPart}?${queryPart}` : pathPart;
             }
