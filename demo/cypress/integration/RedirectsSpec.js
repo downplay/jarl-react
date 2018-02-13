@@ -8,5 +8,30 @@ describe("JARL Demos - Redirects", () => {
         cy.title().should("include", "Redirects");
         cy.title().should("include", "Landing");
         cy.get("[data-test=header]").should("contain", "Landing");
+        cy.get("[data-test=redirect-reason]").should("contain", "no redirect");
+    });
+
+    it("redirects from moved page", () => {
+        cy.visit(`${root}`);
+        cy
+            .get("[data-test=moved-link] a")
+            .should("have.attr", "href", "/redirects/moved")
+            .click();
+        cy.url().should("eq", `${root}/?because=Permanently%20moved`);
+        cy
+            .get("[data-test=redirect-reason]")
+            .should("contain", "Permanently moved");
+    });
+
+    it("redirects from admin page", () => {
+        cy.visit(`${root}`);
+        cy
+            .get("[data-test=admin-link] a")
+            .should("have.attr", "href", "/redirects/admin")
+            .click();
+        cy.url().should("eq", `${root}/?because=Not%20authorised`);
+        cy
+            .get("[data-test=redirect-reason]")
+            .should("contain", "Not authorised");
     });
 });

@@ -255,7 +255,7 @@ Recommended browser history abstractions by `history`: https://github.com/ReactT
 
 ### Next
 
-* New feature: redirects. Can be triggered from `state`, `match`, or `resolve` by returning a `redirect` object
+* New feature: redirects. Can be triggered from `state`, `match`, or `resolve` by returning a `redirect` object. See examples in demos.
 * Added a half-decent example to the README
 
 ### 0.6.0

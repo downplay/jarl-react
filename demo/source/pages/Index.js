@@ -2,24 +2,29 @@ import React from "react";
 
 import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
+// TODO: Fix why this doesn't work without `all`
+const toDemo = demoName => ({ page: "demo", demoName, all: {} });
+
 const demos = [
     {
         name: "Basic Routing",
-        // TODO: Fix why this doesn't work without `all`
-        // to: { page: "demo", demoName: "basicRouting", all: {} }
-        to: "/basicRouting"
+        to: toDemo("basicRouting")
     },
     {
         name: "Query Strings",
-        to: "/queryStrings"
+        to: toDemo("queryStrings")
     },
     {
         name: "Advanced Routing",
-        to: "/advamcedRouting"
+        to: toDemo("advancedRouting")
+    },
+    {
+        name: "Redirects",
+        to: toDemo("redirects")
     },
     {
         name: "Redux Integration",
-        to: "/reduxIntegration"
+        to: toDemo("reduxIntegration")
     }
 ];
 
@@ -29,7 +34,9 @@ const Index = () => (
         <Body>
             <Menu>
                 {demos.map(({ name, to }) => (
-                    <MenuItem to={to}>{name}</MenuItem>
+                    <MenuItem key={name} to={to}>
+                        {name}
+                    </MenuItem>
                 ))}
             </Menu>
         </Body>

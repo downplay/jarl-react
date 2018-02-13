@@ -10,7 +10,7 @@ const Landing = ({ reason, authenticated, onToggleLogin }) => (
                 redirect back here under different conditions, and when this
                 happens the reason will be displayed below.
             </p>
-            <p>
+            <p data-test="redirect-reason">
                 {reason
                     ? `Reason for redirect: ${reason}`
                     : "Right now no redirect has occurred!"}

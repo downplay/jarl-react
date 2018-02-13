@@ -13,8 +13,8 @@ const routes = [
     {
         // A static redirect. Because state always returns a `redirect` object
         // this acts like a 304 Permanently Moved redirect
-        path: "/static",
-        state: redirect({ page: "landing", reason: "Permanent redirect" })
+        path: "/moved",
+        state: redirect({ page: "landing", reason: "Permanently moved" })
     },
     {
         // Synchronous conditional redirect. Here the match function returns a

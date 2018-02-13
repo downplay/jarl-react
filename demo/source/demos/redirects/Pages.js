@@ -10,18 +10,15 @@ import AdminPage from "./pages/Admin";
 import ContentPage from "./pages/Content";
 
 class Pages extends Component {
-    state = { authenticated: false };
-
     handleToggleLogin = () => {
         // Toggle authenticated state on or off to determine whether the admin
         // redirect takes effect
-        this.setState({ authenticated: !this.state.authenticated });
+        this.props.setAuthenticated(!this.props.authenticated);
     };
 
     renderPage() {
         // Properties injected from router state
-        const { page, reason, slug, content } = this.props;
-        const { authenticated } = this.state;
+        const { page, reason, slug, content, authenticated } = this.props;
         switch (page) {
             case "landing":
             default:
