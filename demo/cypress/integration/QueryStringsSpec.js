@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:1234/queryStrings";
+const root = "http://localhost:3210/queryStrings";
 
 describe("Demo 2 - query strings", () => {
     it("loads home page", () => {
