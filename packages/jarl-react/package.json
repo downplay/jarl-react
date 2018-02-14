@@ -1,6 +1,6 @@
 {
     "name": "jarl-react",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "Just Another Router Library for React",
     "main": "index.js",
     "module": "es/index.js",
@@ -30,7 +30,9 @@
         "withLocation.js"
     ],
     "jest": {
-        "setupFiles": ["raf/polyfill"],
+        "setupFiles": [
+            "raf/polyfill"
+        ],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
@@ -57,8 +59,8 @@
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0",
-        "qs": "^6.5.1",
-        "invariant": "^2.2.2"
+        "invariant": "^2.2.2",
+        "qs": "^6.5.1"
     },
     "devDependencies": {
         "babel-jest": "^22.0.4",
