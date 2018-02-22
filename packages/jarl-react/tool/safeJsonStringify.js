@@ -1,6 +1,8 @@
 "use strict";
 
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var safeJsonStringify = function safeJsonStringify(o) {
     try {
         return JSON.stringify(o);
