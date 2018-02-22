@@ -253,7 +253,11 @@ Recommended browser history abstractions by `history`: https://github.com/ReactT
 
 ## Version History
 
-### Next
+### 0.7.1
+
+* Fixed the build process for IE11 and other older browsers
+
+### 0.7.0
 
 * New feature: redirects. Can be triggered from `state`, `match`, or `resolve` by returning a `redirect` object. See examples in demos.
 * Added a half-decent example to the README
