@@ -17,10 +17,12 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
     presets: [
         [
-            "es2015",
+            "env",
             {
-                loose: true,
-                modules: building ? false : "commonjs"
+                modules: building ? false : "commonjs",
+                // Note: Will be deprecated in the future, replace
+                // with forceAllTransforms: true after Babel 7
+                uglify: true
             }
         ],
         "react"
