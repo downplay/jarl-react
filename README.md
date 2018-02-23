@@ -253,6 +253,10 @@ Recommended browser history abstractions by `history`: https://github.com/ReactT
 
 ## Version History
 
+### Next
+
+* Fixed nested match and stringify
+
 ### 0.7.1
 
 * Fixed the build process for IE11 and other older browsers

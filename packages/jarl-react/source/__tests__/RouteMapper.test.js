@@ -1,6 +1,8 @@
 /* global describe test expect beforeEach */
 import { format } from "date-fns";
 import RouteMapper, { joinPaths } from "../RouteMapper";
+import redirect from "../redirect";
+
 import {
     basicRoutes,
     childRoutes,
@@ -405,7 +407,6 @@ describe("RouteMapper", () => {
         });
     });
 
-    // TODO: Nested match, nested stringify
     describe("matchers", () => {
         let routes;
         beforeEach(() => {
@@ -439,6 +440,29 @@ describe("RouteMapper", () => {
                         productId === "123"
                             ? { product: { id: "123" }, ...rest }
                             : false
+                },
+                {
+                    path: "/admin",
+                    state: { page: "admin" },
+                    match: (state, { role }) =>
+                        role === "admin"
+                            ? { ok: true, ...state }
+                            : redirect("/"),
+                    routes: [
+                        {
+                            path: "/ban?users=:usersList",
+                            state: { action: "ban" },
+                            match: ({ ok, usersList, ...rest }) =>
+                                // Note: ok should always be true, just testing
+                                // that priorly matched state is available here
+                                ok
+                                    ? {
+                                          users: usersList.split(","),
+                                          ...rest
+                                      }
+                                    : redirect("/login")
+                        }
+                    ]
                 }
             ]);
         });
@@ -469,6 +493,24 @@ describe("RouteMapper", () => {
         test("doesn't match bad product id", () => {
             const { state } = routes.match("/products/1234");
             expect(state).toEqual(null);
+        });
+
+        test("nested match prevents unauthorised", () => {
+            const { state } = routes.match("/admin/ban?users=foo,bar,baz", {
+                role: "guest"
+            });
+            expect(state).toEqual(redirect("/"));
+        });
+
+        test("nested match allows authorised and maps list", () => {
+            const { state } = routes.match("/admin/ban?users=foo,bar,baz", {
+                role: "admin"
+            });
+            expect(state).toEqual({
+                page: "admin",
+                action: "ban",
+                users: ["foo", "bar", "baz"]
+            });
         });
     });
 

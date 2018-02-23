@@ -218,13 +218,13 @@ class RouteMapper {
             let match = route.match || (parent && parent.match);
             // But if both existed compose them together
             if (route.match && parent) {
-                match = state => {
-                    const result = parent.match(state);
+                match = (state, context) => {
+                    const result = parent.match(state, context);
                     // Redirects and false returns will override any child routes
                     if (result === false || result instanceof Redirect) {
                         return result;
                     }
-                    return { ...result, ...route.match(state) };
+                    return route.match(result, context);
                 };
             }
             // No-op match
