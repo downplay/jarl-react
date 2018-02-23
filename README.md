@@ -1,4 +1,4 @@
-# jarl-react 0.5.x
+# jarl-react 0.7.x
 
 Just Another Router Library for React.
 
@@ -180,36 +180,14 @@ export default withNavigate()(SearchForm);
 
 That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. More advanced demos (such as data preloading, state mapping, Redux integration) will be showcased in the demo site...
 
-## Status and roadmap
-
-JARL is a fully working and powerful routing library that already supports pretty much every use case enabled by other major routers (`react-router` being the de facto benchmark) and many scenarios they do not. But I do not quite feel
-
-What is left to do before the version can become 1.0.0-alpha? The main points are:
-
-* Documentation and demos. The current set of demos (and E2E tests) show off many features and
-  scenarios but there is plenty missing, and documentation is drastically incomplete.
-* Rethink nomenclature of `context` and `state`, these are overloaded terms, and this will be a breaking change in 1.0.0
-* Integrations:
-    * React Native (probably just needs an alternate Link component)
-    * Improve support for Redux, perhaps enabling navigation via dispatch, consider Saga support
-* Fix isActive to work via RouteMapper hierarchy to support partial paths and query strings
-* Publish demos somewhere!
-
-Some additional plans that are more "nice-to-have" and might wait until after 1.0.0 and possibly provided in separate packages:
-
-* Some code restructuring as some of the main classes have grown bloated and overly complex as functionality has been added in, making things harder to test and debug
-* A couple of new components: function-as-child versions of withLocation and Link
-* Figure out some support for animated transitions.
-* Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
-* Query strings: support nesting and arrays. We use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
-* Query strings: support compound interpolations for optional query keys. This means multiple interpolations on a single token, a good example might be: `/range?start=(:startYear-:startMonth-:startDay)&end=(:endYear-:endMonth-:endDay)`. This will not work and is pretty hard to support right now.
-
-. My priority right now is getting some good documentation written so people can actually use this.
-
 ## Documentation
 
 Lack of documentation is the biggest reason you shouldn't use this router right now. If you want to see some detail examples, take a look through the source code of the demos:
 https://github.com/downplay/jarl-react/tree/master/demo/source/demos
+
+[Changelog](https://github.com/downplay/jarl-react/tree/master/CHANGELOG.md)
+
+[Roadmap](https://github.com/downplay/jarl-react/tree/master/ROADMAP.md)
 
 ## Tests & Demos
 
@@ -231,7 +209,7 @@ To run demo:
 yarn demo
 ```
 
-To run e2e tests (using [cypress.io](https://cypress.io)):
+To run e2e tests (via [cypress.io](https://cypress.io)):
 
 ```
 yarn e2e
@@ -251,96 +229,8 @@ And to some extent the [Autoroute](http://www.davidhayden.me/blog/autoroute-cust
 
 Recommended browser history abstractions by `history`: https://github.com/ReactTraining/history
 
-## Version History
-
-### Next
-
-* Fixed nested match and stringify
-
-### 0.7.1
-
-* Fixed the build process for IE11 and other older browsers
-
-### 0.7.0
-
-* New feature: redirects. Can be triggered from `state`, `match`, or `resolve` by returning a `redirect` object. See examples in demos.
-* Added a half-decent example to the README
-
-### 0.6.0
-
-* Now supports `match` and `stringify` functions on routes. These allow custom transforming both ways between state and URLs, for example converting :year/:month/:day into a Date object and back again
-* Fix: Removed usage of Object.values due to no support in older browsers and requirement of a polyfill
-
-### 0.5.1
-
-* Fix: ES5 build was missing a file so imports would fail in some conditions
-
-### 0.5.0
-
-* Major: official support for query strings (adds dependency on `qs` from `hapijs`)
-* Support most of path syntax within query strings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)&*=:rest`
-* Added property to NavigationProvider: `performInitialNavigation`
-* Added property to NavigationProvider: `basePath`
-* Breaking: renamed `withState` HOC to `withLocation` to avoid naming conflict with `recompose` (and `state` in general)
-* New `withContext` HOC to get access to `stringify` and other functions from the provider
-* Additional logic can now be added to route matching use `resolve` property on your routes
-* Use empty location `{}` for default Redux state
-* NavigationProvider's `routes` property can now accept an array instead of a RouteMapper
-* Can now use `resolve` on route objects
-* Allow `path` to be empty on routes; these can be used as containers to apply state, resolvers, query fragments in a grouped fashion; see `themes` in the `queryStrings` demo!
-* Big sort out of the demos! A lot more use cases are now demonstrated and working properly
-* Added tests to many things
-
-### 0.3.2
-
-* Easier integration with and a new demo for Redux
-* `<Provider/>` component in `jarl-react-redux` is a standard integration that will (probably) do what you need
-* Named matches now automatically run through decodeURIComponent to handle special characters properly
-* Correctly reattach to history in CWRP (necessary for React Hot Reload among other things)
-
-### 0.3.1
-
-* Fix withNavigate's default props mapper
-
-### 0.3.0
-
-* Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
-* Breaking: Rename withRouting->withNavigate. This HOC only injects a `navigate` function so the name was confusing
-* Breaking: Restructured to monorepo design with `lerna`. Redux extensions are now in separate `jarl-react-redux` package
-* Properly sorted out build targets (CJS, UMD, ES) in both packages
-* Better errors on stringification failure to debug state problems
-* Add a new withState HOC to inject the current route's state
-* Added many tests! Including E2E tests with cypress
-* Started writing some proper documentation, updated README a bit
-* Switched to custom build of `url-pattern` to support named wildcards with syntax: `/*:name`
-
-### 0.2.0
-
-* Added route matching and path resolution for nested routes
-
-### 0.1.2
-
-* Don't completely override Link's own onClick handler
-
-### 0.1.1
-
-* Call onClick handler when Link is clicked (e.g. allowing consumers to call `event.stopPropagation()`)
-
-### 0.1.0
-
-* Routes with dynamic path segments now resolve to URLs correctly
-
-### 0.0.8
-
-* Link now supports string values for `to` prop
-* Add enzyme config and a Link test
-
-### 0.0.5
-
-* Initial release
-
 ## Copyright
 
-&copy;2017 Downplay Ltd
+©2017-2018 Downplay Ltd
 
 Distributed under MIT license. See LICENSE for full details.
