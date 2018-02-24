@@ -18,7 +18,20 @@ describe("<Link/>", () => {
                 <Link to="/">Home</Link>
             </MockProvider>
         );
-        // expect(anchor.find("a").length).toEqual(1);
+        expect(anchor[0].name).toEqual("a");
+        expect(anchor.prop("href")).toEqual("/");
+        expect(anchor.text()).toEqual("Home");
+    });
+
+    test("renders a different component", () => {
+        const anchor = render(
+            <MockProvider>
+                <Link to="/" component="div">
+                    Home
+                </Link>
+            </MockProvider>
+        );
+        expect(anchor[0].name).toEqual("div");
         expect(anchor.prop("href")).toEqual("/");
         expect(anchor.text()).toEqual("Home");
     });

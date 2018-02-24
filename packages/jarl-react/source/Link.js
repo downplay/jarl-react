@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { navigationContextShape } from "./NavigationProvider";
 
-const Element = "a";
-
 export default class Link extends Component {
     static propTypes = {
         to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -43,6 +41,7 @@ export default class Link extends Component {
             activeClassName,
             className,
             onClick,
+            component,
             ...others
         } = this.props;
         const combinedClassNames =
@@ -51,6 +50,7 @@ export default class Link extends Component {
                 ? `${className} ${activeClassName}`
                 : className;
         const href = this.stringifyUrl(to);
+        const Element = component || "a";
         return (
             <Element
                 href={href}

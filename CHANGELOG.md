@@ -1,8 +1,9 @@
 # JARL: Version History
 
-## Next
+## 0.7.2
 
-* Fixed nested match and stringify
+* Fixed nested match
+* Add a `component` prop to Link
 
 ## 0.7.1
 
