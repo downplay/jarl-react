@@ -231,6 +231,20 @@ class RouteMapper {
             if (!match) {
                 match = state => state;
             }
+            // Apply a similar reduction to stringify but bottom-up
+            let stringify = route.stringify || (parent && parent.stringify);
+            if (route.stringify && parent) {
+                stringify = (state, context) => {
+                    const result = route.stringify(state, context);
+                    if (result === false) {
+                        return false;
+                    }
+                    return parent.stringify(result, context);
+                };
+            }
+            if (!stringify) {
+                stringify = state => state;
+            }
             // Handle possible redirect state. If the parent was a redirect,
             // throw away, otherwise merge parent state
             // TODO: This seems like an unintended consequence of nesting something
@@ -253,6 +267,7 @@ class RouteMapper {
                 parent,
                 query,
                 match,
+                stringify,
                 state,
                 pattern: path ? new UrlPattern(path) : null
             };
@@ -317,7 +332,7 @@ class RouteMapper {
             // Perform additional stringification transform
             let checkState = state;
             if (route.stringify) {
-                const stringState = route.stringify(state);
+                const stringState = route.stringify(checkState);
                 if (!stringState) {
                     continue;
                 }

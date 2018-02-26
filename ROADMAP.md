@@ -14,7 +14,7 @@ Demos also need some styling love, and actually publishing somewhere. Cypress te
 
 This is unfortunately coming - as the router has evolved, and as I've applied it in real world cases, I've started to realise that a number of API methods are badly named, using many overloaded and/or unneccessary terms. This will follow semver and land fully in v1, but may be introduced earlier in a non-breaking fashion with dev-only warnings. The bikeshedding continues, but right now I plan the following name changes:
 
-`state` and `context` -> `location` and `???`
+`state` and `context` -> `location` and `externals`(?)
 
 The most overloaded terms, especially in React world, and they mean different things in several places within JARL. `location` better describes a serializable location descriptor. But I am struggling to think of the best word for `context`, and this is the major blocker to this entire rename ;)
 
@@ -22,9 +22,9 @@ The most overloaded terms, especially in React world, and they mean different th
 
 This change mainly makes sense on the route properties. Match is kind of vague, overloaded, and doesn't accurately convey what this callback does. Stringify is a silly word, which obviously was in parity both with `JSON.stringify` and the `stringify` API of `url-pattern`, but `serialize` is the proper term and is actually a real word.
 
-`withNavigate` -> `navigator`
+`withNavigate`, `withContext`, `withActive` -> `routing`
 
-Currently this just provides a `navigate` function so the name made sense, but `withFoo` is vastly overused in the world of HOCs and the `with` is just unneccesary. Additional functions will be provided (inc. `replace` and `serialize`, see above) so `navigator` better describes this general navigation functionality.
+Currently `withNavigate` just provides a `navigate` function so the name made sense, but `withFoo` is vastly overused in the world of HOCs and the `with` is just unneccesary. Additional functions will be provided (inc. `replace` and `serialize`, see above) so `routing` better describes this general navigation functionality. Combining all three HOCs seems like a good API simplification.
 
 `NavigationProvider` -> `Provider`
 

@@ -1,9 +1,13 @@
 # JARL: Version History
 
+## 0.7.3
+
+* Fixed nested stringify
+
 ## 0.7.2
 
 * Fixed nested match
-* Add a `component` prop to Link
+* Add a `component` prop to Link to override default anchor rendering
 
 ## 0.7.1
 

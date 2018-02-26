@@ -545,6 +545,29 @@ describe("RouteMapper", () => {
                     state: { page: "product" },
                     stringify: ({ product, ...rest }) =>
                         product ? { productId: product.id, ...rest } : false
+                },
+                {
+                    path: "/admin",
+                    state: { page: "admin" },
+                    match: (state, { role }) =>
+                        role === "admin"
+                            ? { ok: true, ...state }
+                            : redirect("/"),
+                    // Normally we don't need to do this, stringify will just fail
+                    // if required state is not there; this is specifically to
+                    // test whether stringify is resolving in the correct order (bottom-up)
+                    // *and* passing state up the function chain
+                    stringify: state => (state.usersList ? state : false),
+                    routes: [
+                        {
+                            path: "/ban?users=:usersList",
+                            state: { action: "ban" },
+                            stringify: ({ users, ...rest }) => ({
+                                usersList: users ? users.join(",") : undefined,
+                                ...rest
+                            })
+                        }
+                    ]
                 }
             ]);
         });
@@ -580,6 +603,17 @@ describe("RouteMapper", () => {
                 product: { id: "123" }
             });
             expect(path).toEqual("/products/123");
+        });
+
+        test("nested stringify (reverses order)", () => {
+            // Note: no context required. Stringify shouldn't create different
+            // URL just because different user is logged in.
+            const path = routes.stringify({
+                page: "admin",
+                action: "ban",
+                users: ["foo", "bar", "baz"]
+            });
+            expect(path).toEqual("/admin/ban?users=foo%2Cbar%2Cbaz");
         });
     });
 });
