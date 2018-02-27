@@ -39,6 +39,27 @@ More in line with other packages, including `redux` _and also_ `jarl-react-redux
 ## Misc task
 
 * Fix isActive to work via RouteMapper hierarchy to support partial paths and query strings
+* Really hard to debug errors caused by badly constructed routes. e.g.
+
+```js
+             {
+                path: "/product/:id",
+                state: {
+                    page: "product"
+                },
+                routes: [
+                    {
+                        path: "/product/:id/details",
+                        state: {
+                            page: "details"
+                        }
+                    }
+                ]
+            }
+```
+
+This causes an error due to needing two ids in an array.
+Need to either detect this when we check if the keys are there, or throw a warning/error on the route table that it looks like the user did something invalid. Either way need better sanitisation of the routes.
 
 # Future plans
 

@@ -1,8 +1,9 @@
 # JARL: Version History
 
-## 0.7.3
+## Next
 
 * Fixed nested stringify
+* Proper implementation of isActive. Now considers the route hierarchy rather than looking purely at the URL -- meaning it will work with partial paths and query strings.
 
 ## 0.7.2
 

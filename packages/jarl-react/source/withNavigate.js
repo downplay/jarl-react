@@ -28,8 +28,6 @@ const withNavigateFactory = hocFactory(
                     : {
                           navigate: this.context.navigationContext.navigate
                       };
-                // TODO: Optimise that generatedProps is a new object
-                // every render
                 return <WrappedComponent {...this.props} {...generatedProps} />;
             }
         }

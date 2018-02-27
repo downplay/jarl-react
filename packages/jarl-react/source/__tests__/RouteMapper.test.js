@@ -96,6 +96,14 @@ describe("RouteMapper", () => {
         const routes = childRoutes();
         const match = routes.match("/foo/bar");
         expect(match.state).toEqual({ foo: true, bar: true });
+        expect(match.branch).toEqual([
+            {
+                path: "/foo",
+                routes: [{ path: "/bar", state: { bar: true } }],
+                state: { foo: true }
+            },
+            { path: "/bar", state: { bar: true } }
+        ]);
     });
 
     test("it stringifies parent route", () => {

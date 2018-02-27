@@ -2,7 +2,7 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 import invariant from "invariant";
 
-import RouteMapper, { joinPaths } from "./RouteMapper";
+import RouteMapper, { joinPaths, hydrateRoute } from "./RouteMapper";
 import safeJsonStringify from "./tool/safeJsonStringify";
 import { Redirect } from "./redirect";
 
@@ -141,7 +141,6 @@ export default class NavigationProvider extends Component {
         }
         const promises = [promise];
         // Run any resolvers on the route branch
-        // TODO: (Serious) no results of resolve are actually being used yet!
         for (const leaf of branch) {
             if (leaf.resolve) {
                 promises.push(
@@ -159,11 +158,14 @@ export default class NavigationProvider extends Component {
         // Wait for all promises to resolve, then navigation is over
         Promise.all(promises)
             .then(results => {
+                // TODO: Not sure quite what to do about some resolve results, e.g.
+                // resolving component imports. They shouldn't go into state but where
+                // should they go?
                 const finalState = results.reduce(
                     (prevState, result = {}) => ({ ...prevState, ...result }),
                     state
                 );
-                // TODO: Invariant if onNavigateEnd doesn't exist?
+                // TODO: Invariant if onNavigateEnd doesn't exist? PropTypes required?
                 if (this.props.onNavigateEnd) {
                     this.props.onNavigateEnd(finalState, path, branch);
                 }
@@ -177,6 +179,7 @@ export default class NavigationProvider extends Component {
                     this.props.onNavigateError({ error, state, path, branch });
                 } else {
                     // Unable to complete navigation, error not handled
+                    // TODO: Throw error instead?
                     /* eslint-disable no-console */
                     console.error(
                         `Unhandled resolve failure during navigation to ${path}.
@@ -198,9 +201,67 @@ export default class NavigationProvider extends Component {
 
     handleGetState = () => this.props.state;
 
-    // TODO: Support partial paths (optionally)
-    handleIsActive = state =>
-        this.handleStringify(state) === this.handleStringify(this.props.state);
+    handleIsActive = (stateOrPath, exact = false) => {
+        // TODO: PERF: This has to do quite a bit of work. Consider memoization. Also
+        // could cache the branch at the time of navigation but this could get out of date.
+        // It also seems like there is duplicated work: converting states to strings only
+        // to convert them back to strings again! Not sure how this can be effectively
+        // unravelled, but splitting the parser into smaller chunks might provide a way.
+
+        // Determining if a link is "active" gets a little complicated (for the non-exact
+        // case at least). We can't simply compare strings because 1) the link must
+        // be an *actual* parent in the route hierarchy, whereas a `/` route that is merely
+        // a sibling to a `/foo` route should *not* be considered active when on `/foo`;
+        // and 2) query strings will completely break string matching since we need to
+        // check if the right parts of the query string are there.
+        // To do this we have to perform matching on both states and actually compare the
+        // matched branches to see if one is a parent of (or the same as) the other.
+
+        // Get current branch
+        const currentPath = this.handleStringify(this.props.state);
+        const { branch: currentBranch } = this.state.routes.match(
+            currentPath,
+            this.props.context()
+        );
+
+        // Get the branch to be checked
+        const toPath = this.handleStringify(stateOrPath);
+        const { branch: toBranch, state: toState } = this.state.routes.match(
+            toPath,
+            this.props.context()
+        );
+
+        // Can drop out quickly for obvious non-matches
+        if (
+            currentBranch.length === 0 ||
+            toBranch.length === 0 ||
+            currentBranch.length < toBranch.length ||
+            (exact && toBranch.length !== currentBranch.length)
+        ) {
+            return false;
+        }
+
+        // Walk along the branch and if it matches then we're active
+        for (const i in toBranch) {
+            if (toBranch[i] !== currentBranch[i]) {
+                return false;
+            }
+        }
+
+        // Final check that state matches. This feels hacky but the alternative
+        // would be checking every state along the branch -- information that isn't available
+        // and isn't even generated currently due to optimisations in the matching itself.
+        // There are probably cases where this will fail. But missing a few cases is better
+        // than getting false positives; and the missed cases can usually be fixed by
+        // tweaking routes to be less ambiguous.
+        // Hydrate the corresponding leaf of the current branch match, with the state
+        // we are transitioning to. If they match then this is (almost definitely) active.
+        // Need to find the right mapped route that corresponds to the leaf.
+        const mappedRoute = this.state.routes.routes.find(
+            route => route.route === currentBranch[toBranch.length - 1]
+        );
+        return hydrateRoute(mappedRoute, this.props.state) === toPath;
+    };
 
     render() {
         return this.props.children || null;

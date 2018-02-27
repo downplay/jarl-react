@@ -4,7 +4,7 @@ import { navigationContextShape } from "./NavigationProvider";
 import hocFactory from "./hocFactory";
 
 const withActiveFactory = hocFactory(
-    ({ WrappedComponent }) =>
+    ({ WrappedComponent, options = { exact: false } }) =>
         class WithActive extends Component {
             static contextTypes = {
                 navigationContext: navigationContextShape
@@ -12,7 +12,10 @@ const withActiveFactory = hocFactory(
             render() {
                 const finalProps = { ...this.props };
                 finalProps.active = this.props.to
-                    ? this.context.navigationContext.isActive(this.props.to)
+                    ? this.context.navigationContext.isActive(
+                          this.props.to,
+                          options.exact
+                      )
                     : false;
                 return <WrappedComponent {...finalProps} />;
             }

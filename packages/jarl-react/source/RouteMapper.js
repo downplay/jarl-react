@@ -188,6 +188,13 @@ const hydrateQuery = (pattern, state) => {
     return query;
 };
 
+export const hydrateRoute = (route, state) => {
+    const pathPart = route.pattern.stringify(state);
+    const queryPart =
+        route.query && qs.stringify(hydrateQuery(route.query, state));
+    return queryPart ? `${pathPart}?${queryPart}` : pathPart;
+};
+
 const unroll = (item, next) =>
     item ? [...unroll(next(item), next), item.route] : [];
 
@@ -349,11 +356,7 @@ class RouteMapper {
                 }
             }
             if (ok && !Object.keys(keyMap).some(key => keyMap[key])) {
-                const pathPart = route.pattern.stringify(checkState);
-                const queryPart = qs.stringify(
-                    hydrateQuery(route.query, checkState)
-                );
-                return queryPart ? `${pathPart}?${queryPart}` : pathPart;
+                return hydrateRoute(route, checkState);
             }
         }
         return null;
