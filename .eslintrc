@@ -29,6 +29,7 @@
         "react/jsx-filename-extension": 0,
         "import/extensions": 0,
         "import/no-unresolved": 0,
+        "import/no-webpack-loader-syntax": 0,
         "no-await-in-loop": 0,
         "no-plusplus": 0,
         "import/prefer-default-export": 0,

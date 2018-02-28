@@ -2998,19 +2998,20 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-jarl-react-redux@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/jarl-react-redux/-/jarl-react-redux-0.6.0.tgz#1d600baba3750e2c14fc4077b4306c55d90daecf"
+jarl-react-redux@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/jarl-react-redux/-/jarl-react-redux-0.7.2.tgz#8adfe64d32f8968fd4b6c9439c6e6b7e562ee52a"
   dependencies:
     invariant "^2.2.2"
-    jarl-react "^0.6.0"
+    jarl-react "^0.7.2"
     prop-types "^15.6.0"
 
-jarl-react@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-0.6.0.tgz#3a97e97a0dd1a401ac6a1274b82230940a3e8dfe"
+jarl-react@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-0.7.2.tgz#a3c3c8c5f2a26e5138a940d20834260b7063ecd5"
   dependencies:
     hoist-non-react-statics "^2.0.0"
+    invariant "^2.2.2"
     qs "^6.5.1"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
@@ -3978,6 +3979,10 @@ raw-body@2.3.2:
     http-errors "1.6.2"
     iconv-lite "0.4.19"
     unpipe "1.0.0"
+
+raw-loader@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
 
 rc@^1.1.7:
   version "1.2.2"

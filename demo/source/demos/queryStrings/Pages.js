@@ -35,19 +35,18 @@ class Pages extends Component {
     render() {
         const { themeName = "light" } = this.props.location;
         const whichTheme = themes[themeName];
-        const theme = { ...themeName };
         return (
             <Layout>
                 <Helmet titleTemplate="%s | Query Strings | JARL Demos" />
                 <Menu>
                     <MenuItem
-                        to={{ page: "home", ...theme }}
+                        to={{ page: "home", themeName }}
                         data-test="home-link"
                     >
                         Home
                     </MenuItem>
                     <MenuItem
-                        to={{ page: "search", ...theme }}
+                        to={{ page: "search", themeName }}
                         data-test="search-link"
                     >
                         Search

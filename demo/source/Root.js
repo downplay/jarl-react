@@ -4,10 +4,12 @@ import createHistory from "history/createBrowserHistory";
 import { NavigationProvider } from "jarl-react";
 import { hot } from "react-hot-loader";
 
+import routerCode from "!!raw-loader!./Root";
+
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
-import { Layout } from "./layout";
+import { MainLayout } from "./layout";
 
 import * as demos from "./demos";
 
@@ -59,25 +61,28 @@ class Root extends Component {
     renderDemo() {
         const { page, demo, demoName, missingPath, query } = this.state.routing;
 
+        let content;
+        let code;
         if (page === "demo") {
             const { Root: DemoRoot, routes: demoRoutes } = demo;
-            return (
+            content = (
                 <DemoRoot
                     routes={demoRoutes}
                     history={history}
                     basePath={`/${demoName}`}
                 />
             );
-        }
-        return (
-            <Layout>
-                {page === "index" ? (
+        } else {
+            code = routerCode;
+            content =
+                page === "index" ? (
                     <Index />
                 ) : (
                     <NotFound missingPath={missingPath} query={query} />
-                )}
-            </Layout>
-        );
+                );
+        }
+        console.log(code, content);
+        return <MainLayout code={code}>{content}</MainLayout>;
     }
 
     render() {

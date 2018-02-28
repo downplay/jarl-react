@@ -4,6 +4,8 @@ import Helmet from "react-helmet";
 
 import { withActive, Link } from "jarl-react";
 
+export { default as MainLayout } from "./MainLayout";
+
 const PageElement = styled.article`
     background-color: ${props =>
         props.theme ? props.theme.back : "transparent"};
