@@ -218,18 +218,20 @@ export default class NavigationProvider extends Component {
         // matched branches to see if one is a parent of (or the same as) the other.
 
         // Get current branch
-        const currentPath = this.handleStringify(this.props.state);
+        const currentPath = this.getCurrentPath(
+            this.handleStringify(this.props.state)
+        );
         const { branch: currentBranch } = this.state.routes.match(
             currentPath,
             this.props.context()
         );
 
         // Get the branch to be checked
-        const toPath = this.handleStringify(stateOrPath);
-        const { branch: toBranch, state: toState } = this.state.routes.match(
-            toPath,
-            this.props.context()
-        );
+        // TODO: Add a test that this works with basePathz
+        const toPath = this.getCurrentPath(this.handleStringify(stateOrPath));
+        const {
+            branch: toBranch /* , state: toState */
+        } = this.state.routes.match(toPath, this.props.context());
 
         // Can drop out quickly for obvious non-matches
         if (

@@ -81,7 +81,6 @@ class Root extends Component {
                     <NotFound missingPath={missingPath} query={query} />
                 );
         }
-        console.log(code, content);
         return <MainLayout code={code}>{content}</MainLayout>;
     }
 
