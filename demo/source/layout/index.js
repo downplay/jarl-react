@@ -47,7 +47,7 @@ const ListItem = styled.li`
 
 // TODO: Test active on most/all URLs
 export const MenuItem = ({ children, to, ...rest }) => (
-    <Link>
+    <Link to={to}>
         {({ active, onClick, href }) => (
             <ListItem {...rest} active={active} data-test-active={active}>
                 <a href={href} onClick={onClick}>

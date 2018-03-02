@@ -45,14 +45,15 @@ export default class Link extends Component {
             ...others
         } = this.props;
         // Determine href and active status
-        const href = this.stringifyUrl(to);
+        const href = to ? this.stringifyUrl(to) : this.href;
         // TODO: PERF: Could be evaluated during stringify?
         // Note: It is slightly more efficient to check isActive based on
         // the href rather than to, otherwise it just gets stringified again
         const active = this.context.navigationContext.isActive(href);
+        const handleClick = to && this.handleClick;
         // Function-as-child API
         if (typeof children === "function") {
-            return children({ active, href, onClick: this.handleClick });
+            return children({ active, href, onClick: handleClick });
         }
         // Standard component API
         const combinedClassNames =
@@ -62,9 +63,9 @@ export default class Link extends Component {
         const Element = component || "a";
         return (
             <Element
-                href={href}
                 {...others}
-                onClick={to && this.handleClick}
+                href={href}
+                onClick={handleClick}
                 className={combinedClassNames}
             >
                 {children}
