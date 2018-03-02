@@ -199,14 +199,14 @@ describe("<NavigationProvider/>", () => {
 
         test("redirect from state is followed", () => {
             provider.doNavigation("/test-redirect-state");
-            expect(history.push).toHaveBeenCalledWith(
+            expect(history.replace).toHaveBeenCalledWith(
                 "/redirected?because=state"
             );
         });
 
         test("redirect from matcher is followed", () => {
             provider.doNavigation("/test-redirect-match");
-            expect(history.push).toHaveBeenCalledWith(
+            expect(history.replace).toHaveBeenCalledWith(
                 "/redirected?because=match"
             );
         });
@@ -220,7 +220,7 @@ describe("<NavigationProvider/>", () => {
             provider.doNavigation("/test-redirect-resolve");
             expect(onNavigateStart).toHaveBeenCalled();
             await wait(0);
-            expect(history.push).toHaveBeenCalledWith(
+            expect(history.replace).toHaveBeenCalledWith(
                 "/redirected?because=resolve"
             );
         });

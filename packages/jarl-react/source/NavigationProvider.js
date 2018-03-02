@@ -116,10 +116,23 @@ export default class NavigationProvider extends Component {
         );
     };
 
-    handleNavigation = to => {
+    ensureUrl(to) {
         const url = typeof to === "string" ? to : this.handleStringify(to);
         invariant(url, `Could not stringify state: ${safeJsonStringify(to)}`);
-        this.props.history.push(url);
+        return url;
+    }
+
+    handleRedirect = to => {
+        // Redirect causes a replace instead of pushl, so the browser history doesn't
+        // contain URLs we know to be invalid
+        // TODO: Specific E2E test for this, and consider that in some cases this
+        // might not be wanted - e.g. redirect from a Login page could be valid later
+        // (but then we'd manually redirect back?)
+        this.props.history.replace(this.ensureUrl(to));
+    };
+
+    handleNavigation = to => {
+        this.props.history.push(this.ensureUrl(to));
     };
 
     doNavigation(path) {
@@ -130,7 +143,7 @@ export default class NavigationProvider extends Component {
         invariant(state, `Unmatched URL '${path}'`);
         // Check for and follow redirects
         if (state instanceof Redirect) {
-            this.handleNavigation(state.to);
+            this.handleRedirect(state.to);
             return;
         }
         // Complete navigation
@@ -173,7 +186,7 @@ export default class NavigationProvider extends Component {
             .catch(error => {
                 // If a redirect was thrown, follow it
                 if (error instanceof Redirect) {
-                    this.handleNavigation(error.to);
+                    this.handleRedirect(error.to);
                 } else if (this.props.onNavigateError) {
                     // Otherwise send to error handler
                     this.props.onNavigateError({ error, state, path, branch });

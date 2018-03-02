@@ -6,7 +6,8 @@ const mockHistory = (pathname = "/", search = "") => ({
         pathname,
         search
     },
-    push: jest.fn()
+    push: jest.fn(),
+    replace: jest.fn()
 });
 
 export default mockHistory;
