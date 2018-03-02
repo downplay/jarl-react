@@ -5,6 +5,7 @@
 *   Fixed nested stringify
 *   Proper implementation of isActive. Now considers the route hierarchy rather than looking purely at the URL -- meaning it will work with partial paths and query strings
 *   Added a function-as-child API to `<Link>`; provides `href`, `active` and `onClick` props so you can render anything that links to a route
+*   Redirect now causes a history.replace() instead of history.push()
 
 ## 0.7.2
 
