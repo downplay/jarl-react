@@ -13,12 +13,37 @@ import { MainLayout } from "./layout";
 
 import * as demos from "./demos";
 
+/**
+ * JARL demos
+ *
+ * This is the top-level routing for the JARL demos website. If you are just
+ * learning then it's recommended you start with the [basicRouting] demos first.
+ *
+ * This router shows how a top-level router can route between various child apps
+ * which each have their own routing. This leverages the `basePath` property of
+ * the Provider to let each child route freely inside its own subtree.
+ *
+ * For most purposes you'll never need anything this complicated, but it allows
+ * each demo to have its own independent JARL Provider so we can show off all
+ * the features without having to have a single routing table that's one giant mess!
+ */
+
+/**
+ * You need a `history` instance, here we're using a browserHistory for "real" URLs,
+ * but you can use any type of history. For React Native, memoryHistory is recommended.
+ */
+const history = createHistory();
+
 const routes = [
     {
         path: "/",
         state: { page: "index" }
     },
     {
+        // This route (with child) matches the first path segment and defers everything else
+        // to the routing for the specific demo. Ideally this would be a single route
+        // but optional wildcard path segments are not yet supported, so this route matches
+        // the demo's landing page, and the child route matches any sub pages.
         path: "/:demoName?*=:all",
         state: { page: "demo" },
         match: ({ demoName, ...rest }) => {
@@ -29,26 +54,21 @@ const routes = [
         },
         routes: [
             {
+                // Allows the demo to have sub pages. We still render the same result in
+                // this top-level router but this catch-all avoids errors, therefore
+                // allowing the demo's own router to operate freely within this set of paths.
                 path: "/*:rest",
                 state: { subPage: true }
             }
         ]
     },
     {
+        // Catch-all for 404 errors: matches any path and query.
         path: "/*:missingPath?*=:query",
         state: { page: "notFound" }
     }
 ];
 
-const history = createHistory();
-
-/**
- * Custom top-level routing; routes to each separate demo and allows
- * them to act as self-contained sites.
- *
- * This is a valid case for needing to nest multiple RouteProviders
- * with different configurations. The basePath
- */
 class Root extends Component {
     state = { routing: {} };
 
@@ -64,6 +84,8 @@ class Root extends Component {
         let content;
         let code;
         if (page === "demo") {
+            // Render one of the demos: set its basePath and also pass in the same
+            // `history` instance so browser history works right across the board.
             const { Root: DemoRoot, routes: demoRoutes } = demo;
             content = (
                 <DemoRoot

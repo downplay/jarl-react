@@ -3,14 +3,14 @@ import React from "react";
 import { configure, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
+import mockHistory from "./mocks/mockHistory";
+import wait from "./mocks/wait";
+
 import NavigationProvider from "../NavigationProvider";
 import RouteMapper from "../RouteMapper";
-import mockHistory from "./mocks/mockHistory";
 import redirect from "../redirect";
 
 configure({ adapter: new Adapter() });
-
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 describe("<NavigationProvider/>", () => {
     let history;

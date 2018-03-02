@@ -204,9 +204,16 @@ export default class NavigationProvider extends Component {
     handleIsActive = (stateOrPath, exact = false) => {
         // TODO: PERF: This has to do quite a bit of work. Consider memoization. Also
         // could cache the branch at the time of navigation but this could get out of date.
-        // It also seems like there is duplicated work: converting states to strings only
+        // Also there is duplicated work: converting states to strings only
         // to convert them back to strings again! Not sure how this can be effectively
         // unravelled, but splitting the parser into smaller chunks might provide a way.
+        // Maybe optimisation should happen in Link; could see issues when rendering
+        // a lot of links.
+        // "Exact" could also be a lot faster since that's just saying "is this the current
+        // route".
+        // A quick win would be caching active state per URL and busting the cache when we
+        // navigate. Maybe beyond this we need a specialised traversal in addition to match
+        // and stringify. (Would prob look more like stringify than match).
 
         // Determining if a link is "active" gets a little complicated (for the non-exact
         // case at least). We can't simply compare strings because 1) the link must
@@ -243,7 +250,7 @@ export default class NavigationProvider extends Component {
             return false;
         }
 
-        // Walk along the branch and if it matches then we're active
+        // Walk along the branch, if any leaves don't match then we're not active
         for (const i in toBranch) {
             if (toBranch[i] !== currentBranch[i]) {
                 return false;

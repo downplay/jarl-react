@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import styled from "react-emotion";
 import Helmet from "react-helmet";
 
-import { withActive, Link } from "jarl-react";
+import { Link } from "jarl-react";
 
 export { default as MainLayout } from "./MainLayout";
 
@@ -41,10 +41,21 @@ export const Menu = ({ children }) => (
     </nav>
 );
 
-export const MenuItem = withActive()(({ children, to, active, ...others }) => (
-    <li {...others} data-test-active={active}>
-        <Link to={to}>{children}</Link>
-    </li>
-));
+const ListItem = styled.li`
+    font-weight: ${({ active }) => (active ? "bold" : "normal")};
+`;
+
+// TODO: Test active on most/all URLs
+export const MenuItem = ({ children, to, ...rest }) => (
+    <Link>
+        {({ active, onClick, href }) => (
+            <ListItem {...rest} active={active} data-test-active={active}>
+                <a href={href} onClick={onClick}>
+                    {children}
+                </a>
+            </ListItem>
+        )}
+    </Link>
+);
 
 export const Layout = styled.div``;
