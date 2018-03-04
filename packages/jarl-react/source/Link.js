@@ -41,7 +41,7 @@ class Link extends Component {
         redirect: false,
         children: null,
         innerRef: null,
-        component: "a"
+        element: "a"
     };
 
     static contextTypes = {
