@@ -3,17 +3,45 @@ import PropTypes from "prop-types";
 
 import { navigationContextShape } from "./NavigationProvider";
 
-export default class Link extends Component {
+/**
+ * Renders an anchor linking to a location. Clicking will cause a navigation via history.
+ */
+class Link extends Component {
     static propTypes = {
+        /** The location object (or path string) to link to. */
         to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+        /**
+         * Additional CSS class to be applied when this link is "active" - defined as being either the
+         * current page or one of its ancestors, as defined by the RouteMap.
+         */
         activeClassName: PropTypes.string,
-        onClick: PropTypes.func
+        /**
+         * Additional handler to be called when this link is clicked, before navigation is triggered.
+         * Call `event.preventDefault()` to cancel navigation.
+         */
+        onClick: PropTypes.func,
+        /** Provides access to the `ref` of the underlying rendered DOM node or other component */
+        innerRef: PropTypes.func,
+        /** If true, the current URL will be replaced, rather than creating a new history entry. */
+        redirect: PropTypes.bool,
+        /**
+         * Elements to be rendered as the link text, or a function to override the entire rendering
+         * of the link using the function-as-child pattern. The function will receive `href`, `onClick`
+         * and `active` props.
+         */
+        children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+        /** Specify a different component to render instead of `a`. Ignored when children is a function. */
+        component: PropTypes.element
     };
 
     static defaultProps = {
         to: null,
         activeClassName: "",
-        onClick: null
+        onClick: null,
+        redirect: false,
+        children: null,
+        innerRef: null,
+        component: "a"
     };
 
     static contextTypes = {
@@ -41,7 +69,9 @@ export default class Link extends Component {
             activeClassName,
             className,
             onClick,
-            component,
+            // TODO: Test innerRef
+            innerRef,
+            component: Element,
             ...others
         } = this.props;
         // Determine href and active status
@@ -60,16 +90,18 @@ export default class Link extends Component {
             activeClassName && active
                 ? `${className} ${activeClassName}`
                 : className;
-        const Element = component || "a";
         return (
             <Element
                 {...others}
                 href={href}
                 onClick={handleClick}
                 className={combinedClassNames}
+                ref={innerRef}
             >
                 {children}
             </Element>
         );
     }
 }
+
+export default Link;

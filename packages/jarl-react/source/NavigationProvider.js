@@ -123,7 +123,7 @@ export default class NavigationProvider extends Component {
     }
 
     handleRedirect = to => {
-        // Redirect causes a replace instead of pushl, so the browser history doesn't
+        // Redirect causes a replace instead of push, so the browser history doesn't
         // contain URLs we know to be invalid
         // TODO: Specific E2E test for this, and consider that in some cases this
         // might not be wanted - e.g. redirect from a Login page could be valid later
