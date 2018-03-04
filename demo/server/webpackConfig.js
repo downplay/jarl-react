@@ -21,6 +21,7 @@ const makeWebpackConfig = ({
     const webpackConfig = {
         target,
         context: basePath,
+        mode: DEV ? "development" : "production",
         entry: {
             bundle:
                 DEV && !isServer

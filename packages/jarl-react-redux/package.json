@@ -4,6 +4,7 @@
     "description": "Redux integration for jarl-react",
     "main": "index.js",
     "module": "es/index.js",
+    "sideEffects": false,
     "scripts": {
         "test": "jest",
         "build": "node ./tools/build.js",
@@ -22,9 +23,7 @@
         "reducer.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [

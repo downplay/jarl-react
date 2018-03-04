@@ -4,6 +4,7 @@
     "description": "Just Another Router Library for React",
     "main": "index.js",
     "module": "es/index.js",
+    "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
         "build": "node ./tools/build.js",
@@ -30,9 +31,7 @@
         "withLocation.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
