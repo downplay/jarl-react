@@ -1,8 +1,8 @@
-## Basic Routing
+## Getting Started
 
 To get started with a minimal routing setup in client-side React, you need three things: a routes map, a history implementation, and a navigation provider.
 
-### The Routes Map
+### The Route Map
 
 routes.js:
 

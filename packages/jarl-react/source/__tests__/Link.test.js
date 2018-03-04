@@ -25,10 +25,10 @@ describe("<Link/>", () => {
         expect(anchor.text()).toEqual("Home");
     });
 
-    test("renders a different component", () => {
+    test("renders a different element", () => {
         const anchor = render(
             <MockProvider>
-                <Link to="/" component="div">
+                <Link to="/" element="div">
                     Home
                 </Link>
             </MockProvider>

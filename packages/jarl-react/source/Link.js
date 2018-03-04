@@ -31,7 +31,7 @@ class Link extends Component {
          */
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         /** Specify a different component to render instead of `a`. Ignored when children is a function. */
-        component: PropTypes.element
+        element: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
     };
 
     static defaultProps = {
@@ -71,7 +71,8 @@ class Link extends Component {
             onClick,
             // TODO: Test innerRef
             innerRef,
-            component: Element,
+            element: Element,
+            redirect,
             ...others
         } = this.props;
         // Determine href and active status

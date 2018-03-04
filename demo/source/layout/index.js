@@ -41,11 +41,18 @@ export const Menu = ({ children }) => (
     </nav>
 );
 
+export const SubMenu = ({ children, title }) => (
+    <ListItem>
+        {title}
+        <Menu>{children}</Menu>
+    </ListItem>
+);
+
 const ListItem = styled.li`
     font-weight: ${({ active }) => (active ? "bold" : "normal")};
 `;
 
-// TODO: Test active on most/all URLs
+// TODO: Test active on all URLs
 export const MenuItem = ({ children, to, ...rest }) => (
     <Link to={to}>
         {({ active, onClick, href }) => (

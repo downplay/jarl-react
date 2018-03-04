@@ -10,12 +10,12 @@ const MenuSidebar = styled.div``;
 const ContentPanel = styled.div``;
 const CodePanel = styled.div``;
 
-const MainLayout = ({ children, code }) => (
+const MainLayout = ({ children, code, menu }) => (
     <Grid>
         <HeaderRow>
             <h1>JARL Demos</h1>
         </HeaderRow>
-        <MenuSidebar />
+        <MenuSidebar>{menu}</MenuSidebar>
         <ContentPanel>{children}</ContentPanel>
         <CodePanel>{code}</CodePanel>
     </Grid>

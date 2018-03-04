@@ -5,11 +5,23 @@ import * as advancedRouting from "./advancedRouting";
 import * as reduxIntegration from "./reduxIntegration";
 import * as codeSplitting from "./codeSplitting";
 
-export {
-    basicRouting,
-    queryStrings,
-    redirects,
-    advancedRouting,
-    codeSplitting,
-    reduxIntegration
-};
+const demos = [
+    { name: "basicRouting", content: basicRouting, title: "Basic Routing" },
+    { name: "queryStrings", content: queryStrings, title: "Query Strings" },
+    { name: "redirects", content: redirects, title: "Redirects" },
+    {
+        name: "advancedRouting",
+        content: advancedRouting,
+        title: "Advanced Routing"
+    },
+    { name: "codeSplitting", content: codeSplitting, title: "Code Splitting" },
+    {
+        name: "reduxIntegration",
+        content: reduxIntegration,
+        title: "Redux Integration"
+    }
+];
+
+export default demos;
+
+export const getDemo = demoName => demos.find(demo => demo.name === demoName);

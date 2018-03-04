@@ -32,7 +32,7 @@ More in line with other packages, including `redux` _and also_ `jarl-react-redux
 
 ## Integrations
 
-*   React Native (largely just needs a replacement for the Link component, )
+*   React Native (largely just needs a replacement for the Link component, maybe a Provider which uses memoryHistory?)
 *   Better support for Redux, perhaps enabling navigation via dispatch, consider Saga support
 *   Considering `redux-saga` support ... I have a great story for this, but it's non-trivial and might wait until v1.1
 

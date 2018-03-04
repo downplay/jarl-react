@@ -6,6 +6,10 @@
 *   Proper implementation of isActive. Now considers the route hierarchy rather than looking purely at the URL -- meaning it will work with partial paths and query strings
 *   Added a function-as-child API to `<Link>`; provides `href`, `active` and `onClick` props so you can render anything that links to a route
 *   Redirect now causes a history.replace() instead of history.push()
+*   Breaking: renamed `component` prop on `Link` to `element` to be more consistent with PropTypes
+*   Another big push on documentation
+*   Upgraded demos site to Webpack 4 / React Hot Loader 4
+*   Added `sideEffects: false` to package.json, for Webpack 4's "pure module" support
 
 ## 0.7.2
 

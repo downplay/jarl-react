@@ -10,8 +10,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 import { MainLayout } from "./layout";
+import MainMenu from "./MainMenu";
 
-import * as demos from "./demos";
+import { getDemo } from "./demos";
 
 /**
  * JARL demos
@@ -40,17 +41,17 @@ const routes = [
         state: { page: "index" }
     },
     {
-        // This route (with child) matches the first path segment and defers everything else
+        // This route (and its child route) match the first path segment and defers everything else
         // to the routing for the specific demo. Ideally this would be a single route
         // but optional wildcard path segments are not yet supported, so this route matches
         // the demo's landing page, and the child route matches any sub pages.
         path: "/:demoName?*=:all",
         state: { page: "demo" },
         match: ({ demoName, ...rest }) => {
-            if (!demos[demoName]) {
+            if (!getDemo(demoName)) {
                 return false;
             }
-            return { ...rest, demoName, demo: demos[demoName] };
+            return { ...rest, demoName };
         },
         routes: [
             {
@@ -79,14 +80,16 @@ class Root extends Component {
     };
 
     renderDemo() {
-        const { page, demo, demoName, missingPath, query } = this.state.routing;
+        const { page, demoName, missingPath, query } = this.state.routing;
 
         let content;
         let code;
         if (page === "demo") {
             // Render one of the demos: set its basePath and also pass in the same
             // `history` instance so browser history works right across the board.
-            const { Root: DemoRoot, routes: demoRoutes } = demo;
+            const { Root: DemoRoot, routes: demoRoutes } = getDemo(
+                demoName
+            ).content;
             content = (
                 <DemoRoot
                     routes={demoRoutes}
@@ -103,7 +106,11 @@ class Root extends Component {
                     <NotFound missingPath={missingPath} query={query} />
                 );
         }
-        return <MainLayout code={code}>{content}</MainLayout>;
+        return (
+            <MainLayout code={code} menu={<MainMenu />}>
+                {content}
+            </MainLayout>
+        );
     }
 
     render() {
