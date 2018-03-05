@@ -1,6 +1,6 @@
 # JARL: Version History
 
-## Next
+## 0.8.0
 
 *   Breaking: renamed `component` prop on `Link` to `element` to be more consistent with PropTypes
 *   Breaking: changed the method signature of onNavigateStart and onNavigateEnd callbacks. They now emit an event object in the form `{ state, path, branch, action }` and are now consistent with onNavigateError.

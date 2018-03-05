@@ -33,12 +33,9 @@ More in line with other packages, including `redux` _and also_ `jarl-react-redux
 ## Integrations
 
 *   React Native (largely just needs a replacement for the Link component, maybe a Provider which uses memoryHistory?)
-*   Better support for Redux, perhaps enabling navigation via dispatch, consider Saga support
-*   Considering `redux-saga` support ... I have a great story for this, but it's non-trivial and might wait until v1.1
 
 ## Misc task
 
-*   Fix isActive to work via RouteMapper hierarchy to support partial paths and query strings
 *   Really hard to debug errors caused by badly constructed routes. e.g.
 
 ```js
@@ -59,12 +56,14 @@ More in line with other packages, including `redux` _and also_ `jarl-react-redux
 ```
 
 This causes an error due to needing two ids in an array.
-Need to either detect this when we check if the keys are there, or throw a warning/error on the route table that it looks like the user did something invalid. Either way need better sanitisation of the routes.
+Need to either detect this when we check if the keys are there, or throw a warning/error on the route table that it looks like the user did something invalid. Either way need better sanitisation of the routes, and perhaps some more detailed debug output (maybe a debug mode in dev to see what did/didn't match and why)
 
 # Future plans
 
 Some additional plans that are more "nice-to-have" and might wait until after 1.0.0 and possibly provided in separate packages:
 
+*   Look at a whole new story for Redux, sync URL to Redux state automatically rather than other way around.
+*   Considering `redux-saga` support ... and maybe integrations with other popular state libraries
 *   Big refactor: some of the main classes have grown bloated and overly complex as functionality has been added in, making things hard to test and debug
 *   Component API: function-as-child version of Route (/Router?)
 *   Figure out the best way to support animated transitions, and make some cool demos for this

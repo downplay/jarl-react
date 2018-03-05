@@ -1,14 +1,14 @@
-# jarl-react 0.7.x
+# jarl-react 0.8.x
 
 Just Another Router Library for React.
 
 ## Philosophy
 
-* URLs are a public API into your appplication
-* Routes define a mapping between URL and state
-* Routing is a core part of your application logic
-* A router should not dictate state mechanism nor navigation lifecycle
-* Data dependencies are closely bound to routes
+*   URLs are a public API into your appplication
+*   Routes define a mapping between URL and state
+*   Routing is a core part of your application logic
+*   A router should not dictate state mechanism nor navigation lifecycle
+*   Data dependencies are closely bound to routes
 
 Putting all of this together, I wanted a router that performs the simple-sounding
 task of keeping the URL and the state in sync, whilst not getting in the way
@@ -19,11 +19,11 @@ component: you can simply inspect your state and render using `if` and `switch`.
 Routes are described using simple serializable state objects. The route table is then a
 mapping between URLs and these objects. This provides some key benefits:
 
-* The state can be stored in Redux, local state, or any other storage mechanism,
-  and used for making any rendering decisions
-* URLs don't ever need to be used inside your application, instead Link can build
-  its URL from state objects, making it very easy to tweak your route structure at any time
-* React Native support becomes very easy since we can drop the URLs entirely and everything still works!
+*   The state can be stored in Redux, local state, or any other storage mechanism,
+    and used for making any rendering decisions
+*   URLs don't ever need to be used inside your application, instead Link can build
+    its URL from state objects, making it very easy to tweak your route structure at any time
+*   React Native support becomes very easy since we can drop the URLs entirely and everything still works!
 
 Some examples of state mapping:
 
