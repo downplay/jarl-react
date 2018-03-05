@@ -23,19 +23,22 @@ class Provider extends Component {
         return store.getState()[reducerMountPoint];
     }
 
-    handleNavigateStart = state => {
-        this.props.store.dispatch(navigateStart(state));
+    handleNavigateStart = event => {
+        this.props.store.dispatch(navigateStart(event.state));
         if (this.props.onNavigateStart) {
-            return this.props.onNavigateStart(state);
+            return this.props.onNavigateStart(event);
         }
         return null;
     };
 
-    handleNavigateEnd = state => {
-        this.props.store.dispatch(navigateEnd(state));
+    handleNavigateEnd = event => {
+        this.props.store.dispatch(navigateEnd(event.state));
         setTimeout(() => {
-            this.props.store.dispatch(navigateTransitionIn(state));
+            this.props.store.dispatch(navigateTransitionIn(event.state));
         }, 1);
+        if (this.props.onNavigateEnd) {
+            this.props.onNavigateEnd(event);
+        }
     };
 
     render() {

@@ -54,8 +54,11 @@ describe("<SimpleProvider/>", () => {
             />
         );
         await wait(0);
-        expect(onNavigateEnd).toHaveBeenCalledWith({ home: true }, "/", [
-            { path: "/", state: { home: true } }
-        ]);
+        expect(onNavigateEnd).toHaveBeenCalledWith({
+            action: "INITIAL",
+            branch: [{ path: "/", state: { home: true } }],
+            state: { home: true },
+            path: "/"
+        });
     });
 });

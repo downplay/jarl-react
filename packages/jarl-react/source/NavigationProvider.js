@@ -12,6 +12,11 @@ export const navigationContextShape = PropTypes.shape({
     getState: PropTypes.func.isRequired
 }).isRequired;
 
+/** Action type on initial navigation. */
+export const ACTION_INITIAL = "INITIAL";
+/** Action type when routes are reloaded. */
+export const ACTION_RELOAD = "RELOAD";
+
 const ensureRouteMapper = routes =>
     routes instanceof RouteMapper ? routes : new RouteMapper(routes);
 
@@ -71,7 +76,7 @@ export default class NavigationProvider extends Component {
         // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
         if (this.props.performInitialNavigation) {
-            this.doNavigation(this.getCurrentPath());
+            this.doNavigation(this.getCurrentPath(), ACTION_INITIAL);
         }
     }
 
@@ -84,7 +89,8 @@ export default class NavigationProvider extends Component {
                 () => {
                     // Note: performInitialNavigation is intentionally ignored, if a different
                     // set of routes are loaded then we definitely need to resolve data etc
-                    this.doNavigation(this.getCurrentPath());
+                    // TODO: Test for this
+                    this.doNavigation(this.getCurrentPath(), ACTION_RELOAD);
                 }
             );
         }
@@ -112,7 +118,8 @@ export default class NavigationProvider extends Component {
 
     handleHistory = (location, action) => {
         this.doNavigation(
-            this.getCurrentPath(location.pathname + location.search)
+            this.getCurrentPath(location.pathname + location.search),
+            action
         );
     };
 
@@ -135,7 +142,7 @@ export default class NavigationProvider extends Component {
         this.props.history.push(this.ensureUrl(to));
     };
 
-    doNavigation(path) {
+    doNavigation(path, action) {
         const { branch, state } = this.state.routes.match(
             path,
             this.props.context()
@@ -150,7 +157,8 @@ export default class NavigationProvider extends Component {
         let promise = Promise.resolve();
         if (this.props.onNavigateStart) {
             promise =
-                this.props.onNavigateStart(state, path, branch) || promise;
+                this.props.onNavigateStart({ state, path, branch, action }) ||
+                promise;
         }
         const promises = [promise];
         // Run any resolvers on the route branch
@@ -180,7 +188,12 @@ export default class NavigationProvider extends Component {
                 );
                 // TODO: Invariant if onNavigateEnd doesn't exist? PropTypes required?
                 if (this.props.onNavigateEnd) {
-                    this.props.onNavigateEnd(finalState, path, branch);
+                    this.props.onNavigateEnd({
+                        state: finalState,
+                        path,
+                        branch,
+                        action
+                    });
                 }
             })
             .catch(error => {
@@ -189,7 +202,13 @@ export default class NavigationProvider extends Component {
                     this.handleRedirect(error.to);
                 } else if (this.props.onNavigateError) {
                     // Otherwise send to error handler
-                    this.props.onNavigateError({ error, state, path, branch });
+                    this.props.onNavigateError({
+                        error,
+                        state,
+                        path,
+                        branch,
+                        action
+                    });
                 } else {
                     // Unable to complete navigation, error not handled
                     // TODO: Throw error instead?
@@ -277,7 +296,7 @@ export default class NavigationProvider extends Component {
         // than getting false positives; and the missed cases can usually be fixed by
         // tweaking routes to be less ambiguous.
         // Hydrate the corresponding leaf of the current branch match, with the state
-        // we are transitioning to. If they match then this is (almost definitely) active.
+        // we are navigating to. If they match then this is (almost definitely) active.
         // Need to find the right mapped route that corresponds to the leaf.
         const mappedRoute = this.state.routes.routes.find(
             route => route.route === currentBranch[toBranch.length - 1]

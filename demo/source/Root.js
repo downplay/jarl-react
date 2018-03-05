@@ -73,7 +73,7 @@ const routes = [
 class Root extends Component {
     state = { routing: {} };
 
-    handleNavigateEnd = state => {
+    handleNavigateEnd = ({ state }) => {
         this.setState({
             routing: state
         });

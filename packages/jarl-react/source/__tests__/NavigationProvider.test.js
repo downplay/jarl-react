@@ -118,7 +118,7 @@ describe("<NavigationProvider/>", () => {
 
         test("performed normally", () => {
             shallow(<NavigationProvider routes={routes} history={history} />);
-            expect(doNavigation).toHaveBeenCalledWith("/");
+            expect(doNavigation).toHaveBeenCalledWith("/", "INITIAL");
         });
 
         test("is disabled with `performInitialNavigation`", () => {
@@ -132,6 +132,25 @@ describe("<NavigationProvider/>", () => {
             expect(doNavigation).not.toHaveBeenCalled();
         });
 
+        test("history triggers doNavigation", () => {
+            let listenCallback;
+            history = {
+                ...history,
+                listen: callback => {
+                    listenCallback = callback;
+                }
+            };
+            shallow(
+                <NavigationProvider
+                    routes={routes}
+                    history={history}
+                    performInitialNavigation={false}
+                />
+            );
+            listenCallback({ pathname: "/", search: "?foo=bar" }, "PUSH");
+            expect(doNavigation).toHaveBeenCalledWith("/?foo=bar", "PUSH");
+        });
+
         test("basePath is honoured", () => {
             history.location.pathname = "/foo";
             shallow(
@@ -141,13 +160,13 @@ describe("<NavigationProvider/>", () => {
                     basePath="/foo"
                 />
             );
-            expect(doNavigation).toHaveBeenCalledWith("/");
+            expect(doNavigation).toHaveBeenCalledWith("/", "INITIAL");
         });
 
         test("pathname and search are joined", () => {
             history.location.search = "?foo=bar";
             shallow(<NavigationProvider routes={routes} history={history} />);
-            expect(doNavigation).toHaveBeenCalledWith("/?foo=bar");
+            expect(doNavigation).toHaveBeenCalledWith("/?foo=bar", "INITIAL");
         });
     });
 
@@ -178,12 +197,48 @@ describe("<NavigationProvider/>", () => {
         });
 
         test("resolve functions are executed", async () => {
-            provider.doNavigation("/test-resolve");
-            expect(onNavigateStart).toHaveBeenCalled();
+            provider.doNavigation("/test-resolve", "PUSH");
+            expect(onNavigateStart).toHaveBeenCalledWith({
+                action: "PUSH",
+                branch: [
+                    {
+                        path: "/test-resolve",
+                        resolve: expect.any(Function),
+                        routes: [
+                            {
+                                path: "/nested",
+                                resolve: expect.any(Function),
+                                state: { nested: true, page: "test-resolve" }
+                            }
+                        ],
+                        state: { page: "test-resolve" }
+                    }
+                ],
+                path: "/test-resolve",
+                state: { page: "test-resolve" }
+            });
             expect(onNavigateEnd).not.toHaveBeenCalled();
             // TODO: Maybe modify tests to use sinon
             await wait(11);
-            expect(onNavigateEnd).toHaveBeenCalled();
+            expect(onNavigateEnd).toHaveBeenCalledWith({
+                action: "PUSH",
+                branch: [
+                    {
+                        path: "/test-resolve",
+                        resolve: expect.any(Function),
+                        routes: [
+                            {
+                                path: "/nested",
+                                resolve: expect.any(Function),
+                                state: { nested: true, page: "test-resolve" }
+                            }
+                        ],
+                        state: { page: "test-resolve" }
+                    }
+                ],
+                state: { page: "test-resolve" },
+                path: "/test-resolve"
+            });
             expect(one).toEqual(true);
         });
 
@@ -226,7 +281,10 @@ describe("<NavigationProvider/>", () => {
         });
 
         test("error in resolve is passed to handler", async () => {
-            provider.doNavigation("/test-redirect-resolve?error=true");
+            provider.doNavigation(
+                "/test-redirect-resolve?error=true",
+                "INITIAL"
+            );
             expect(onNavigateStart).toHaveBeenCalled();
             await wait(0);
             expect(onNavigateError).toHaveBeenCalledWith({
@@ -239,7 +297,8 @@ describe("<NavigationProvider/>", () => {
                 ],
                 error: new Error("Something bad happened"),
                 path: "/test-redirect-resolve?error=true",
-                state: { error: "true" }
+                state: { error: "true" },
+                action: "INITIAL"
             });
         });
 

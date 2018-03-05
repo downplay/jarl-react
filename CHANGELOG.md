@@ -2,11 +2,13 @@
 
 ## Next
 
-*   Fixed nested stringify
+*   Breaking: renamed `component` prop on `Link` to `element` to be more consistent with PropTypes
+*   Breaking: changed the method signature of onNavigateStart and onNavigateEnd callbacks. They now emit an event object in the form `{ state, path, branch, action }` and are now consistent with onNavigateError.
+*   Added `action` to the callback emitted from onNavigateStart/onNavigateEnd/onNavigateError. This will be the action received from the `history` listener and be one of: PUSH, REPLACE, or POP for actions triggered by `history`, or INITIAL or RELOAD for initial navigation or reloaded routes triggered by JARL.
+*   Fixed nested stringifiers
 *   Proper implementation of isActive. Now considers the route hierarchy rather than looking purely at the URL -- meaning it will work with partial paths and query strings
 *   Added a function-as-child API to `<Link>`; provides `href`, `active` and `onClick` props so you can render anything that links to a route
 *   Redirect now causes a history.replace() instead of history.push()
-*   Breaking: renamed `component` prop on `Link` to `element` to be more consistent with PropTypes
 *   Another big push on documentation
 *   Upgraded demos site to Webpack 4 / React Hot Loader 4
 *   Added `sideEffects: false` to package.json, for Webpack 4's "pure module" support
