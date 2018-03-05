@@ -22,7 +22,7 @@
         "Link.js",
         "RoutingProvider.js",
         "redirect.js",
-        "router.js",
+        "routing.js",
         "RouteMapper.js",
         "SimpleProvider.js"
     ],
