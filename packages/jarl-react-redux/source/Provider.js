@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import invariant from "invariant";
 
-import { NavigationProvider, RouteMapper } from "jarl-react";
+import { NavigationProvider } from "jarl-react";
 
 import { navigateStart, navigateEnd, navigateTransitionIn } from "./actions";
 
