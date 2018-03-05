@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import invariant from "invariant";
 
 import RouteMapper, { joinPaths, hydrateRoute } from "./RouteMapper";
-import safeJsonStringify from "./tool/safeJsonStringify";
+import safeJsonStringify from "./lib/safeJsonStringify";
 import { Redirect } from "./redirect";
 
 export const navigationContextShape = PropTypes.shape({

@@ -1,5 +1,5 @@
-lib
-tool
+./lib
+./vendor
 es
 node_modules
 umd

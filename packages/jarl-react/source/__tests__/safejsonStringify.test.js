@@ -1,5 +1,5 @@
 /* global describe test expect */
-import safeJsonStringify from "../tool/safeJsonStringify";
+import safeJsonStringify from "../lib/safeJsonStringify";
 
 describe("safeJsonStringify()", () => {
     test("stringify object", () => {
