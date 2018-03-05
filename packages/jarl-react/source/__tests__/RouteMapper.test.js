@@ -412,6 +412,21 @@ describe("RouteMapper", () => {
                 });
                 expect(path).toEqual("/wildcard?charlie=kelly");
             });
+
+            test("edge case, matched path with missing optional wildcard query", () => {
+                routes = new RouteMapper([
+                    {
+                        path: "/:demoName?*=:all",
+                        state: { page: "demo" }
+                    }
+                ]);
+                // This was causing an error in demos as :all was not present in the location
+                const path = routes.stringify({
+                    page: "demo",
+                    demoName: "hello"
+                });
+                expect(path).toEqual("/hello");
+            });
         });
     });
 

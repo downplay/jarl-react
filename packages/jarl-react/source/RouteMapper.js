@@ -170,6 +170,9 @@ const hydrateQuery = (pattern, state) => {
             // If there's a wildcard, merge all captured props onto the query
             const wildKey = getQueryWildcardStateKey(pattern["*"]);
             const rest = state[wildKey];
+            if (!rest) {
+                continue;
+            }
             for (const namedKey of Object.keys(rest)) {
                 query[namedKey] = stringifyQueryValue(
                     { [wildKey]: rest[namedKey] },

@@ -10,6 +10,7 @@
 *   Another big push on documentation
 *   Upgraded demos site to Webpack 4 / React Hot Loader 4
 *   Added `sideEffects: false` to package.json, for Webpack 4's "pure module" support
+*   Bug fixes and other minor improvements
 
 ## 0.7.2
 
