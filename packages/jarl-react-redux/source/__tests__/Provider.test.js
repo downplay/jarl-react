@@ -3,7 +3,7 @@ import React from "react";
 import { configure, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import { NavigationProvider } from "jarl-react";
+import { RoutingProvider } from "jarl-react";
 
 import Provider from "../Provider";
 import mockHistory from "../../../jarl-react/source/__tests__/mocks/mockHistory";
@@ -33,7 +33,7 @@ describe("<Provider/>", () => {
         }).toThrow(/Provider must be given a Redux store/);
     });
 
-    test("renders a NavigationProvider", () => {
+    test("renders a RoutingProvider", () => {
         const { store, history, children, context } = create();
         const provider = shallow(
             <Provider
@@ -45,7 +45,7 @@ describe("<Provider/>", () => {
                 {children}
             </Provider>
         );
-        const childProvider = provider.find(NavigationProvider);
+        const childProvider = provider.find(RoutingProvider);
 
         expect(childProvider.length).toEqual(1);
         const props = childProvider.props();

@@ -19,7 +19,7 @@ const routes = [
     {
         // Synchronous conditional redirect. Here the match function returns a
         // redirect conditionally based on some global auth state. The auth
-        // state in this case is passed via `NavigationProvider`'s `context` prop.
+        // state in this case is passed via `RoutingProvider`'s `context` prop.
         path: "/admin",
         state: { page: "admin" },
         match: (state, { authenticated }) =>

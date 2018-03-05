@@ -87,14 +87,14 @@ const routes = [
 ];
 ```
 
-Load the routes and a `history` implementation of your choice into your `NavigationProvider`:
+Load the routes and a `history` implementation of your choice into your `RoutingProvider`:
 
 ```js
 const history = createBrowserHistory();
 ReactDOM.render(
-    <NavigationProvider history={history} routes={routes}>
+    <RoutingProvider history={history} routes={routes}>
         <App />
-    </NavigationProvider>,
+    </RoutingProvider>,
     rootElement
 );
 ```

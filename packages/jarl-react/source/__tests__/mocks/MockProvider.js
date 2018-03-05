@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NavigationProvider } from "../..";
+import { RoutingProvider } from "../..";
 import mockHistory from "./mockHistory";
 
 const indexRoute = [
@@ -11,7 +11,7 @@ const indexRoute = [
 ];
 
 export default ({ routes = indexRoute, children, location, ...props }) => (
-    <NavigationProvider routes={routes} history={mockHistory()} {...props}>
+    <RoutingProvider routes={routes} history={mockHistory()} {...props}>
         {...children}
-    </NavigationProvider>
+    </RoutingProvider>
 );

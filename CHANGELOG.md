@@ -1,5 +1,15 @@
 # JARL: Version History
 
+## 1.0.0-alpha
+
+### Breaking
+
+*   Nomeclature changes and renames:
+    *   `state` is now `location`
+    *   `context` is now `provide`
+    *   `Route.match` is now `transform`
+    *   `Route.stringify` is now `serialize`
+
 ## 0.8.0
 
 *   Breaking: renamed `component` prop on `Link` to `element` to be more consistent with PropTypes

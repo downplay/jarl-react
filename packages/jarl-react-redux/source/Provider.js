@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import invariant from "invariant";
 
-import { NavigationProvider } from "jarl-react";
+import { RoutingProvider } from "jarl-react";
 
 import { navigateStart, navigateEnd, navigateTransitionIn } from "./actions";
 
@@ -45,7 +45,7 @@ class Provider extends Component {
         const { store, ...others } = this.props;
         const navigation = this.getNavigationState();
         return (
-            <NavigationProvider
+            <RoutingProvider
                 {...others}
                 state={navigation}
                 onNavigateStart={this.handleNavigateStart}

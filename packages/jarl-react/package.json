@@ -21,7 +21,7 @@
         "index.js",
         "hocFactory.js",
         "Link.js",
-        "NavigationProvider.js",
+        "RoutingProvider.js",
         "redirect.js",
         "RouteMapper.js",
         "SimpleProvider.js",
@@ -31,9 +31,7 @@
         "withLocation.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [

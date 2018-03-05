@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import NavigationProvider from "./NavigationProvider";
+import RoutingProvider from "./RoutingProvider";
 
 export default class SimpleProvider extends Component {
     /**
@@ -25,7 +25,7 @@ export default class SimpleProvider extends Component {
         const { ...others } = this.props;
 
         return (
-            <NavigationProvider
+            <RoutingProvider
                 {...others}
                 state={this.state.navigationState}
                 onNavigateEnd={this.handleNavigateEnd}

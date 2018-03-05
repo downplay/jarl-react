@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { navigationContextShape } from "./NavigationProvider";
+import { navigationContextShape } from "./RoutingProvider";
 
 /**
  * Renders an anchor linking to a location. Clicking will cause a navigation via history.

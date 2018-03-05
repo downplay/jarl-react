@@ -6,13 +6,13 @@ import Adapter from "enzyme-adapter-react-16";
 import mockHistory from "./mocks/mockHistory";
 import wait from "./mocks/wait";
 
-import NavigationProvider from "../NavigationProvider";
+import RoutingProvider from "../RoutingProvider";
 import RouteMapper from "../RouteMapper";
 import redirect from "../redirect";
 
 configure({ adapter: new Adapter() });
 
-describe("<NavigationProvider/>", () => {
+describe("<RoutingProvider/>", () => {
     let history;
     let routes;
     let one;
@@ -84,19 +84,19 @@ describe("<NavigationProvider/>", () => {
     describe("constructor", () => {
         test("errors with no routes", () => {
             expect(() => {
-                shallow(<NavigationProvider />);
+                shallow(<RoutingProvider />);
             }).toThrow(/Invalid routes property/);
         });
 
         test("errors with no history", () => {
             expect(() => {
-                shallow(<NavigationProvider routes={[]} />);
+                shallow(<RoutingProvider routes={[]} />);
             }).toThrow(/Provider must receive a history object/);
         });
 
         test("converts array to RouteMapper", () => {
             const provider = shallow(
-                <NavigationProvider routes={routes} history={history} />
+                <RoutingProvider routes={routes} history={history} />
             );
             expect(provider.state("routes")).toEqual(expect.any(RouteMapper));
         });
@@ -107,7 +107,7 @@ describe("<NavigationProvider/>", () => {
 
         beforeEach(() => {
             doNavigation = jest.spyOn(
-                NavigationProvider.prototype,
+                RoutingProvider.prototype,
                 "doNavigation"
             );
         });
@@ -117,13 +117,13 @@ describe("<NavigationProvider/>", () => {
         });
 
         test("performed normally", () => {
-            shallow(<NavigationProvider routes={routes} history={history} />);
+            shallow(<RoutingProvider routes={routes} history={history} />);
             expect(doNavigation).toHaveBeenCalledWith("/", "INITIAL");
         });
 
         test("is disabled with `performInitialNavigation`", () => {
             shallow(
-                <NavigationProvider
+                <RoutingProvider
                     routes={routes}
                     history={history}
                     performInitialNavigation={false}
@@ -141,7 +141,7 @@ describe("<NavigationProvider/>", () => {
                 }
             };
             shallow(
-                <NavigationProvider
+                <RoutingProvider
                     routes={routes}
                     history={history}
                     performInitialNavigation={false}
@@ -154,7 +154,7 @@ describe("<NavigationProvider/>", () => {
         test("basePath is honoured", () => {
             history.location.pathname = "/foo";
             shallow(
-                <NavigationProvider
+                <RoutingProvider
                     routes={routes}
                     history={history}
                     basePath="/foo"
@@ -165,7 +165,7 @@ describe("<NavigationProvider/>", () => {
 
         test("pathname and search are joined", () => {
             history.location.search = "?foo=bar";
-            shallow(<NavigationProvider routes={routes} history={history} />);
+            shallow(<RoutingProvider routes={routes} history={history} />);
             expect(doNavigation).toHaveBeenCalledWith("/?foo=bar", "INITIAL");
         });
     });
@@ -183,7 +183,7 @@ describe("<NavigationProvider/>", () => {
             onNavigateError = jest.fn();
             contextCallback = jest.fn();
             provider = shallow(
-                <NavigationProvider
+                <RoutingProvider
                     routes={routes}
                     history={history}
                     onNavigateStart={onNavigateStart}

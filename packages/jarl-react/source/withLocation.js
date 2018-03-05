@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { navigationContextShape } from "./NavigationProvider";
+import { navigationContextShape } from "./RoutingProvider";
 import hocFactory from "./hocFactory";
 
 const noop = state => state;

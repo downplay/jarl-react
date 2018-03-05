@@ -1,4 +1,4 @@
-export { default as NavigationProvider } from "./NavigationProvider";
+export { default as RoutingProvider } from "./RoutingProvider";
 export { default as RouteMapper, joinPaths } from "./RouteMapper";
 export { default as redirect, Redirect } from "./redirect";
 export { default as Link } from "./Link";

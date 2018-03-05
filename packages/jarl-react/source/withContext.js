@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import { navigationContextShape } from "./NavigationProvider";
+import { navigationContextShape } from "./RoutingProvider";
 import hocFactory from "./hocFactory";
 
 /**
- * Higher-order component to inject functions from the NavigationProvider's context
+ * Higher-order component to inject functions from the RoutingProvider's context
  *
  * Functions injected:
  *

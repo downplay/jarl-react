@@ -20,7 +20,7 @@ export const ACTION_RELOAD = "RELOAD";
 const ensureRouteMapper = routes =>
     routes instanceof RouteMapper ? routes : new RouteMapper(routes);
 
-export default class NavigationProvider extends Component {
+export default class RoutingProvider extends Component {
     static propTypes = {
         routes: PropTypes.oneOfType([
             PropTypes.instanceOf(RouteMapper),
@@ -48,7 +48,7 @@ export default class NavigationProvider extends Component {
 
     constructor(props) {
         super(props);
-        // TODO: Move all the invariants to NavigationProvider?
+        // TODO: Move all the invariants to RoutingProvider?
         invariant(
             props.routes &&
                 (props.routes instanceof RouteMapper ||

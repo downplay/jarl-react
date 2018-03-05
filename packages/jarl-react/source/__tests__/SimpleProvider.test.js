@@ -3,7 +3,7 @@ import React from "react";
 import { configure, shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import { NavigationProvider } from "../";
+import { RoutingProvider } from "../";
 
 import SimpleProvider from "../SimpleProvider";
 import mockHistory from "./mocks/mockHistory";
@@ -25,12 +25,12 @@ const create = (pathname, search) => ({
 });
 
 describe("<SimpleProvider/>", () => {
-    test("renders a NavigationProvider", () => {
+    test("renders a RoutingProvider", () => {
         const { routes, history, context, children } = create();
         const provider = shallow(
             <SimpleProvider {...{ routes, history, context, children }} />
         );
-        const childProvider = provider.find(NavigationProvider);
+        const childProvider = provider.find(RoutingProvider);
 
         expect(childProvider.length).toEqual(1);
         const props = childProvider.props();

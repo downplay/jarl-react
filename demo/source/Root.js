@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import createHistory from "history/createBrowserHistory";
-import { NavigationProvider } from "jarl-react";
+import { RoutingProvider } from "jarl-react";
 import { hot } from "react-hot-loader";
 
 import routerCode from "!!raw-loader!./Root";
@@ -115,7 +115,7 @@ class Root extends Component {
 
     render() {
         return (
-            <NavigationProvider
+            <RoutingProvider
                 history={history}
                 routes={routes}
                 onNavigateEnd={this.handleNavigateEnd}
@@ -123,7 +123,7 @@ class Root extends Component {
             >
                 <Helmet titleTemplate="JARL Demos | %s" />
                 {this.renderDemo()}
-            </NavigationProvider>
+            </RoutingProvider>
         );
     }
 }

@@ -26,10 +26,6 @@ This change mainly makes sense on the route properties. Match is kind of vague, 
 
 Currently `withNavigate` just provides a `navigate` function so the name made sense, but `withFoo` is vastly overused in the world of HOCs and the `with` is just unneccesary. Additional functions will be provided (inc. `replace` and `serialize`, see above) so `routing` better describes this general navigation functionality. Combining all three HOCs seems like a good API simplification.
 
-`NavigationProvider` -> `Provider`
-
-More in line with other packages, including `redux` _and also_ `jarl-react-redux`.
-
 ## Integrations
 
 *   React Native (largely just needs a replacement for the Link component, maybe a Provider which uses memoryHistory?)
