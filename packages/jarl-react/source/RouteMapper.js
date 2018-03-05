@@ -1,5 +1,5 @@
 import qs from "qs";
-import UrlPattern from "./lib/url-pattern";
+import UrlPattern from "./vendor/url-pattern";
 import { Redirect } from "./redirect";
 
 // Removes any double slashes
