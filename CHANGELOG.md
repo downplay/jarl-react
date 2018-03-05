@@ -4,7 +4,11 @@
 
 ### Breaking
 
-*   Nomeclature changes and renames:
+*   The big rename landed! Massively simplified the API while providing more flexibility. (I hope!)
+    *   `NavigationProvider` is now `RoutingProvider`
+    *   `withContext`, `withLocation`, `withNavigate` all disappeared and are replaced by `routing` HOC which provides all the functionality of the above (but with no parameters acts just like `withLocation` did.)
+    *   `Router` component is a new function-as-child version of `withLocation`
+    *   Recent changes to `Link` support all the functionality of `withContext` and `withNavigate` (i.e. URL serialization, and navigate/redirect) with a function-as-child API.
     *   `state` is now `location`
     *   `context` is now `provide`
     *   `Route.match` is now `transform`

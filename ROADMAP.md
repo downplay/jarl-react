@@ -22,10 +22,6 @@ The most overloaded terms, especially in React world, and they mean different th
 
 This change mainly makes sense on the route properties. Match is kind of vague, overloaded, and doesn't accurately convey what this callback does. Stringify is a silly word, which obviously was in parity both with `JSON.stringify` and the `stringify` API of `url-pattern`, but `serialize` is the proper term and is actually a real word.
 
-`withNavigate`, `withContext`, `withActive` -> `routing`
-
-Currently `withNavigate` just provides a `navigate` function so the name made sense, but `withFoo` is vastly overused in the world of HOCs and the `with` is just unneccesary. Additional functions will be provided (inc. `replace` and `serialize`, see above) so `routing` better describes this general navigation functionality. Combining all three HOCs seems like a good API simplification.
-
 ## Integrations
 
 *   React Native (largely just needs a replacement for the Link component, maybe a Provider which uses memoryHistory?)

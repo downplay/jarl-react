@@ -7,6 +7,7 @@ import Adapter from "enzyme-adapter-react-16";
 import routing from "../routing";
 
 import MockProvider from "./mocks/MockProvider";
+import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
 
@@ -176,3 +177,77 @@ describe("isActive", () => {
         expect(props.active).toEqual(true);
     });
 });
+
+describe("navigate", () => {
+    let mockComponent;
+    let history;
+    let TestComponent;
+    beforeEach(() => {
+        mockComponent = () => <div />;
+        history = mockHistory();
+        TestComponent = routing(() => ({}), ({ navigate }) => ({ navigate }))(
+            mockComponent
+        );
+    });
+
+    test("passes `navigate` prop to component", () => {
+        const output = mount(
+            <MockProvider>
+                <TestComponent />
+            </MockProvider>
+        );
+        const test = output.find(mockComponent);
+        const props = test.props();
+        expect(props.navigate).toEqual(expect.any(Function));
+    });
+
+    test("calling `navigate` triggers history push", () => {
+        const output = mount(
+            <MockProvider history={history}>
+                <TestComponent />
+            </MockProvider>
+        );
+        const test = output.find(mockComponent);
+        const props = test.props();
+        props.navigate("/fleeb");
+        expect(history.push).toHaveBeenCalledWith("/fleeb");
+    });
+});
+
+describe("redirect", () => {
+    let mockComponent;
+    let history;
+    let TestComponent;
+    beforeEach(() => {
+        mockComponent = () => <div />;
+        history = mockHistory();
+        TestComponent = routing(() => ({}), ({ redirect }) => ({ redirect }))(
+            mockComponent
+        );
+    });
+
+    test("passes `redirect` prop to component", () => {
+        const output = mount(
+            <MockProvider>
+                <TestComponent />
+            </MockProvider>
+        );
+        const test = output.find(mockComponent);
+        const props = test.props();
+        expect(props.redirect).toEqual(expect.any(Function));
+    });
+
+    test("calling `redirect` triggers history replace", () => {
+        const output = mount(
+            <MockProvider history={history}>
+                <TestComponent />
+            </MockProvider>
+        );
+        const test = output.find(mockComponent);
+        const props = test.props();
+        props.redirect("/fleeb");
+        expect(history.replace).toHaveBeenCalledWith("/fleeb");
+    });
+});
+
+// TODO: Tests for stringify

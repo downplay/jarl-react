@@ -149,40 +149,38 @@ These links will use the routing table in reverse to stringify all the correct U
 The `SearchForm` component needs to handle links in a slightly different way, as it needs to programmatically navigate to the search page. It looks like this:
 
 ```js
-// The `withNavigate` HOC will inject a function we can use for navigation
-import { withNavigate } from "jarl-react";
-
 class SearchForm extends React.Component {
     state = { searchText: "" };
 
-    handleChange = (e) => {
+    handleChange = e => {
         // Standard controlled input state management
-        this.setState({searchText: e.target.value});
-    }
-
-    handleSearch = () => {
-        // Navigate function has been injected into props. Just pass it another state
-        // object -- JARL will figure out the correct URL, i.e. `/search?q=some%20text`
-        this.props.navigate({ page: "search", search: this.state.searchText });
-    }
+        this.setState({ searchText: e.target.value });
+    };
 
     render() {
         <form>
-            <input type="text" value={this.state.searchText} onChange={this.handleChange} placeholder="Enter search term" />
-            <button onClick={this.handleSearch}>Search</button>
-        </form>
+            <input
+                type="text"
+                value={this.state.searchText}
+                onChange={this.handleChange}
+                placeholder="Enter search term"
+            />
+            {/* Use the function-as-child pattern of Link to dynamically construct the search location and navigate programmatically using `onClick` */}
+            <Link to={{ page: "search", search: this.state.searchText }}>
+                {({ onClick }) => <button onClick={onClick}>Search</button>}
+            </Link>
+        </form>;
     }
-)
+}
 
-// Export class and decorate with the HOC
-export default withNavigate()(SearchForm);
+export default SearchForm;
 ```
 
-That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. More advanced demos (such as data preloading, state mapping, Redux integration) will be showcased in the demo site...
+That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. For more complex scenarios, there is also a `routing` higher-order component giving access to current location as well as all the router functions (serializing URLs from location objects, calling navigate or redirect, and checking whether links are active). More advanced demos (such as data preloading, code splitting, Redux integration) will be showcased in the demo site...
 
 ## Documentation
 
-Lack of documentation is the biggest reason you shouldn't use this router right now. If you want to see some detail examples, take a look through the source code of the demos:
+Lack of documentation is the biggest reason you shouldn't use this router right now. If you want to see some detailed examples, take a look through the source code of the demos:
 https://github.com/downplay/jarl-react/tree/master/demo/source/demos
 
 [Changelog](https://github.com/downplay/jarl-react/tree/master/CHANGELOG.md)
