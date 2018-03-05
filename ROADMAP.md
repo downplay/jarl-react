@@ -69,3 +69,5 @@ Some additional plans that are more "nice-to-have" and might wait until after 1.
 *   Alternatively: replace `qs` with a completely custom parser, possibly extending `url-pattern` to achieve this. This would make it easier to add some new sugar to the syntax:
     *   Query shorthand for a frequent usage pattern: `?:first&(:second)` would expand to `?first=:first&second=(:second)`
     *   Arrays: `qs`'s array syntax is pretty ugly and it's hard to see how I would combine it with the variable syntax. A neater syntax to consider is: `?foo=:values[,]` where ',' is a separator. An advantage of this is that it could work in path segments too.
+*   At some point, move to new context API. Preferably support both old and new versions.
+*   Consider new async APIs and what they can provide

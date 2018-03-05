@@ -1,7 +1,7 @@
 import hoistStatics from "hoist-non-react-statics";
 
-const hocFactory = classBuilder => options => WrappedComponent => {
-    const HocComponent = classBuilder({ options, WrappedComponent });
+const hocFactory = classBuilder => WrappedComponent => {
+    const HocComponent = classBuilder(WrappedComponent);
 
     HocComponent.WrappedComponent = WrappedComponent;
     HocComponent.displayName = `${HocComponent.displayName}(${

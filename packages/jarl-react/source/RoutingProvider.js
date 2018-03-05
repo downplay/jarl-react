@@ -6,10 +6,12 @@ import RouteMapper, { joinPaths, hydrateRoute } from "./RouteMapper";
 import safeJsonStringify from "./lib/safeJsonStringify";
 import { Redirect } from "./redirect";
 
-export const navigationContextShape = PropTypes.shape({
+export const routingContextShape = PropTypes.shape({
+    isActive: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
+    redirect: PropTypes.func.isRequired,
     stringify: PropTypes.func.isRequired,
-    getState: PropTypes.func.isRequired
+    getLocation: PropTypes.func.isRequired
 }).isRequired;
 
 /** Action type on initial navigation. */
@@ -44,7 +46,7 @@ export default class RoutingProvider extends Component {
         basePath: ""
     };
 
-    static childContextTypes = { navigationContext: navigationContextShape };
+    static childContextTypes = { routing: routingContextShape };
 
     constructor(props) {
         super(props);
@@ -63,10 +65,11 @@ export default class RoutingProvider extends Component {
 
     getChildContext() {
         return {
-            navigationContext: {
+            routing: {
                 navigate: this.handleNavigation,
+                redirect: this.handleRedirect,
                 stringify: this.handleStringify,
-                getState: this.handleGetState,
+                getLocation: this.handleGetLocation,
                 isActive: this.handleIsActive
             }
         };
@@ -238,7 +241,7 @@ export default class RoutingProvider extends Component {
         return joinPaths(this.props.basePath, stringified);
     };
 
-    handleGetState = () => this.props.state;
+    handleGetLocation = () => this.props.state; // TODO
 
     handleIsActive = (stateOrPath, exact = false) => {
         // TODO: PERF: This has to do quite a bit of work. Consider memoization. Also
