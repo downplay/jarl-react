@@ -10,7 +10,7 @@ import MockProvider from "./mocks/MockProvider";
 
 configure({ adapter: new Adapter() });
 
-describe.only("isActive", () => {
+describe("isActive", () => {
     let mockComponent;
     let routes;
     let TestComponent;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { navigationContextShape } from "./RoutingProvider";
+import { routingContextShape } from "./RoutingProvider";
 
 /**
  * Renders an anchor linking to a location. Clicking will cause a navigation via history.
@@ -45,7 +45,7 @@ class Link extends Component {
     };
 
     static contextTypes = {
-        navigationContext: navigationContextShape
+        routing: routingContextShape
     };
 
     handleClick = e => {
@@ -54,13 +54,11 @@ class Link extends Component {
             // TODO: Return false to cancel navigation?
             this.props.onClick(e);
         }
-        this.context.navigationContext.navigate(
-            this.stringifyUrl(this.props.to)
-        );
+        this.context.routing.navigate(this.stringifyUrl(this.props.to));
     };
 
     // PERF: Could perhaps be memoized. But needs to know if navcontext changed routes table.
-    stringifyUrl = state => this.context.navigationContext.stringify(state);
+    stringifyUrl = state => this.context.routing.stringify(state);
 
     render() {
         const {
@@ -80,7 +78,7 @@ class Link extends Component {
         // TODO: PERF: Could be evaluated during stringify?
         // Note: It is slightly more efficient to check isActive based on
         // the href rather than to, otherwise it just gets stringified again
-        const active = this.context.navigationContext.isActive(href);
+        const active = this.context.routing.isActive(href);
         const handleClick = to && this.handleClick;
         // Function-as-child API
         if (typeof children === "function") {
