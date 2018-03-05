@@ -5,5 +5,4 @@ export { default as Link } from "./Link";
 export { default as routing } from "./routing";
 export { default as withNavigate } from "./withNavigate";
 export { default as withLocation } from "./withLocation";
-export { default as withContext } from "./withContext";
 export { default as SimpleProvider } from "./SimpleProvider";

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import { compose } from "recompose";
 
-import { withLocation, withContext, Link } from "jarl-react";
+import { routing, Link } from "jarl-react";
 
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -35,8 +34,8 @@ class Pages extends Component {
     };
 
     render() {
-        // JARL injects the `page` prop from state via `withLocation` HOC
-        // and the `stringify` prop via `withContext`
+        // JARL injects the `page` prop from state along with the `stringify` callback
+        // via the `routing` HOC
         const { page, missingPath, stringify } = this.props;
         const { showMarker } = this.state;
 
@@ -81,9 +80,8 @@ class Pages extends Component {
     }
 }
 
-export default compose(
-    // Inject all fields from location state as props
-    withLocation(),
-    // Also inject the stringify function from the navigationContext
-    withContext(({ stringify }) => ({ stringify }))
-)(Pages);
+// Inject all fields from location state as props, along with the stringify function
+export default routing(({ location, stringify }) => ({
+    ...location,
+    stringify
+}))(Pages);
