@@ -58,7 +58,6 @@ Some additional plans that are more "nice-to-have" and might wait until after 1.
 *   Look at a whole new story for Redux, sync URL to Redux state automatically rather than other way around.
 *   Considering `redux-saga` support ... and maybe integrations with other popular state libraries
 *   Big refactor: some of the main classes have grown bloated and overly complex as functionality has been added in, making things hard to test and debug
-*   Component API: function-as-child version of Route (/Router?)
 *   Figure out the best way to support animated transitions, and make some cool demos for this
 *   Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
 *   Query strings: support nesting and arrays. I use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
