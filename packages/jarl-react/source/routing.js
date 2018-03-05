@@ -36,6 +36,7 @@ import hocFactory from "./lib/hocFactory";
  * @param {isActiveCallback} routing.isActive - Determine whether a location is active.
  * Typically used to render links or other UI elements with a highlighted style when they
  * link to the current page or one of its parent routes.
+ * @param {Object} ownProps - The props passed to the component as rendered
  */
 
 /**
@@ -72,7 +73,10 @@ const routing = mapProps =>
                     // result of mapProps
                     return (
                         <WrappedComponent
-                            {...(mapProps ? mapProps(props) : props)}
+                            {...this.props}
+                            {...(mapProps
+                                ? mapProps(props, this.props)
+                                : props)}
                         />
                     );
                 }

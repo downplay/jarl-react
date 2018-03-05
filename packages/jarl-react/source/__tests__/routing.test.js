@@ -4,15 +4,16 @@ import React from "react";
 import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import withActive from "../withActive";
+import routing from "../routing";
 
 import MockProvider from "./mocks/MockProvider";
 
 configure({ adapter: new Adapter() });
 
-describe("withActive", () => {
+describe.only("isActive", () => {
     let mockComponent;
     let routes;
+    let TestComponent;
     beforeEach(() => {
         routes = [
             {
@@ -53,10 +54,12 @@ describe("withActive", () => {
             }
         ];
         mockComponent = () => <div />;
+        TestComponent = routing(({ isActive }, { to }) => ({
+            active: isActive(to)
+        }))(mockComponent);
     });
 
     test("is active for home page", () => {
-        const TestComponent = withActive()(mockComponent);
         const state = { page: "home" };
         const to = { page: "home" };
         const output = mount(
@@ -70,7 +73,6 @@ describe("withActive", () => {
     });
 
     test("is not active for sibling of home", () => {
-        const TestComponent = withActive()(mockComponent);
         const state = { page: "about" };
         const to = { page: "home" };
         const output = mount(
@@ -84,7 +86,6 @@ describe("withActive", () => {
     });
 
     test("is active for child of home", () => {
-        const TestComponent = withActive()(mockComponent);
         const state = { page: "child" };
         const to = { page: "home" };
         const output = mount(
@@ -98,7 +99,9 @@ describe("withActive", () => {
     });
 
     test("is not active for exact child of home", () => {
-        const TestComponent = withActive({ exact: true })(mockComponent);
+        TestComponent = routing(({ isActive }, { to }) => ({
+            active: isActive(to, true)
+        }))(mockComponent);
         const state = { page: "child" };
         const to = { page: "home" };
         const output = mount(
@@ -112,7 +115,6 @@ describe("withActive", () => {
     });
 
     test("is not active for different state same route", () => {
-        const TestComponent = withActive()(mockComponent);
         const state = { page: "product", id: "1" };
         const to = { page: "product", id: "2" };
         const output = mount(
@@ -126,7 +128,6 @@ describe("withActive", () => {
     });
 
     test("is active for same state same branch", () => {
-        const TestComponent = withActive()(mockComponent);
         const state = { page: "details", id: "1" };
         const to = { page: "product", id: "1" };
         const output = mount(
