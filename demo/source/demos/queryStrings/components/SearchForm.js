@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { compose, withState } from "recompose";
 
-import { withNavigate, withLocation } from "jarl-react";
+import { routing } from "jarl-react";
 
 class SearchForm extends Component {
     handleChange = event => {
@@ -39,8 +39,11 @@ class SearchForm extends Component {
 
 export default compose(
     withState("text", "setText", ({ initialValue }) => initialValue || ""),
-    // Inject a navigate function
-    withNavigate(),
-    // Also inspect location so we can preserve themeName
-    withLocation(({ themeName }) => ({ themeName }))
+    // Inject a navigate function and also inspect location so we can preserve themeName
+    // TODO: themeName can probably be preserved at the routes level now and the HOC is
+    // not even needed here
+    routing(
+        ({ themeName }) => ({ themeName }),
+        ({ navigate }) => ({ navigate })
+    )
 )(SearchForm);

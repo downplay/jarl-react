@@ -104,7 +104,7 @@ ReactDOM.render(
 And finally in your `App` component you can inject the state to perform the actual routing:
 
 ```js
-import { withLocation } from "jarl-react";
+import { routing } from "jarl-react";
 
 // All our possible state variables are made available in the App
 const App = ({ page, productId, search, sortKey, tab, missingPath }) => {
@@ -125,8 +125,8 @@ const App = ({ page, productId, search, sortKey, tab, missingPath }) => {
     }
 };
 
-// State is actually injected into App using the `withLocation` higher-order component
-export default withLocation()(App);
+// State is actually injected into App using the `routing` higher-order component
+export default routing()(App);
 ```
 
 Wait, we missed something! How do you actually link to a page? JARL has a Link component much like other router libraries, but its unique feature is that we can actually generate URLs from exactly the same state objects as specified in our routing table. Your main menu might look like this:

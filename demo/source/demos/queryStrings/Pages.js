@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { ThemeProvider } from "emotion-theming";
 
-import { withLocation } from "jarl-react";
+import { routing } from "jarl-react";
 
 import { Layout, Menu, MenuItem } from "../../layout";
 
@@ -18,7 +18,7 @@ const themes = {
     dark: darkTheme
 };
 
-// The properties are injected via the withLocation HOC
+// The properties are injected via the routing HOC
 const renderPage = ({ page, searchTerm, missingPath }) => {
     switch (page) {
         case "home":
@@ -71,4 +71,4 @@ class Pages extends Component {
 }
 
 // Custom mapping function to inject the entire location object instead of individual fields
-export default withLocation(location => ({ location }))(Pages);
+export default routing(location => ({ location }))(Pages);

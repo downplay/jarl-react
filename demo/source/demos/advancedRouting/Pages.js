@@ -1,7 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 
-import { withLocation } from "jarl-react";
+import { routing } from "jarl-react";
 
 import { Layout, Menu, MenuItem } from "../../layout";
 
@@ -21,7 +21,7 @@ const renderPage = (page, missingPath) => {
 };
 
 /**
- * JARL injects the `page` prop from state via withLocation HOC
+ * JARL injects the `page` prop from state via routing HOC
  */
 const Pages = ({ page, missingPath }) => (
     <Layout>
@@ -34,4 +34,4 @@ const Pages = ({ page, missingPath }) => (
     </Layout>
 );
 
-export default withLocation()(Pages);
+export default routing()(Pages);

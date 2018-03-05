@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { compose } from "recompose";
 
-import { withLocation, Link } from "jarl-react";
+import { routing, Link } from "jarl-react";
 
 import Loading from "./pages/Loading";
 
@@ -46,4 +46,4 @@ class Pages extends Component {
     }
 }
 
-export default compose(withLocation())(Pages);
+export default routing()(Pages);

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { withLocation, Link } from "jarl-react";
+import { routing, Link } from "jarl-react";
 
 import DetailsTab from "./tabs/DetailsTab";
 import RatingsTab from "./tabs/RatingsTab";
@@ -50,4 +50,4 @@ const Product = ({ tab }) => (
     </Fragment>
 );
 
-export default withLocation()(Product);
+export default routing()(Product);

@@ -27,9 +27,8 @@ import hocFactory from "./lib/hocFactory";
  */
 
 /**
- * @callback mapPropsCallback
+ * @callback mapRoutingCallback
  * @param {Object} routing - The collection of routing properties
- * @param {Object} routing.location - The location object for the current route
  * @param {navigateCallback} routing.navigate - Navigate to a location using history.push
  * @param {redirectCallback} routing.redirect - Redirect to a location using history.replace
  * @param {stringifyCallback} routing.stringify - Serialize a location object into a path
@@ -37,6 +36,13 @@ import hocFactory from "./lib/hocFactory";
  * Typically used to render links or other UI elements with a highlighted style when they
  * link to the current page or one of its parent routes.
  * @param {Object} ownProps - The props passed to the component as rendered
+ * @returns {Object} The props to be passed to your component
+ */
+
+/**
+ * @callback mapLocationCallback
+ * @param {Object} location - The current location object
+ * @returns {Object} The props to be passed to your component
  */
 
 /**
@@ -44,10 +50,12 @@ import hocFactory from "./lib/hocFactory";
  * and methods from the RoutingProvider. Injected props are: `location`, `navigate`,
  * `redirect`, `stringify`, `isActive`. See method signature of mapProps for details.
  *
- * @param {mapPropsCallback} [mapProps] - Callback function to map routing props
+ * @param {mapLocationCallback} [mapLocationToProps] - Function to map location props to your component.
+ * If omitted then all properties of location will be spread onto your component.
+ * @param {mapRoutingCallback} [mapRoutingToProps] - Callback function to map routing props
  * to props that you want to receive on the mapped component.
  */
-const routing = mapProps =>
+const routing = (mapLocationToProps, mapRoutingToProps) =>
     hocFactory(
         WrappedComponent =>
             class Routing extends Component {
@@ -62,21 +70,28 @@ const routing = mapProps =>
                         redirect,
                         getLocation
                     } = this.context.routing;
-                    const props = {
-                        isActive,
-                        navigate,
-                        stringify,
-                        redirect,
-                        location: getLocation()
-                    };
-                    // TODO: PERF: See if any caching should be done of the
-                    // result of mapProps
+                    const location = mapLocationToProps
+                        ? mapLocationToProps(getLocation())
+                        : getLocation();
+                    const callbacks = mapRoutingToProps
+                        ? mapRoutingToProps(
+                              {
+                                  isActive,
+                                  navigate,
+                                  stringify,
+                                  redirect
+                              },
+                              this.props
+                          )
+                        : {};
+
+                    // TODO: PERF: See if any caching could/should be done of the
+                    // result of mapping functions
                     return (
                         <WrappedComponent
                             {...this.props}
-                            {...(mapProps
-                                ? mapProps(props, this.props)
-                                : props)}
+                            {...location}
+                            {...callbacks}
                         />
                     );
                 }

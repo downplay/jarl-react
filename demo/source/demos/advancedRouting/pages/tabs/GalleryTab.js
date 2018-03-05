@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 
 /**
- * We'll use withLocation to inject imageId from the router's state
+ * We'll use routing to inject imageId from the router's state
  *
  * In a later demo we'll see how to sync the router state into a
  * global store like Redux, and use Redux connect instead
  */
-import { withLocation, Link } from "jarl-react";
+import { routing, Link } from "jarl-react";
 
 import { galleryData } from "../../../../data";
 
@@ -32,4 +32,4 @@ const GalleryTab = ({ imageId }) => (
     </Fragment>
 );
 
-export default withLocation()(GalleryTab);
+export default routing()(GalleryTab);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 
-import { withLocation } from "jarl-react";
+import { routing } from "jarl-react";
 
 import { Layout, Menu, MenuItem } from "../../layout";
 
@@ -72,4 +72,4 @@ class Pages extends Component {
     }
 }
 
-export default withLocation()(Pages);
+export default routing()(Pages);

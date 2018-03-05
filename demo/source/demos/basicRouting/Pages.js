@@ -81,7 +81,6 @@ class Pages extends Component {
 }
 
 // Inject all fields from location state as props, along with the stringify function
-export default routing(({ location, stringify }) => ({
-    ...location,
+export default routing(null, ({ stringify }) => ({
     stringify
 }))(Pages);
