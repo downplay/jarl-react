@@ -24,6 +24,7 @@ This change mainly makes sense on the route properties. Match is kind of vague, 
 
 ## Integrations
 
+*   Server-side rendering. Improve story, create a written guide and a working example.
 *   React Native (largely just needs a replacement for the Link component, maybe a Provider which uses memoryHistory?)
 
 ## Misc task
