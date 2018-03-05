@@ -24,6 +24,7 @@
         "redirect.js",
         "routing.js",
         "RouteMapper.js",
+        "Router.js",
         "SimpleProvider.js"
     ],
     "jest": {
