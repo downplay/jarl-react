@@ -11,7 +11,7 @@ const MainMenu = () => (
         <SubMenu title="Guides" />
         <SubMenu title="Demos">
             {demos.map(({ name, title }) => (
-                <MenuItem key={name} to={{ page: "demos", demoName: name }}>
+                <MenuItem key={name} to={{ page: "demo", demoName: name }}>
                     {title}
                 </MenuItem>
             ))}
