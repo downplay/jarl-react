@@ -108,6 +108,13 @@ export default class NavigationProvider extends Component {
         path = this.props.history.location.pathname +
             this.props.history.location.search
     ) {
+        // TODO: Demos are triggering a bug here and it's not clear how to fix it.
+        // The basePath is wrong temporarily because we received a history event but
+        // the parent navigation hasn't updated yet (probably because it's async).
+        // Solutions could be: 1) unmount the demo app quicker, or update the basePath
+        // artificially to fix thi case. 2) don't error on this, instead just ignore
+        // the navigation if it's outside of the current basePath, but this could cause
+        // hard to trace bugs.
         invariant(
             path.indexOf(this.props.basePath) === 0,
             `The 'basePath' property must be found at the start of the current path in history. Received: '${path}'`
