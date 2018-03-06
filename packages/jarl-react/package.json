@@ -25,7 +25,7 @@
         "routing.js",
         "RouteMapper.js",
         "Router.js",
-        "SimpleProvider.js"
+        "StateProvider.js"
     ],
     "jest": {
         "setupFiles": ["raf/polyfill"],

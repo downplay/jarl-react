@@ -1,7 +1,7 @@
 import React from "react";
 import { withState } from "recompose";
 
-import { SimpleProvider } from "jarl-react";
+import { StateProvider } from "jarl-react";
 
 import Pages from "./Pages";
 
@@ -12,7 +12,7 @@ const Root = ({
     authenticated,
     setAuthenticated
 }) => (
-    <SimpleProvider
+    <StateProvider
         history={history}
         routes={routes}
         basePath={basePath}
@@ -26,7 +26,7 @@ const Root = ({
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
         />
-    </SimpleProvider>
+    </StateProvider>
 );
 
 export default withState("authenticated", "setAuthenticated", false)(Root);

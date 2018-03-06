@@ -6,6 +6,7 @@
 
 *   The big rename landed! Massively simplified the API while providing more flexibility. (I hope!)
     *   `NavigationProvider` is now `RoutingProvider`
+    *   `SimpleProvider` is now `StateProvider`
     *   `withContext`, `withLocation`, `withNavigate` all disappeared and are replaced by `routing`
     *   TODO: (?)
         *   `state` is now `location`

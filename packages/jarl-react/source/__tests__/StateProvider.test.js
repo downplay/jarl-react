@@ -5,7 +5,7 @@ import Adapter from "enzyme-adapter-react-16";
 
 import { RoutingProvider } from "../";
 
-import SimpleProvider from "../SimpleProvider";
+import StateProvider from "../StateProvider";
 import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
@@ -24,11 +24,11 @@ const create = (pathname, search) => ({
     ]
 });
 
-describe("<SimpleProvider/>", () => {
+describe("<StateProvider/>", () => {
     test("renders a RoutingProvider", () => {
         const { routes, history, context, children } = create();
         const provider = shallow(
-            <SimpleProvider {...{ routes, history, context, children }} />
+            <StateProvider {...{ routes, history, context, children }} />
         );
         const childProvider = provider.find(RoutingProvider);
 
@@ -49,7 +49,7 @@ describe("<SimpleProvider/>", () => {
         const { routes, history, context, children } = create();
         const onNavigateEnd = jest.fn();
         mount(
-            <SimpleProvider
+            <StateProvider
                 {...{ routes, history, context, children, onNavigateEnd }}
             />
         );

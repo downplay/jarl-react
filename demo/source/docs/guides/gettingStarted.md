@@ -1,6 +1,6 @@
 ## Getting Started
 
-To get started with a minimal routing setup in client-side React, you need three things: a routes map, a history implementation, and a navigation provider.
+To get started with a minimal routing setup in client-side React, you need three things: a route map, a history implementation, and a navigation provider.
 
 ### The Route Map
 
@@ -12,7 +12,7 @@ import { RouteMapper } from "jarl-react";
 const routes = new RouteMapper([
     {
         path: "/",
-        state: { page: "home" }
+        staate: { page: "home" }
     },
     {
         path: "/about",
@@ -23,14 +23,16 @@ const routes = new RouteMapper([
 export default routes;
 ```
 
-This is a very simple route map with two routes: a home page and an about page. The map describes the minimum amount of state required to "identify" that route. You can think of states as being descriptive object-based ids for the routes!
+This is a straightforward route map with two routes: a home page and an about page. The map describes the mapping between a "URL" and a "location". A location is a plain object (POJO) that should be serializable.
 
-Next, we'll set up a provider at the root level of our app. For some navigation or state storage flows you might want to build a custom provider, but for now we'll use a simple ready-to-go provider that ships with JARL (and uses component state to track the current location).
+JARL's job is to handle that mapping for you. In your app you can deal exclusively with location objects: the current location is global state for your app, and you can use location objects to generate URLs for links.
+
+The next task is to create a provider at the root level of our app. For now we'll use a ready-to-go provider that uses local state to track the current location (we'll look at more advanced setups later).
 
 index.js:
 
 ```jsx
-import { SimpleProvider } from "jarl-react";
+import { StateProvider } from "jarl-react";
 import App from "./App";
 import routes from "./routes";
 
@@ -40,7 +42,7 @@ const history = createHistory();
 
 // The provider will render our App component and pass in the routing state!
 export default () => (
-    <SimpleProvider routes={routes} history={history} component={App} />
+    <StateProvider routes={routes} history={history} component={App} />
 );
 ```
 

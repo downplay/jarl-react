@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import RoutingProvider from "./RoutingProvider";
 
-export default class SimpleProvider extends Component {
+export default class StateProvider extends Component {
     /**
      * Initalise route mapper and setup state from current URL
      */
