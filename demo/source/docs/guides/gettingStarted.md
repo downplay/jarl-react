@@ -7,9 +7,9 @@ To get started with a minimal routing setup in client-side React, you need three
 routes.js:
 
 ```js
-import { RouteMapper } from "jarl-react";
+import { RouteMap } from "jarl-react";
 
-const routes = new RouteMapper([
+const routes = new RouteMap([
     {
         path: "/",
         staate: { page: "home" }

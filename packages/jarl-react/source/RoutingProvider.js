@@ -2,7 +2,7 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 import invariant from "invariant";
 
-import RouteMapper, { joinPaths, hydrateRoute } from "./RouteMapper";
+import RouteMap, { joinPaths, hydrateRoute } from "./RouteMap";
 import safeJsonStringify from "./lib/safeJsonStringify";
 import { Redirect } from "./redirect";
 
@@ -19,8 +19,8 @@ export const ACTION_INITIAL = "INITIAL";
 /** Action type when routes are reloaded. */
 export const ACTION_RELOAD = "RELOAD";
 
-const ensureRouteMapper = routes =>
-    routes instanceof RouteMapper ? routes : new RouteMapper(routes);
+const ensureRouteMap = routes =>
+    routes instanceof RouteMap ? routes : new RouteMap(routes);
 
 /**
  * The RoutingProvider provides routing functionality to the entire app or a subtree
@@ -32,7 +32,7 @@ class RoutingProvider extends Component {
     static propTypes = {
         /** An array of Routes, or a RouteMap instance. */
         routes: PropTypes.oneOfType([
-            PropTypes.instanceOf(RouteMapper),
+            PropTypes.instanceOf(RouteMap),
             PropTypes.array
         ]).isRequired,
         onNavigateStart: PropTypes.func,
@@ -71,13 +71,13 @@ class RoutingProvider extends Component {
         // TODO: Move all the invariants to RoutingProvider?
         invariant(
             props.routes &&
-                (props.routes instanceof RouteMapper ||
+                (props.routes instanceof RouteMap ||
                     Array.isArray(props.routes)),
-            "Invalid routes property: must be an array or a RouteMapper instance"
+            "Invalid routes property: must be an array or a RouteMap instance"
         );
         invariant(props.history, "Provider must receive a history object");
         this.state = {
-            routes: ensureRouteMapper(props.routes)
+            routes: ensureRouteMap(props.routes)
         };
     }
 
@@ -106,7 +106,7 @@ class RoutingProvider extends Component {
         if (nextProps.routes !== this.props.routes) {
             this.setState(
                 {
-                    routes: ensureRouteMapper(nextProps.routes)
+                    routes: ensureRouteMap(nextProps.routes)
                 },
                 () => {
                     // Note: performInitialNavigation is intentionally ignored, if a different

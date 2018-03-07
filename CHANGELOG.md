@@ -8,11 +8,7 @@
     *   `NavigationProvider` is now `RoutingProvider`
     *   `SimpleProvider` is now `StateProvider`
     *   `withContext`, `withLocation`, `withNavigate` all disappeared and are replaced by `routing`
-    *   TODO: (?)
-        *   `state` is now `location`
-        *   `context` is now `provide`
-        *   `Route.match` is now `transform`
-        *   `Route.stringify` is now `serialize`
+    *   `RouteMapper` is now `RouteMap`
 
 ### New features
 

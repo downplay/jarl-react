@@ -10,18 +10,6 @@ The current set of demos (and E2E tests) show off many features and scenarios bu
 
 Demos also need some styling love, and actually publishing somewhere. Cypress test run videos to be uploaded somewhere too.
 
-## Massive breaking changes to nomenclature
-
-This is unfortunately coming - as the router has evolved, and as I've applied it in real world cases, I've started to realise that a number of API methods are badly named, using many overloaded and/or unneccessary terms. This will follow semver and land fully in v1, but may be introduced earlier in a non-breaking fashion with dev-only warnings. The bikeshedding continues, but right now I plan the following name changes:
-
-`state` and `context` -> `location` and `externals`(?)
-
-The most overloaded terms, especially in React world, and they mean different things in several places within JARL. `location` better describes a serializable location descriptor. But I am struggling to think of the best word for `context`, and this is the major blocker to this entire rename ;)
-
-`match` and `stringify` -> `transform` and `serialize`
-
-This change mainly makes sense on the route properties. Match is kind of vague, overloaded, and doesn't accurately convey what this callback does. Stringify is a silly word, which obviously was in parity both with `JSON.stringify` and the `stringify` API of `url-pattern`, but `serialize` is the proper term and is actually a real word.
-
 ## Integrations
 
 *   Server-side rendering. Improve story, create a written guide and a working example.

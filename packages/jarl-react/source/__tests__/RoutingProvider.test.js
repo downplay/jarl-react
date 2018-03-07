@@ -7,7 +7,7 @@ import mockHistory from "./mocks/mockHistory";
 import wait from "./mocks/wait";
 
 import RoutingProvider from "../RoutingProvider";
-import RouteMapper from "../RouteMapper";
+import RouteMap from "../RouteMap";
 import redirect from "../redirect";
 
 configure({ adapter: new Adapter() });
@@ -94,11 +94,11 @@ describe("<RoutingProvider/>", () => {
             }).toThrow(/Provider must receive a history object/);
         });
 
-        test("converts array to RouteMapper", () => {
+        test("converts array to RouteMap", () => {
             const provider = shallow(
                 <RoutingProvider routes={routes} history={history} />
             );
-            expect(provider.state("routes")).toEqual(expect.any(RouteMapper));
+            expect(provider.state("routes")).toEqual(expect.any(RouteMap));
         });
     });
 

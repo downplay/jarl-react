@@ -23,7 +23,7 @@
         "RoutingProvider.js",
         "redirect.js",
         "routing.js",
-        "RouteMapper.js",
+        "RouteMap.js",
         "Router.js",
         "StateProvider.js"
     ],

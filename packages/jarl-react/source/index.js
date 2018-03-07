@@ -1,5 +1,5 @@
 export { default as RoutingProvider } from "./RoutingProvider";
-export { default as RouteMapper, joinPaths } from "./RouteMapper";
+export { default as RouteMap, joinPaths } from "./RouteMap";
 export { default as redirect, Redirect } from "./redirect";
 export { default as Link } from "./Link";
 export { default as Router } from "./Router";

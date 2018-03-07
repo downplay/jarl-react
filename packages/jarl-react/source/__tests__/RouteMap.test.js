@@ -1,6 +1,6 @@
 /* global describe test expect beforeEach */
 import { format } from "date-fns";
-import RouteMapper, { joinPaths } from "../RouteMapper";
+import RouteMap, { joinPaths } from "../RouteMap";
 import redirect from "../redirect";
 
 import {
@@ -28,9 +28,9 @@ describe("joinPaths", () => {
     });
 });
 
-describe("RouteMapper", () => {
+describe("RouteMap", () => {
     test("it constructs", () => {
-        expect(new RouteMapper()).toEqual(expect.any(RouteMapper));
+        expect(new RouteMap()).toEqual(expect.any(RouteMap));
     });
 
     test("it matches routes", () => {
@@ -65,7 +65,7 @@ describe("RouteMapper", () => {
     });
 
     test("it doesn't stringify partial state", () => {
-        const routes = new RouteMapper([
+        const routes = new RouteMap([
             {
                 path: "/",
                 state: { foo: true, bar: true }
@@ -165,7 +165,7 @@ describe("RouteMapper", () => {
         describe("match", () => {
             test("throw when too many question marks", () => {
                 expect(
-                    () => new RouteMapper([{ path: "/foo?bar?baz" }])
+                    () => new RouteMap([{ path: "/foo?bar?baz" }])
                 ).toThrow();
             });
 
@@ -265,7 +265,7 @@ describe("RouteMapper", () => {
 
             describe("nesting wildcards", () => {
                 beforeEach(() => {
-                    routes = new RouteMapper([
+                    routes = new RouteMap([
                         {
                             path: "/",
                             state: { page: "index" }
@@ -303,7 +303,7 @@ describe("RouteMapper", () => {
             describe("query string fragment", () => {
                 beforeEach(() => {
                     // Also taken from the demos, in queryStrings
-                    routes = new RouteMapper([
+                    routes = new RouteMap([
                         {
                             // This optional query match will be applied to all routes via nesting
                             path: "?theme=(:themeName)",
@@ -414,7 +414,7 @@ describe("RouteMapper", () => {
             });
 
             test("edge case, matched path with missing optional wildcard query", () => {
-                routes = new RouteMapper([
+                routes = new RouteMap([
                     {
                         path: "/:demoName?*=:all",
                         state: { page: "demo" }
@@ -433,7 +433,7 @@ describe("RouteMapper", () => {
     describe("matchers", () => {
         let routes;
         beforeEach(() => {
-            routes = new RouteMapper([
+            routes = new RouteMap([
                 {
                     path: "/",
                     state: {},
@@ -543,7 +543,7 @@ describe("RouteMapper", () => {
     describe("stringifiers", () => {
         let routes;
         beforeEach(() => {
-            routes = new RouteMapper([
+            routes = new RouteMap([
                 {
                     path: "/",
                     state: {},

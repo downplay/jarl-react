@@ -39,7 +39,7 @@ const populateKeys = (keyMap, route) => {
     });
 };
 
-const routeResolvesKey = (route, key, value) => {
+const routeHasKey = (route, key, value) => {
     if (
         (key in route.state && route.state[key] === value) ||
         // Check in main URL pattern
@@ -210,7 +210,7 @@ const unrollBranch = route => unroll(route, r => r.parent);
  * TODO: This class should be broken down into functional parser components
  * It's too big and unwieldy to debug effectively now
  */
-class RouteMapper {
+class RouteMap {
     routes = [];
 
     constructor(routes = []) {
@@ -326,11 +326,11 @@ class RouteMapper {
     }
 
     /**
-     * Resolves the supplied state to a URL
+     * Serializes the supplied object to a URL
      *
-     * @param {*} state
+     * @param {Object} location - the location object to generate a URL for
      */
-    stringify(state) {
+    stringify(location) {
         for (const route of this.routes) {
             // TODO: Consider that patternless routes
             // don't actually need to be in the route map
@@ -340,18 +340,18 @@ class RouteMapper {
             const keyMap = {};
             populateKeys(keyMap, route);
             // Perform additional stringification transform
-            let checkState = state;
+            let locationToCheck = location;
             if (route.stringify) {
-                const stringState = route.stringify(checkState);
+                const stringState = route.stringify(locationToCheck);
                 if (!stringState) {
                     continue;
                 }
-                checkState = stringState;
+                locationToCheck = stringState;
             }
             let ok = true;
             // Now test against any route state we're aware of
-            for (const key of Object.keys(checkState)) {
-                if (routeResolvesKey(route, key, checkState[key])) {
+            for (const key of Object.keys(locationToCheck)) {
+                if (routeHasKey(route, key, locationToCheck[key])) {
                     keyMap[key] = false;
                 } else {
                     ok = false;
@@ -359,11 +359,11 @@ class RouteMapper {
                 }
             }
             if (ok && !Object.keys(keyMap).some(key => keyMap[key])) {
-                return hydrateRoute(route, checkState);
+                return hydrateRoute(route, locationToCheck);
             }
         }
         return null;
     }
 }
 
-export default RouteMapper;
+export default RouteMap;

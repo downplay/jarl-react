@@ -1,7 +1,7 @@
-import RouteMapper from "../../RouteMapper";
+import RouteMap from "../../RouteMap";
 
 export const basicRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/",
             state: { page: "home" }
@@ -13,7 +13,7 @@ export const basicRoutes = () =>
     ]);
 
 export const dynamicRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/foo/:id",
             state: { foo: "bar" }
@@ -21,7 +21,7 @@ export const dynamicRoutes = () =>
     ]);
 
 export const childRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/",
             state: { nested: true },
@@ -45,28 +45,28 @@ export const childRoutes = () =>
     ]);
 
 export const dynamicRootRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/:id"
         }
     ]);
 
 export const wildcardRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/*:path"
         }
     ]);
 
 export const wildcardIndexedRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/*:first/*:second"
         }
     ]);
 
 export const queryStringRoutes = () =>
-    new RouteMapper([
+    new RouteMap([
         {
             path: "/?foo",
             state: { foo: true }
