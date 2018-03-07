@@ -163,6 +163,18 @@ describe("<RoutingProvider/>", () => {
             expect(doNavigation).toHaveBeenCalledWith("/", "INITIAL");
         });
 
+        test("route is ignored when basePath doesn't match", () => {
+            history.location.pathname = "/bar";
+            shallow(
+                <RoutingProvider
+                    routes={routes}
+                    history={history}
+                    basePath="/foo"
+                />
+            );
+            expect(doNavigation).not.toHaveBeenCalled();
+        });
+
         test("pathname and search are joined", () => {
             history.location.search = "?foo=bar";
             shallow(<RoutingProvider routes={routes} history={history} />);

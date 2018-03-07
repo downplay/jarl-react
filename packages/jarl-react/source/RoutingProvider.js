@@ -22,8 +22,15 @@ export const ACTION_RELOAD = "RELOAD";
 const ensureRouteMapper = routes =>
     routes instanceof RouteMapper ? routes : new RouteMapper(routes);
 
-export default class RoutingProvider extends Component {
+/**
+ * The RoutingProvider provides routing functionality to the entire app or a subtree
+ * of it, using React's context. The RoutingProvider should normally be wrapped around
+ * the top level of the app. Its presence is required by `Link`, `Router`, and the
+ * `routing` HOC.
+ */
+class RoutingProvider extends Component {
     static propTypes = {
+        /** An array of Routes, or a RouteMap instance. */
         routes: PropTypes.oneOfType([
             PropTypes.instanceOf(RouteMapper),
             PropTypes.array
@@ -33,7 +40,18 @@ export default class RoutingProvider extends Component {
         state: PropTypes.object,
         history: PropTypes.object.isRequired,
         context: PropTypes.func,
+        /**
+         * If true, will check the current location from `history` and fire an
+         * onRoute lifecycle when the provider first mounts.
+         */
         performInitialNavigation: PropTypes.bool,
+        /**
+         * Specify a basePath that this router should operate inside. This will
+         * have the effect of stripping this path from the beginning of the URL
+         * during routing, and prepending the path to the URL during path creation.
+         * If the base path is *not* found during a routing event then the routing
+         * event will simply be ignored.
+         */
         basePath: PropTypes.string
     };
 
@@ -78,8 +96,9 @@ export default class RoutingProvider extends Component {
     componentDidMount() {
         // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
-        if (this.props.performInitialNavigation) {
-            this.doNavigation(this.getCurrentPath(), ACTION_INITIAL);
+        const path = this.getCurrentPath();
+        if (this.props.performInitialNavigation && this.hasBasePath(path)) {
+            this.doNavigation(this.normalizePath(path), ACTION_INITIAL);
         }
     }
 
@@ -93,7 +112,13 @@ export default class RoutingProvider extends Component {
                     // Note: performInitialNavigation is intentionally ignored, if a different
                     // set of routes are loaded then we definitely need to resolve data etc
                     // TODO: Test for this
-                    this.doNavigation(this.getCurrentPath(), ACTION_RELOAD);
+                    const path = this.getCurrentPath();
+                    if (this.hasBasePath(path)) {
+                        this.doNavigation(
+                            this.normalizePath(path),
+                            ACTION_RELOAD
+                        );
+                    }
                 }
             );
         }
@@ -107,30 +132,30 @@ export default class RoutingProvider extends Component {
         this.unlisten();
     }
 
-    getCurrentPath(
-        path = this.props.history.location.pathname +
+    getCurrentPath() {
+        // TODO: This seems like a source of bugs since during navigation this is now
+        // incorrect. Source of truth error. Probably need to actually store the real current path
+        // in state or maybe private field.
+        return (
+            this.props.history.location.pathname +
             this.props.history.location.search
-    ) {
-        // TODO: Demos are triggering a bug here and it's not clear how to fix it.
-        // The basePath is wrong temporarily because we received a history event but
-        // the parent navigation hasn't updated yet (probably because it's async).
-        // Solutions could be: 1) unmount the demo app quicker, or update the basePath
-        // artificially to fix thi case. 2) don't error on this, instead just ignore
-        // the navigation if it's outside of the current basePath, but this could cause
-        // hard to trace bugs.
-        invariant(
-            path.indexOf(this.props.basePath) === 0,
-            `The 'basePath' property must be found at the start of the current path in history. Received: '${path}'`
         );
+    }
+
+    hasBasePath(path) {
+        return path.indexOf(this.props.basePath) === 0;
+    }
+
+    normalizePath(path) {
         // TODO: Also merge query string
         return joinPaths(path.substring(this.props.basePath.length));
     }
 
     handleHistory = (location, action) => {
-        this.doNavigation(
-            this.getCurrentPath(location.pathname + location.search),
-            action
-        );
+        const path = location.pathname + location.search;
+        if (this.hasBasePath(path)) {
+            this.doNavigation(this.normalizePath(path), action);
+        }
     };
 
     ensureUrl(to) {
@@ -266,21 +291,26 @@ export default class RoutingProvider extends Component {
         // To do this we have to perform matching on both states and actually compare the
         // matched branches to see if one is a parent of (or the same as) the other.
 
+        // Get the branch to be checked
+        // TODO: Add a test that this works with basePathz
+        const toPath = this.normalizePath(this.handleStringify(stateOrPath));
+        const {
+            branch: toBranch /* , state: toState */
+        } = this.state.routes.match(toPath, this.props.context());
+
+        // Check that the path is actually within our basePath
+        if (!this.hasBasePath(toPath)) {
+            return false;
+        }
+
         // Get current branch
-        const currentPath = this.getCurrentPath(
+        const currentPath = this.normalizePath(
             this.handleStringify(this.props.state)
         );
         const { branch: currentBranch } = this.state.routes.match(
             currentPath,
             this.props.context()
         );
-
-        // Get the branch to be checked
-        // TODO: Add a test that this works with basePathz
-        const toPath = this.getCurrentPath(this.handleStringify(stateOrPath));
-        const {
-            branch: toBranch /* , state: toState */
-        } = this.state.routes.match(toPath, this.props.context());
 
         // Can drop out quickly for obvious non-matches
         if (
@@ -318,3 +348,5 @@ export default class RoutingProvider extends Component {
         return this.props.children || null;
     }
 }
+
+export default RoutingProvider;

@@ -176,6 +176,25 @@ describe("isActive", () => {
         const props = test.props();
         expect(props.active).toEqual(true);
     });
+
+    test("is not active when route is outside base path", () => {
+        const history = mockHistory("/bar");
+        const state = { page: "home" };
+        const to = { page: "home" };
+        const output = mount(
+            <MockProvider
+                state={state}
+                routes={routes}
+                history={history}
+                basePath="/foo"
+            >
+                <TestComponent to={to} />
+            </MockProvider>
+        );
+        const test = output.find(mockComponent);
+        const props = test.props();
+        expect(props.active).toEqual(false);
+    });
 });
 
 describe("navigate", () => {
