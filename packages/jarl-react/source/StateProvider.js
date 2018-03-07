@@ -2,22 +2,26 @@ import React, { Component } from "react";
 
 import RoutingProvider from "./RoutingProvider";
 
-export default class StateProvider extends Component {
+/**
+ * An out-of-the-box provider using local component state
+ */
+class StateProvider extends Component {
     /**
      * Initalise route mapper and setup state from current URL
      */
     constructor(props) {
         super(props);
-        this.state = { navigationState: {} };
+        this.state = { location: {} };
     }
 
     /**
      * Use local component state to store navigation state
      */
-    handleNavigateEnd = event => {
-        this.setState({ navigationState: event.state });
-        if (this.props.onNavigateEnd) {
-            this.props.onNavigateEnd(event);
+    handleChange = event => {
+        // TODO: Handle cancellation gracefully, with demo, also a redux example using isDirty in reducer
+        this.setState({ location: event.state });
+        if (this.props.onChange) {
+            this.props.onChange(event);
         }
     };
 
@@ -27,9 +31,11 @@ export default class StateProvider extends Component {
         return (
             <RoutingProvider
                 {...others}
-                state={this.state.navigationState}
-                onNavigateEnd={this.handleNavigateEnd}
+                state={this.state.location}
+                onChange={this.handleChange}
             />
         );
     }
 }
+
+export default StateProvider;

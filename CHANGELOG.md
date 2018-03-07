@@ -5,10 +5,16 @@
 ### Breaking
 
 *   The big rename landed! Massively simplified the API while providing more flexibility. (I hope!)
+
     *   `NavigationProvider` is now `RoutingProvider`
+    *   `performInitialNavigation` -> `performInitialRouting`
     *   `SimpleProvider` is now `StateProvider`
     *   `withContext`, `withLocation`, `withNavigate` all disappeared and are replaced by `routing`
     *   `RouteMapper` is now `RouteMap`
+    *   `onNavigateStart` and `onNavigateEnd` are collapsed into a single `onChange`. The router is fully controlled: any additional transitions or preloading can be executed before you update location so advanced possibilities are still accounted for. Redux integration's API is unchanged but the whole package might be heading for deprecation.
+
+*   Other breaking:
+    *   `resolve` functions now execute in series, results aren't stored in state anymore but they are made available thru `resolved` on the onChange handler
 
 ### New features
 

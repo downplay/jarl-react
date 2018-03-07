@@ -35,8 +35,7 @@ class RoutingProvider extends Component {
             PropTypes.instanceOf(RouteMap),
             PropTypes.array
         ]).isRequired,
-        onNavigateStart: PropTypes.func,
-        onNavigateEnd: PropTypes.func,
+        onChange: PropTypes.func,
         state: PropTypes.object,
         history: PropTypes.object.isRequired,
         context: PropTypes.func,
@@ -44,7 +43,7 @@ class RoutingProvider extends Component {
          * If true, will check the current location from `history` and fire an
          * onRoute lifecycle when the provider first mounts.
          */
-        performInitialNavigation: PropTypes.bool,
+        performInitialRouting: PropTypes.bool,
         /**
          * Specify a basePath that this router should operate inside. This will
          * have the effect of stripping this path from the beginning of the URL
@@ -56,11 +55,10 @@ class RoutingProvider extends Component {
     };
 
     static defaultProps = {
-        onNavigateStart: null,
-        onNavigateEnd: null,
+        onChange: null,
         state: null,
         context: () => ({}),
-        performInitialNavigation: true,
+        performInitialRouting: true,
         basePath: ""
     };
 
@@ -97,7 +95,7 @@ class RoutingProvider extends Component {
         // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
         const path = this.getCurrentPath();
-        if (this.props.performInitialNavigation) {
+        if (this.props.performInitialRouting) {
             this.doNavigation(this.normalizePath(path), ACTION_INITIAL);
         }
     }
@@ -109,7 +107,7 @@ class RoutingProvider extends Component {
                     routes: ensureRouteMap(nextProps.routes)
                 },
                 () => {
-                    // Note: performInitialNavigation is intentionally ignored, if a different
+                    // Note: performInitialRouting is intentionally ignored, if a different
                     // set of routes are loaded then we definitely need to resolve data etc
                     // TODO: Test for this
                     const path = this.getCurrentPath();
@@ -184,46 +182,33 @@ class RoutingProvider extends Component {
             this.handleRedirect(state.to);
             return;
         }
-        // Complete navigation
-        let promise = Promise.resolve();
-        if (this.props.onNavigateStart) {
-            promise =
-                this.props.onNavigateStart({ state, path, branch, action }) ||
-                promise;
-        }
-        const promises = [promise];
         // Run any resolvers on the route branch
+        let promise = Promise.resolve({});
         for (const leaf of branch) {
             if (leaf.resolve) {
-                promises.push(
-                    leaf.resolve(state, this.props.context()).then(
+                promise = promise.then(reduced =>
+                    leaf.resolve(state, this.props.context()).then(result => {
                         // Convert redirect into a Promise rejection, this
-                        // ensures that the Promise chain is broken after a redirect
-                        result =>
+                        // ensures that the Promise chain is broken immediately
+                        const reduction =
                             result instanceof Redirect
                                 ? Promise.reject(result)
-                                : result
-                    )
+                                : { ...reduced, ...result };
+                        return reduction;
+                    })
                 );
             }
         }
-        // Wait for all promises to resolve, then navigation is over
-        Promise.all(promises)
-            .then(results => {
-                // TODO: Not sure quite what to do about some resolve results, e.g.
-                // resolving component imports. They shouldn't go into state but where
-                // should they go?
-                const finalState = results.reduce(
-                    (prevState, result = {}) => ({ ...prevState, ...result }),
-                    state
-                );
-                // TODO: Invariant if onNavigateEnd doesn't exist? PropTypes required?
-                if (this.props.onNavigateEnd) {
-                    this.props.onNavigateEnd({
-                        state: finalState,
+        // All promises resolve in series, and navigation is over
+        promise
+            .then(resolved => {
+                if (this.props.onChange) {
+                    this.props.onChange({
+                        state,
                         path,
                         branch,
-                        action
+                        action,
+                        resolved
                     });
                 }
             })
@@ -231,9 +216,9 @@ class RoutingProvider extends Component {
                 // If a redirect was thrown, follow it
                 if (error instanceof Redirect) {
                     this.handleRedirect(error.to);
-                } else if (this.props.onNavigateError) {
+                } else if (this.props.onError) {
                     // Otherwise send to error handler
-                    this.props.onNavigateError({
+                    this.props.onError({
                         error,
                         state,
                         path,

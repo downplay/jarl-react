@@ -17,8 +17,12 @@ describe("<RoutingProvider/>", () => {
     let routes;
     let one;
     let two;
+    let marker;
 
     beforeEach(() => {
+        marker = Symbol("marker");
+        one = false;
+        two = false;
         routes = new RouteMap([
             {
                 path: "/",
@@ -34,14 +38,16 @@ describe("<RoutingProvider/>", () => {
                 resolve: () =>
                     wait(10).then(() => {
                         one = true;
+                        return { marker };
                     }),
                 routes: [
                     {
                         path: "/nested",
                         state: { page: "test-resolve", nested: true },
                         resolve: () =>
-                            wait(10).then(() => {
+                            wait(8).then(() => {
                                 two = true;
+                                return { two };
                             })
                     }
                 ]
@@ -121,12 +127,12 @@ describe("<RoutingProvider/>", () => {
             expect(doNavigation).toHaveBeenCalledWith("/", "INITIAL");
         });
 
-        test("is disabled with `performInitialNavigation`", () => {
+        test("is disabled with `performInitialRouting`", () => {
             shallow(
                 <RoutingProvider
                     routes={routes}
                     history={history}
-                    performInitialNavigation={false}
+                    performInitialRouting={false}
                 />
             );
             expect(doNavigation).not.toHaveBeenCalled();
@@ -144,7 +150,7 @@ describe("<RoutingProvider/>", () => {
                 <RoutingProvider
                     routes={routes}
                     history={history}
-                    performInitialNavigation={false}
+                    performInitialRouting={false}
                 />
             );
             listenCallback({ pathname: "/", search: "?foo=bar" }, "PUSH");
@@ -184,56 +190,33 @@ describe("<RoutingProvider/>", () => {
     });
 
     describe("doNavigation", () => {
-        let onNavigateStart;
-        let onNavigateEnd;
-        let onNavigateError;
+        let onChange;
+        let onError;
         let provider;
         let contextCallback;
 
         beforeEach(() => {
-            onNavigateStart = jest.fn();
-            onNavigateEnd = jest.fn();
-            onNavigateError = jest.fn();
+            onChange = jest.fn();
+            onError = jest.fn();
             contextCallback = jest.fn();
             provider = shallow(
                 <RoutingProvider
                     routes={routes}
                     history={history}
-                    onNavigateStart={onNavigateStart}
-                    onNavigateEnd={onNavigateEnd}
-                    onNavigateError={onNavigateError}
-                    performInitialNavigation={false}
+                    onChange={onChange}
+                    onError={onError}
+                    performInitialRouting={false}
                     context={() => ({ callback: contextCallback })}
                 />
             ).instance();
-            expect(onNavigateStart).not.toHaveBeenCalled();
+            expect(onChange).not.toHaveBeenCalled();
         });
 
         test("resolve functions are executed", async () => {
             provider.doNavigation("/test-resolve", "PUSH");
-            expect(onNavigateStart).toHaveBeenCalledWith({
-                action: "PUSH",
-                branch: [
-                    {
-                        path: "/test-resolve",
-                        resolve: expect.any(Function),
-                        routes: [
-                            {
-                                path: "/nested",
-                                resolve: expect.any(Function),
-                                state: { nested: true, page: "test-resolve" }
-                            }
-                        ],
-                        state: { page: "test-resolve" }
-                    }
-                ],
-                path: "/test-resolve",
-                state: { page: "test-resolve" }
-            });
-            expect(onNavigateEnd).not.toHaveBeenCalled();
-            // TODO: Maybe modify tests to use sinon
+            // TODO: Maybe modify tests to use lolex
             await wait(11);
-            expect(onNavigateEnd).toHaveBeenCalledWith({
+            expect(onChange).toHaveBeenCalledWith({
                 action: "PUSH",
                 branch: [
                     {
@@ -250,19 +233,39 @@ describe("<RoutingProvider/>", () => {
                     }
                 ],
                 state: { page: "test-resolve" },
-                path: "/test-resolve"
+                path: "/test-resolve",
+                resolved: { marker }
             });
             expect(one).toEqual(true);
         });
 
         test("nested resolve functions are executed", async () => {
+            expect(one).toEqual(false);
+            expect(two).toEqual(false);
             provider.doNavigation("/test-resolve/nested");
-            expect(onNavigateStart).toHaveBeenCalled();
-            expect(onNavigateEnd).not.toHaveBeenCalled();
-            await wait(11);
-            expect(onNavigateEnd).toHaveBeenCalled();
+            // TODO: Use lolex fake times; right now this random needs 7ms added
+            // Seems unreliable
+            await wait(25);
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    resolved: {
+                        marker,
+                        two
+                    }
+                })
+            );
             expect(one).toEqual(true);
             expect(two).toEqual(true);
+        });
+
+        test("nested resolve functions are executed in series", async () => {
+            provider.doNavigation("/test-resolve/nested");
+            // Very random time, working reliably right now but will probably fail in CI.
+            // At least proves that one executes before two. Sinon will fix this.
+            await wait(13);
+            expect(one).toEqual(true);
+            expect(two).toEqual(false);
         });
 
         test("redirect from state is followed", () => {
@@ -286,7 +289,6 @@ describe("<RoutingProvider/>", () => {
 
         test("redirect from resolver is followed", async () => {
             provider.doNavigation("/test-redirect-resolve");
-            expect(onNavigateStart).toHaveBeenCalled();
             await wait(0);
             expect(history.replace).toHaveBeenCalledWith(
                 "/redirected?because=resolve"
@@ -298,9 +300,8 @@ describe("<RoutingProvider/>", () => {
                 "/test-redirect-resolve?error=true",
                 "INITIAL"
             );
-            expect(onNavigateStart).toHaveBeenCalled();
             await wait(0);
-            expect(onNavigateError).toHaveBeenCalledWith({
+            expect(onError).toHaveBeenCalledWith({
                 branch: [
                     {
                         path: "/test-redirect-resolve?error=(:error)",

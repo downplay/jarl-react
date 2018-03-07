@@ -23,15 +23,11 @@ class Provider extends Component {
         return store.getState()[reducerMountPoint];
     }
 
-    handleNavigateStart = event => {
+    handleChange = async event => {
         this.props.store.dispatch(navigateStart(event.state));
         if (this.props.onNavigateStart) {
-            return this.props.onNavigateStart(event);
+            await this.props.onNavigateStart(event);
         }
-        return null;
-    };
-
-    handleNavigateEnd = event => {
         this.props.store.dispatch(navigateEnd(event.state));
         setTimeout(() => {
             this.props.store.dispatch(navigateTransitionIn(event.state));
@@ -48,8 +44,7 @@ class Provider extends Component {
             <RoutingProvider
                 {...others}
                 state={navigation}
-                onNavigateStart={this.handleNavigateStart}
-                onNavigateEnd={this.handleNavigateEnd}
+                onChange={this.handleChange}
                 context={() => ({
                     dispatch: store.dispatch,
                     getState: store.getState

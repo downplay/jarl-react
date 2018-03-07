@@ -42,23 +42,24 @@ describe("<StateProvider/>", () => {
         });
         expect(props.routes).toEqual(routes);
         expect(props.context).toEqual(expect.any(Function));
-        expect(props.onNavigateEnd).toEqual(expect.any(Function));
+        expect(props.onChange).toEqual(expect.any(Function));
     });
 
-    test("passes through `onNavigateEnd`", async () => {
+    test("passes through `onChange`", async () => {
         const { routes, history, context, children } = create();
-        const onNavigateEnd = jest.fn();
+        const onChange = jest.fn();
         mount(
             <StateProvider
-                {...{ routes, history, context, children, onNavigateEnd }}
+                {...{ routes, history, context, children, onChange }}
             />
         );
         await wait(0);
-        expect(onNavigateEnd).toHaveBeenCalledWith({
+        expect(onChange).toHaveBeenCalledWith({
             action: "INITIAL",
             branch: [{ path: "/", state: { home: true } }],
             state: { home: true },
-            path: "/"
+            path: "/",
+            resolved: {}
         });
     });
 });

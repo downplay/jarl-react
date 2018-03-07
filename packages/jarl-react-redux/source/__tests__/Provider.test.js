@@ -56,7 +56,6 @@ describe("<Provider/>", () => {
         });
         expect(props.routes).toEqual([]);
         expect(props.context).toEqual(expect.any(Function));
-        expect(props.onNavigateStart).toEqual(expect.any(Function));
-        expect(props.onNavigateEnd).toEqual(expect.any(Function));
+        expect(props.onChange).toEqual(expect.any(Function));
     });
 });

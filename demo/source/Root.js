@@ -118,7 +118,7 @@ class Root extends Component {
             <RoutingProvider
                 history={history}
                 routes={routes}
-                onNavigateEnd={this.handleNavigateEnd}
+                onChange={this.handleChange}
                 state={this.state.routing}
             >
                 <Helmet titleTemplate="JARL Demos | %s" />
