@@ -19,7 +19,7 @@ describe("<RoutingProvider/>", () => {
     let two;
 
     beforeEach(() => {
-        routes = [
+        routes = new RouteMap([
             {
                 path: "/",
                 state: { page: "index" }
@@ -77,7 +77,7 @@ describe("<RoutingProvider/>", () => {
                     return redirect({ page: "redirected", reason: "resolve" });
                 }
             }
-        ];
+        ]);
         history = mockHistory();
     });
 
@@ -165,6 +165,7 @@ describe("<RoutingProvider/>", () => {
 
         test("route is ignored when basePath doesn't match", () => {
             history.location.pathname = "/bar";
+            routes.match = jest.fn();
             shallow(
                 <RoutingProvider
                     routes={routes}
@@ -172,7 +173,7 @@ describe("<RoutingProvider/>", () => {
                     basePath="/foo"
                 />
             );
-            expect(doNavigation).not.toHaveBeenCalled();
+            expect(routes.match).not.toHaveBeenCalled();
         });
 
         test("pathname and search are joined", () => {
