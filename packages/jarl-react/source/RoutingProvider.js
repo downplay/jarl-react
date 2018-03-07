@@ -97,7 +97,7 @@ class RoutingProvider extends Component {
         // Listen for changes to the current location
         this.unlisten = this.props.history.listen(this.handleHistory);
         const path = this.getCurrentPath();
-        if (this.props.performInitialNavigation && this.hasBasePath(path)) {
+        if (this.props.performInitialNavigation) {
             this.doNavigation(this.normalizePath(path), ACTION_INITIAL);
         }
     }
@@ -113,12 +113,7 @@ class RoutingProvider extends Component {
                     // set of routes are loaded then we definitely need to resolve data etc
                     // TODO: Test for this
                     const path = this.getCurrentPath();
-                    if (this.hasBasePath(path)) {
-                        this.doNavigation(
-                            this.normalizePath(path),
-                            ACTION_RELOAD
-                        );
-                    }
+                    this.doNavigation(this.normalizePath(path), ACTION_RELOAD);
                 }
             );
         }
@@ -153,9 +148,7 @@ class RoutingProvider extends Component {
 
     handleHistory = (location, action) => {
         const path = location.pathname + location.search;
-        if (this.hasBasePath(path)) {
-            this.doNavigation(this.normalizePath(path), action);
-        }
+        this.doNavigation(this.normalizePath(path), action);
     };
 
     ensureUrl(to) {
@@ -178,11 +171,14 @@ class RoutingProvider extends Component {
     };
 
     doNavigation(path, action) {
+        // Note: Used to be treated as an error as this might be non-obvious to
+        // debug, however there's no reason to particularly limit the occasions this
+        // happens
+        if (!this.hasBasePath(path)) return;
         const { branch, state } = this.state.routes.match(
             path,
             this.props.context()
         );
-        invariant(state, `Unmatched URL '${path}'`);
         // Check for and follow redirects
         if (state instanceof Redirect) {
             this.handleRedirect(state.to);
