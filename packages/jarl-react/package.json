@@ -11,7 +11,8 @@
         "watch": "babel ./source -d . --ignore __tests__ --watch",
         "prepublishOnly": "node ./tools/build.js",
         "clean": "git clean -fdX .",
-        "lint": "eslint source"
+        "lint": "eslint source",
+        "coverage": "jest --coverage"
     },
     "files": [
         "es",
@@ -29,7 +30,8 @@
     ],
     "jest": {
         "setupFiles": ["raf/polyfill"],
-        "testRegex": "__tests__/.+\\.test\\.js$"
+        "testRegex": "__tests__/.+\\.test\\.js$",
+        "collectCoverageFrom": ["source/*.js", "source/lib/*.js"]
     },
     "keywords": [
         "react",
