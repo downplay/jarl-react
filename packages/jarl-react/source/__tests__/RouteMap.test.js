@@ -428,6 +428,35 @@ describe("RouteMap", () => {
                 expect(path).toEqual("/hello");
             });
         });
+
+        describe("misc", () => {
+            test("periods in query can be matched", () => {
+                const path = routes.stringify({
+                    page: "login",
+                    returnUrl: "http://example.com/foobar"
+                });
+                expect(path).toEqual(
+                    "/login?returnUrl=http%3A%2F%2Fexample.com%2Ffoobar"
+                );
+                const { state } = routes.match(path);
+                expect(state).toEqual({
+                    page: "login",
+                    returnUrl: "http://example.com/foobar"
+                });
+            });
+
+            // TODO: See comment in relevant routes file. Really needs fixing.
+            test.skip("wildcard in query can be optional", () => {
+                const path = routes.stringify({
+                    page: "login"
+                });
+                expect(path).toEqual("/login");
+                const { state } = routes.match(path);
+                expect(state).toEqual({
+                    page: "login"
+                });
+            });
+        });
     });
 
     describe("matchers", () => {

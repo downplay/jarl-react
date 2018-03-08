@@ -105,6 +105,13 @@ export const queryStringRoutes = () =>
             path: "/mixed/:category?sort=:field",
             state: { mixed: true }
         },
+        // TODO: Making this query optional broke the URL (key didn't even get stringified).
+        // Need to fix this because to work around the `.` issue in query parts
+        // requires this. And it's definitely non-expected behavior. It's a bit broken that
+        // the wildcard is needed at all, guessing it's related to url-pattern's domain matching,
+        // might need a hacky workaround until I get around to writing a completely custom parser.
+        // { path: "/login?returnUrl=(*:returnUrl)", state: { page: "login" } },
+        { path: "/login?returnUrl=*:returnUrl", state: { page: "login" } },
         {
             path: "/?q=:searchTerm",
             state: { search: true }
