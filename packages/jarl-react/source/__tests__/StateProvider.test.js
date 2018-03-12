@@ -38,7 +38,7 @@ describe("<StateProvider/>", () => {
             routes,
             history,
             children,
-            state: {}
+            location: {}
         });
         expect(props.routes).toEqual(routes);
         expect(props.context).toEqual(expect.any(Function));
@@ -57,7 +57,7 @@ describe("<StateProvider/>", () => {
         expect(onChange).toHaveBeenCalledWith({
             action: "INITIAL",
             branch: [{ path: "/", state: { home: true } }],
-            state: { home: true },
+            location: { home: true },
             path: "/",
             resolved: {}
         });

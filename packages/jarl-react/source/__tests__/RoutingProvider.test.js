@@ -66,7 +66,7 @@ describe("<RoutingProvider/>", () => {
                 match: () => redirect({ page: "redirected", reason: "match" })
             },
             {
-                path: "/test-match-state-context/:someState",
+                path: "/test-match-location-context/:someState",
                 state: {},
                 match: ({ someState }, { callback }) => {
                     callback(someState);
@@ -232,7 +232,7 @@ describe("<RoutingProvider/>", () => {
                         state: { page: "test-resolve" }
                     }
                 ],
-                state: { page: "test-resolve" },
+                location: { page: "test-resolve" },
                 path: "/test-resolve",
                 resolved: { marker }
             });
@@ -282,8 +282,8 @@ describe("<RoutingProvider/>", () => {
             );
         });
 
-        test("state and context are passed into matcher", () => {
-            provider.doNavigation("/test-match-state-context/testfoo");
+        test("location and context are passed into matcher", () => {
+            provider.doNavigation("/test-match-location-context/testfoo");
             expect(contextCallback).toHaveBeenCalledWith("testfoo");
         });
 
@@ -311,7 +311,7 @@ describe("<RoutingProvider/>", () => {
                 ],
                 error: new Error("Something bad happened"),
                 path: "/test-redirect-resolve?error=true",
-                state: { error: "true" },
+                location: { error: "true" },
                 action: "INITIAL"
             });
         });

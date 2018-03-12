@@ -14,9 +14,15 @@ import { basicRoutes } from "./dummy/routes";
 configure({ adapter: new Adapter() });
 
 describe("<Link/>", () => {
+    let homeLocation;
+
+    beforeEach(() => {
+        homeLocation = { page: "home" };
+    });
+
     test("renders an anchor from a URL", () => {
         const anchor = render(
-            <MockProvider>
+            <MockProvider routes={basicRoutes()} location={homeLocation}>
                 <Link to="/">Home</Link>
             </MockProvider>
         );
@@ -27,8 +33,8 @@ describe("<Link/>", () => {
 
     test("renders a different element", () => {
         const anchor = render(
-            <MockProvider>
-                <Link to="/" element="div">
+            <MockProvider routes={basicRoutes()} location={homeLocation}>
+                <Link to={homeLocation} element="div">
                     Home
                 </Link>
             </MockProvider>
@@ -38,9 +44,9 @@ describe("<Link/>", () => {
         expect(anchor.text()).toEqual("Home");
     });
 
-    test("renders an anchor from a state object", () => {
+    test("renders an anchor from a location object", () => {
         const anchor = render(
-            <MockProvider routes={basicRoutes()}>
+            <MockProvider routes={basicRoutes()} location={homeLocation}>
                 <Link to={{ page: "home" }}>Home</Link>
             </MockProvider>
         );
@@ -50,7 +56,11 @@ describe("<Link/>", () => {
 
     test("basePath is prepended to URL", () => {
         const anchor = render(
-            <MockProvider routes={basicRoutes()} basePath="/foo">
+            <MockProvider
+                routes={basicRoutes()}
+                basePath="/foo"
+                location={homeLocation}
+            >
                 <Link to={{ page: "home" }}>Home</Link>
             </MockProvider>
         );
@@ -59,7 +69,11 @@ describe("<Link/>", () => {
 
     test("paths are concatenated correctly", () => {
         const anchor = render(
-            <MockProvider routes={basicRoutes()} basePath="/foo">
+            <MockProvider
+                routes={basicRoutes()}
+                basePath="/foo"
+                location={homeLocation}
+            >
                 <Link to={{ page: "about" }}>Home</Link>
             </MockProvider>
         );
@@ -82,7 +96,7 @@ describe("<Link/>", () => {
                 <MockProvider
                     routes={basicRoutes()}
                     history={history}
-                    state={location}
+                    location={location}
                 >
                     <Link to="/about">
                         {({ href, active }) => (
@@ -104,7 +118,7 @@ describe("<Link/>", () => {
                 <MockProvider
                     routes={basicRoutes()}
                     history={history}
-                    state={location}
+                    location={location}
                 >
                     <Link to="/">
                         {({ href, active, onClick }) => (

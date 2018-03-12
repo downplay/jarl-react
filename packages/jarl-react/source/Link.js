@@ -51,14 +51,13 @@ class Link extends Component {
     handleClick = e => {
         e.preventDefault();
         if (this.props.onClick) {
-            // TODO: Return false to cancel navigation?
             this.props.onClick(e);
         }
-        this.context.routing.navigate(this.stringifyUrl(this.props.to));
+        this.context.routing.navigate(this.stringify(this.props.to));
     };
 
     // PERF: Could perhaps be memoized. But needs to know if navcontext changed routes table.
-    stringifyUrl = state => this.context.routing.stringify(state);
+    stringify = state => this.context.routing.stringify(state);
 
     render() {
         const {
@@ -74,7 +73,7 @@ class Link extends Component {
             ...others
         } = this.props;
         // Determine href and active status
-        const href = to ? this.stringifyUrl(to) : this.href;
+        const href = to ? this.stringify(to) : this.href;
         // TODO: PERF: Could be evaluated during stringify?
         // Note: It is slightly more efficient to check isActive based on
         // the href rather than to, otherwise it just gets stringified again

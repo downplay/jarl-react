@@ -35,9 +35,19 @@ class RoutingProvider extends Component {
             PropTypes.instanceOf(RouteMap),
             PropTypes.array
         ]).isRequired,
+        /** Current location represented as a plain state object */
+        location: PropTypes.object,
+        /**
+         * Handler for when a location change is requested by navigation (via Link,
+         * by browser back/forward buttons, etc.)
+         */
         onChange: PropTypes.func,
-        state: PropTypes.object,
+        /** The history API to be used, one of the implementations from `history` package */
         history: PropTypes.object.isRequired,
+        /**
+         * A callback to provide additional outside context in any Route callbacks. Useful
+         * for passing things such as authentication details, or global state/dispatch methods.
+         */
         context: PropTypes.func,
         /**
          * If true, will check the current location from `history` and fire an
@@ -56,7 +66,7 @@ class RoutingProvider extends Component {
 
     static defaultProps = {
         onChange: null,
-        state: null,
+        location: null,
         context: () => ({}),
         performInitialRouting: true,
         basePath: ""
@@ -82,7 +92,7 @@ class RoutingProvider extends Component {
     getChildContext() {
         return {
             routing: {
-                navigate: this.handleNavigation,
+                navigate: this.handleNavigate,
                 redirect: this.handleRedirect,
                 stringify: this.handleStringify,
                 getLocation: this.handleGetLocation,
@@ -149,10 +159,16 @@ class RoutingProvider extends Component {
         this.doNavigation(this.normalizePath(path), action);
     };
 
-    ensureUrl(to) {
-        const url = typeof to === "string" ? to : this.handleStringify(to);
-        invariant(url, `Could not stringify state: ${safeJsonStringify(to)}`);
-        return url;
+    ensurePath(location) {
+        const path =
+            typeof location === "string"
+                ? location
+                : this.state.routes.stringify(location, this.props.context());
+        invariant(
+            path,
+            `Could not stringify location: ${safeJsonStringify(location)}`
+        );
+        return path;
     }
 
     handleRedirect = to => {
@@ -161,11 +177,11 @@ class RoutingProvider extends Component {
         // TODO: Specific E2E test for this, and consider that in some cases this
         // might not be wanted - e.g. redirect from a Login page could be valid later
         // (but then we'd manually redirect back?)
-        this.props.history.replace(this.ensureUrl(to));
+        this.props.history.replace(this.ensurePath(to));
     };
 
-    handleNavigation = to => {
-        this.props.history.push(this.ensureUrl(to));
+    handleNavigate = to => {
+        this.props.history.push(this.ensurePath(to));
     };
 
     doNavigation(path, action) {
@@ -173,13 +189,13 @@ class RoutingProvider extends Component {
         // debug, however there's no reason to particularly limit the occasions this
         // happens
         if (!this.hasBasePath(path)) return;
-        const { branch, state } = this.state.routes.match(
+        const { branch, location } = this.state.routes.match(
             path,
             this.props.context()
         );
         // Check for and follow redirects
-        if (state instanceof Redirect) {
-            this.handleRedirect(state.to);
+        if (location instanceof Redirect) {
+            this.handleRedirect(location.to);
             return;
         }
         // Run any resolvers on the route branch
@@ -187,15 +203,17 @@ class RoutingProvider extends Component {
         for (const leaf of branch) {
             if (leaf.resolve) {
                 promise = promise.then(reduced =>
-                    leaf.resolve(state, this.props.context()).then(result => {
-                        // Convert redirect into a Promise rejection, this
-                        // ensures that the Promise chain is broken immediately
-                        const reduction =
-                            result instanceof Redirect
-                                ? Promise.reject(result)
-                                : { ...reduced, ...result };
-                        return reduction;
-                    })
+                    leaf
+                        .resolve(location, this.props.context())
+                        .then(result => {
+                            // Convert redirect into a Promise rejection, this
+                            // ensures that the Promise chain is broken immediately
+                            const reduction =
+                                result instanceof Redirect
+                                    ? Promise.reject(result)
+                                    : { ...reduced, ...result };
+                            return reduction;
+                        })
                 );
             }
         }
@@ -204,7 +222,7 @@ class RoutingProvider extends Component {
             .then(resolved => {
                 if (this.props.onChange) {
                     this.props.onChange({
-                        state,
+                        location,
                         path,
                         branch,
                         action,
@@ -220,7 +238,7 @@ class RoutingProvider extends Component {
                     // Otherwise send to error handler
                     this.props.onError({
                         error,
-                        state,
+                        location,
                         path,
                         branch,
                         action
@@ -239,17 +257,14 @@ class RoutingProvider extends Component {
             });
     }
 
-    handleStringify = state => {
-        const stringified =
-            typeof state === "string"
-                ? state
-                : this.state.routes.stringify(state, this.props.state);
+    handleStringify = location => {
+        const stringified = this.ensurePath(location);
         return joinPaths(this.props.basePath, stringified);
     };
 
-    handleGetLocation = () => this.props.state; // TODO
+    handleGetLocation = () => this.props.location;
 
-    handleIsActive = (stateOrPath, exact = false) => {
+    handleIsActive = (location, exact = false) => {
         // TODO: PERF: This has to do quite a bit of work. Consider memoization. Also
         // could cache the branch at the time of navigation but this could get out of date.
         // Also there is duplicated work: converting states to strings only
@@ -273,11 +288,13 @@ class RoutingProvider extends Component {
         // matched branches to see if one is a parent of (or the same as) the other.
 
         // Get the branch to be checked
-        // TODO: Add a test that this works with basePathz
-        const toPath = this.normalizePath(this.handleStringify(stateOrPath));
-        const {
-            branch: toBranch /* , state: toState */
-        } = this.state.routes.match(toPath, this.props.context());
+        // TODO: Add a test that this works with basePath
+        const toPath = this.normalizePath(this.handleStringify(location));
+        // PERF: location result of match being thrown away here
+        const { branch: toBranch } = this.state.routes.match(
+            toPath,
+            this.props.context()
+        );
 
         // Check that the path is actually within our basePath
         if (!this.hasBasePath(toPath)) {
@@ -286,7 +303,7 @@ class RoutingProvider extends Component {
 
         // Get current branch
         const currentPath = this.normalizePath(
-            this.handleStringify(this.props.state)
+            this.handleStringify(this.props.location)
         );
         const { branch: currentBranch } = this.state.routes.match(
             currentPath,
@@ -322,7 +339,7 @@ class RoutingProvider extends Component {
         const mappedRoute = this.state.routes.routes.find(
             route => route.route === currentBranch[toBranch.length - 1]
         );
-        return hydrateRoute(mappedRoute, this.props.state) === toPath;
+        return hydrateRoute(mappedRoute, this.props.location) === toPath;
     };
 
     render() {

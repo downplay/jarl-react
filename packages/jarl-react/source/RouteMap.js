@@ -2,6 +2,8 @@ import qs from "qs";
 import UrlPattern from "./vendor/url-pattern";
 import { Redirect } from "./redirect";
 
+const noop = a => a;
+
 // Removes any double slashes
 const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
 // Maybe remove the trailing slash from the end
@@ -96,7 +98,7 @@ const rfc3986EncodeURIComponent = str =>
     encodeURIComponent(str).replace(/[!'()*]/g, escape);
 
 const matchQuery = (pattern, query) => {
-    let state = {};
+    let location = {};
     for (const key in pattern) {
         if (!(key === "*" || key in query || isOptional(pattern[key]))) {
             return false;
@@ -117,7 +119,7 @@ const matchQuery = (pattern, query) => {
         Object.keys(match).forEach(k => {
             match[k] = decodeURIComponent(match[k]);
         });
-        state = { ...state, ...match };
+        location = { ...location, ...match };
     }
 
     for (const key in query) {
@@ -138,8 +140,8 @@ const matchQuery = (pattern, query) => {
             match[k] = decodeURIComponent(match[k]);
         });
         if (key in pattern) {
-            // Normally spread match over state
-            state = { ...state, ...match };
+            // Normally spread match over location
+            location = { ...location, ...match };
         } else {
             // For wildcard case, merge onto a child object
             // TODO: A lot of the special casing (and limitations) of some of
@@ -148,28 +150,28 @@ const matchQuery = (pattern, query) => {
             // processing key names. Then could have scenarios like ':year(-:month(-:day))' both in
             // query strings and in path segments.
             const wildCardKey = getQueryWildcardStateKey(pattern["*"]);
-            state = {
-                ...state,
+            location = {
+                ...location,
                 [wildCardKey]: {
-                    ...state[wildCardKey],
+                    ...location[wildCardKey],
                     ...{ [key]: match[wildCardKey] }
                 }
             };
         }
     }
-    return state;
+    return location;
 };
 
-const stringifyQueryValue = (state, pattern) =>
-    isUrlPattern(pattern) ? pattern.stringify(state).substring(1) : pattern;
+const stringifyQueryValue = (location, pattern) =>
+    isUrlPattern(pattern) ? pattern.stringify(location).substring(1) : pattern;
 
-const hydrateQuery = (pattern, state) => {
+const hydrateQuery = (pattern, location) => {
     const query = {};
     for (const key of Object.keys(pattern)) {
         if (key === "*") {
             // If there's a wildcard, merge all captured props onto the query
             const wildKey = getQueryWildcardStateKey(pattern["*"]);
-            const rest = state[wildKey];
+            const rest = location[wildKey];
             if (!rest) {
                 continue;
             }
@@ -181,7 +183,7 @@ const hydrateQuery = (pattern, state) => {
             }
         } else {
             // Merge normal property onto query
-            const value = stringifyQueryValue(state, pattern[key]);
+            const value = stringifyQueryValue(location, pattern[key]);
             if (isOptional(pattern[key]) && !value) {
                 continue;
             }
@@ -191,10 +193,10 @@ const hydrateQuery = (pattern, state) => {
     return query;
 };
 
-export const hydrateRoute = (route, state) => {
-    const pathPart = route.pattern.stringify(state);
+export const hydrateRoute = (route, location) => {
+    const pathPart = route.pattern.stringify(location);
     const queryPart =
-        route.query && qs.stringify(hydrateQuery(route.query, state));
+        route.query && qs.stringify(hydrateQuery(route.query, location));
     return queryPart ? `${pathPart}?${queryPart}` : pathPart;
 };
 
@@ -228,8 +230,8 @@ class RouteMap {
             let match = route.match || (parent && parent.match);
             // But if both existed compose them together
             if (route.match && parent) {
-                match = (state, context) => {
-                    const result = parent.match(state, context);
+                match = (location, context) => {
+                    const result = parent.match(location, context);
                     // Redirects and false returns will override any child routes
                     if (result === false || result instanceof Redirect) {
                         return result;
@@ -239,13 +241,13 @@ class RouteMap {
             }
             // No-op match
             if (!match) {
-                match = state => state;
+                match = noop;
             }
             // Apply a similar reduction to stringify but bottom-up
             let stringify = route.stringify || (parent && parent.stringify);
             if (route.stringify && parent) {
-                stringify = (state, context) => {
-                    const result = route.stringify(state, context);
+                stringify = (location, context) => {
+                    const result = route.stringify(location, context);
                     if (result === false) {
                         return false;
                     }
@@ -253,7 +255,7 @@ class RouteMap {
                 };
             }
             if (!stringify) {
-                stringify = state => state;
+                stringify = noop;
             }
             // Handle possible redirect state. If the parent was a redirect,
             // throw away, otherwise merge parent state
@@ -300,37 +302,40 @@ class RouteMap {
             const queryMatch = matchQuery(route.query, query);
 
             if (pathMatch && queryMatch) {
-                // Got a match, compile state from what we know
+                // Got a match, compile location from what we know
                 const decoded = {};
                 // Decode special characters in pattern URI components; query strings
                 // are already decoded in matchQuery
                 for (const key of Object.keys(pathMatch)) {
                     decoded[key] = decodeURIComponent(pathMatch[key]);
                 }
-                const state =
+                const location =
                     route.state instanceof Redirect
                         ? route.state
                         : { ...route.state, ...decoded, ...queryMatch };
                 // Call any additional matching logic
                 // Note: Matchers can still affect the redirect from state
-                const matched = route.match(state, context);
+                const matched = route.match(location, context);
                 if (matched) {
                     return {
                         branch: unrollBranch(route),
-                        state: matched
+                        location: matched
                     };
                 }
             }
         }
-        return { branch: [], state: null };
+        return { branch: [], location: null };
     }
 
     /**
      * Serializes the supplied object to a URL
      *
      * @param {Object} location - the location object to generate a URL for
+     * @param {callback} context - outside context provided to stringifiers
+     *
+     * TODO: Some tests on context and passing it to stringify
      */
-    stringify(location) {
+    stringify(location, context = {}) {
         for (const route of this.routes) {
             // TODO: Consider that patternless routes
             // don't actually need to be in the route map
@@ -342,14 +347,14 @@ class RouteMap {
             // Perform additional stringification transform
             let locationToCheck = location;
             if (route.stringify) {
-                const stringState = route.stringify(locationToCheck);
+                const stringState = route.stringify(locationToCheck, context);
                 if (!stringState) {
                     continue;
                 }
                 locationToCheck = stringState;
             }
             let ok = true;
-            // Now test against any route state we're aware of
+            // Now test against any route params we're aware of
             for (const key of Object.keys(locationToCheck)) {
                 if (routeHasKey(route, key, locationToCheck[key])) {
                     keyMap[key] = false;

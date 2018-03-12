@@ -15,7 +15,7 @@ import {
 
 const nullMatch = {
     branch: [],
-    state: null
+    location: null
 };
 
 describe("joinPaths", () => {
@@ -37,7 +37,7 @@ describe("RouteMap", () => {
         const routes = basicRoutes();
         {
             const match = routes.match("/");
-            expect(match.state).toEqual({ page: "home" });
+            expect(match.location).toEqual({ page: "home" });
             expect(match.branch).toEqual([
                 {
                     path: "/",
@@ -47,7 +47,7 @@ describe("RouteMap", () => {
         }
         {
             const match = routes.match("/about");
-            expect(match.state).toEqual({ page: "about" });
+            expect(match.location).toEqual({ page: "about" });
             expect(match.branch).toEqual([
                 {
                     path: "/about",
@@ -64,7 +64,7 @@ describe("RouteMap", () => {
         expect(path2).toEqual("/about");
     });
 
-    test("it doesn't stringify partial state", () => {
+    test("it doesn't stringify partial location", () => {
         const routes = new RouteMap([
             {
                 path: "/",
@@ -89,13 +89,13 @@ describe("RouteMap", () => {
     test("it matches parent route", () => {
         const routes = childRoutes();
         const match = routes.match("/foo");
-        expect(match.state).toEqual({ foo: true });
+        expect(match.location).toEqual({ foo: true });
     });
 
     test("it matches child route", () => {
         const routes = childRoutes();
         const match = routes.match("/foo/bar");
-        expect(match.state).toEqual({ foo: true, bar: true });
+        expect(match.location).toEqual({ foo: true, bar: true });
         expect(match.branch).toEqual([
             {
                 path: "/foo",
@@ -127,7 +127,7 @@ describe("RouteMap", () => {
     test("it decodes URI components", () => {
         const routes = dynamicRootRoutes();
         const match = routes.match("/Some%20Thing");
-        expect(match.state).toEqual({ id: "Some Thing" });
+        expect(match.location).toEqual({ id: "Some Thing" });
     });
 
     test("it decodes more URI components", () => {
@@ -135,7 +135,7 @@ describe("RouteMap", () => {
         const match = routes.match(
             "/Content%20was%20not%20found%3A%20%27not-a-real-page%27"
         );
-        expect(match.state).toEqual({
+        expect(match.location).toEqual({
             id: "Content was not found: 'not-a-real-page'"
         });
     });
@@ -143,15 +143,15 @@ describe("RouteMap", () => {
     test("match wildcard paths", () => {
         const routes = wildcardRoutes();
         const match = routes.match("/test");
-        expect(match.state).toEqual({ path: "test" });
+        expect(match.location).toEqual({ path: "test" });
         const match2 = routes.match("/test/foo/1");
-        expect(match2.state).toEqual({ path: "test/foo/1" });
+        expect(match2.location).toEqual({ path: "test/foo/1" });
     });
 
     test("match nested wildcard paths", () => {
         const routes = wildcardIndexedRoutes();
         const match = routes.match("/foo/bar");
-        expect(match.state).toEqual({ first: "foo", second: "bar" });
+        expect(match.location).toEqual({ first: "foo", second: "bar" });
         const match2 = routes.match("/test");
         expect(match2).toEqual(nullMatch);
     });
@@ -171,7 +171,7 @@ describe("RouteMap", () => {
 
             test("don't match plain path", () => {
                 const match = routes.match("/plain");
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     status: 404,
                     missingPath: "plain"
                 });
@@ -179,42 +179,42 @@ describe("RouteMap", () => {
 
             test("match query key", () => {
                 const match = routes.match("/?foo=");
-                expect(match.state).toEqual({ foo: true });
+                expect(match.location).toEqual({ foo: true });
             });
 
             test("equals is optional for empty string", () => {
                 const match = routes.match("/?foo");
-                expect(match.state).toEqual({ foo: true });
+                expect(match.location).toEqual({ foo: true });
             });
 
             test("match overloaded route", () => {
                 const match = routes.match("/overload?foo");
-                expect(match.state).toEqual({ overload: true, foo: true });
+                expect(match.location).toEqual({ overload: true, foo: true });
             });
 
             test("match query key value", () => {
                 const match = routes.match("/?foo=bar");
-                expect(match.state).toEqual({ foobar: true });
+                expect(match.location).toEqual({ foobar: true });
             });
 
             test("match two queries", () => {
                 const match = routes.match("/?foo=bar&bar=foo");
-                expect(match.state).toEqual({ foo: true, bar: true });
+                expect(match.location).toEqual({ foo: true, bar: true });
             });
 
             test("reverse query order", () => {
                 const match = routes.match("/?bar=foo&foo=bar");
-                expect(match.state).toEqual({ foo: true, bar: true });
+                expect(match.location).toEqual({ foo: true, bar: true });
             });
 
             test("merge nested queries", () => {
                 const match = routes.match("/?nested&tested");
-                expect(match.state).toEqual({ nested: true, tested: true });
+                expect(match.location).toEqual({ nested: true, tested: true });
             });
 
             test("match named query token", () => {
                 const match = routes.match("/?q=something");
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     search: true,
                     searchTerm: "something"
                 });
@@ -222,7 +222,7 @@ describe("RouteMap", () => {
 
             test("decodes URI components", () => {
                 const match = routes.match("/?q=something%20else");
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     search: true,
                     searchTerm: "something else"
                 });
@@ -233,7 +233,7 @@ describe("RouteMap", () => {
                 const match = routes.match(
                     "/?q=Content%20was%20not%20found%3A%20%27not-a-real-page%27"
                 );
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     search: true,
                     searchTerm: "Content was not found: 'not-a-real-page'"
                 });
@@ -241,7 +241,7 @@ describe("RouteMap", () => {
 
             test("match optional query token", () => {
                 const match = routes.match("/?optional=banana");
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     home: true,
                     optional: "banana"
                 });
@@ -249,14 +249,14 @@ describe("RouteMap", () => {
 
             test("match without optional query", () => {
                 const match = routes.match("/");
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     home: true
                 });
             });
 
             test("match wildcard querystring", () => {
                 const match = routes.match("/wildcard?charlie=kelly");
-                expect(match.state).toEqual({
+                expect(match.location).toEqual({
                     status: 404,
                     missingPath: "wildcard",
                     rest: { charlie: "kelly" }
@@ -290,7 +290,7 @@ describe("RouteMap", () => {
                 test("nested wildcard query string", () => {
                     // This specific case is taken from demo shell
                     const result = routes.match("/queryStrings/search?q=test");
-                    expect(result.state).toEqual({
+                    expect(result.location).toEqual({
                         page: "demo",
                         demoName: "queryStrings",
                         rest: "search",
@@ -336,7 +336,7 @@ describe("RouteMap", () => {
                 test("nested match without optional", () => {
                     // This specific case is taken from queryString demos
                     const result = routes.match("/");
-                    expect(result.state).toEqual({
+                    expect(result.location).toEqual({
                         page: "home"
                     });
                 });
@@ -344,7 +344,7 @@ describe("RouteMap", () => {
                 test("match base query string fragment", () => {
                     // This specific case is taken from queryString demos
                     const result = routes.match("/?theme=bar");
-                    expect(result.state).toEqual({
+                    expect(result.location).toEqual({
                         page: "home",
                         themeName: "bar"
                     });
@@ -438,8 +438,8 @@ describe("RouteMap", () => {
                 expect(path).toEqual(
                     "/login?returnUrl=http%3A%2F%2Fexample.com%2Ffoobar"
                 );
-                const { state } = routes.match(path);
-                expect(state).toEqual({
+                const { location } = routes.match(path);
+                expect(location).toEqual({
                     page: "login",
                     returnUrl: "http://example.com/foobar"
                 });
@@ -451,8 +451,8 @@ describe("RouteMap", () => {
                     page: "login"
                 });
                 expect(path).toEqual("/login");
-                const { state } = routes.match(path);
-                expect(state).toEqual({
+                const { location } = routes.match(path);
+                expect(location).toEqual({
                     page: "login"
                 });
             });
@@ -496,9 +496,9 @@ describe("RouteMap", () => {
                 {
                     path: "/admin",
                     state: { page: "admin" },
-                    match: (state, { role }) =>
+                    match: (location, { role }) =>
                         role === "admin"
-                            ? { ok: true, ...state }
+                            ? { ok: true, ...location }
                             : redirect("/"),
                     routes: [
                         {
@@ -506,7 +506,7 @@ describe("RouteMap", () => {
                             state: { action: "ban" },
                             match: ({ ok, usersList, ...rest }) =>
                                 // Note: ok should always be true, just testing
-                                // that priorly matched state is available here
+                                // that priorly matched location is available here
                                 ok
                                     ? {
                                           users: usersList.split(","),
@@ -520,45 +520,45 @@ describe("RouteMap", () => {
         });
 
         test("run resolve function", () => {
-            const { state } = routes.match("/");
-            expect(state.matched).toEqual(true);
+            const { location } = routes.match("/");
+            expect(location.matched).toEqual(true);
         });
 
         test("transform one value into another", () => {
-            const { state } = routes.match("/dates/2018-05-03");
-            expect(state.date).toEqual(new Date("2018-05-03"));
+            const { location } = routes.match("/dates/2018-05-03");
+            expect(location.date).toEqual(new Date("2018-05-03"));
         });
 
         test("fall through on fail resolve", () => {
-            const { state } = routes.match("/dates/foobarbaz");
-            expect(state.badDate).toEqual(true);
+            const { location } = routes.match("/dates/foobarbaz");
+            expect(location.badDate).toEqual(true);
         });
 
         test("matches product id", () => {
-            const { state } = routes.match("/products/123");
-            expect(state).toEqual({
+            const { location } = routes.match("/products/123");
+            expect(location).toEqual({
                 product: { id: "123" },
                 page: "product"
             });
         });
 
         test("doesn't match bad product id", () => {
-            const { state } = routes.match("/products/1234");
-            expect(state).toEqual(null);
+            const { location } = routes.match("/products/1234");
+            expect(location).toEqual(null);
         });
 
         test("nested match prevents unauthorised", () => {
-            const { state } = routes.match("/admin/ban?users=foo,bar,baz", {
+            const { location } = routes.match("/admin/ban?users=foo,bar,baz", {
                 role: "guest"
             });
-            expect(state).toEqual(redirect("/"));
+            expect(location).toEqual(redirect("/"));
         });
 
         test("nested match allows authorised and maps list", () => {
-            const { state } = routes.match("/admin/ban?users=foo,bar,baz", {
+            const { location } = routes.match("/admin/ban?users=foo,bar,baz", {
                 role: "admin"
             });
-            expect(state).toEqual({
+            expect(location).toEqual({
                 page: "admin",
                 action: "ban",
                 users: ["foo", "bar", "baz"]
@@ -601,15 +601,16 @@ describe("RouteMap", () => {
                 {
                     path: "/admin",
                     state: { page: "admin" },
-                    match: (state, { role }) =>
+                    match: (location, { role }) =>
                         role === "admin"
-                            ? { ok: true, ...state }
+                            ? { ok: true, ...location }
                             : redirect("/"),
                     // Normally we don't need to do this, stringify will just fail
                     // if required state is not there; this is specifically to
                     // test whether stringify is resolving in the correct order (bottom-up)
-                    // *and* passing state up the function chain
-                    stringify: state => (state.usersList ? state : false),
+                    // *and* passing location up the function chain
+                    stringify: location =>
+                        location.usersList ? location : false,
                     routes: [
                         {
                             path: "/ban?users=:usersList",
@@ -649,7 +650,7 @@ describe("RouteMap", () => {
             expect(path).toEqual(null);
         });
 
-        test("stringifies on different state key", () => {
+        test("stringifies on different location key", () => {
             const path = routes.stringify({
                 page: "product",
                 product: { id: "123" }

@@ -10,7 +10,7 @@ const indexRoute = [
     }
 ];
 
-export default ({ routes = indexRoute, children, location, ...props }) => (
+export default ({ routes = indexRoute, children, ...props }) => (
     <RoutingProvider routes={routes} history={mockHistory()} {...props}>
         {...children}
     </RoutingProvider>

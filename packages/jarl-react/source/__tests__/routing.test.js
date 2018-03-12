@@ -21,7 +21,7 @@ describe("location", () => {
         const TestComponent = routing()(mockComponent);
         const mockState = { foo: Symbol("bar") };
         const output = mount(
-            <MockProvider state={mockState}>
+            <MockProvider location={mockState}>
                 <TestComponent />
             </MockProvider>
         );
@@ -36,7 +36,7 @@ describe("location", () => {
         );
         const mockState = { foo: Symbol("bar") };
         const output = mount(
-            <MockProvider state={mockState}>
+            <MockProvider location={mockState}>
                 <TestComponent />
             </MockProvider>
         );
@@ -97,10 +97,10 @@ describe("isActive", () => {
     });
 
     test("is active for home page", () => {
-        const state = { page: "home" };
+        const location = { page: "home" };
         const to = { page: "home" };
         const output = mount(
-            <MockProvider state={state} routes={routes}>
+            <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
             </MockProvider>
         );
@@ -110,10 +110,10 @@ describe("isActive", () => {
     });
 
     test("is not active for sibling of home", () => {
-        const state = { page: "about" };
+        const location = { page: "about" };
         const to = { page: "home" };
         const output = mount(
-            <MockProvider state={state} routes={routes}>
+            <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
             </MockProvider>
         );
@@ -123,10 +123,10 @@ describe("isActive", () => {
     });
 
     test("is active for child of home", () => {
-        const state = { page: "child" };
+        const location = { page: "child" };
         const to = { page: "home" };
         const output = mount(
-            <MockProvider state={state} routes={routes}>
+            <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
             </MockProvider>
         );
@@ -139,10 +139,10 @@ describe("isActive", () => {
         TestComponent = routing(null, ({ isActive }, { to }) => ({
             active: isActive(to, true)
         }))(mockComponent);
-        const state = { page: "child" };
+        const location = { page: "child" };
         const to = { page: "home" };
         const output = mount(
-            <MockProvider state={state} routes={routes}>
+            <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
             </MockProvider>
         );
@@ -151,11 +151,11 @@ describe("isActive", () => {
         expect(props.active).toEqual(false);
     });
 
-    test("is not active for different state same route", () => {
-        const state = { page: "product", id: "1" };
+    test("is not active for different location same route", () => {
+        const location = { page: "product", id: "1" };
         const to = { page: "product", id: "2" };
         const output = mount(
-            <MockProvider state={state} routes={routes}>
+            <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
             </MockProvider>
         );
@@ -164,11 +164,11 @@ describe("isActive", () => {
         expect(props.active).toEqual(false);
     });
 
-    test("is active for same state same branch", () => {
-        const state = { page: "details", id: "1" };
+    test("is active for same location same branch", () => {
+        const location = { page: "details", id: "1" };
         const to = { page: "product", id: "1" };
         const output = mount(
-            <MockProvider state={state} routes={routes}>
+            <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
             </MockProvider>
         );
@@ -179,11 +179,11 @@ describe("isActive", () => {
 
     test("is not active when route is outside base path", () => {
         const history = mockHistory("/bar");
-        const state = { page: "home" };
+        const location = { page: "home" };
         const to = { page: "home" };
         const output = mount(
             <MockProvider
-                state={state}
+                location={location}
                 routes={routes}
                 history={history}
                 basePath="/foo"

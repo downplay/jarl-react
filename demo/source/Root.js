@@ -71,16 +71,16 @@ const routes = [
 ];
 
 class Root extends Component {
-    state = { routing: {} };
+    state = { location: {} };
 
-    handleNavigateEnd = ({ state }) => {
+    handleChange = ({ location }) => {
         this.setState({
-            routing: state
+            location
         });
     };
 
     renderDemo() {
-        const { page, demoName, missingPath, query } = this.state.routing;
+        const { page, demoName, missingPath, query } = this.state.location;
 
         let content;
         let code;
@@ -119,7 +119,7 @@ class Root extends Component {
                 history={history}
                 routes={routes}
                 onChange={this.handleChange}
-                state={this.state.routing}
+                location={this.state.routing}
             >
                 <Helmet titleTemplate="JARL Demos | %s" />
                 {this.renderDemo()}

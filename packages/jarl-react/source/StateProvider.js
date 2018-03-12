@@ -19,7 +19,7 @@ class StateProvider extends Component {
      */
     handleChange = event => {
         // TODO: Handle cancellation gracefully, with demo, also a redux example using isDirty in reducer
-        this.setState({ location: event.state });
+        this.setState({ location: event.location });
         if (this.props.onChange) {
             this.props.onChange(event);
         }
@@ -31,7 +31,7 @@ class StateProvider extends Component {
         return (
             <RoutingProvider
                 {...others}
-                state={this.state.location}
+                location={this.state.location}
                 onChange={this.handleChange}
             />
         );
