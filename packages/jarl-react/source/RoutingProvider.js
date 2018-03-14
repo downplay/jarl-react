@@ -1,6 +1,7 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
 import invariant from "invariant";
+import warning from "warning";
 
 import RouteMap, { joinPaths, hydrateRoute } from "./RouteMap";
 import safeJsonStringify from "./lib/safeJsonStringify";
@@ -76,7 +77,6 @@ class RoutingProvider extends Component {
 
     constructor(props) {
         super(props);
-        // TODO: Move all the invariants to RoutingProvider?
         invariant(
             props.routes &&
                 (props.routes instanceof RouteMap ||
@@ -85,7 +85,8 @@ class RoutingProvider extends Component {
         );
         invariant(props.history, "Provider must receive a history object");
         this.state = {
-            routes: ensureRouteMap(props.routes)
+            routes: ensureRouteMap(props.routes),
+            validLocation: false
         };
     }
 
@@ -102,12 +103,12 @@ class RoutingProvider extends Component {
     }
 
     componentDidMount() {
-        // Listen for changes to the current location
-        this.unlisten = this.props.history.listen(this.handleHistory);
-        const path = this.getCurrentPath();
         if (this.props.performInitialRouting) {
-            this.doNavigation(this.normalizePath(path), ACTION_INITIAL);
+            const path = this.getCurrentPath();
+            this.doNavigation(path, ACTION_INITIAL);
         }
+        this.checkValidLocation();
+        this.listen();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -121,13 +122,15 @@ class RoutingProvider extends Component {
                     // set of routes are loaded then we definitely need to resolve data etc
                     // TODO: Test for this
                     const path = this.getCurrentPath();
-                    this.doNavigation(this.normalizePath(path), ACTION_RELOAD);
+                    this.doNavigation(path, ACTION_RELOAD);
                 }
             );
         }
         if (nextProps.history !== this.props.history) {
-            this.unlisten();
-            this.unlisten = this.props.history.listen(this.handleHistory);
+            this.listen();
+        }
+        if (nextProps.location !== this.props.location) {
+            this.checkValidLocation();
         }
     }
 
@@ -151,12 +154,27 @@ class RoutingProvider extends Component {
 
     normalizePath(path) {
         // TODO: Also merge query string
+        invariant(
+            this.hasBasePath(path),
+            `Tried to normalize path ${path} without basePath ${
+                this.props.basePath
+            }`
+        );
         return joinPaths(path.substring(this.props.basePath.length));
+    }
+
+    listen() {
+        // Cancel any previous listener
+        if (this.unlisten) {
+            this.unlisten();
+        }
+        // Listen for changes to the current location
+        this.unlisten = this.props.history.listen(this.handleHistory);
     }
 
     handleHistory = (location, action) => {
         const path = location.pathname + location.search;
-        this.doNavigation(this.normalizePath(path), action);
+        this.doNavigation(path, action);
     };
 
     ensurePath(location) {
@@ -164,11 +182,30 @@ class RoutingProvider extends Component {
             typeof location === "string"
                 ? location
                 : this.state.routes.stringify(location, this.props.context());
+        // TODO: Start thinking about debug tooling
+        // to track these errors in a nice UI and expose more informaton.
         invariant(
             path,
-            `Could not stringify location: ${safeJsonStringify(location)}`
+            `Could not stringify location: ${safeJsonStringify(location)}`,
+            location
         );
         return path;
+    }
+
+    checkValidLocation() {
+        try {
+            this.setState({
+                validLocation: !!this.ensurePath(this.props.location)
+            });
+        } catch (error) {
+            warning(
+                error,
+                `Invalid location passed to RoutingProvider: ${safeJsonStringify(
+                    this.props.location
+                )}`,
+                error
+            );
+        }
     }
 
     handleRedirect = to => {
@@ -184,11 +221,13 @@ class RoutingProvider extends Component {
         this.props.history.push(this.ensurePath(to));
     };
 
-    doNavigation(path, action) {
+    doNavigation(fullPath, action) {
         // Note: Used to be treated as an error as this might be non-obvious to
-        // debug, however there's no reason to particularly limit the occasions this
-        // happens
-        if (!this.hasBasePath(path)) return;
+        // debug, however it seems reasonable to just ignore these edge cases.
+        // Might change to a warning if ever problematic.
+        if (!this.hasBasePath(fullPath)) return;
+        const path = this.normalizePath(fullPath);
+
         const { branch, location } = this.state.routes.match(
             path,
             this.props.context()
@@ -245,14 +284,12 @@ class RoutingProvider extends Component {
                     });
                 } else {
                     // Unable to complete navigation, error not handled
-                    // TODO: Throw error instead?
-                    /* eslint-disable no-console */
-                    console.error(
+                    warning(
+                        false,
                         `Unhandled resolve failure during navigation to ${path}.
-                         Handle the resolve with a redirect instead.`
+                         Handle the resolve with a redirect instead.`,
+                        error
                     );
-                    console.error(error);
-                    /* eslint-enable no-console */
                 }
             });
     }
@@ -265,6 +302,11 @@ class RoutingProvider extends Component {
     handleGetLocation = () => this.props.location;
 
     handleIsActive = (location, exact = false) => {
+        // While router is in an unstable state on first render or after receiving new
+        // location, assume nothing is active
+        if (!this.state.validLocation) {
+            return false;
+        }
         // TODO: PERF: This has to do quite a bit of work. Consider memoization. Also
         // could cache the branch at the time of navigation but this could get out of date.
         // Also there is duplicated work: converting states to strings only

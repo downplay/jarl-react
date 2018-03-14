@@ -8,6 +8,7 @@ import routerCode from "!!raw-loader!./Root";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Docs from "./pages/Docs";
 
 import { MainLayout } from "./layout";
 import MainMenu from "./MainMenu";
@@ -40,6 +41,7 @@ const routes = [
         path: "/",
         state: { page: "index" }
     },
+    { path: "/docs/:docName", state: { page: "docs" } },
     {
         // This route (and its child route) match the first path segment and defers everything else
         // to the routing for the specific demo. Ideally this would be a single route
@@ -80,7 +82,13 @@ class Root extends Component {
     };
 
     renderDemo() {
-        const { page, demoName, missingPath, query } = this.state.location;
+        const {
+            page,
+            demoName,
+            missingPath,
+            query,
+            docName
+        } = this.state.location;
 
         let content;
         let code;
@@ -98,13 +106,20 @@ class Root extends Component {
                 />
             );
         } else {
-            code = routerCode;
-            content =
-                page === "index" ? (
-                    <Index />
-                ) : (
-                    <NotFound missingPath={missingPath} query={query} />
-                );
+            switch (page) {
+                case "index":
+                    code = routerCode;
+                    content = <Index />;
+                    break;
+                case "docs":
+                    content = <Docs doc={docName} />;
+                    break;
+                default:
+                    content = (
+                        <NotFound missingPath={missingPath} query={query} />
+                    );
+                    break;
+            }
         }
         return (
             <MainLayout code={code} menu={<MainMenu />}>
@@ -119,7 +134,7 @@ class Root extends Component {
                 history={history}
                 routes={routes}
                 onChange={this.handleChange}
-                location={this.state.routing}
+                location={this.state.location}
             >
                 <Helmet titleTemplate="JARL Demos | %s" />
                 {this.renderDemo()}

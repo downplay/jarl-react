@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 
 /**
- * We'll use routing to inject imageId from the router's state
+ * We'll use routing to inject imageId from the router location
  *
- * In a later demo we'll see how to sync the router state into a
+ * In a later demo we'll see how to sync the router location into a
  * global store like Redux, and use Redux connect instead
  */
 import { routing, Link } from "jarl-react";

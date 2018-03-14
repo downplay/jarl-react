@@ -21,7 +21,7 @@ const renderPage = (page, missingPath) => {
 };
 
 /**
- * JARL injects the `page` prop from state via routing HOC
+ * JARL injects the `page` prop from location via routing HOC
  */
 const Pages = ({ page, missingPath }) => (
     <Layout>

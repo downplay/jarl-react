@@ -159,6 +159,7 @@ describe("<RoutingProvider/>", () => {
 
         test("basePath is honoured", () => {
             history.location.pathname = "/foo";
+            routes.match = jest.fn(() => ({ branch: [], location: {} }));
             shallow(
                 <RoutingProvider
                     routes={routes}
@@ -166,7 +167,8 @@ describe("<RoutingProvider/>", () => {
                     basePath="/foo"
                 />
             );
-            expect(doNavigation).toHaveBeenCalledWith("/", "INITIAL");
+            expect(doNavigation).toHaveBeenCalledWith("/foo", "INITIAL");
+            expect(routes.match).toHaveBeenCalledWith("/", {});
         });
 
         test("route is ignored when basePath doesn't match", () => {

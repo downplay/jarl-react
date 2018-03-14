@@ -51,7 +51,7 @@ describe("Demo 1 - basic routing", () => {
         cy.get("[data-test=header]").should("contain", "About");
     });
 
-    it("set some transient state", () => {
+    it("sets some transient state", () => {
         cy.visit(`${root}/`);
         cy.get("[data-test=marker-button]").click();
         cy.get("[data-test=marker]").should("exist");

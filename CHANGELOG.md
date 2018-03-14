@@ -12,9 +12,14 @@
     *   `SimpleProvider` is now `StateProvider`
     *   `withContext`, `withLocation`, `withNavigate` all disappeared and are replaced by `routing`
     *   `RouteMapper` is now `RouteMap`
+    *   `state` has been renamed to `location` _in some places_:
+        *   `RoutingProvider` and `StateProvider`'s state prop
+        *   Signature of `onChange` callback
+        *   Return of `match` function on `RouteMap`
+        *   It has _not_ changed on `Route` as this is clearly distinct and is generally just part of the whole location.
 
 *   Other breaking:
-    *   `resolve` functions now execute in series, results aren't stored in state anymore but they are made available thru `resolved` on the onChange handler
+    *   `resolve` functions now execute in series; results aren't stored in state anymore but they are made available thru `resolved` on the onChange handler
 
 ### New features
 

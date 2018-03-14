@@ -29,9 +29,14 @@
         "StateProvider.js"
     ],
     "jest": {
-        "setupFiles": ["raf/polyfill"],
+        "setupFiles": [
+            "raf/polyfill"
+        ],
         "testRegex": "__tests__/.+\\.test\\.js$",
-        "collectCoverageFrom": ["source/*.js", "source/lib/*.js"]
+        "collectCoverageFrom": [
+            "source/*.js",
+            "source/lib/*.js"
+        ]
     },
     "keywords": [
         "react",
@@ -57,8 +62,9 @@
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0",
-        "invariant": "^2.2.2",
-        "qs": "^6.5.1"
+        "invariant": "^2.2.4",
+        "qs": "^6.5.1",
+        "warning": "^3.0.0"
     },
     "devDependencies": {
         "babel-jest": "^22.0.4",
