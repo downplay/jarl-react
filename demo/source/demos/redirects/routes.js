@@ -35,11 +35,11 @@ const routes = [
         // in question: there will be no flash of an incomplete page.
         path: "/content/:slug",
         state: { page: "content" },
-        resolve: ({ slug, ...rest }) =>
+        resolve: ({ slug }) =>
             api
                 .get(slug)
                 // Happy path: when the content exists, resolve it to allow navigation
-                .then(content => ({ content, ...rest }))
+                .then(content => ({ content }))
                 // Catch because content doesn't exist; resolve this into a redirect
                 .catch(e =>
                     redirect({

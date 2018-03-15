@@ -1,5 +1,5 @@
 import React from "react";
-import { withState } from "recompose";
+import { compose, withState } from "recompose";
 
 import { StateProvider } from "jarl-react";
 
@@ -10,7 +10,9 @@ const Root = ({
     routes,
     basePath,
     authenticated,
-    setAuthenticated
+    setAuthenticated,
+    contentPage,
+    setContentPage
 }) => (
     <StateProvider
         history={history}
@@ -21,12 +23,20 @@ const Root = ({
         context={() => ({
             authenticated
         })}
+        // Resolved content arrives in the onChange callback. In a real app you
+        // might want to raise a Flux action directly from your route to load the content
+        // into your global store. Redux examples will demonstrate this.
+        onChange={({ resolved: { content } }) => setContentPage(content)}
     >
         <Pages
+            contentPage={contentPage}
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
         />
     </StateProvider>
 );
 
-export default withState("authenticated", "setAuthenticated", false)(Root);
+export default compose(
+    withState("authenticated", "setAuthenticated", false),
+    withState("contentPage", "setContentPage", null)
+)(Root);

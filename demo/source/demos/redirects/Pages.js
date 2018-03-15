@@ -18,7 +18,7 @@ class Pages extends Component {
 
     renderPage() {
         // Properties injected from router state
-        const { page, reason, slug, content, authenticated } = this.props;
+        const { page, reason, slug, contentPage, authenticated } = this.props;
         switch (page) {
             case "landing":
             default:
@@ -32,7 +32,7 @@ class Pages extends Component {
             case "admin":
                 return <AdminPage authenticated={authenticated} />;
             case "content":
-                return <ContentPage slug={slug} content={content} />;
+                return <ContentPage slug={slug} content={contentPage} />;
             // Note: there is no case for the "moved" page because it never exists
         }
     }

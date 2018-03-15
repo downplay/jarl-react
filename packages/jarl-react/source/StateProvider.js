@@ -19,10 +19,11 @@ class StateProvider extends Component {
      */
     handleChange = event => {
         // TODO: Handle cancellation gracefully, with demo, also a redux example using isDirty in reducer
-        this.setState({ location: event.location });
+        // Want to cancel it in onChange or from routing? Maybe both.
         if (this.props.onChange) {
             this.props.onChange(event);
         }
+        this.setState({ location: event.location });
     };
 
     render() {
