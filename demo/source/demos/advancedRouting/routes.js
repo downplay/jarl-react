@@ -5,14 +5,14 @@ const routes = [
     },
     {
         path: "/product",
-        state: { page: "product" },
-        // Set the default tab to details
-        match: state => ({ tab: "details", ...state }),
-        // For serialization, remove the tab if it's "details", so /product
-        // is produced whether the tab is specified or not, otherwise
-        // keep the tab the same so the correct child path matches
-        stringify: ({ tab, ...state }) =>
-            !tab || tab === "details" ? state : { tab, ...state },
+        state: { page: "product", tab: "details" },
+        // Default tab is "details" and for simplicity we want this to
+        // be mounted on the /product page. We want to link to the same page
+        // whether no tab is specified or it's set to "details".
+        // This custom stringified means it doesn't matter which location
+        // object is used, we still get /product.
+        // TODO: A better match/stringify example.
+        stringify: state => ({ tab: "details", ...state }),
         routes: [
             {
                 path: "/ratings",
