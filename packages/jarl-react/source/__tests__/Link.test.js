@@ -7,7 +7,6 @@ import Adapter from "enzyme-adapter-react-16";
 import Link from "../Link";
 import MockProvider from "./mocks/MockProvider";
 import mockHistory from "./mocks/mockHistory";
-import wait from "./mocks/wait";
 
 import { basicRoutes } from "./dummy/routes";
 
@@ -111,7 +110,7 @@ describe("<Link/>", () => {
         });
 
         // TODO: Provide `replace` and `push` instead of onClick?
-        test("renders active link", async () => {
+        test("renders active link", () => {
             const wrapper = mount(
                 <MockProvider
                     routes={basicRoutes()}
@@ -127,13 +126,12 @@ describe("<Link/>", () => {
                     </Link>
                 </MockProvider>
             );
-            await wait(100);
             const anchor = wrapper.find("li");
             expect(anchor.prop("className")).toEqual("active");
             expect(wrapper.find("a").prop("href")).toEqual("/about");
         });
 
-        test("renders inactive link and navigates", async () => {
+        test("renders inactive link and navigates", () => {
             const wrapper = mount(
                 <MockProvider
                     routes={basicRoutes()}
@@ -152,7 +150,6 @@ describe("<Link/>", () => {
                     </Link>
                 </MockProvider>
             );
-            await wait(100);
             const anchor = wrapper.find("li");
             expect(anchor.prop("className")).toEqual("not");
             expect(anchor.find("a").prop("href")).toEqual("/");

@@ -214,9 +214,20 @@ describe("<RoutingProvider/>", () => {
             expect(onChange).not.toHaveBeenCalled();
         });
 
+        test("is synchronous when no resolve functions", () => {
+            provider.doNavigation("/", "PUSH");
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    path: "/",
+                    location: { page: "index" }
+                })
+            );
+        });
+
         test("resolve functions are executed", async () => {
             provider.doNavigation("/test-resolve", "PUSH");
-            // TODO: Maybe modify tests to use lolex
+            expect(onChange).not.toHaveBeenCalled();
+            // TODO: modify tests to use lolex
             await wait(11);
             expect(onChange).toHaveBeenCalledWith({
                 action: "PUSH",

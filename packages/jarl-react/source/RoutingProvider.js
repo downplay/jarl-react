@@ -238,10 +238,10 @@ class RoutingProvider extends Component {
             return;
         }
         // Run any resolvers on the route branch
-        let promise = Promise.resolve({});
+        let promise;
         for (const leaf of branch) {
             if (leaf.resolve) {
-                promise = promise.then(reduced =>
+                promise = (promise || Promise.resolve({})).then(reduced =>
                     leaf
                         .resolve(location, this.props.context())
                         .then(result => {
@@ -256,18 +256,16 @@ class RoutingProvider extends Component {
                 );
             }
         }
+        const output = { location, path, branch, action, resolved: {} };
+        if (!promise) {
+            this.completeRouting(output);
+            return;
+        }
         // All promises resolve in series, and navigation is over
         promise
             .then(resolved => {
-                if (this.props.onChange) {
-                    this.props.onChange({
-                        location,
-                        path,
-                        branch,
-                        action,
-                        resolved
-                    });
-                }
+                output.resolved = resolved;
+                this.completeRouting(output);
             })
             .catch(error => {
                 // If a redirect was thrown, follow it
@@ -293,6 +291,12 @@ class RoutingProvider extends Component {
                 }
             });
     }
+
+    completeRouting = output => {
+        if (this.props.onChange) {
+            this.props.onChange(output);
+        }
+    };
 
     handleStringify = location => {
         const stringified = this.ensurePath(location);

@@ -10,8 +10,6 @@ import mockHistory from "./mocks/mockHistory";
 
 configure({ adapter: new Adapter() });
 
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 const create = (pathname, search) => ({
     history: mockHistory(pathname, search),
     children: <div />,
@@ -45,7 +43,7 @@ describe("<StateProvider/>", () => {
         expect(props.onChange).toEqual(expect.any(Function));
     });
 
-    test("passes through `onChange`", async () => {
+    test("passes through `onChange`", () => {
         const { routes, history, context, children } = create();
         const onChange = jest.fn();
         mount(
@@ -53,7 +51,6 @@ describe("<StateProvider/>", () => {
                 {...{ routes, history, context, children, onChange }}
             />
         );
-        await wait(0);
         expect(onChange).toHaveBeenCalledWith({
             action: "INITIAL",
             branch: [{ path: "/", state: { home: true } }],
