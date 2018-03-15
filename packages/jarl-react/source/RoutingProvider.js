@@ -214,11 +214,11 @@ class RoutingProvider extends Component {
         // TODO: Specific E2E test for this, and consider that in some cases this
         // might not be wanted - e.g. redirect from a Login page could be valid later
         // (but then we'd manually redirect back?)
-        this.props.history.replace(this.ensurePath(to));
+        this.props.history.replace(this.handleStringify(to));
     };
 
     handleNavigate = to => {
-        this.props.history.push(this.ensurePath(to));
+        this.props.history.push(this.handleStringify(to));
     };
 
     doNavigation(fullPath, action) {

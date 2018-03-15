@@ -321,4 +321,29 @@ describe("<RoutingProvider/>", () => {
         // TODO: Very important!
         test.skip("prevents circular redirects", () => {});
     });
+
+    describe("navigate and redirect", () => {
+        let router;
+        beforeEach(() => {
+            const wrapper = shallow(
+                <RoutingProvider
+                    routes={routes}
+                    history={history}
+                    performInitialRouting={false}
+                    basePath="/foo"
+                />
+            );
+            router = wrapper.instance();
+        });
+
+        test("navigate with basePath", () => {
+            router.handleNavigate({ page: "index" });
+            expect(history.push).toHaveBeenCalledWith("/foo");
+        });
+
+        test("redirect with basePath", () => {
+            router.handleRedirect({ page: "index" });
+            expect(history.replace).toHaveBeenCalledWith("/foo");
+        });
+    });
 });

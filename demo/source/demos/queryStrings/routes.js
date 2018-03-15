@@ -2,7 +2,7 @@ const routes = [
     {
         // This optional query match will be applied to all routes via nesting
         // There is no path part, therefore path matching will be entirely deferred
-        // to child nested routes, which is what we want in order to match / correctly
+        // to child nested routes, which is what we want in order to match `/` correctly
         path: "?theme=(:themeName)",
         state: {},
         routes: [
