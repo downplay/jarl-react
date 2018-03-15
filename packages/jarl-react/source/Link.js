@@ -53,7 +53,7 @@ class Link extends Component {
         if (this.props.onClick) {
             this.props.onClick(e);
         }
-        this.context.routing.navigate(this.stringify(this.props.to));
+        this.context.routing.navigate(this.props.to);
     };
 
     // PERF: Could perhaps be memoized. But needs to know if navcontext changed routes table.

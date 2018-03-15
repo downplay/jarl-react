@@ -80,6 +80,26 @@ describe("<Link/>", () => {
         expect(anchor.prop("href")).toEqual("/foo/about");
     });
 
+    test("click triggers navigate and prevents default", () => {
+        const history = mockHistory();
+        const app = mount(
+            <MockProvider
+                routes={basicRoutes()}
+                location={homeLocation}
+                history={history}
+                basePath="/foo"
+                performInitialRouting={false}
+            >
+                <Link to={{ page: "about" }}>Home</Link>
+            </MockProvider>
+        );
+        const event = { preventDefault: jest.fn() };
+        const link = app.find(Link);
+        link.simulate("click", event);
+        expect(event.preventDefault).toHaveBeenCalled();
+        expect(history.push).toHaveBeenCalledWith("/foo/about");
+    });
+
     describe("function-as-child rendering", () => {
         let event;
         let history;
