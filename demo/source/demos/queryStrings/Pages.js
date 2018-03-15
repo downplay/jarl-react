@@ -53,6 +53,11 @@ class Pages extends Component {
                     </MenuItem>
                     <MenuItem
                         to={{
+                            // Default page just so links don't error during initial
+                            // render when there isn't a location yet
+                            // Note: Really need to prevent these errors blowing things up,
+                            // but also need to make genuine errors not just fail silently
+                            page: "home",
                             ...this.props.location,
                             themeName: themeName === "dark" ? "light" : "dark"
                         }}

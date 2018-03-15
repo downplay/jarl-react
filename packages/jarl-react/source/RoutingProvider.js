@@ -237,32 +237,30 @@ class RoutingProvider extends Component {
             this.handleRedirect(location.to);
             return;
         }
-        // Run any resolvers on the route branch
-        let promise;
-        for (const leaf of branch) {
-            if (leaf.resolve) {
-                promise = (promise || Promise.resolve({})).then(reduced =>
-                    leaf
-                        .resolve(location, this.props.context())
-                        .then(result => {
-                            // Convert redirect into a Promise rejection, this
-                            // ensures that the Promise chain is broken immediately
-                            const reduction =
-                                result instanceof Redirect
-                                    ? Promise.reject(result)
-                                    : { ...reduced, ...result };
-                            return reduction;
-                        })
-                );
+        // Reduce any resolvers on the route branch into a serial Promise
+        const series = branch.reduce((promise, leaf) => {
+            if (!leaf.resolve) {
+                return promise;
             }
-        }
+            return (promise || Promise.resolve({})).then(reduced =>
+                leaf.resolve(location, this.props.context()).then(result => {
+                    // Convert redirect into a Promise rejection, this
+                    // ensures that the Promise chain is broken immediately
+                    const reduction =
+                        result instanceof Redirect
+                            ? Promise.reject(result)
+                            : { ...reduced, ...result };
+                    return reduction;
+                })
+            );
+        }, null);
         const output = { location, path, branch, action, resolved: {} };
-        if (!promise) {
+        if (!series) {
             this.completeRouting(output);
             return;
         }
         // All promises resolve in series, and navigation is over
-        promise
+        series
             .then(resolved => {
                 output.resolved = resolved;
                 this.completeRouting(output);
