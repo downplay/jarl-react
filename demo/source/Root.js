@@ -8,9 +8,10 @@ import routerCode from "!!raw-loader!./Root";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Error from "./pages/Error";
 import Docs from "./pages/Docs";
 
-import { MainLayout } from "./layout";
+import { MainLayout, ErrorWrapper } from "./layout";
 import MainMenu from "./MainMenu";
 
 import { getDemo } from "./demos";
@@ -81,6 +82,10 @@ class Root extends Component {
         });
     };
 
+    handleDemoError = (error, info) => {
+        this.setState({ hasError: true, error, errorInfo: info });
+    };
+
     renderDemo() {
         const {
             page,
@@ -93,18 +98,31 @@ class Root extends Component {
         let content;
         let code;
         if (page === "demo") {
-            // Render one of the demos: set its basePath and also pass in the same
-            // `history` instance so browser history works right across the board.
-            const { Root: DemoRoot, routes: demoRoutes } = getDemo(
-                demoName
-            ).content;
-            content = (
-                <DemoRoot
-                    routes={demoRoutes}
-                    history={history}
-                    basePath={`/${demoName}`}
-                />
-            );
+            if (this.state.hasError) {
+                // Error caught by error boundary. Lets us debug and also easily test
+                // errors inside routing
+                content = (
+                    <Error
+                        error={this.state.error}
+                        info={this.state.errorInfo}
+                    />
+                );
+            } else {
+                // Render one of the demos: set its basePath and also pass in the same
+                // `history` instance so browser history works right across the board.
+                const { Root: DemoRoot, routes: demoRoutes } = getDemo(
+                    demoName
+                ).content;
+                content = (
+                    <ErrorWrapper onError={this.handleDemoError}>
+                        <DemoRoot
+                            routes={demoRoutes}
+                            history={history}
+                            basePath={`/${demoName}`}
+                        />
+                    </ErrorWrapper>
+                );
+            }
         } else {
             switch (page) {
                 case "index":

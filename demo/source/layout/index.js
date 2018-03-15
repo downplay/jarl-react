@@ -5,6 +5,8 @@ import Helmet from "react-helmet";
 import { Link } from "jarl-react";
 
 export { default as MainLayout } from "./MainLayout";
+export { default as Layout } from "./DemoLayout";
+export { default as ErrorWrapper } from "./ErrorWrapper";
 
 const PageElement = styled.article`
     background-color: ${props =>
@@ -64,5 +66,3 @@ export const MenuItem = ({ children, to, ...rest }) => (
         )}
     </Link>
 );
-
-export const Layout = styled.div``;

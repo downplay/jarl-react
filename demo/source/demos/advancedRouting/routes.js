@@ -12,7 +12,7 @@ const routes = [
         // is produced whether the tab is specified or not, otherwise
         // keep the tab the same so the correct child path matches
         stringify: ({ tab, ...state }) =>
-            tab === "details" ? state : { tab, ...state },
+            !tab || tab === "details" ? state : { tab, ...state },
         routes: [
             {
                 path: "/ratings",
