@@ -82,5 +82,3 @@ export default () => (
 ```
 
 The `Link` component lets you use state in reverse: specify the state you want to link to, and JARL will generate the correct URL. Again, this takes advantage of the fact that state is essentially a unique identifier for a route.
-
-Next: 02. Dynamic Routing
