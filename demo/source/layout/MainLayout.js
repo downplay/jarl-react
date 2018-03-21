@@ -3,9 +3,15 @@ import styled from "react-emotion";
 
 const Grid = styled.div`
     display: grid;
+    grid-template-columns: 20rem 50% 50%;
+    grid-template-rows: 20rem auto;
 `;
 
-const HeaderRow = styled.div``;
+const HeaderRow = styled.div`
+    grid-column-start: 1;
+    grid-column-end: 3;
+`;
+
 const MenuSidebar = styled.div``;
 const ContentPanel = styled.div``;
 const CodePanel = styled.div``;
