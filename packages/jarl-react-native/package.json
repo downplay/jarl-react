@@ -23,14 +23,12 @@
     "keywords": [
         "react",
         "reactjs",
-        "hoc",
+        "native",
         "routing",
         "router",
         "components",
         "tools",
-        "url",
-        "history",
-        "ssr"
+        "history"
     ],
     "author": "Peter Hurst",
     "license": "MIT",
@@ -39,10 +37,12 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "prop-types": ">=15",
-        "react": ">=15"
+        "react": ">=15",
+        "react-native": ">=0.44"
     },
     "dependencies": {
+        "prop-types": "^15.6.0",
+        "history": "^4.7.2",
         "hoist-non-react-statics": "^2.0.0",
         "invariant": "^2.2.4",
         "qs": "^6.5.1",
