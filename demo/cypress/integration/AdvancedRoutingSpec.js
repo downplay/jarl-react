@@ -8,5 +8,8 @@ describe("Demo 3 - advanced routing", () => {
         cy.title().should("include", "Advanced Routing");
         cy.title().should("include", "Home");
         cy.get("[data-test=header]").should("contain", "Home");
+        cy
+            .get("[data-test-demo-link=advancedRouting]")
+            .should("have.attr", "data-test-active", "true");
     });
 });

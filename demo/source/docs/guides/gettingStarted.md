@@ -12,7 +12,7 @@ import { RouteMap } from "jarl-react";
 const routes = new RouteMap([
     {
         path: "/",
-        staate: { page: "home" }
+        state: { page: "home" }
     },
     {
         path: "/about",
