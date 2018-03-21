@@ -4,7 +4,7 @@ JARL: Just Another Router Library for React.
 
 ## This Package
 
-`jarl-react` is the core routing library of JARL.
+`jarl-react-native` contains the React Native components for JARL.
 
 For documentation, source code and issue tracking, please see the monorepo:
 

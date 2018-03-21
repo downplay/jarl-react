@@ -12,6 +12,6 @@ https://github.com/downplay/jarl-react
 
 ## Copyright
 
-&copy;2017 Downplay Ltd
+&copy;2017-18 Downplay Ltd
 
 Distributed under MIT license. See LICENSE for full details.
