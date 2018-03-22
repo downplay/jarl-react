@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "react-emotion";
 import Helmet from "react-helmet";
-import { Panel, NavLink, Subhead } from "rebass-emotion";
+import { Lead, NavLink } from "rebass-emotion";
 
 import { Link } from "jarl-react";
 
@@ -38,12 +38,18 @@ export const Body = ({ children }) => (
     <BodyElement data-test="body">{children}</BodyElement>
 );
 
-export const Menu = ({ children }) => <Panel>{children}</Panel>;
+const Indent = styled.div`
+    padding-left: 2rem;
+`;
+
+export const Menu = ({ children }) => <div>{children}</div>;
 
 export const SubMenu = ({ children, title }) => (
     <Fragment>
-        <Subhead>{title}</Subhead>
-        <Menu>{children}</Menu>
+        <NavLink>{title}</NavLink>
+        <Indent>
+            <Menu>{children}</Menu>
+        </Indent>
     </Fragment>
 );
 

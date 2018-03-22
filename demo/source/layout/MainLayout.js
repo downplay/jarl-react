@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "react-emotion";
-import { Heading, Subhead, Lead } from "rebass-emotion";
+import { Heading, Subhead, Lead, Container } from "rebass-emotion";
 
 const Grid = styled.div`
     display: grid;
