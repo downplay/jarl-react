@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "react-emotion";
+import { Subhead } from "rebass-emotion";
 
 const Grid = styled.div`
     display: grid;
@@ -15,7 +16,7 @@ class DemoLayout extends Component {
         return (
             <Grid>
                 <HeaderRow>
-                    <h1>{header}</h1>
+                    <Subhead>{header}</Subhead>
                 </HeaderRow>
                 <MenuSidebar>{menu}</MenuSidebar>
                 <ContentPanel>{children}</ContentPanel>

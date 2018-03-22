@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "react-emotion";
 import Helmet from "react-helmet";
+import { Panel, NavLink, Subhead } from "rebass-emotion";
 
 import { Link } from "jarl-react";
 
@@ -37,17 +38,13 @@ export const Body = ({ children }) => (
     <BodyElement data-test="body">{children}</BodyElement>
 );
 
-export const Menu = ({ children }) => (
-    <nav>
-        <ul>{children}</ul>
-    </nav>
-);
+export const Menu = ({ children }) => <Panel>{children}</Panel>;
 
 export const SubMenu = ({ children, title }) => (
-    <ListItem>
-        {title}
+    <Fragment>
+        <Subhead>{title}</Subhead>
         <Menu>{children}</Menu>
-    </ListItem>
+    </Fragment>
 );
 
 const ListItem = styled.li`
@@ -58,11 +55,15 @@ const ListItem = styled.li`
 export const MenuItem = ({ children, to, ...rest }) => (
     <Link to={to}>
         {({ active, onClick, href }) => (
-            <ListItem {...rest} active={active} data-test-active={active}>
-                <a href={href} onClick={onClick}>
-                    {children}
-                </a>
-            </ListItem>
+            <NavLink
+                {...rest}
+                active={active}
+                data-test-active={active}
+                href={href}
+                onClick={onClick}
+            >
+                {children}
+            </NavLink>
         )}
     </Link>
 );
