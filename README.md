@@ -77,8 +77,9 @@ const routes = [
         state: { page: "search" }
     },
     // Finally a catch-all `*` route for any bad URLs...
+    // ...including matching any query params into a 'query' hash
     {
-        path: "/*:missingPath",
+        path: "/*:missingPath?*=:query",
         state: { page: "404" }
     }
 ];
@@ -96,7 +97,7 @@ ReactDOM.render(
 );
 ```
 
-(See [history](https://github.com/ReactTraining/history) package for `createBrowserHistory` and other options!)
+(See [history](https://github.com/ReactTraining/history) package for `createBrowserHistory` and other variations)
 
 And finally in your `App` component you can inject the state to perform the actual routing:
 
@@ -132,13 +133,15 @@ Wait, we missed something! How do you actually link to a page? JARL has a Link c
 import { Link } from "jarl-react";
 
 const MainMenu = () => (
-  <nav>
-    <Link to={ page: "home" }>Home</Link>
-    <Link to={ page: "about" }>About</Link>
-    <Link to={ page: "product", productId: 123 }>Our Best Product Ever!</Link>
-    <SearchForm />
-  </nav>
-)
+    <nav>
+        <Link to={{ page: "home" }}>Home</Link>
+        <Link to={{ page: "about" }}>About</Link>
+        <Link to={{ page: "product", productId: 123 }}>
+            Our Best Product Ever!
+        </Link>
+        <SearchForm />
+    </nav>
+);
 ```
 
 These links will use the routing table in reverse to stringify all the correct URLs to your pages, e.g. the product link will become `<a href="/product/123">`.
@@ -155,18 +158,20 @@ class SearchForm extends React.Component {
     };
 
     render() {
-        <form>
-            <input
-                type="text"
-                value={this.state.searchText}
-                onChange={this.handleChange}
-                placeholder="Enter search term"
-            />
-            {/* Use the function-as-child pattern of Link to dynamically construct the search location and navigate programmatically using `onClick` */}
-            <Link to={{ page: "search", search: this.state.searchText }}>
-                {({ onClick }) => <button onClick={onClick}>Search</button>}
-            </Link>
-        </form>;
+        return (
+            <form>
+                <input
+                    type="text"
+                    value={this.state.searchText}
+                    onChange={this.handleChange}
+                    placeholder="Enter search term"
+                />
+                {/* Use the function-as-child pattern of Link to dynamically construct the search location and navigate programmatically using `onClick` */}
+                <Link to={{ page: "search", search: this.state.searchText }}>
+                    {({ onClick }) => <button onClick={onClick}>Search</button>}
+                </Link>
+            </form>
+        );
     }
 }
 
@@ -222,7 +227,7 @@ Some ideas and inspiration from `redux-first-router`: https://github.com/faceysp
 
 And to some extent the [Autoroute](http://www.davidhayden.me/blog/autoroute-custom-patterns-and-route-regeneration-in-orchard-1.4) feature of Orchard CMS, which I was a contributor to many moons ago ;)
 
-Recommended browser history abstractions by `history`: https://github.com/ReactTraining/history
+Recommended browser history abstraction, `history` by ReactTraining: https://github.com/ReactTraining/history
 
 ## Copyright
 
