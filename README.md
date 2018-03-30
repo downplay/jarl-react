@@ -1,23 +1,20 @@
-# jarl-react 0.8.x
+# jarl-react 1.0.0-alpha
 
 Just Another Router Library for React.
 
-## Philosophy
+The production grade "batteries included" **controlled component** router.
 
-*   URLs are a public API into your appplication
-*   Routes define a mapping between URL and state
-*   Routing is a core part of your application logic
-*   A router should not dictate state mechanism nor navigation lifecycle
-*   Data dependencies are closely bound to routes
+## Why another router?
 
-Putting all of this together, I wanted a router that performs the simple-sounding
-task of keeping the URL and the state in sync, whilst not getting in the way
-of application structure, and not requiring learning a component API for
-basic conditional rendering tasks. For example, JARL does not have a `Route`
-component: you can simply inspect your state and render using `if` and `switch`.
+At its core, a web router simply performs a mapping between URL and state. I wanted
+something that did this job extremely well without getting in the way
+of application structure and without mixing routing logic up witn components. JARL's
+routes are defined in a top-level config and are used to generate a `location` object.
+Routing decisions can then be made in your application by making this `location` state
+available and using simple conditions. (For instance, the is no `<Switch/>` component: just use a `switch` statement instead!)
 
-Routes are described using simple serializable state objects. The route table is then a
-mapping between URLs and these objects. This provides some key benefits:
+'Locations' are defined as simple serializable state objects. The route table is then a
+mapping between URLs and these objects. The router is a controlled component, meaning you decide how and when the location actually gets updated. This provides some key benefits:
 
 *   The state can be stored in Redux, local state, or any other storage mechanism,
     and used for making any rendering decisions
