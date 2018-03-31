@@ -1,6 +1,6 @@
 {
     "name": "jarl-react-redux",
-    "version": "1.0.0-0",
+    "version": "1.0.0-alpha.2",
     "description": "Redux integration for JARL",
     "main": "index.js",
     "module": "es/index.js",
@@ -52,7 +52,7 @@
     },
     "dependencies": {
         "invariant": "^2.2.2",
-        "jarl-react": "^1.0.0-0",
+        "jarl-react": "^1.0.0-alpha.2",
         "prop-types": "^15.6.0"
     },
     "devDependencies": {
