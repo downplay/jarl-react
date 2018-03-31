@@ -2519,13 +2519,14 @@ istanbul-reports@^1.1.3:
   dependencies:
     handlebars "^4.0.3"
 
-jarl-react@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-0.8.0.tgz#e720e24e937e64408e0216b0670222ec11c9e22b"
+jarl-react@^1.0.0-alpha.2:
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-1.0.0-alpha.2.tgz#b3564565bddf04f9e240f31355820b8fce16537a"
   dependencies:
     hoist-non-react-statics "^2.0.0"
-    invariant "^2.2.2"
+    invariant "^2.2.4"
     qs "^6.5.1"
+    warning "^3.0.0"
 
 jest-changed-files@^22.1.4:
   version "22.1.4"
