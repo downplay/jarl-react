@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { routingContextShape } from "./RoutingProvider";
+import safeJsonStringify from "./lib/safeJsonStringify";
 
 /**
  * Renders an anchor linking to a location. Clicking will cause a navigation via history.
@@ -56,9 +57,6 @@ class Link extends Component {
         this.context.routing.navigate(this.props.to);
     };
 
-    // PERF: Could perhaps be memoized. But needs to know if navcontext changed routes table.
-    stringify = state => this.context.routing.stringify(state);
-
     render() {
         const {
             children,
@@ -73,11 +71,33 @@ class Link extends Component {
             ...others
         } = this.props;
         // Determine href and active status
-        const href = to ? this.stringify(to) : this.href;
-        // TODO: PERF: Could be evaluated during stringify?
-        // Note: It is slightly more efficient to check isActive based on
-        // the href rather than to, otherwise it just gets stringified again
-        const active = this.context.routing.isActive(href);
+        let href;
+        let active = false;
+        // Catch issues here and log them rather than blowing up during render
+        try {
+            href = to ? this.context.routing.stringify(to) : this.href;
+            // TODO: PERF: Could be evaluated during stringify? And potentially memoized,
+            // as long as we bust the cache when e.g. route table changes.
+            // For future refactor: everything would be more efficient if dealing
+            // purely in location objects rather than marshalling to and from URLs
+            // constantly.
+            // Note: It is currently more efficient to check isActive based on
+            // the href rather than to, otherwise it just gets stringified again
+            active = href && this.context.routing.isActive(href);
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(
+                `JARL: Error trying to render <Link to={${safeJsonStringify(
+                    to
+                )}}/>.
+                ${
+                    href
+                        ? `\nPath '${href}' was resolved, error was in isActive.`
+                        : ""
+                }`,
+                e
+            );
+        }
         const handleClick = to && this.handleClick;
         // Function-as-child API
         if (typeof children === "function") {

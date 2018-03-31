@@ -2,7 +2,7 @@
 
 JARL is a fully working and powerful routing library that already supports pretty much every use case enabled by other major routers (`react-router` being the de facto benchmark) and many scenarios besides. But, there is still work I feel I need to do before I can confidently say this is my recommended routing solution for React!
 
-So here is what I would like to achieve before I'm ready to call this version 1.0.0-alpha...
+So here is what I would like to achieve before I'm ready to call this version 1.0.0-beta...
 
 ## Documentation and demos
 
@@ -13,7 +13,6 @@ Demos also need some styling love, and actually publishing somewhere. Cypress te
 ## Integrations
 
 *   Server-side rendering. Improve story, create a written guide and a working example.
-*   React Native (largely just needs a replacement for the Link component, maybe a Provider which uses memoryHistory?)
 *   _Deprecate_ Redux integration but write docs
 
 ## Misc task

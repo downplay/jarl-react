@@ -42,20 +42,7 @@ const Indent = styled.div`
     padding-left: 2rem;
 `;
 
-export const Menu = ({ children }) => <div>{children}</div>;
-
-export const SubMenu = ({ children, title }) => (
-    <Fragment>
-        <NavLink>{title}</NavLink>
-        <Indent>
-            <Menu>{children}</Menu>
-        </Indent>
-    </Fragment>
-);
-
-const ListItem = styled.li`
-    font-weight: ${({ active }) => (active ? "bold" : "normal")};
-`;
+export const Menu = ({ children }) => <nav>{children}</nav>;
 
 // TODO: Test active on all URLs
 export const MenuItem = ({ children, to, ...rest }) => (
@@ -72,4 +59,13 @@ export const MenuItem = ({ children, to, ...rest }) => (
             </NavLink>
         )}
     </Link>
+);
+
+export const SubMenu = ({ children, title, ...rest }) => (
+    <Fragment>
+        <MenuItem {...rest}>{title}</MenuItem>
+        <Indent>
+            <Menu>{children}</Menu>
+        </Indent>
+    </Fragment>
 );

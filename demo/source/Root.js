@@ -74,17 +74,32 @@ const routes = [
 ];
 
 class Root extends Component {
-    state = { location: {} };
+    state = {
+        location: {},
+        hasError: false,
+        error: null,
+        errorInfo: null
+    };
 
     handleChange = ({ location }) => {
         this.setState({
+            // Update
             location
         });
+        this.resetError();
     };
 
     handleDemoError = (error, info) => {
         this.setState({ hasError: true, error, errorInfo: info });
     };
+
+    resetError() {
+        this.setState({
+            hasError: false,
+            error: null,
+            errorInfo: null
+        });
+    }
 
     renderDemo() {
         const {
@@ -97,32 +112,30 @@ class Root extends Component {
 
         let content;
         let code;
-        if (page === "demo") {
-            if (this.state.hasError) {
-                // Error caught by error boundary. Lets us debug and also easily test
-                // errors inside routing
-                content = (
-                    <Error
-                        error={this.state.error}
-                        info={this.state.errorInfo}
+
+        if (this.state.hasError) {
+            // Error caught by error boundary. Lets us debug and also easily test
+            // errors inside routing
+            content = (
+                <Error error={this.state.error} info={this.state.errorInfo} />
+            );
+        } else if (page === "demo") {
+            // Render one of the demo sub apps: set its basePath and also pass in the same
+            // `history` instance so browser history works right across the board.
+            // Each demo has its own Router instance which operates as kind of a subcontroller
+            // for our root router.
+            const { Root: DemoRoot, routes: demoRoutes } = getDemo(
+                demoName
+            ).content;
+            content = (
+                <ErrorWrapper onError={this.handleDemoError}>
+                    <DemoRoot
+                        routes={demoRoutes}
+                        history={history}
+                        basePath={`/${demoName}`}
                     />
-                );
-            } else {
-                // Render one of the demos: set its basePath and also pass in the same
-                // `history` instance so browser history works right across the board.
-                const { Root: DemoRoot, routes: demoRoutes } = getDemo(
-                    demoName
-                ).content;
-                content = (
-                    <ErrorWrapper onError={this.handleDemoError}>
-                        <DemoRoot
-                            routes={demoRoutes}
-                            history={history}
-                            basePath={`/${demoName}`}
-                        />
-                    </ErrorWrapper>
-                );
-            }
+                </ErrorWrapper>
+            );
         } else {
             switch (page) {
                 case "index":

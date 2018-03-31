@@ -9,7 +9,7 @@ const MainMenu = () => (
             Getting Started
         </MenuItem>
         <SubMenu title="Guides" />
-        <SubMenu title="Demos">
+        <SubMenu title="Demos" to={{ page: "index" }}>
             {demos.map(({ name, title }) => (
                 <MenuItem
                     key={name}
