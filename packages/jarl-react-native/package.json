@@ -10,20 +10,12 @@
         "lint": "eslint source",
         "coverage": "jest --coverage"
     },
-    "files": [
-        "index.js",
-        "Link.js",
-        "NativeProvider.js"
-    ],
+    "files": ["index.js", "Link.js", "NativeProvider.js"],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$",
         "preset": "react-native",
-        "collectCoverageFrom": [
-            "*.js"
-        ]
+        "collectCoverageFrom": ["*.js"]
     },
     "keywords": [
         "react",
@@ -48,7 +40,7 @@
     "dependencies": {
         "history": "^4.7.2",
         "invariant": "^2.2.4",
-        "jarl-react": "^0.8.0",
+        "jarl-react": "^1.0.0-alpha.2",
         "prop-types": "^15.6.0",
         "warning": "^3.0.0"
     },
