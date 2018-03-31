@@ -1,5 +1,6 @@
 import React from "react";
 import { Subhead } from "rebass-emotion";
+import Markdown from "react-remarkable";
 
 import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
@@ -31,7 +32,7 @@ const Api = ({ apiName }) => (
             {apiContent[apiName].map(({ name, api }) => (
                 <article>
                     <Subhead>{name}</Subhead>
-                    {api.map(stringify)}
+                    <Markdown source={api} />
                 </article>
             ))}
         </Body>

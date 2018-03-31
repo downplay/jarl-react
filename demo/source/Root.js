@@ -151,8 +151,7 @@ class Root extends Component {
                     content = <Docs doc={docName} />;
                     break;
                 case "api":
-                    console.log(apiName);
-                    content = <Api api={apiName} />;
+                    content = <Api apiName={apiName} />;
                     break;
                 default:
                     content = (
