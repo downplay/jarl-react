@@ -2,8 +2,7 @@
     "name": "jarl-react-native",
     "version": "0.8.0",
     "description": "React Native support for JARL",
-    "main": "index.js",
-    "module": "es/index.js",
+    "main": "main.js",
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
@@ -39,9 +38,10 @@
         "react-native": ">=0.44"
     },
     "dependencies": {
-        "prop-types": "^15.6.0",
+        "history": "^4.7.2",
         "invariant": "^2.2.4",
         "jarl-react": "^0.8.0",
+        "prop-types": "^15.6.0",
         "warning": "^3.0.0"
     },
     "devDependencies": {
