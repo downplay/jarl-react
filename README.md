@@ -1,4 +1,4 @@
-# jarl-react 1.0.0-alpha
+# jarl-react 1.0.0-alpha.2
 
 Just Another Router Library for React.
 
@@ -28,6 +28,15 @@ Some examples of state mapping:
 `/product/:productId` -> `{page: "product", productId: <string>}`
 
 All routing can be described using this simple approach.
+
+## Features
+
+*   Controlled Router with "batteries included"
+*   Object-based locations (instead of URLs)
+*   Full querystring matching support
+*   Resolve promises during routing and redirect if required
+*   React Native support including back button and deep links
+*   And much more...
 
 ## Concrete Example
 

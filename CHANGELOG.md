@@ -1,5 +1,12 @@
 # JARL: Version History
 
+## 1.0.0-alpha.2
+
+*   React Native support! A new package `jarl-react-native` brings a reasonably comprehensive RN compatible integration including:
+    *   A router wrapper, `NativeProvider`, using createMemoryHistory
+    *   A variant of the Link component using TouchableHighlight
+    *   Back Button (Android) and Deep Linking support. Both optional via props on the NativeProvider.
+
 ## 1.0.0-alpha
 
 ### Breaking
