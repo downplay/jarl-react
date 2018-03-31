@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "react-emotion";
-import { Heading, Subhead, Lead, Container } from "rebass-emotion";
+import { Heading, Subhead, Lead } from "rebass-emotion";
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: 10rem 50% 50%;
+    grid-template-columns: 15rem 50% 50%;
     grid-template-rows: 10rem auto;
+    padding: 3rem;
 `;
 
 const HeaderRow = styled.div`

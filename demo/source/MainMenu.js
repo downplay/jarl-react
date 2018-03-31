@@ -21,7 +21,7 @@ const MainMenu = () => (
             ))}
         </SubMenu>
         <SubMenu title="API Reference">
-            <SubMenu title="JARL" />
+            <SubMenu title="JARL" to={{ page: "api", apiName: "jarl-react" }} />
             <SubMenu title="JARL Redux" />
         </SubMenu>
     </Menu>

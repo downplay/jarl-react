@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "react-emotion";
 import Helmet from "react-helmet";
-import { Lead, NavLink } from "rebass-emotion";
+import { NavLink } from "rebass-emotion";
 
 import { Link } from "jarl-react";
 

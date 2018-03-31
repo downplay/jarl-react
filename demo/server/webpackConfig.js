@@ -82,7 +82,7 @@ const makeWebpackConfig = ({
             {
                 test: /\.css$/,
                 include: [/node_modules/],
-                loader: "css-loader!postcss-loader"
+                loader: "style-loader!css-loader"
             },
             {
                 test: /\.css$/,
@@ -97,7 +97,7 @@ const makeWebpackConfig = ({
             {
                 test: /\.css$/,
                 include: [/node_modules/],
-                loader: "style-loader!css-loader!postcss-loader"
+                loader: "style-loader!css-loader"
             },
             {
                 test: /\.css$/,

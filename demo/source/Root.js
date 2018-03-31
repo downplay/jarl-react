@@ -4,12 +4,15 @@ import createHistory from "history/createBrowserHistory";
 import { RoutingProvider } from "jarl-react";
 import { hot } from "react-hot-loader";
 
+import "sanitize.css/sanitize.css";
+
 import routerCode from "!!raw-loader!./Root";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Error from "./pages/Error";
 import Docs from "./pages/Docs";
+import Api from "./pages/Api";
 
 import { MainLayout, ErrorWrapper } from "./layout";
 import MainMenu from "./MainMenu";
@@ -43,6 +46,7 @@ const routes = [
         state: { page: "index" }
     },
     { path: "/docs/:docName", state: { page: "docs" } },
+    { path: "/api/:apiName", state: { page: "api" } },
     {
         // This route (and its child route) match the first path segment and defers everything else
         // to the routing for the specific demo. Ideally this would be a single route
@@ -107,6 +111,7 @@ class Root extends Component {
             demoName,
             missingPath,
             query,
+            apiName,
             docName
         } = this.state.location;
 
@@ -144,6 +149,10 @@ class Root extends Component {
                     break;
                 case "docs":
                     content = <Docs doc={docName} />;
+                    break;
+                case "api":
+                    console.log(apiName);
+                    content = <Api api={apiName} />;
                     break;
                 default:
                     content = (
