@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Subhead } from "rebass-emotion";
+import Markdown from "react-remarkable";
 
 import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
@@ -23,6 +24,7 @@ const Paragraph = text => (
 
 const Line = line => (
     <Fragment>
+        {typeof line === "string" && <Markdown source={line} />}
         {line.type === "text" && Paragraph(line.value)}
         {line.children && line.children.map(Line)}
     </Fragment>
@@ -39,9 +41,9 @@ const Api = ({ apiName }) => (
                     </MenuItem>
                 ))}
             </Menu>
-            {apiContent[apiName].map(({ name, description }) => (
-                <article key={name}>
-                    <Subhead>{name}</Subhead>
+            {apiContent[apiName].map(({ displayName, name, description }) => (
+                <article key={displayName || name}>
+                    <Subhead>{displayName || name}</Subhead>
                     {Line(description)}
                 </article>
             ))}

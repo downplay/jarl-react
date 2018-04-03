@@ -5,10 +5,7 @@ function documentationLoader() {
     return documentation
         .build([this.resourcePath], {})
         .then(documentation.formats.json)
-        .then(output => {
-            console.log(output);
-            return `module.exports = ${output};`;
-        });
+        .then(output => `module.exports = ${output};`);
 }
 
 module.exports = documentationLoader;

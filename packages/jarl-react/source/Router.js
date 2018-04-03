@@ -6,6 +6,7 @@ import routing from "./routing";
 /**
  * Function-as-child API to access current routed location. The current location
  * object will be passed to a children callback.
+ * @component
  */
 export class Router extends Component {
     static propTypes = {
