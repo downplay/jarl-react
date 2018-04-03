@@ -8,7 +8,20 @@ const MainMenu = () => (
         <MenuItem to={{ page: "docs", docName: "getting-started" }}>
             Getting Started
         </MenuItem>
-        <SubMenu title="Guides" />
+        <SubMenu title="Guides">
+            <MenuItem to={{ page: "docs", docName: "path-variables" }}>
+                Path Variables
+            </MenuItem>
+            <MenuItem to={{ page: "docs", docName: "redux-integration" }}>
+                Redux Integration
+            </MenuItem>
+            <MenuItem to={{ page: "docs", docName: "react-native" }}>
+                React Native
+            </MenuItem>
+            <MenuItem to={{ page: "docs", docName: "data-loading" }}>
+                Data Loading
+            </MenuItem>
+        </SubMenu>
         <SubMenu title="Demos" to={{ page: "index" }}>
             {demos.map(({ name, title }) => (
                 <MenuItem

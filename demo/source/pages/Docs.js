@@ -1,5 +1,7 @@
 import React from "react";
+import Markdown from "react-remarkable";
+import docs from "../docs/guides";
 
-const Docs = () => <h1>Docs</h1>;
+const Docs = ({ docName }) => <Markdown source={docs[docName]} />;
 
 export default Docs;

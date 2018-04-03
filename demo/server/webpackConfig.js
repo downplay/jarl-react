@@ -70,6 +70,14 @@ const makeWebpackConfig = ({
                             query: babelConfig
                         }
                     ]
+                },
+                {
+                    test: /\.md$/,
+                    loaders: [
+                        {
+                            loader: "raw-loader"
+                        }
+                    ]
                 }
             ]
         }

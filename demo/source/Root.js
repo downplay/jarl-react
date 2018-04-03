@@ -148,7 +148,7 @@ class Root extends Component {
                     content = <Index />;
                     break;
                 case "docs":
-                    content = <Docs doc={docName} />;
+                    content = <Docs docName={docName} />;
                     break;
                 case "api":
                     content = <Api apiName={apiName} />;
