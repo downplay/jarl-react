@@ -4,10 +4,10 @@ const documentation = require("documentation");
 function documentationLoader() {
     return documentation
         .build([this.resourcePath], {})
-        .then(documentation.formats.md)
+        .then(documentation.formats.json)
         .then(output => {
             console.log(output);
-            return `module.exports = ${JSON.stringify(output)};`;
+            return `module.exports = ${output};`;
         });
 }
 

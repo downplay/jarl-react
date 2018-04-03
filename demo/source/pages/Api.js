@@ -1,6 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Subhead } from "rebass-emotion";
-import Markdown from "react-remarkable";
 
 import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
@@ -18,6 +17,17 @@ const apis = [
 
 const stringify = line => <pre>{JSON.stringify(line, null, "  ")}</pre>;
 
+const Paragraph = text => (
+    <p dangerouslySetInnerHTML={{ __html: text.split("\n\n").join("<br/>") }} />
+);
+
+const Line = line => (
+    <Fragment>
+        {line.type === "text" && Paragraph(line.value)}
+        {line.children && line.children.map(Line)}
+    </Fragment>
+);
+
 const Api = ({ apiName }) => (
     <Page>
         <Header>JARL API</Header>
@@ -29,10 +39,10 @@ const Api = ({ apiName }) => (
                     </MenuItem>
                 ))}
             </Menu>
-            {apiContent[apiName].map(({ name, api }) => (
-                <article>
+            {apiContent[apiName].map(({ name, description }) => (
+                <article key={name}>
                     <Subhead>{name}</Subhead>
-                    <Markdown source={api} />
+                    {Line(description)}
                 </article>
             ))}
         </Body>

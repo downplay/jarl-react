@@ -205,12 +205,12 @@ const unroll = (item, next) =>
 
 const unrollBranch = route => unroll(route, r => r.parent);
 
+// TODO: This class should be broken down into functional parser components
+// It's too big and unwieldy to debug effectively now
+
 /**
- * Responsible for processing and storying a route table,
+ * Responsible for processing and storing a route table,
  * and performing matching and serialization of URLs
- *
- * TODO: This class should be broken down into functional parser components
- * It's too big and unwieldy to debug effectively now
  */
 class RouteMap {
     routes = [];
