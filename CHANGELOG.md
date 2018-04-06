@@ -1,12 +1,19 @@
 # JARL: Version History
 
+## 1.0.0-alpha.4
+
+*   Fixed error due to missing actionTypes.js in `jarl-react-redux`
+
+## 1.0.0-alpha.3
+
+*   Slightly relaxed error throwing in the case of an invalid Link. Don't really want to stop the whole app rendering (or even really throw at all) just because a Link was null, but we do want pretty obvious console errors if a location is unresolvable as that definitely indicates a bug.
+
 ## 1.0.0-alpha.2
 
 *   React Native support! A new package `jarl-react-native` brings a reasonably comprehensive RN compatible integration including:
     *   A router wrapper, `NativeProvider`, using createMemoryHistory
     *   A variant of the Link component using TouchableHighlight
     *   Back Button (Android) and Deep Linking support. Both optional via props on the NativeProvider.
-*   Slightly relaxed error throwing in the case of an invalid Link. Don't really want to stop the whole app rendering (or even really throw at all) just because a Link was null, but we do want pretty obvious console errors if a location is unresolvable as that definitely indicates a bug.
 
 ## 1.0.0-alpha
 
