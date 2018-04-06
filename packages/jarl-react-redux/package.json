@@ -18,14 +18,13 @@
         "umd",
         "index.js",
         "actions.js",
+        "actionTypes.js",
         "defines.js",
         "Provider.js",
         "reducer.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
