@@ -1,4 +1,4 @@
-/* global describe test jest expect beforeEach */
+/* global test expect beforeEach */
 
 import React from "react";
 import { render } from "enzyme";
