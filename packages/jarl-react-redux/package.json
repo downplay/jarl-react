@@ -25,7 +25,7 @@
         "reducer.js"
     ],
     "jest": {
-        "setupFiles": ["raf/polyfill"],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [

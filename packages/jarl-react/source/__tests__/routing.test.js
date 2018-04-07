@@ -1,15 +1,12 @@
 /* global describe test expect beforeEach */
 
 import React from "react";
-import { configure, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { mount } from "enzyme";
 
 import routing from "../routing";
 
 import MockProvider from "./mocks/MockProvider";
 import mockHistory from "./mocks/mockHistory";
-
-configure({ adapter: new Adapter() });
 
 describe("location", () => {
     let mockComponent;

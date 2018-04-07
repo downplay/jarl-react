@@ -1,7 +1,6 @@
 /* global describe test expect beforeEach afterEach jest */
 import React from "react";
-import { configure, shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { shallow } from "enzyme";
 
 import mockHistory from "./mocks/mockHistory";
 import wait from "./mocks/wait";
@@ -9,8 +8,6 @@ import wait from "./mocks/wait";
 import RoutingProvider from "../RoutingProvider";
 import RouteMap from "../RouteMap";
 import redirect from "../redirect";
-
-configure({ adapter: new Adapter() });
 
 describe("<RoutingProvider/>", () => {
     let history;
