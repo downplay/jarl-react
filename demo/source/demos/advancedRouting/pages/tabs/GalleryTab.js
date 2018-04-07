@@ -18,14 +18,22 @@ export const toImage = imageId => ({
 
 const GalleryTab = ({ imageId }) => (
     <Fragment>
-        <h2>Gallery</h2>
+        <h2 data-test="gallery-tab">Gallery</h2>
         {galleryData[imageId] ? (
-            <img src={galleryData[imageId].url} alt="Full size pic" />
+            <img
+                src={galleryData[imageId].url}
+                alt="Full size pic"
+                data-test="image-full-size"
+            />
         ) : (
-            <p>Image id {imageId} not found!</p>
+            <p data-test="missing-image">Image id {imageId} not found!</p>
         )}
         {Object.entries(galleryData).map(([id, image]) => (
-            <Link to={toImage(id)}>
+            <Link
+                to={toImage(id)}
+                data-test={`gallery-image-link-${id}`}
+                key={id}
+            >
                 <img width="100" src={image.url} alt="Gallery pic" />
             </Link>
         ))}

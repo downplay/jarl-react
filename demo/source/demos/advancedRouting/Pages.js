@@ -27,8 +27,12 @@ const Pages = ({ page, missingPath }) => (
     <Layout>
         <Helmet titleTemplate="%s | Advanced Routing | JARL Demos" />
         <Menu>
-            <MenuItem to={{ page: "home" }}>Home</MenuItem>
-            <MenuItem to={{ page: "product" }}>Product</MenuItem>
+            <MenuItem to={{ page: "home" }} data-test="home-link">
+                Home
+            </MenuItem>
+            <MenuItem to={{ page: "product" }} data-test="product-link">
+                Product
+            </MenuItem>
         </Menu>
         {renderPage(page, missingPath)}
     </Layout>

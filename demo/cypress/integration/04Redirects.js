@@ -2,7 +2,7 @@
 
 const root = "http://localhost:3210/redirects";
 
-describe("JARL Demos - Redirects", () => {
+describe("Redirects", () => {
     it("loads home page", () => {
         cy.visit(`${root}`);
         cy.title().should("include", "Redirects");
@@ -14,7 +14,7 @@ describe("JARL Demos - Redirects", () => {
     it("redirects from moved page", () => {
         cy.visit(`${root}`);
         cy
-            .get("[data-test=moved-link] a")
+            .get("[data-test=moved-link]")
             .should("have.attr", "href", "/redirects/moved")
             .click();
         cy.url().should("eq", `${root}/?because=Permanently%20moved`);
@@ -26,7 +26,7 @@ describe("JARL Demos - Redirects", () => {
     it("redirects from admin page", () => {
         cy.visit(`${root}`);
         cy
-            .get("[data-test=admin-link] a")
+            .get("[data-test=admin-link]")
             .should("have.attr", "href", "/redirects/admin")
             .click();
         cy.url().should("eq", `${root}/?because=Not%20authorised`);
@@ -42,7 +42,7 @@ describe("JARL Demos - Redirects", () => {
             .should("contain", "Login")
             .click()
             .should("contain", "Logout");
-        cy.get("[data-test=admin-link] a").click();
+        cy.get("[data-test=admin-link]").click();
         cy.url().should("eq", `${root}/admin`);
         cy.get("[data-test=body]").should("contain", "super secret admin page");
     });
@@ -50,17 +50,30 @@ describe("JARL Demos - Redirects", () => {
     it("goes to found content page", () => {
         cy.visit(`${root}`);
         cy
-            .get("[data-test=found-content-link] a")
+            .get("[data-test=found-content-link]")
             .should("have.attr", "href", "/redirects/content/about-us")
             .click();
         cy.url().should("eq", `${root}/content/about-us`);
         cy.get("[data-test=body]").should("contain", "a Norse or Danish chief");
     });
 
-    it("redirects to missing content page", () => {
+    it("redirects to missing content page from landing", () => {
+        cy.visit(`${root}/content/not-a-real-page`);
+        cy
+            .url()
+            .should(
+                "eq",
+                `${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+            );
+        cy
+            .get("[data-test=redirect-reason]")
+            .should("contain", "Content was not found: 'not-a-real-page'");
+    });
+
+    it("redirects to missing content page from link", () => {
         cy.visit(`${root}`);
         cy
-            .get("[data-test=missing-content-link] a")
+            .get("[data-test=missing-content-link]")
             .should("have.attr", "href", "/redirects/content/not-a-real-page")
             .click();
         cy

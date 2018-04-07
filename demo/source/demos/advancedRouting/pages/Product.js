@@ -4,6 +4,7 @@ import { routing, Link } from "jarl-react";
 import DetailsTab from "./tabs/DetailsTab";
 import RatingsTab from "./tabs/RatingsTab";
 import GalleryTab, { toImage } from "./tabs/GalleryTab";
+import { Header } from "../../../layout/index";
 
 /**
  * Function to generate a link to a specific tab
@@ -30,23 +31,27 @@ const renderTab = tab => {
 
 const Product = ({ tab }) => (
     <Fragment>
-        <header>
-            <h1>This Product Will Change Everything</h1>
-            <p>Buy Now for only 1 BTC!</p>
-            <p>Click a tab for more information:</p>
-            <ul>
-                <li>
-                    <Link to={toTab("details")}>Details</Link>
-                </li>
-                <li>
-                    <Link to={toTab("ratings")}>Ratings</Link>
-                </li>
-                <li>
-                    <Link to={toImage(1)}>Gallery</Link>
-                </li>
-            </ul>
-            {renderTab(tab)}
-        </header>
+        <Header>This Product Will Change Everything</Header>
+        <p>Buy Now for only 1 BTC!</p>
+        <p>Click a tab for more information:</p>
+        <ul>
+            <li>
+                <Link data-test="details-tab-link" to={toTab("details")}>
+                    Details
+                </Link>
+            </li>
+            <li>
+                <Link data-test="ratings-tab-link" to={toTab("ratings")}>
+                    Ratings
+                </Link>
+            </li>
+            <li>
+                <Link data-test="gallery-tab-link" to={toImage(1)}>
+                    Gallery
+                </Link>
+            </li>
+        </ul>
+        {renderTab(tab)}
     </Fragment>
 );
 

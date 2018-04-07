@@ -2,7 +2,7 @@
 
 const root = "http://localhost:3210/basicRouting";
 
-describe("Demo 1 - basic routing", () => {
+describe("Basic Routing", () => {
     it("loads home page", () => {
         cy.visit(`${root}`);
         cy.title().should("include", "Basic Routing");

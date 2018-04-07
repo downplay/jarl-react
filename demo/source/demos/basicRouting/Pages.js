@@ -63,6 +63,9 @@ class Pages extends Component {
                         in state. Navigating via JARL&rsquo;s Link component
                         should not cause this state to reset, however clicking a
                         normal anchor will.
+                        <br />
+                        {/* Line break needed. Otherwise anchor got split onto two
+                        lines causing Cypress to fail to click on it! */}
                         <a data-test="marker-anchor" href={stringify("/about")}>
                             Here is an anchor to test that!
                         </a>

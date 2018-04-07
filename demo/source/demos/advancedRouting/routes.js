@@ -9,7 +9,7 @@ const routes = [
         // Default tab is "details" and for simplicity we want this to
         // be mounted on the /product page. We want to link to the same page
         // whether no tab is specified or it's set to "details".
-        // This custom stringified means it doesn't matter which location
+        // This custom stringifier means it doesn't matter which location
         // object is used, we still get /product.
         // TODO: A better match/stringify example.
         stringify: state => ({ tab: "details", ...state }),

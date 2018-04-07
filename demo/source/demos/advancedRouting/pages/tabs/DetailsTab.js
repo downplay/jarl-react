@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 
 export default () => (
     <Fragment>
-        <h2>Details</h2>
+        <h2 data-test="details-tab">Details</h2>
         <ul>
             <li>5000 features!</li>
             <li>Lightest model ever!</li>

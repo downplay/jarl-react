@@ -7,31 +7,18 @@
         "start": "cd demo && npm start",
         "test": "lerna run test --stream",
         "ci-test": "lerna run ci-test --stream",
+        "ci-e2e": "lerna run ci-e2e --stream",
         "lint": "lerna run lint --stream",
         "bootstrap": "lerna bootstrap"
     },
     "devDependencies": {
-        "babel-cli": "^6.26.0",
-        "babel-core": "^6.26.0",
-        "babel-eslint": "^8.1.0",
-        "babel-plugin-add-react-displayname": "^0.0.4",
-        "babel-plugin-dev-expression": "^0.2.1",
-        "babel-plugin-external-helpers": "^6.22.0",
-        "babel-plugin-transform-class-properties": "^6.24.1",
-        "babel-plugin-transform-object-rest-spread": "^6.26.0",
-        "babel-plugin-transform-react-remove-prop-types": "^0.4.12",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.6.1",
-        "babel-preset-es2015": "^6.24.1",
-        "babel-preset-es2015-rollup": "^3.0.0",
-        "babel-preset-react": "^6.24.1",
-        "babel-runtime": "^6.26.0",
+        "babel-eslint": "^8.2.2",
         "eslint": "^4.6.1",
         "eslint-config-airbnb": "^16.1.0",
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-import": "^2.7.0",
         "eslint-plugin-jsx-a11y": "^6.0.2",
         "eslint-plugin-react": "^7.3.0",
-        "lerna": "^2.5.1"
+        "lerna": "^2.10.0"
     }
 }
