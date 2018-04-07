@@ -2,7 +2,7 @@
 
 const root = "http://localhost:3210/reduxIntegration";
 
-describe("Demo 4 - Redux integration", () => {
+describe.skip("Demo 4 - Redux integration", () => {
     it("loads home page", () => {
         cy.visit(`${root}`);
         cy.title().should("include", "Redux Integration");
