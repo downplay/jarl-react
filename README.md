@@ -1,14 +1,18 @@
-# jarl-react 1.0.0-alpha.2
+# JARL React
 
 Just Another Router Library for React.
 
 The production grade "batteries included" **controlled component** router.
 
+[![npm version](https://img.shields.io/npm/v/jarl-react.svg)](https://www.npmjs.com/package/jarl-react)
+[![npm](https://img.shields.io/npm/dm/jarl-react.svg)](https://www.npmjs.com/package/jarl-react)
+[![Dependencies](https://david-dm.org/downplay/jarl-react.svg)](https://david-dm.org/downplay/jarl-react)
+
 ## Why another router?
 
-At its core, a web router simply performs a mapping between URL and state. I wanted
+A web router simply performs a mapping between URL and state. I wanted
 something that did this job extremely well without getting in the way
-of application structure and without mixing routing logic up witn components. JARL's
+of application structure and without mixing routing logic up with the component tree. JARL's
 routes are defined in a top-level config and are used to generate a `location` object.
 Routing decisions can then be made in your application by making this `location` state
 available and using simple conditions. (For instance, the is no `<Switch/>` component: just use a `switch` statement instead!)
