@@ -88,6 +88,14 @@ class RoutingProvider extends Component {
             routes: ensureRouteMap(props.routes),
             validLocation: false
         };
+        if (props.location) {
+            try {
+                const validLocation = !!this.ensurePath(this.props.location);
+                this.state.validLocation = validLocation;
+            } catch (e) {
+                // Ignored error during startup, maybe we just didn't have any location yet
+            }
+        }
     }
 
     getChildContext() {
@@ -107,7 +115,6 @@ class RoutingProvider extends Component {
             const path = this.getCurrentPath();
             this.doNavigation(path, ACTION_INITIAL);
         }
-        this.checkValidLocation();
         this.listen();
     }
 
@@ -130,7 +137,7 @@ class RoutingProvider extends Component {
             this.listen();
         }
         if (nextProps.location !== this.props.location) {
-            this.checkValidLocation();
+            this.checkValidLocation(nextProps.location);
         }
     }
 
@@ -192,16 +199,16 @@ class RoutingProvider extends Component {
         return path;
     }
 
-    checkValidLocation() {
+    checkValidLocation(location) {
         try {
             this.setState({
-                validLocation: !!this.ensurePath(this.props.location)
+                validLocation: !!this.ensurePath(location)
             });
         } catch (error) {
             warning(
                 error,
                 `Invalid location passed to RoutingProvider: ${safeJsonStringify(
-                    this.props.location
+                    location
                 )}`,
                 error
             );
