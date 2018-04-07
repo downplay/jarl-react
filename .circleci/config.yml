@@ -83,6 +83,7 @@ jobs:
       - run:
           command: yarn ci-cypress
           working_directory: demo
+      # kill server
       - run:
-          working_directory: demo
           command: yarn ci-stop
+          working_directory: demo
