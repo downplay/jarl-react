@@ -5,8 +5,8 @@ Just Another Router Library for React.
 The production grade "batteries included" **controlled component** router.
 
 [![npm version](https://img.shields.io/npm/v/jarl-react.svg)](https://www.npmjs.com/package/jarl-react)
-[![npm](https://img.shields.io/npm/dm/jarl-react.svg)](https://www.npmjs.com/package/jarl-react)
-[![Dependencies](https://david-dm.org/downplay/jarl-react.svg?path=packages/jarl-react)](https://david-dm.org/downplay/jarl-react?path=packages/jarl-react)
+[![downloads](https://img.shields.io/npm/dm/jarl-react.svg)](https://www.npmjs.com/package/jarl-react)
+[![dependencies](https://david-dm.org/downplay/jarl-react.svg?path=packages/jarl-react)](https://david-dm.org/downplay/jarl-react?path=packages/jarl-react)
 
 ## Why another router?
 
