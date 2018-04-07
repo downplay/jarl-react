@@ -2,10 +2,17 @@
 
 ## Next version
 
+### Deployment
+
 *   CircleCI!
 *   Fixed some flaky time-based tests
 *   Got the build working for demo/docs site
-*   Jest, Cypress, eslint and build running in CI pipeline
+*   Jest, Cypress, eslint, plus builds all running in CI pipeline
+*   Added more E2E tests
+
+### Bugs
+
+*   Fixed that active status of links was wrong on first page load
 
 ## 1.0.0-alpha.4
 
