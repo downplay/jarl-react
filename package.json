@@ -5,7 +5,8 @@
         "build": "node ./build/all.js",
         "clean": "lerna run clean",
         "start": "cd demo && npm start",
-        "test": "lerna run test --stream"
+        "test": "lerna run test --stream",
+        "bootstrap": "lerna bootstrap"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
