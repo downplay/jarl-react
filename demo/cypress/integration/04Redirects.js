@@ -2,7 +2,7 @@
 
 const root = "http://localhost:3210/redirects";
 
-describe("JARL Demos - Redirects", () => {
+describe("Redirects", () => {
     it("loads home page", () => {
         cy.visit(`${root}`);
         cy.title().should("include", "Redirects");

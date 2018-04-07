@@ -2,7 +2,7 @@
 
 const root = "http://localhost:3210/queryStrings";
 
-describe("Demo 2 - query strings", () => {
+describe("Query Strings", () => {
     it("loads home page", () => {
         cy.visit(`${root}`);
         cy.title().should("include", "Query Strings");
