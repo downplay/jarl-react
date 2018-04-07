@@ -8,7 +8,7 @@
         "test": "jest --watch",
         "ci-test": "jest --colors",
         "clean": "git clean -fdX .",
-        "lint": "eslint . --max-warnings 0 --colors",
+        "lint": "eslint . --max-warnings 0 --color",
         "coverage": "jest --coverage"
     },
     "files": ["index.js", "Link.js", "NativeProvider.js"],

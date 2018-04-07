@@ -12,7 +12,7 @@
         "watch": "babel ./source -d . --ignore __tests__ --watch",
         "prepublishOnly": "node ./tools/build.js",
         "clean": "git clean -fdX .",
-        "lint": "eslint source --max-warnings 0 --colors",
+        "lint": "eslint source --max-warnings 0 --color",
         "coverage": "jest --coverage"
     },
     "files": [
