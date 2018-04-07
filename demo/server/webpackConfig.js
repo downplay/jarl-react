@@ -122,7 +122,7 @@ const makeWebpackConfig = ({
                 include: [/node_modules/],
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: "css-loader?minimize=true!postcss-loader"
+                    use: "css-loader?minimize=true"
                 })
             },
             {

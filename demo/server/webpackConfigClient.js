@@ -11,7 +11,7 @@ const webpackConfigClient = context => {
     const config = webpackConfig({
         ...context,
         sourceEntry: "./source/index.js",
-        outputPath: "../dist",
+        outputPath: "dist",
         babelConfig: {
             babelrc: false,
             cacheDirectory: path.resolve(basePath, ".cache"),
@@ -73,7 +73,6 @@ const webpackConfigClient = context => {
               ]
             : [
                   new ExtractTextPlugin("[name].[hash].css"),
-                  new webpack.optimize.UglifyJsPlugin(),
                   new webpack.optimize.AggressiveMergingPlugin()
               ]
     );

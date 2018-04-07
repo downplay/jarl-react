@@ -3,7 +3,15 @@ import path from "path";
 
 import webpack from "webpack";
 
-import webpackConfig from "../server/webpackConfigClient";
+import webpackConfigClient from "../server/webpackConfigClient";
+
+const webpackConfig = webpackConfigClient({
+    mode: "production",
+    name: "JARL demos",
+    basePath: path.resolve(__dirname, ".."),
+    outputPath: "dist",
+    manifestName: "asset-manifest.json"
+});
 
 fs.emptyDirSync(path.resolve(__dirname, "../dist"));
 
