@@ -22,29 +22,29 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v2a-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - v2a-dependencies-
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "demo/package.json" }}
+            - v2b-dependencies-{{ checksum "demo/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+            - v2b-dependencies-
       - restore_cache:
           keys:
-            - v3-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+            - v2c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3-dependencies-
+            - v2c-dependencies-
       - restore_cache:
           keys:
-            - v4-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+            - v2d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v4-dependencies-
+            - v2d-dependencies-
       - restore_cache:
           keys:
-            - v5-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+            - v2e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v5-dependencies-
+            - v2e-dependencies-
 
       - run: yarn install
       - run: yarn bootstrap
@@ -52,23 +52,23 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v2a-dependencies-{{ checksum "package.json" }}
       - save_cache:
           paths:
             - demo/node_modules
-          key: v2-dependencies-{{ checksum "demo/package.json" }}
+          key: v2b-dependencies-{{ checksum "demo/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react/node_modules
-          key: v3-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+          key: v2c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react-native/node_modules
-          key: v4-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+          key: v2d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react-redux/node_modules
-          key: v5-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+          key: v2e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
         
       # run tests!
       - run: yarn lint
