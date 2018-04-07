@@ -7,6 +7,7 @@
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
+        "ci-test": "jest",
         "build": "node ./tools/build.js",
         "watch": "babel ./source -d . --ignore __tests__ --watch",
         "prepublishOnly": "node ./tools/build.js",
@@ -29,14 +30,9 @@
         "StateProvider.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$",
-        "collectCoverageFrom": [
-            "source/*.js",
-            "source/lib/*.js"
-        ]
+        "collectCoverageFrom": ["source/*.js", "source/lib/*.js"]
     },
     "keywords": [
         "react",

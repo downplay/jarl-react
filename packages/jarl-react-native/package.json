@@ -6,24 +6,17 @@
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
+        "ci-test": "jest",
         "clean": "git clean -fdX .",
         "lint": "eslint source",
         "coverage": "jest --coverage"
     },
-    "files": [
-        "index.js",
-        "Link.js",
-        "NativeProvider.js"
-    ],
+    "files": ["index.js", "Link.js", "NativeProvider.js"],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill"],
         "testRegex": "__tests__/.+\\.test\\.js$",
         "preset": "react-native",
-        "collectCoverageFrom": [
-            "*.js"
-        ]
+        "collectCoverageFrom": ["*.js"]
     },
     "keywords": [
         "react",
