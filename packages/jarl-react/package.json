@@ -7,12 +7,12 @@
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
-        "ci-test": "jest",
-        "build": "node ./tools/build.js",
+        "ci-test": "jest --colors",
+        "build": "node ./tools/build.js --colors",
         "watch": "babel ./source -d . --ignore __tests__ --watch",
         "prepublishOnly": "node ./tools/build.js",
         "clean": "git clean -fdX .",
-        "lint": "eslint source --max-warnings 0",
+        "lint": "eslint source --max-warnings 0 --colors",
         "coverage": "jest --coverage"
     },
     "files": [

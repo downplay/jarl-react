@@ -6,9 +6,9 @@
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
-        "ci-test": "jest",
+        "ci-test": "jest --colors",
         "clean": "git clean -fdX .",
-        "lint": "eslint . --max-warnings 0",
+        "lint": "eslint . --max-warnings 0 --colors",
         "coverage": "jest --coverage"
     },
     "files": ["index.js", "Link.js", "NativeProvider.js"],
