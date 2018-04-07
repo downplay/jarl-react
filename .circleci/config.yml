@@ -74,4 +74,15 @@ jobs:
       - run: yarn lint
       - run: yarn build
       - run: yarn ci-test
-      - run: yarn ci-e2e
+      # start up static server in background
+      - run:
+          command: yarn ci-start
+          working_directory: demo
+          background: true
+      # run E2E
+      - run:
+          command: yarn ci-cypress
+          working_directory: demo
+      - run:
+          working_directory: demo
+          command: yarn ci-stop
