@@ -8,7 +8,7 @@
         "build": "babel-node ./build/index.js",
         "clean": "git clean -fdX .",
         "lint": "eslint . --max-warnings 0",
-        "ci-stop": "pkill -SIGINT JARLDEMO",
+        "ci-stop": "pkill -SIGQUIT JARLDEMO",
         "ci-cypress": "cypress run --record --key ${CYPRESS_DASHBOARD}",
         "ci-e2e-run": "npm-run-all ci-cypress ci-stop",
         "ci-start": "babel-node ./server/ci.js",
