@@ -5,14 +5,16 @@
 ### Deployment
 
 *   CircleCI!
+*   Jest, Cypress, eslint, plus builds all running in a shiny new CI pipeline
 *   Fixed some flaky time-based tests
-*   Got the build working for demo/docs site
-*   Jest, Cypress, eslint, plus builds all running in CI pipeline
-*   Added more E2E tests
+*   Got a build working for the demo/docs site
+*   Added new E2E tests and fixed all the broken ones
+*   Started adding tests to RN package
+*   Improved some of the local dev scripts
 
 ### Bugs
 
-*   Fixed that active status of links was wrong on first page load
+*   Fixed that active status of links would be wrong on first page load
 
 ## 1.0.0-alpha.4
 
