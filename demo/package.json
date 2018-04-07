@@ -9,7 +9,7 @@
         "clean": "git clean -fdX .",
         "lint": "eslint . --max-warnings 0",
         "ci-stop": "pkill -SIGINT JARLDEMO",
-        "ci-cypress": "cypress run",
+        "ci-cypress": "cypress run --record --key ${CYPRESS_DASHBOARD}",
         "ci-e2e-run": "npm-run-all ci-cypress ci-stop",
         "ci-start": "babel-node ./server/ci.js",
         "ci-e2e": "npm-run-all --parallel ci-start ci-e2e-run"
