@@ -1,5 +1,9 @@
 # JARL: Version History
 
+## Next version
+
+*   CircleCI integration
+
 ## 1.0.0-alpha.4
 
 *   Fixed error due to missing actionTypes.js in `jarl-react-redux`
