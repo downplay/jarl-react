@@ -1,14 +1,11 @@
 /* global describe test expect jest */
 import React from "react";
-import { configure, shallow, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { shallow, mount } from "enzyme";
 
 import { RoutingProvider } from "../";
 
 import StateProvider from "../StateProvider";
 import mockHistory from "./mocks/mockHistory";
-
-configure({ adapter: new Adapter() });
 
 const create = (pathname, search) => ({
     history: mockHistory(pathname, search),

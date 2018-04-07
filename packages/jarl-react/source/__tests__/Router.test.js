@@ -1,12 +1,9 @@
 /* global test expect */
 
 import React from "react";
-import { configure, shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { shallow } from "enzyme";
 
 import { Router } from "../Router";
-
-configure({ adapter: new Adapter() });
 
 test("passes location and renders children", () => {
     const rendered = shallow(

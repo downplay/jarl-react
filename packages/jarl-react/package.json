@@ -7,11 +7,12 @@
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
+        "ci-test": "jest",
         "build": "node ./tools/build.js",
         "watch": "babel ./source -d . --ignore __tests__ --watch",
         "prepublishOnly": "node ./tools/build.js",
         "clean": "git clean -fdX .",
-        "lint": "eslint source",
+        "lint": "eslint source --max-warnings 0",
         "coverage": "jest --coverage"
     },
     "files": [
@@ -29,14 +30,9 @@
         "StateProvider.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$",
-        "collectCoverageFrom": [
-            "source/*.js",
-            "source/lib/*.js"
-        ]
+        "collectCoverageFrom": ["source/*.js", "source/lib/*.js"]
     },
     "keywords": [
         "react",

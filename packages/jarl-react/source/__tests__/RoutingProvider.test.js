@@ -1,7 +1,6 @@
 /* global describe test expect beforeEach afterEach jest */
 import React from "react";
-import { configure, shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { shallow } from "enzyme";
 
 import mockHistory from "./mocks/mockHistory";
 import wait from "./mocks/wait";
@@ -10,16 +9,18 @@ import RoutingProvider from "../RoutingProvider";
 import RouteMap from "../RouteMap";
 import redirect from "../redirect";
 
-configure({ adapter: new Adapter() });
-
 describe("<RoutingProvider/>", () => {
     let history;
     let routes;
     let one;
     let two;
     let marker;
+    let resolveOneSignal;
+    let resolveTwoSignal;
 
     beforeEach(() => {
+        resolveOneSignal = null;
+        resolveTwoSignal = null;
         marker = Symbol("marker");
         one = false;
         two = false;
@@ -36,18 +37,22 @@ describe("<RoutingProvider/>", () => {
                 path: "/test-resolve",
                 state: { page: "test-resolve" },
                 resolve: () =>
-                    wait(10).then(() => {
-                        one = true;
-                        return { marker };
+                    new Promise(resolve => {
+                        resolveOneSignal = () => {
+                            one = true;
+                            resolve({ marker });
+                        };
                     }),
                 routes: [
                     {
                         path: "/nested",
                         state: { page: "test-resolve", nested: true },
                         resolve: () =>
-                            wait(8).then(() => {
-                                two = true;
-                                return { two };
+                            new Promise(resolve => {
+                                resolveTwoSignal = () => {
+                                    two = true;
+                                    resolve({ two });
+                                };
                             })
                     }
                 ]
@@ -227,8 +232,9 @@ describe("<RoutingProvider/>", () => {
         test("resolve functions are executed", async () => {
             provider.doNavigation("/test-resolve", "PUSH");
             expect(onChange).not.toHaveBeenCalled();
-            // TODO: modify tests to use lolex
-            await wait(11);
+            await wait(0);
+            resolveOneSignal();
+            await wait(0);
             expect(onChange).toHaveBeenCalledWith({
                 action: "PUSH",
                 branch: [
@@ -252,14 +258,26 @@ describe("<RoutingProvider/>", () => {
             expect(one).toEqual(true);
         });
 
+        test("nested resolve functions are executed in series", async () => {
+            // TODO: Error or redirect in first resolve prevents 2nd resolve
+            provider.doNavigation("/test-resolve/nested");
+            await wait(10);
+            expect(resolveOneSignal).toEqual(expect.any(Function));
+            expect(resolveTwoSignal).toEqual(null);
+            resolveOneSignal();
+            await wait(0);
+            expect(resolveTwoSignal).toEqual(expect.any(Function));
+        });
+
         test("nested resolve functions are executed", async () => {
             expect(one).toEqual(false);
             expect(two).toEqual(false);
             provider.doNavigation("/test-resolve/nested");
-            // TODO: Use lolex fake times; right now this random needs 7ms added
-            // Seems unreliable
-            await wait(25);
-
+            await wait(0);
+            resolveOneSignal();
+            await wait(0);
+            resolveTwoSignal();
+            await wait(0);
             expect(onChange).toHaveBeenCalledWith(
                 expect.objectContaining({
                     resolved: {
@@ -270,15 +288,6 @@ describe("<RoutingProvider/>", () => {
             );
             expect(one).toEqual(true);
             expect(two).toEqual(true);
-        });
-
-        test("nested resolve functions are executed in series", async () => {
-            provider.doNavigation("/test-resolve/nested");
-            // Very random time, working reliably right now but will probably fail in CI.
-            // At least proves that one executes before two. Sinon will fix this.
-            await wait(13);
-            expect(one).toEqual(true);
-            expect(two).toEqual(false);
         });
 
         test("redirect from state is followed", () => {

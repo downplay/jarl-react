@@ -73,7 +73,6 @@ const webpackConfigClient = context => {
               ]
             : [
                   new ExtractTextPlugin("[name].[hash].css"),
-                  new webpack.optimize.UglifyJsPlugin(),
                   new webpack.optimize.AggressiveMergingPlugin()
               ]
     );

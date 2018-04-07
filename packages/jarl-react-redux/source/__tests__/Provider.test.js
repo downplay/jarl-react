@@ -1,14 +1,11 @@
 /* global describe test expect jest */
 import React from "react";
-import { configure, shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { shallow } from "enzyme";
 
 import { RoutingProvider } from "jarl-react";
 
 import Provider from "../Provider";
 import mockHistory from "../../../jarl-react/source/__tests__/mocks/mockHistory";
-
-configure({ adapter: new Adapter() });
 
 const mockStore = () => ({
     getState: () => ({ navigation: {} }),

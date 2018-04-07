@@ -29,7 +29,9 @@ const Link = ({
                       style={[style, isActive && activeStyle]}
                       {...rest}
                   >
-                      {children}
+                      {/* If this isn't wrapped in a view, it'll error in the simple case
+                          of a text string, since it needs exactly 1 child */}
+                      <View>{children}</View>
                   </Element>
               )}
     </HtmlLink>
@@ -57,8 +59,8 @@ Link.propTypes = {
      * and `active` props.
      */
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-    /** Specify a different component to render instead of `a`. Ignored when children is a function. */
-    element: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+    /** Specify a different component to render instead of `TouchableHighlight`. Ignored when children is a function. */
+    element: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     /** Base style to be applied to the rendered element */
     style: View.propTypes.style, // eslint-disable-line react/no-typos
     /** Additional styles to apply when this link is active */

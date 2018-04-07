@@ -6,24 +6,17 @@
     "sideEffects": false,
     "scripts": {
         "test": "jest --watch",
+        "ci-test": "jest",
         "clean": "git clean -fdX .",
-        "lint": "eslint source",
+        "lint": "eslint . --max-warnings 0",
         "coverage": "jest --coverage"
     },
-    "files": [
-        "index.js",
-        "Link.js",
-        "NativeProvider.js"
-    ],
+    "files": ["index.js", "Link.js", "NativeProvider.js"],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill"
-        ],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$",
         "preset": "react-native",
-        "collectCoverageFrom": [
-            "*.js"
-        ]
+        "collectCoverageFrom": ["*.js"]
     },
     "keywords": [
         "react",
@@ -54,11 +47,14 @@
     },
     "devDependencies": {
         "babel-jest": "^22.1.0",
+        "babel-plugin-react-native-web": "^0.5.4",
         "babel-preset-react-native": "^4.0.0",
         "enzyme": "^3.2.0",
         "enzyme-adapter-react-16": "^1.1.0",
         "jest": "^22.1.4",
-        "react": "^16.2.0",
-        "react-native": "^0.49.5"
+        "react": "^16.3.1",
+        "react-dom": "^16.3.1",
+        "react-native": "^0.49.5",
+        "react-native-web": "^0.5.4"
     }
 }

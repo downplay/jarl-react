@@ -1,16 +1,13 @@
 /* global describe test jest expect beforeEach */
 
 import React from "react";
-import { configure, render, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import { render, mount } from "enzyme";
 
 import Link from "../Link";
 import MockProvider from "./mocks/MockProvider";
 import mockHistory from "./mocks/mockHistory";
 
 import { basicRoutes } from "./dummy/routes";
-
-configure({ adapter: new Adapter() });
 
 describe("<Link/>", () => {
     let homeLocation;

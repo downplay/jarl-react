@@ -6,7 +6,6 @@ import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
 import apiContent from "../docs/api";
 
-console.log(apiContent);
 const toApi = apiName => ({ page: "api", apiName });
 
 const apis = [
@@ -16,9 +15,8 @@ const apis = [
     }
 ];
 
-const stringify = line => <pre>{JSON.stringify(line, null, "  ")}</pre>;
-
 const Paragraph = text => (
+    // eslint-disable-next-line react/no-danger
     <p dangerouslySetInnerHTML={{ __html: text.split("\n\n").join("<br/>") }} />
 );
 
@@ -41,10 +39,10 @@ const Api = ({ apiName }) => (
                     </MenuItem>
                 ))}
             </Menu>
-            {apiContent[apiName].map(({ displayName, name, description }) => (
-                <article key={displayName || name}>
-                    <Subhead>{displayName || name}</Subhead>
-                    {Line(description)}
+            {apiContent[apiName].map(item => (
+                <article key={item.displayName || item.name}>
+                    <Subhead>{item.displayName || item.name}</Subhead>
+                    {Line(item.description)}
                 </article>
             ))}
         </Body>
