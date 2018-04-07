@@ -42,7 +42,12 @@ const Indent = styled.div`
     padding-left: 2rem;
 `;
 
-export const Menu = ({ children }) => <nav>{children}</nav>;
+const Nav = styled.nav`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const Menu = ({ children }) => <Nav>{children}</Nav>;
 
 // TODO: Test active on all URLs
 export const MenuItem = ({ children, to, ...rest }) => (

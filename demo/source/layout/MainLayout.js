@@ -14,7 +14,9 @@ const HeaderRow = styled.div`
     grid-column-end: 4;
 `;
 
-const MenuSidebar = styled.div``;
+const MenuSidebar = styled.div`
+    padding-right: 2rem;
+`;
 const ContentPanel = styled.div``;
 const CodePanel = styled.div``;
 
