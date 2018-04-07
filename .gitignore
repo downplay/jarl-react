@@ -64,3 +64,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# Cypress test run Output
+demo/cypress/screenshots
+demo/cypress/videos

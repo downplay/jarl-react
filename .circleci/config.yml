@@ -74,3 +74,4 @@ jobs:
       - run: yarn lint
       - run: yarn build
       - run: yarn ci-test
+      - run: yarn ci-e2e

@@ -7,6 +7,7 @@
         "start": "cd demo && npm start",
         "test": "lerna run test --stream",
         "ci-test": "lerna run ci-test --stream",
+        "ci-e2e": "lerna run ci-e2e --stream",
         "lint": "lerna run lint --stream",
         "bootstrap": "lerna bootstrap"
     },

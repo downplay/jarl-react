@@ -2,7 +2,10 @@
 
 ## Next version
 
-*   CircleCI integration
+*   CircleCI!
+*   Fixed some flaky time-based tests
+*   Got the build working for demo/docs site
+*   Jest, Cypress, eslint and build running in CI pipeline
 
 ## 1.0.0-alpha.4
 
