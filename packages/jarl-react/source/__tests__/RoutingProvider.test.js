@@ -37,7 +37,7 @@ describe("<RoutingProvider/>", () => {
                 path: "/test-resolve",
                 state: { page: "test-resolve" },
                 resolve: () =>
-                    new Promise((resolve, reject) => {
+                    new Promise(resolve => {
                         resolveOneSignal = () => {
                             one = true;
                             resolve({ marker });
@@ -48,7 +48,7 @@ describe("<RoutingProvider/>", () => {
                         path: "/nested",
                         state: { page: "test-resolve", nested: true },
                         resolve: () =>
-                            new Promise((resolve, reject) => {
+                            new Promise(resolve => {
                                 resolveTwoSignal = () => {
                                     two = true;
                                     resolve({ two });
