@@ -48,7 +48,7 @@ describe("Demo 2 - query strings", () => {
 
         it("toggles theme", () => {
             cy.visit(`${root}`);
-            cy.get("[data-test=theme-link] > a").click();
+            cy.get("[data-test=theme-link]").click();
             cy
                 .get("[data-test=page")
                 .should("have.css", "background-color", "rgb(0, 0, 0)");
@@ -59,7 +59,7 @@ describe("Demo 2 - query strings", () => {
 
         it("toggles theme and preserves location", () => {
             cy.visit(`${root}/search?q=hello`);
-            cy.get("[data-test=theme-link] > a").click();
+            cy.get("[data-test=theme-link]").click();
             cy.url().should("contain", "/search?theme=dark&q=hello");
             cy.get("[data-test=search-results").should("contain", "hello");
             cy
