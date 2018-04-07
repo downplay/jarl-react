@@ -24,13 +24,15 @@ export default {
         JarlStateProvider,
         JarlRouter,
         JarlLink
-    ]).concat(
-        JarlApi.filter(
-            ({ name, context: { file } }) =>
-                blacklistNames.indexOf(name) === -1 &&
-                !blacklistFiles.some(
-                    fileName => file.indexOf(`/${fileName}.js`) !== -1
-                )
+    ])
+        .map(component => ({ ...component, kind: "component" }))
+        .concat(
+            JarlApi.filter(
+                ({ name, context: { file } }) =>
+                    blacklistNames.indexOf(name) === -1 &&
+                    !blacklistFiles.some(
+                        fileName => file.indexOf(`/${fileName}.js`) !== -1
+                    )
+            )
         )
-    )
 };
