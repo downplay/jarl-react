@@ -6,7 +6,8 @@
         "cypress": "cypress open",
         "start": "babel-node ./server/index.js",
         "build": "babel-node ./build/index.js",
-        "clean": "git clean -fdX ."
+        "clean": "git clean -fdX .",
+        "lint": "eslint source --max-warnings 0"
     },
     "dependencies": {
         "emotion": "^8.0.12",
