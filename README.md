@@ -8,6 +8,7 @@ The production grade "batteries included" **controlled component** router.
 [![downloads](https://img.shields.io/npm/dm/jarl-react.svg)](https://www.npmjs.com/package/jarl-react)
 [![dependencies](https://david-dm.org/downplay/jarl-react.svg?path=packages/jarl-react)](https://david-dm.org/downplay/jarl-react?path=packages/jarl-react)
 [![CircleCI](https://circleci.com/gh/downplay/jarl-react.svg?style=shield)](https://circleci.com/gh/downplay/jarl-react)
+[![Cypress](https://img.shields.io/badge/cypress-dashboard-brightgreen.svg)](https://dashboard.cypress.io/#/projects/ps43vs/runs)
 
 ## Why another router?
 
