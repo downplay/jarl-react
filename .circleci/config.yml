@@ -144,15 +144,28 @@ workflows:
           filters:
             branches:
               ignore: master
-  master_deploy:
+  master_build:
     jobs:
-      # Build anything on master
+      # Build any other tags or untagged on master?
       - build:
           filters:
             branches:
               ignore: /.*/
               only: master
-      # Only publish when tagged
+            tags:
+              only: /.*/
+              ignore: /^v[0-9]+(\.[0-9]+)*/
+  master_deploy:
+    jobs:
+      # Build tagged on master
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+              only: master
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
+      # Publish on success
       - publish:
           requires:
             - build
