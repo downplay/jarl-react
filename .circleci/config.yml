@@ -22,52 +22,52 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v3a-dependencies-{{ checksum "package.json" }}
+            - v4a-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3a-dependencies-
+            - v4a-dependencies-
       - restore_cache:
           keys:
-            - v3b-dependencies-{{ checksum "demo/package.json" }}
+            - v4b-dependencies-{{ checksum "demo/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3b-dependencies-
+            - v4b-dependencies-
       - restore_cache:
           keys:
-            - v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+            - v4c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3c-dependencies-
+            - v4c-dependencies-
       - restore_cache:
           keys:
-            - v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+            - v4d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3d-dependencies-
+            - v4d-dependencies-
       - restore_cache:
           keys:
-            - v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+            - v4e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3e-dependencies-
+            - v4e-dependencies-
 
       - run: yarn
 
       - save_cache:
           paths:
             - node_modules
-          key: v3a-dependencies-{{ checksum "package.json" }}
+          key: v4a-dependencies-{{ checksum "package.json" }}
       - save_cache:
           paths:
             - demo/node_modules
-          key: v3b-dependencies-{{ checksum "demo/package.json" }}
+          key: v4b-dependencies-{{ checksum "demo/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react/node_modules
-          key: v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+          key: v4c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react-native/node_modules
-          key: v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+          key: v4d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react-redux/node_modules
-          key: v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+          key: v4e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
 
       # run tests!
       - run: yarn lint
@@ -101,29 +101,29 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v3a-dependencies-{{ checksum "package.json" }}
+            - v4a-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3a-dependencies-
+            - v4a-dependencies-
       - restore_cache:
           keys:
-            - v3b-dependencies-{{ checksum "demo/package.json" }}
+            - v4b-dependencies-{{ checksum "demo/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3b-dependencies-
+            - v4b-dependencies-
       - restore_cache:
           keys:
-            - v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+            - v4c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3c-dependencies-
+            - v4c-dependencies-
       - restore_cache:
           keys:
-            - v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+            - v4d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3d-dependencies-
+            - v4d-dependencies-
       - restore_cache:
           keys:
-            - v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+            - v4e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v3e-dependencies-
+            - v4e-dependencies-
 
       - run: yarn
       - run: yarn build
