@@ -28,5 +28,6 @@
         "packages/jarl-react-redux",
         "packages/jarl-react-native",
         "demo"
-    ]
+    ],
+    "version": "1.0.0-alpha-5"
 }
