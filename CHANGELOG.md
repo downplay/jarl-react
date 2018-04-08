@@ -1,6 +1,6 @@
 # JARL: Version History
 
-## Next version
+## 1.0.0-alpha.7
 
 ### Deployment
 
@@ -13,6 +13,8 @@
 *   Improved some of the local dev scripts
 *   Moved to Yarn workspaces
 *   Continuous deployment to npm
+*   Version took a large bump since last release due to multiple deployments
+    whilst figuring out CI
 
 ### Bugs
 
