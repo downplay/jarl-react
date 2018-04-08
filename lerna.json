@@ -1,10 +1,4 @@
 {
-  "lerna": "2.5.1",
-  "packages": [
-    "packages/jarl-react",
-    "packages/jarl-react-redux",
-    "packages/jarl-react-native",
-    "demo"
-  ],
-  "version": "1.0.0-alpha.4"
+    "lerna": "2.5.1",
+    "version": "1.0.0-alpha.4"
 }
