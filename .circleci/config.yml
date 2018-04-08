@@ -137,22 +137,24 @@ jobs:
 
 workflows:
   version: 2
+  # Build & test anything not on master
   pr_build:
     jobs:
-      - build
-        filters:
-          branches:
-            ignore: master
-  # Publish successful builds only on master with version tag
+      - build:
+          filters:
+            branches:
+              ignore: master
   master_build:
     jobs:
-      - build
-        filters:
-          branches:
-            only: master
+      # Build anything on master
+      - build:
+          filters:
+            branches:
+              only: master
+      # Only publish when tagged
       - publish:
-        requires:
-          - build
-        filters:
-          tags:
-            only: /^v[0-9]+(\.[0-9]+)*/
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
