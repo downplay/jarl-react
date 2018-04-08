@@ -146,9 +146,20 @@ workflows:
               ignore: master
   master_build:
     jobs:
+      # Builds anything on master with no version tag
+      - build:
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /^v[0-9]+(\.[0-9]+)*/
+  master_deploy:
+    jobs:
       # Build anything on master
       - build:
           filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
             branches:
               only: master
       # Only publish when tagged
