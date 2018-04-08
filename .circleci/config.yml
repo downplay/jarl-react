@@ -128,6 +128,7 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm adduser $NPM_USER
       - run: yarn ci-publish
 
 workflows:
