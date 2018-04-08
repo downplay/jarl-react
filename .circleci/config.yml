@@ -98,6 +98,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -127,8 +129,36 @@ jobs:
 
       - run: yarn
       - run: yarn build
+
+      # Docker
+      - restore_cache:
+          keys:
+            - v4-dockerlayer-{{ checksum "demo/dist/asset-manifest.json" }}
+            - v4-dockerlayer-
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=app -t company/jarl-demos:$CIRCLE_SHA1 demo
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
+      - save_cache:
+          paths:
+            - /caches/app.tar
+          key: v4-dockerlayer-{{ checksum "demo/dist/asset-manifest.json" }}
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push downplay/jarl-demos:$CIRCLE_SHA1
+
       # Create auth file for npm
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
       # For whatever reason lerna publish wasn't finding the auth file,
       # just run them all maniually thru npm
       - run: cd packages/jarl-react && npm publish
@@ -140,7 +170,11 @@ workflows:
   # Build & test anything not on master
   pr_build:
     jobs:
-      - build:
+      #- build:
+      #    filters:
+      #      branches:
+      #        ignore: master
+      - publish:
           filters:
             branches:
               ignore: master
