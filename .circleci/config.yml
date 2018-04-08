@@ -92,43 +92,13 @@ jobs:
 
   publish:
     docker:
-      - image: cypress/base:8
-      # Could use a different image but caches will match (?) the cypress image
-      # - image: circleci/node:8.11.1
+      - image: circleci/node:8.11.1
     working_directory: ~/repo
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v3a-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v3a-dependencies-
-      - restore_cache:
-          keys:
-            - v3b-dependencies-{{ checksum "demo/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v3b-dependencies-
-      - restore_cache:
-          keys:
-            - v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v3c-dependencies-
-      - restore_cache:
-          keys:
-            - v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v3d-dependencies-
-      - restore_cache:
-          keys:
-            - v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v3e-dependencies-
-
       - run: yarn
       - run: yarn build
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: npm adduser $NPM_USER
       - run: yarn ci-publish
 
 workflows:
