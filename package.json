@@ -30,14 +30,7 @@
             "packages/jarl-react-native",
             "demo"
         ],
-        "nohoist": [
-            "**/react-native",
-            "**/react-native/**",
-            "**/jest",
-            "**/jest/**",
-            "**/enzyme",
-            "**/enzyme/**"
-        ]
+        "nohoist": ["**"]
     },
     "version": "1.0.0-alpha-5"
 }
