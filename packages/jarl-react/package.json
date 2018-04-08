@@ -1,6 +1,6 @@
 {
     "name": "jarl-react",
-    "version": "1.0.0-alpha.4",
+    "version": "1.0.0-alpha.6",
     "description": "Just Another Router Library for React",
     "main": "index.js",
     "module": "es/index.js",
@@ -30,9 +30,15 @@
         "StateProvider.js"
     ],
     "jest": {
-        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
+        "setupFiles": [
+            "raf/polyfill",
+            "./tools/configureJest.js"
+        ],
         "testRegex": "__tests__/.+\\.test\\.js$",
-        "collectCoverageFrom": ["source/*.js", "source/lib/*.js"]
+        "collectCoverageFrom": [
+            "source/*.js",
+            "source/lib/*.js"
+        ]
     },
     "keywords": [
         "react",
@@ -53,8 +59,8 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "prop-types": ">=15",
-        "react": ">=15"
+        "prop-types": ">=15.0.0",
+        "react": ">=15.0.0"
     },
     "dependencies": {
         "hoist-non-react-statics": "^2.0.0",

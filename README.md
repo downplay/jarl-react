@@ -1,4 +1,4 @@
-# JARL React
+# JARL
 
 Just Another Router Library for React.
 

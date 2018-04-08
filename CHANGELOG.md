@@ -11,6 +11,8 @@
 *   Added new E2E tests and fixed all the broken ones
 *   Started adding tests to RN package
 *   Improved some of the local dev scripts
+*   Moved to Yarn workspaces
+*   Continuous deployment to npm
 
 ### Bugs
 

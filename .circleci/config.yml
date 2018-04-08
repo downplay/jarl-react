@@ -8,7 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: cypress/base:8
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -22,54 +22,53 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v2a-dependencies-{{ checksum "package.json" }}
+            - v3a-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v2a-dependencies-
+            - v3a-dependencies-
       - restore_cache:
           keys:
-            - v2b-dependencies-{{ checksum "demo/package.json" }}
+            - v3b-dependencies-{{ checksum "demo/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v2b-dependencies-
+            - v3b-dependencies-
       - restore_cache:
           keys:
-            - v2c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+            - v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v2c-dependencies-
+            - v3c-dependencies-
       - restore_cache:
           keys:
-            - v2d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+            - v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v2d-dependencies-
+            - v3d-dependencies-
       - restore_cache:
           keys:
-            - v2e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+            - v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v2e-dependencies-
+            - v3e-dependencies-
 
-      - run: yarn install
-      - run: yarn bootstrap
+      - run: yarn
 
       - save_cache:
           paths:
             - node_modules
-          key: v2a-dependencies-{{ checksum "package.json" }}
+          key: v3a-dependencies-{{ checksum "package.json" }}
       - save_cache:
           paths:
             - demo/node_modules
-          key: v2b-dependencies-{{ checksum "demo/package.json" }}
+          key: v3b-dependencies-{{ checksum "demo/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react/node_modules
-          key: v2c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+          key: v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react-native/node_modules
-          key: v2d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+          key: v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
       - save_cache:
           paths:
             - packages/jarl-react-redux/node_modules
-          key: v2e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
-        
+          key: v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+
       # run tests!
       - run: yarn lint
       - run: yarn build
@@ -87,3 +86,61 @@ jobs:
       - run:
           command: yarn ci-stop
           working_directory: demo
+
+      # Deploy this bad boy
+      # - setup_remote_docker
+
+  publish:
+    docker:
+      - image: cypress/base:8
+      # Could use a different image but caches will match (?) the cypress image
+      # - image: circleci/node:8.11.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v3a-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3a-dependencies-
+      - restore_cache:
+          keys:
+            - v3b-dependencies-{{ checksum "demo/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3b-dependencies-
+      - restore_cache:
+          keys:
+            - v3c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3c-dependencies-
+      - restore_cache:
+          keys:
+            - v3d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3d-dependencies-
+      - restore_cache:
+          keys:
+            - v3e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3e-dependencies-
+
+      - run: yarn
+      - run: yarn build
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: yarn ci-publish
+
+workflows:
+  version: 2
+  tagged-build:
+    jobs:
+      - build
+      # Publish successful builds only on master with version tag
+      - publish:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/

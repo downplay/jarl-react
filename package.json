@@ -8,8 +8,10 @@
         "test": "lerna run test --stream",
         "ci-test": "lerna run ci-test --stream",
         "ci-e2e": "lerna run ci-e2e --stream",
+        "ci-publish": "lerna exec -- npm publish",
         "lint": "lerna run lint --stream",
-        "bootstrap": "lerna bootstrap"
+        "bootstrap": "lerna bootstrap",
+        "tag-version": "lerna publish --skip-npm"
     },
     "devDependencies": {
         "babel-eslint": "^8.2.2",
@@ -20,5 +22,15 @@
         "eslint-plugin-jsx-a11y": "^6.0.2",
         "eslint-plugin-react": "^7.3.0",
         "lerna": "^2.10.0"
-    }
+    },
+    "workspaces": {
+        "packages": [
+            "packages/jarl-react",
+            "packages/jarl-react-redux",
+            "packages/jarl-react-native",
+            "demo"
+        ],
+        "nohoist": ["**"]
+    },
+    "version": "1.0.0-alpha-5"
 }
