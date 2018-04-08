@@ -11,21 +11,12 @@
         "lint": "eslint . --max-warnings 0 --color",
         "coverage": "jest --coverage"
     },
-    "files": [
-        "index.js",
-        "Link.js",
-        "NativeProvider.js"
-    ],
+    "files": ["index.js", "Link.js", "NativeProvider.js"],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill",
-            "./tools/configureJest.js"
-        ],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$",
         "preset": "react-native",
-        "collectCoverageFrom": [
-            "*.js"
-        ]
+        "collectCoverageFrom": ["*.js"]
     },
     "keywords": [
         "react",
@@ -44,8 +35,8 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "react": ">=15",
-        "react-native": ">=0.44"
+        "react": ">=15.0.0",
+        "react-native": ">=0.44.0"
     },
     "dependencies": {
         "history": "^4.7.2",

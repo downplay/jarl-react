@@ -25,10 +25,7 @@
         "reducer.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill",
-            "./tools/configureJest.js"
-        ],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
@@ -51,7 +48,7 @@
         "url": "https://github.com/downplay/jarl-react.git"
     },
     "peerDependencies": {
-        "react": ">=15"
+        "react": ">=15.0.0"
     },
     "dependencies": {
         "invariant": "^2.2.2",
