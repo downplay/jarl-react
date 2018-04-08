@@ -11,7 +11,7 @@
         "ci-publish": "lerna exec -- npm publish",
         "lint": "lerna run lint --stream",
         "bootstrap": "lerna bootstrap",
-        "tag-version": ""
+        "tag-version": "lerna publish --skip-npm"
     },
     "devDependencies": {
         "babel-eslint": "^8.2.2",
