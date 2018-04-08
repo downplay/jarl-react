@@ -135,8 +135,12 @@ workflows:
   tagged-build:
     jobs:
       - build
+      # Publish successful builds only on master with version tag
       - publish:
           requires:
             - build
-          tags:
-            only: /v[0-9]+(\.[0-9]+)*/
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
