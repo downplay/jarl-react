@@ -1,6 +1,6 @@
 {
     "name": "jarl-react-native",
-    "version": "1.0.0-alpha.9",
+    "version": "1.0.0-alpha.10",
     "description": "React Native support for JARL",
     "main": "main.js",
     "sideEffects": false,
@@ -50,7 +50,7 @@
     "dependencies": {
         "history": "^4.7.2",
         "invariant": "^2.2.4",
-        "jarl-react": "^1.0.0-alpha.9",
+        "jarl-react": "^1.0.0-alpha.10",
         "prop-types": "^15.6.0",
         "warning": "^3.0.0"
     },
