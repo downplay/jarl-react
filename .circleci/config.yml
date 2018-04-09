@@ -175,8 +175,7 @@ jobs:
             echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
             yarn global add now
             cd now
-            now -t ${NOW_TOKEN}
-            now -t ${NOW_TOKEN} alias jarl.downplay.co
+            now -t ${NOW_TOKEN} --alias jarl.downplay.co
 
       # Create auth file for npm
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
