@@ -128,6 +128,11 @@ jobs:
       - run: yarn bootstrap
       - run: yarn build
 
+      # Create auth file for npm
+      - run:
+          name: Authorise npm
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
       # For whatever reason lerna publish wasn't finding the auth file,
       # just run them all manually thru npm.
       # These have to be published before docker can be built; even tho
@@ -188,9 +193,6 @@ jobs:
             yarn global add now
             cd now
             now -t ${NOW_TOKEN} --alias jarl.downplay.co
-
-      # Create auth file for npm
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
 workflows:
   version: 2
