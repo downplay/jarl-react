@@ -181,21 +181,20 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
       # For whatever reason lerna publish wasn't finding the auth file,
-      # just run them all manually thru npm
-      - run: cd packages/jarl-react && npm publish
-      - run: cd packages/jarl-react-native && npm publish
-      - run: cd packages/jarl-react-redux && npm publish
+      # just run them all manually thru npm.
+      - run:
+          name: Publish to npm
+          command: |
+            cd packages/jarl-react && npm publish
+            cd ../jarl-react-native && npm publish
+            cd ../jarl-react-redux && npm publish
 
 workflows:
   version: 2
   # Build & test anything not on master
   pr_build:
     jobs:
-      #- build:
-      #    filters:
-      #      branches:
-      #        ignore: master
-      - publish:
+      - build:
           filters:
             branches:
               ignore: master

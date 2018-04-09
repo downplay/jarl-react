@@ -1,5 +1,11 @@
 # JARL: Version History
 
+## 1.0.0-alpha.9
+
+*   Moved away from Yarn workspaces (was being pretty buggy)
+*   Docker build and deployment of demo site (finally!)
+*   Docs and demos live at: https://jarl.downplay.co ❤️
+
 ## 1.0.0-alpha.7
 
 ### Deployment
