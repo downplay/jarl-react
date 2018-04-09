@@ -192,7 +192,8 @@ jobs:
             echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
             yarn global add now
             cd now
-            now -t ${NOW_TOKEN} --alias jarl.downplay.co
+            now -t ${NOW_TOKEN}
+            now -t ${NOW_TOKEN} alias
 
 workflows:
   version: 2
