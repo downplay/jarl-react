@@ -35,7 +35,7 @@ const ComponentApi = ({ item }) => (
         <table>
             {item.props &&
                 Object.entries(item.props).map(([name, prop]) => (
-                    <tr>
+                    <tr key={name}>
                         <td>{name}</td>
                         <td>{prop.type.name}</td>
                         <td>{prop.defaultValue && prop.defaultValue.value}</td>
@@ -49,10 +49,25 @@ const ComponentApi = ({ item }) => (
     </Fragment>
 );
 
+const Row = ({ cells }) => cells.map((cell, i) => <td key={i}>{cell}</td>);
+
+const ClassApi = ({ item }) => (
+    <Fragment>
+        <h3>Constructor</h3>
+        <table>
+            {item.params.map(({ title, name, default: def, description }) => (
+                <Row cells={[title, name, def, description]} />
+            ))}
+        </table>
+    </Fragment>
+);
+
 const renderItem = item => {
     switch (item.kind) {
         case "component":
             return <ComponentApi item={item} />;
+        case "class":
+            return <ClassApi item={item} />;
         default:
             return <pre>{JSON.stringify(item, null, "  ")}</pre>;
     }
