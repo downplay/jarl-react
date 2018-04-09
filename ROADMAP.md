@@ -46,7 +46,7 @@ Some additional plans that are more "nice-to-have" and might wait until after 1.
 *   Look at a whole new story for Redux, sync URL to Redux state automatically rather than other way around.
 *   Considering `redux-saga` support ... and maybe integrations with other popular state libraries
 *   Big refactor: some of the main classes have grown bloated and overly complex as functionality has been added in, making things hard to test and debug
-*   Figure out the best way to support animated transitions, and make some cool demos for this
+*   Finish the WIP transitions components and make some cool demos
 *   Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
 *   Query strings: support nesting and arrays. I use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
 *   Query strings: support compound interpolations for optional query keys. This means multiple interpolations on a single token, a good example might be: `/range?start=(:startYear-:startMonth-:startDay)&end=(:endYear-:endMonth-:endDay)`. This will not work and is pretty hard to support right now.
