@@ -6,6 +6,7 @@ import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
 import apiContent from "../docs/api";
 
+console.log(apiContent);
 const toApi = apiName => ({ page: "api", apiName });
 
 const apis = [
@@ -28,6 +29,50 @@ const Line = line => (
     </Fragment>
 );
 
+const ComponentApi = ({ item }) => (
+    <Fragment>
+        <h3>Props</h3>
+        <table>
+            {item.props &&
+                Object.entries(item.props).map(([name, prop]) => (
+                    <tr key={name}>
+                        <td>{name}</td>
+                        <td>{prop.type.name}</td>
+                        <td>{prop.defaultValue && prop.defaultValue.value}</td>
+                        <td>{prop.required && "required"}</td>
+                        <td>{prop.description}</td>
+                    </tr>
+                ))}
+        </table>
+        <h3>Details</h3>
+        {Paragraph(item.description)}
+    </Fragment>
+);
+
+const Row = ({ cells }) => cells.map((cell, i) => <td key={i}>{cell}</td>);
+
+const ClassApi = ({ item }) => (
+    <Fragment>
+        <h3>Constructor</h3>
+        <table>
+            {item.params.map(({ title, name, default: def, description }) => (
+                <Row cells={[title, name, def, description]} />
+            ))}
+        </table>
+    </Fragment>
+);
+
+const renderItem = item => {
+    switch (item.kind) {
+        case "component":
+            return <ComponentApi item={item} />;
+        case "class":
+            return <ClassApi item={item} />;
+        default:
+            return <pre>{JSON.stringify(item, null, "  ")}</pre>;
+    }
+};
+
 const Api = ({ apiName }) => (
     <Page>
         <Header>JARL API</Header>
@@ -42,7 +87,7 @@ const Api = ({ apiName }) => (
             {apiContent[apiName].map(item => (
                 <article key={item.displayName || item.name}>
                     <Subhead>{item.displayName || item.name}</Subhead>
-                    {Line(item.description)}
+                    {renderItem(item)}
                 </article>
             ))}
         </Body>
