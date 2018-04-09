@@ -67,13 +67,13 @@ const webpackConfigClient = context => {
     const defines = {
         process: {
             env: {
-                NODE_ENV: "'" + (process.env.NODE_ENV || "development") + "'"
+                NODE_ENV: `"${process.env.NODE_ENV || "development"}"`
             }
         }
     };
 
     Object.entries(env).forEach(([key, value]) => {
-        defines.process.env[key] = "'" + value + "'";
+        defines.process.env[key] = `"${value}"`;
     });
 
     config.plugins.push(new webpack.DefinePlugin(defines));

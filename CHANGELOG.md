@@ -1,5 +1,10 @@
 # JARL: Version History
 
+## 1.0.0-alpha.10
+
+*   Some more work on generating API docs
+*   Added version number from package.json to site header
+
 ## 1.0.0-alpha.9
 
 *   Moved away from Yarn workspaces (was being pretty buggy)
