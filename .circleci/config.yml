@@ -88,9 +88,6 @@ jobs:
           command: yarn ci-stop
           working_directory: demo
 
-      # Deploy this bad boy
-      # - setup_remote_docker
-
   publish:
     docker:
       - image: cypress/base:8
@@ -99,7 +96,6 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - setup_remote_docker
 
       # Download and cache dependencies
       - restore_cache:
@@ -133,6 +129,15 @@ jobs:
       - run: yarn build
 
       # Docker
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
       - restore_cache:
           keys:
             - v4-dockerlayer-{{ checksum "demo/dist/asset-manifest.json" }}
