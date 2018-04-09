@@ -3,6 +3,8 @@ import path from "path";
 import webpackConfig from "./webpackConfigClient";
 import reactServer from "./reactServer";
 
+const packageJson = require("../package.json");
+
 const context = {
     basePath: path.resolve(__dirname, ".."),
     name: "JARL demos",
@@ -10,7 +12,10 @@ const context = {
     port: 3210,
     hmrPath: "__wat",
     manifestName: "asset-manifest.json",
-    outputPath: "dist"
+    outputPath: "dist",
+    env: {
+        JARL_VERSION: packageJson.version
+    }
 };
 
 context.webpackConfig = webpackConfig(context);

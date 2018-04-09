@@ -6,7 +6,7 @@ import ExtractTextPlugin from "extract-text-webpack-plugin";
 import webpackConfig from "./webpackConfig";
 
 const webpackConfigClient = context => {
-    const { mode, basePath, outputPath, manifestName } = context;
+    const { mode, basePath, outputPath, manifestName, env } = context;
     const DEV = mode !== "production";
     const config = webpackConfig({
         ...context,
@@ -64,6 +64,19 @@ const webpackConfigClient = context => {
             fileName: `../${outputPath}/${manifestName}`
         })
     );
+    const defines = {
+        process: {
+            env: {
+                NODE_ENV: "'" + (process.env.NODE_ENV || "development") + "'"
+            }
+        }
+    };
+
+    Object.entries(env).forEach(([key, value]) => {
+        defines.process.env[key] = "'" + value + "'";
+    });
+
+    config.plugins.push(new webpack.DefinePlugin(defines));
 
     config.plugins = config.plugins.concat(
         DEV

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "react-emotion";
-import { Heading, Subhead, Lead } from "rebass-emotion";
+import { Heading, Subhead, Lead, Small } from "rebass-emotion";
 
 const Grid = styled.div`
     display: grid;
@@ -23,7 +23,9 @@ const CodePanel = styled.div``;
 const MainLayout = ({ children, code, menu }) => (
     <Grid>
         <HeaderRow>
-            <Heading>JARL</Heading>
+            <Heading>
+                JARL <Small>v{process.env.JARL_VERSION}</Small>
+            </Heading>
             <Subhead>Just Another Routing Library (for React)</Subhead>
             <Lead>Demos and documentation</Lead>
         </HeaderRow>

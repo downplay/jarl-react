@@ -7,12 +7,17 @@ import webpackConfigClient from "../server/webpackConfigClient";
 import renderHtml from "../server/renderHtml";
 import webpackAssets from "../server/webpackAssets";
 
+const packageJson = require("../package.json");
+
 const context = {
     mode: "production",
     name: "JARL demos",
     basePath: path.resolve(__dirname, ".."),
     outputPath: "dist",
-    manifestName: "asset-manifest.json"
+    manifestName: "asset-manifest.json",
+    env: {
+        JARL_VERSION: packageJson.version
+    }
 };
 
 const webpackConfig = webpackConfigClient(context);
