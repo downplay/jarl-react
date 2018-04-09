@@ -1,6 +1,6 @@
 {
     "name": "jarl-react-redux",
-    "version": "1.0.0-alpha.8",
+    "version": "1.0.0-alpha.9",
     "description": "Redux integration for JARL",
     "main": "index.js",
     "module": "es/index.js",
@@ -10,7 +10,6 @@
         "ci-test": "jest --colors",
         "build": "node ./tools/build.js --colors",
         "watch": "babel ./source -d . --ignore __tests__ --watch",
-        "prepublishOnly": "node ./tools/build.js",
         "clean": "git clean -fdX .",
         "lint": "eslint source --max-warnings 0 --color"
     },
@@ -55,7 +54,7 @@
     },
     "dependencies": {
         "invariant": "^2.2.2",
-        "jarl-react": "^1.0.0-alpha.8",
+        "jarl-react": "^1.0.0-alpha.9",
         "prop-types": "^15.6.0"
     },
     "devDependencies": {

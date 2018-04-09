@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 
-import hmrServer from "./hmrServer";
 import reactMiddleware from "./reactMiddleware";
 
 const reactServer = ({
@@ -17,6 +16,9 @@ const reactServer = ({
 
     // Do HMR if needed
     if (webpackConfig && hmrPath) {
+        // eslint-disable-next-line global-require
+        const hmrServer = require("./hmrServer").default;
+
         hmrServer({
             app,
             basePath,
