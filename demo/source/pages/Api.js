@@ -6,7 +6,7 @@ import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
 import apiContent from "../docs/api";
 
-console.log(apiContent);
+// console.log(apiContent);
 const toApi = apiName => ({ page: "api", apiName });
 
 const apis = [
@@ -49,6 +49,7 @@ const ComponentApi = ({ item }) => (
     </Fragment>
 );
 
+// eslint-disable-next-line react/no-array-index-key
 const Row = ({ cells }) => cells.map((cell, i) => <td key={i}>{cell}</td>);
 
 const ClassApi = ({ item }) => (
