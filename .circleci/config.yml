@@ -47,6 +47,7 @@ jobs:
             - v4e-dependencies-
 
       - run: yarn
+      - run: yarn bootstrap
 
       - save_cache:
           paths:
@@ -128,6 +129,7 @@ jobs:
             - v4e-dependencies-
 
       - run: yarn
+      - run: yarn bootstrap
       - run: yarn build
 
       # Docker
@@ -160,7 +162,7 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
       # For whatever reason lerna publish wasn't finding the auth file,
-      # just run them all maniually thru npm
+      # just run them all manually thru npm
       - run: cd packages/jarl-react && npm publish
       - run: cd packages/jarl-react-native && npm publish
       - run: cd packages/jarl-react-redux && npm publish
