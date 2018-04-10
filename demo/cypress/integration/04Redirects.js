@@ -1,6 +1,7 @@
-/* global cy describe it */
+/* global cy Cypress describe it */
 
 const root = "/redirects";
+const baseUrl = Cypress.config("baseUrl");
 
 describe("Redirects", () => {
     it("loads home page", () => {
@@ -17,7 +18,7 @@ describe("Redirects", () => {
             .get("[data-test=moved-link]")
             .should("have.attr", "href", "/redirects/moved")
             .click();
-        cy.url().should("eq", `${root}/?because=Permanently%20moved`);
+        cy.url().should("eq", `${baseUrl}${root}/?because=Permanently%20moved`);
         cy
             .get("[data-test=redirect-reason]")
             .should("contain", "Permanently moved");
@@ -29,7 +30,7 @@ describe("Redirects", () => {
             .get("[data-test=admin-link]")
             .should("have.attr", "href", "/redirects/admin")
             .click();
-        cy.url().should("eq", `${root}/?because=Not%20authorised`);
+        cy.url().should("eq", `${baseUrl}${root}/?because=Not%20authorised`);
         cy
             .get("[data-test=redirect-reason]")
             .should("contain", "Not authorised");
@@ -43,7 +44,7 @@ describe("Redirects", () => {
             .click()
             .should("contain", "Logout");
         cy.get("[data-test=admin-link]").click();
-        cy.url().should("eq", `${root}/admin`);
+        cy.url().should("eq", `${baseUrl}${root}/admin`);
         cy.get("[data-test=body]").should("contain", "super secret admin page");
     });
 
@@ -53,7 +54,7 @@ describe("Redirects", () => {
             .get("[data-test=found-content-link]")
             .should("have.attr", "href", "/redirects/content/about-us")
             .click();
-        cy.url().should("eq", `${root}/content/about-us`);
+        cy.url().should("eq", `${baseUrl}${root}/content/about-us`);
         cy.get("[data-test=body]").should("contain", "a Norse or Danish chief");
     });
 
@@ -63,7 +64,7 @@ describe("Redirects", () => {
             .url()
             .should(
                 "eq",
-                `${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+                `${baseUrl}${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
             );
         cy
             .get("[data-test=redirect-reason]")
@@ -80,7 +81,7 @@ describe("Redirects", () => {
             .url()
             .should(
                 "eq",
-                `${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+                `${baseUrl}${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
             );
         cy
             .get("[data-test=redirect-reason]")

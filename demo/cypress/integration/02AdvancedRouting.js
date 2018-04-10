@@ -1,6 +1,7 @@
-/* global cy describe it */
+/* global cy Cypress describe it */
 
 const root = "/advancedRouting";
+const baseUrl = Cypress.config("baseUrl");
 
 describe("Advanced Routing", () => {
     it("loads home page", () => {
@@ -28,7 +29,7 @@ describe("Advanced Routing", () => {
         cy.visit(`${root}/product`);
 
         cy.get("[data-test=ratings-tab-link]").click();
-        cy.url().should("eq", `${root}/product/ratings`);
+        cy.url().should("eq", `${baseUrl}${root}/product/ratings`);
         cy
             .get("[data-test=ratings-tab]")
             .should("exist")
@@ -36,7 +37,7 @@ describe("Advanced Routing", () => {
         cy.get("[data-test=image-full-size]").should("not.exist");
 
         cy.get("[data-test=gallery-tab-link]").click();
-        cy.url().should("eq", `${root}/product/gallery/1`);
+        cy.url().should("eq", `${baseUrl}${root}/product/gallery/1`);
         cy
             .get("[data-test=gallery-tab]")
             .should("exist")
@@ -48,7 +49,7 @@ describe("Advanced Routing", () => {
 
         // Back to default tab
         cy.get("[data-test=details-tab-link]").click();
-        cy.url().should("eq", `${root}/product`);
+        cy.url().should("eq", `${baseUrl}${root}/product`);
         cy
             .get("[data-test=details-tab]")
             .should("exist")

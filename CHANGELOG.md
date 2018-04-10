@@ -1,5 +1,10 @@
 # JARL: Version History
 
+## Next version
+
+*   Final deployment to production site was not working correctly, fixed this
+*   Run E2E against staging site, because why not
+
 ## 1.0.0-alpha.10
 
 *   Some more work on generating API docs
