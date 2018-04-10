@@ -201,6 +201,7 @@ jobs:
             cd ../demo
             export CYPRESS_baseUrl=${NOW_DEPLOY}
             yarn ci-cypress
+            echo Deploying ${NOW_DEPLOY} to jarl.downplay.co ...
             now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
 
 workflows:
