@@ -194,12 +194,13 @@ jobs:
             yarn global add now
             cd now
             now -t ${NOW_TOKEN}
+            # Store deployed url in env
+            NOW_DEPLOY=$(yarn ci-get-clipboard)
             # Run E2E against staging
             # TODO: Split to separate task
             cd ../demo
             CYPRESS_baseUrl=${NOW_DEPLOY}
             yarn ci-cypress
-            NOW_DEPLOY=$(yarn ci-get-clipboard)
             now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
 
 workflows:
