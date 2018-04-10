@@ -195,6 +195,7 @@ jobs:
             cd now
             now -t ${NOW_TOKEN}
             # Store deployed url in env
+            apt install xsel # dep required for clipboardy
             NOW_DEPLOY=$(yarn ci-get-clipboard)
             # Run E2E against staging
             # TODO: Split to separate task
