@@ -189,11 +189,13 @@ jobs:
       - run:
           name: Now deployment
           command: |
+            apt-get install xclip
             echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
             yarn global add now
             cd now
             now -t ${NOW_TOKEN}
-            now -t ${NOW_TOKEN} alias
+            NOW_DEPLOY=$(xclip -selection c -o)
+            now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
 
 workflows:
   version: 2
