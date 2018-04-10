@@ -193,10 +193,9 @@ jobs:
             echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
             yarn global add now
             cd now
-            now -t ${NOW_TOKEN}
-            # Store deployed url in env
-            apt install xsel # dep required for clipboardy
-            NOW_DEPLOY=$(yarn ci-get-clipboard)
+            # Deploy and store URL in env
+            NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n 's/.*(https:\/\/jarl\-downplay\-co-[a-z]+\.now\.sh).*/\1/p' )
+            echo $NOW_DEPLOY
             # Run E2E against staging
             # TODO: Split to separate task
             cd ../demo
