@@ -196,11 +196,12 @@ jobs:
             # Deploy and store URL in env
             # sed regexes are fairly arcane but got this working eventually
             NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n "s/.*\(https:\/\/jarl-downplay-co-.*\.sh\).*/\1/p" )
-            echo $NOW_DEPLOY
             # Run E2E against staging
             # TODO: Split to separate task
             cd ../demo
-            CYPRESS_baseUrl=${NOW_DEPLOY}
+            export CYPRESS_baseUrl=${NOW_DEPLOY}
+            echo CYPRESS_baseUrl
+            echo $CYPRESS_baseUrl
             yarn ci-cypress
             now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
 
