@@ -200,8 +200,6 @@ jobs:
             # TODO: Split to separate task
             cd ../demo
             export CYPRESS_baseUrl=${NOW_DEPLOY}
-            echo CYPRESS_baseUrl
-            echo $CYPRESS_baseUrl
             yarn ci-cypress
             now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
 
