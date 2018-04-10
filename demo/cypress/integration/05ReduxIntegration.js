@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:3210/reduxIntegration";
+const root = "/reduxIntegration";
 
 describe.skip("Redux Integration", () => {
     it("loads home page", () => {

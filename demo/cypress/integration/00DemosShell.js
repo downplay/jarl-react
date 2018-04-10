@@ -1,16 +1,14 @@
 /* global cy describe it */
 
-const root = "http://localhost:3210";
-
 describe("Demos Shell", () => {
     it("loads home page", () => {
-        cy.visit(`${root}`);
+        cy.visit("/");
         cy.title().should("include", "JARL Demos");
         cy.get("[data-test=header]").should("contain", "Index");
     });
 
     it("shows not found page", () => {
-        cy.visit(`${root}/asdfghjkl`);
+        cy.visit("/asdfghjkl");
         cy.title().should("include", "Not Found");
         cy.get("[data-test=header]").should("contain", "Not Found");
         cy.get("[data-test=body]").should("contain", "/asdfghjkl");

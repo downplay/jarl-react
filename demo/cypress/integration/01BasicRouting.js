@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:3210/basicRouting";
+const root = "/basicRouting";
 
 describe("Basic Routing", () => {
     it("loads home page", () => {

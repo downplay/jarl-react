@@ -1,6 +1,6 @@
 /* global cy describe it */
 
-const root = "http://localhost:3210/redirects";
+const root = "/redirects";
 
 describe("Redirects", () => {
     it("loads home page", () => {

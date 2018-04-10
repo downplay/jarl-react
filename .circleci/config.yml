@@ -157,7 +157,8 @@ jobs:
             mv /tmp/docker/* /usr/bin
       - restore_cache:
           keys:
-            - v4-dockerlayer-{{ checksum "demo/dist/asset-manifest.json" }}
+            - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
+            - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-
             - v4-dockerlayer-
       - run:
           name: Load Docker image layer cache
@@ -176,7 +177,7 @@ jobs:
       - save_cache:
           paths:
             - /caches/app.tar
-          key: v4-dockerlayer-{{ checksum "demo/dist/asset-manifest.json" }}
+          key: v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
 
       - run:
           name: Docker push
@@ -189,12 +190,16 @@ jobs:
       - run:
           name: Now deployment
           command: |
-            apt-get install xclip
             echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
             yarn global add now
             cd now
             now -t ${NOW_TOKEN}
-            NOW_DEPLOY=$(xclip -selection c -o)
+            # Run E2E against staging
+            # TODO: Split to separate task
+            cd ../demo
+            CYPRESS_baseUrl=${NOW_DEPLOY}
+            yarn ci-cypress
+            NOW_DEPLOY=$(yarn ci-get-clipboard)
             now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
 
 workflows:
@@ -209,13 +214,13 @@ workflows:
   # For now, attempt to deploy anything that lands on master
   master_deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: master
+      #- build:
+      #    filters:
+      #      branches:
+      #        only: master
       - publish:
-          requires:
-            - build
+          #requires:
+          #  - build
           filters:
             branches:
               only: master
