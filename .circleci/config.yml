@@ -194,7 +194,8 @@ jobs:
             yarn global add now
             cd now
             # Deploy and store URL in env
-            NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n 's/.*(https:\/\/jarl\-downplay\-co-[a-z]+\.now\.sh).*/\1/p' )
+            # sed regexes are fairly arcane but got this working eventually
+            NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n "s/.*\(https:\/\/jarl-downplay-co-.*\.sh\).*/\1/p" )
             echo $NOW_DEPLOY
             # Run E2E against staging
             # TODO: Split to separate task
