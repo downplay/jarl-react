@@ -138,12 +138,12 @@ jobs:
       # These have to be published before docker can be built; even tho
       # they won't be installed, Yarn tries to resolve them and errors
       # if they don't exist yet. https://github.com/yarnpkg/yarn/issues/4646
-      #- run:
-      #    name: Publish to npm
-      #    command: |
-      #      cd packages/jarl-react && npm publish
-      #      cd ../jarl-react-native && npm publish
-      #      cd ../jarl-react-redux && npm publish
+      - run:
+          name: Publish to npm
+          command: |
+            cd packages/jarl-react && npm publish
+            cd ../jarl-react-native && npm publish
+            cd ../jarl-react-redux && npm publish
 
       # Docker
       - setup_remote_docker
@@ -216,13 +216,13 @@ workflows:
   # For now, attempt to deploy anything that lands on master
   master_deploy:
     jobs:
-      #- build:
-      #    filters:
-      #      branches:
-      #        only: master
+      - build:
+          filters:
+            branches:
+              only: master
       - publish:
-          #requires:
-          #  - build
+          requires:
+            - build
           filters:
             branches:
               only: master

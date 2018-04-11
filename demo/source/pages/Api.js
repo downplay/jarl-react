@@ -29,6 +29,9 @@ const Line = line => (
     </Fragment>
 );
 
+// eslint-disable-next-line react/no-array-index-key
+const Row = ({ cells }) => cells.map((cell, i) => <td key={i}>{cell}</td>);
+
 const ComponentApi = ({ item }) => (
     <Fragment>
         <h3>Props</h3>
@@ -49,9 +52,6 @@ const ComponentApi = ({ item }) => (
     </Fragment>
 );
 
-// eslint-disable-next-line react/no-array-index-key
-const Row = ({ cells }) => cells.map((cell, i) => <td key={i}>{cell}</td>);
-
 const ClassApi = ({ item }) => (
     <Fragment>
         <h3>Constructor</h3>
@@ -60,6 +60,7 @@ const ClassApi = ({ item }) => (
                 <Row cells={[title, name, def, description]} />
             ))}
         </table>
+        <h3>Methods</h3>
     </Fragment>
 );
 

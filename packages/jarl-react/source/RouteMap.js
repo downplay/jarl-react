@@ -209,8 +209,13 @@ const unrollBranch = route => unroll(route, r => r.parent);
 // It's too big and unwieldy to debug effectively now
 
 /**
- * Responsible for processing and storing a route table,
- * and performing matching and serialization of URLs
+ * Performs the core logic of the router: matching paths and transforming then into
+ * location objects, and inversely taking location objects and serializing them into
+ * path strings.
+ *
+ * May be passed into the `routes` prop of a RoutingProvider to configure your app.
+ *
+ * @param {Array<Route>} routes - an array of Route
  */
 class RouteMap {
     routes = [];
@@ -219,6 +224,9 @@ class RouteMap {
         this.mapPatterns(routes);
     }
 
+    /**
+     * @privates
+     */
     mapPatterns(routes, parent) {
         // Instance the pattern and store the route
         for (const route of routes) {
@@ -292,11 +300,20 @@ class RouteMap {
     }
 
     /**
-     * Matches the path recursively against the route definitions
-     * @param {string} path
+     * Performs matching of the url against the route table. Will check each route's path and query
+     * definitions for a successful pattern match. If they match, then any `match` callback on the
+     * route will also executed. If the callback returns falsy then that route will not be matched
+     * and matching will continue with the next route. Otherwise, the `state` object from the route
+     * will be combined with any matched path tokens as well as anything returned from the `match`
+     * callback, into a final `location` object.
+     * This will be returned along with the 'branch' (an array of the routes along which matching
+     * occurred), in the form `{ location, branch }`.
+     *
+     * @param {string} url - the path and querystring to be matched
+     * @param {object} context - an optional context object to be passed into any `match` callbacks
      */
-    match(fullPath, context = {}) {
-        const [path, query] = splitPath(fullPath);
+    match(url, context = {}) {
+        const [path, query] = splitPath(url);
         for (const route of this.routes) {
             const pathMatch = route.pattern && route.pattern.match(path);
             const queryMatch = matchQuery(route.query, query);
