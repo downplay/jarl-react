@@ -7,7 +7,7 @@ const client = new Discord.WebhookClient(
 );
 
 const notifyDiscord = (message, file) =>
-    client.send(message, new Discord.Attachment(file));
+    client.send(message, file ? new Discord.Attachment(file) : null);
 
 const findCypressScreenshot = () =>
     path.resolve(__dirname, "../demo/cypress/screenshots/HomePage.png");
