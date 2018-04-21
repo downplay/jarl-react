@@ -112,6 +112,7 @@ jobs:
               cd packages/jarl-react && npm publish
               cd ../jarl-react-native && npm publish
               cd ../jarl-react-redux && npm publish
+              yarn notify published
             fi
 
       # Docker
@@ -149,17 +150,21 @@ jobs:
           key: v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
 
       - run:
-          name: Push image to Docker hub
+          name: Tag and push image to Docker hub
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker tag app "downplay/jarl-demos:$CIRCLE_SHA1"
-            docker push "downplay/jarl-demos:$CIRCLE_SHA1"
-
+            if [ "$JARL_VERSION"] ; then
+              export DOCKER_TAG="downplay/jarl-demos:$JARL_VERSION"
+            else
+              export DOCKER_TAG="downplay/jarl-demos:$CIRCLE_SHA1"
+            fi
+            docker tag app $DOCKER_TAG
+            docker push $DOCKER_TAG
       # Now deployment
       - run:
           name: Deploy to now staging
           command: |
-            echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
+            echo "FROM $DOCKER_TAG" >> now/Dockerfile
             yarn global add now
             cd now
             # Deploy and store URL in env
@@ -178,6 +183,7 @@ jobs:
             if [ "$JARL_VERSION"] ; then
               echo Deploying ${NOW_DEPLOY} to production environment...
               now -t ${NOW_TOKEN} alias ${NOW_DEPLOY}
+              yarn notify deployed
             fi
 
 workflows:
