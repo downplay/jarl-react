@@ -1,79 +1,53 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
+# YAML anchors
+defaults: &defaults
+  docker:
+    # Cypress docker image for running E2E tests
+    - image: cypress/base:8
+  working_directory: ~/repo
+
+restore: &restore
+  restore_cache:
+    keys:
+      - v5-dependencies-{{ checksum "package.json" }}-{{ checksum "demo/package.json" }}-{{ checksum "packages/jarl-react/package.json" }}-{{ checksum "packages/jarl-react-native/package.json" }}-{{ checksum "packages/jarl-react-redux/package.json" }}
+      # fallback to using the latest cache if no exact match is found
+      - v5-dependencies-
+
+setup: &setup
+  run:
+    name: Setup npm dependencies
+    command: |
+      yarn
+      yarn bootstrap
+
+build: &build
+  run: 
+    name: Build packages and demo site
+    command: yarn build
+
+# JARL CircleCI 2.0 configuration file
 version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: cypress/base:8
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+    <<: *defaults
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v4a-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4a-dependencies-
-      - restore_cache:
-          keys:
-            - v4b-dependencies-{{ checksum "demo/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4b-dependencies-
-      - restore_cache:
-          keys:
-            - v4c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4c-dependencies-
-      - restore_cache:
-          keys:
-            - v4d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4d-dependencies-
-      - restore_cache:
-          keys:
-            - v4e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4e-dependencies-
-
-      - run: yarn
-      - run: yarn bootstrap
+      - *restore
+      - *setup
 
       - save_cache:
           paths:
             - node_modules
-          key: v4a-dependencies-{{ checksum "package.json" }}
-      - save_cache:
-          paths:
             - demo/node_modules
-          key: v4b-dependencies-{{ checksum "demo/package.json" }}
-      - save_cache:
-          paths:
             - packages/jarl-react/node_modules
-          key: v4c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
-      - save_cache:
-          paths:
             - packages/jarl-react-native/node_modules
-          key: v4d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
-      - save_cache:
-          paths:
             - packages/jarl-react-redux/node_modules
-          key: v4e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
+          key: v5-dependencies-{{ checksum "package.json" }}-{{ checksum "demo/package.json" }}-{{ checksum "packages/jarl-react/package.json" }}-{{ checksum "packages/jarl-react-native/package.json" }}-{{ checksum "packages/jarl-react-redux/package.json" }}
 
-      # run tests!
+      # lint, build, test
       - run: yarn lint
-      - run: yarn build
+      - *build
       - run: yarn ci-test
+
       # start up static server in background
       - run:
           command: yarn ci-start
@@ -89,48 +63,21 @@ jobs:
           working_directory: demo
 
   publish:
-    docker:
-      - image: cypress/base:8
-      # Could use a different image but caches will match (?) the cypress image
-      # - image: circleci/node:8.11.1
-    working_directory: ~/repo
+    <<: *defaults
     steps:
       - checkout
+      - *restore
+      - *setup
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v4a-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4a-dependencies-
-      - restore_cache:
-          keys:
-            - v4b-dependencies-{{ checksum "demo/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4b-dependencies-
-      - restore_cache:
-          keys:
-            - v4c-dependencies-{{ checksum "packages/jarl-react/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4c-dependencies-
-      - restore_cache:
-          keys:
-            - v4d-dependencies-{{ checksum "packages/jarl-react-native/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4d-dependencies-
-      - restore_cache:
-          keys:
-            - v4e-dependencies-{{ checksum "packages/jarl-react-redux/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v4e-dependencies-
+      - run:
+          name: Export build number
+          command: export JARL_BUILD_NUMBER=${CIRCLE_BUILD_NUM}
 
-      - run: yarn
-      - run: yarn bootstrap
-      - run: yarn build
+      - *build
 
       # Create auth file for npm
       - run:
-          name: Authorise npm
+          name: Authorize npm
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
       # For whatever reason lerna publish wasn't finding the auth file,
@@ -139,11 +86,17 @@ jobs:
       # they won't be installed, Yarn tries to resolve them and errors
       # if they don't exist yet. https://github.com/yarnpkg/yarn/issues/4646
       - run:
-          name: Publish to npm
+          name: Publish to npm if tagged
           command: |
-            cd packages/jarl-react && npm publish
-            cd ../jarl-react-native && npm publish
-            cd ../jarl-react-redux && npm publish
+            # Is it a tagged build? Matches v1.2.3 and e.g. v1.2.3-alpha.1
+            if [[ `git describe 2>/dev/null` == ^v([0-9]+\.){2}[0-9+](-[a-z]+(\.[0-9]+)?)?$ ]] ; then
+              # Save version for later
+              export JARL_VERSION=$(git describe)
+              # Publish packages on npm              
+              cd packages/jarl-react && npm publish
+              cd ../jarl-react-native && npm publish
+              cd ../jarl-react-redux && npm publish
+            fi
 
       # Docker
       - setup_remote_docker
@@ -161,16 +114,16 @@ jobs:
             - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-
             - v4-dockerlayer-
       - run:
-          name: Load Docker image layer cache
+          name: Load Docker layer cache
           command: |
             set +o pipefail
             docker load -i /caches/app.tar | true
       - run:
-          name: Build application Docker image
+          name: Build Docker image for demo site
           command: |
             docker build --cache-from=app -t app demo
       - run:
-          name: Save Docker image layer cache
+          name: Save Docker layer cache
           command: |
             mkdir -p /caches
             docker save -o /caches/app.tar app
@@ -180,7 +133,7 @@ jobs:
           key: v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
 
       - run:
-          name: Docker push
+          name: Push image to Docker hub
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker tag app "downplay/jarl-demos:$CIRCLE_SHA1"
@@ -188,7 +141,7 @@ jobs:
 
       # Now deployment
       - run:
-          name: Now deployment
+          name: Deploy to now staging
           command: |
             echo "FROM downplay/jarl-demos:$CIRCLE_SHA1" >> now/Dockerfile
             yarn global add now
@@ -196,13 +149,20 @@ jobs:
             # Deploy and store URL in env
             # sed regexes are fairly arcane but got this working eventually
             NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n "s/.*\(https:\/\/jarl-downplay-co-.*\.sh\).*/\1/p" )
-            # Run E2E against staging
-            # TODO: Split to separate task
+            echo JARL demos staged to ${NOW_DEPLOY}
+      - run:
+          name: Run E2E against staging
+          command: |
             cd ../demo
             export CYPRESS_baseUrl=${NOW_DEPLOY}
             yarn ci-cypress
-            echo Deploying ${NOW_DEPLOY} to jarl.downplay.co ...
-            now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
+      - run:
+          name: Alias staging to production if tagged
+          command: |
+            if [ "$JARL_VERSION"] ; then
+              echo Deploying ${NOW_DEPLOY} to production environment...
+              now -t ${NOW_TOKEN} alias ${NOW_DEPLOY}
+            fi
 
 workflows:
   version: 2
@@ -213,7 +173,7 @@ workflows:
           filters:
             branches:
               ignore: master
-  # For now, attempt to deploy anything that lands on master
+  # Deploy anything that lands on master
   master_deploy:
     jobs:
       - build:

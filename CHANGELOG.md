@@ -2,6 +2,12 @@
 
 ## Next version
 
+*   Publish only on tagged build (docs go to staging site)
+*   Build number included on docs site
+*   Really fixed prod deployment
+
+## 1.0.0-alpha.12
+
 *   Final deployment to production site was not working correctly, fixed this
 *   Run E2E against staging site, because why not
 
