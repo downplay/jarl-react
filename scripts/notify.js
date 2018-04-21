@@ -24,7 +24,7 @@ const createMessage = async type => {
         CIRCLE_BUILD_NUM: buildNum,
         CIRCLE_BUILD_URL: buildUrl
     } = process.env;
-    const prefix = `[${buildNum}](${buildUrl}):`;
+    const prefix = `[#${buildNum}](${buildUrl}):`;
     switch (type) {
         case "staging": {
             const stagingUrl = process.env.NOW_DEPLOY;
