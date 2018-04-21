@@ -5,7 +5,7 @@ defaults: &defaults
     - image: cypress/base:8
   working_directory: ~/repo
   environment:
-    BASH_ENV: ~/.bashrc
+    BASH_ENV: env
 
 restore: &restore
   restore_cache:
@@ -18,6 +18,7 @@ setup: &setup
   run:
     name: Install dependencies and link packages
     command: |
+      touch env
       yarn
       yarn bootstrap
 
