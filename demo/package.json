@@ -10,7 +10,8 @@
         "clean": "git clean -fdX .",
         "lint": "eslint . --max-warnings 0",
         "ci-stop": "pkill -SIGINT JARLDEMO",
-        "ci-cypress": "cypress run --record --key ${CYPRESS_DASHBOARD}",
+        "ci-cypress":
+            "cypress run --record --key ${CYPRESS_DASHBOARD} --env JARL_VERSION=${JARL_VERSION},CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}",
         "ci-start": "babel-node ./server/production.js",
         "local-e2e-run": "npm-run-all ci-cypress ci-stop",
         "local-e2e": "npm-run-all --parallel ci-start local-e2e-run"

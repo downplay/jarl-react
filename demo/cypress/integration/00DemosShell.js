@@ -18,6 +18,7 @@ describe("Demos Shell", () => {
             );
         // Note: This screenshot is for the CI bot to post with announcements
         // and should be left here with the same name
+        cy.wait(1000); // Arbitrary wait for the font to load
         cy.screenshot("HomePage");
     });
 
