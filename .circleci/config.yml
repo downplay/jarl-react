@@ -33,7 +33,7 @@ tag: &tag
     command: |
       if [[ `git describe 2>/dev/null` =~ ^v([0-9]+\.){2}[0-9]+(-[a-z]+(\.[0-9]+)?)?$ ]] ; then
         # Save version for later
-        export JARL_VERSION=$(git describe)
+        JARL_VERSION=$(git describe)
       fi
 
 # JARL CircleCI 2.0 configuration file
@@ -130,38 +130,39 @@ jobs:
             curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
-      - restore_cache:
-          keys:
-            - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
-            - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-
-            - v4-dockerlayer-
-      - run:
-          name: Load Docker layer cache
-          command: |
-            set +o pipefail
-            docker load -i /caches/app.tar | true
+      #- restore_cache:
+      #    keys:
+      #      - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
+      #      - v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-
+      #      - v4-dockerlayer-
+      #- run:
+      #    name: Load Docker layer cache
+      #    command: |
+      #      set +o pipefail
+      #      docker load -i /caches/app.tar | true
       - run:
           name: Build Docker image for demo site
           command: |
-            docker build --cache-from=app -t app demo
-      - run:
-          name: Save Docker layer cache
-          command: |
-            mkdir -p /caches
-            docker save -o /caches/app.tar app
-      - save_cache:
-          paths:
-            - /caches/app.tar
-          key: v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
+            # docker build --cache-from=app -t app demo
+            docker build -t app demo
+      #- run:
+      #    name: Save Docker layer cache
+      #    command: |
+      #      mkdir -p /caches
+      #      docker save -o /caches/app.tar app
+      #- save_cache:
+      #    paths:
+      #      - /caches/app.tar
+      #    key: v4-dockerlayer-{{ checksum "demo/Dockerfile" }}-{{ checksum "demo/dist/asset-manifest.json" }}
 
       - run:
           name: Tag and push image to Docker hub
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             if [ "$JARL_VERSION"] ; then
-              export DOCKER_TAG=downplay/jarl-demos:${JARL_VERSION}
+              DOCKER_TAG=downplay/jarl-demos:${JARL_VERSION}
             else
-              export DOCKER_TAG=downplay/jarl-demos:${CIRCLE_SHA1}
+              DOCKER_TAG=downplay/jarl-demos:${CIRCLE_SHA1}
             fi
             docker tag app ${DOCKER_TAG}
             docker push ${DOCKER_TAG}
