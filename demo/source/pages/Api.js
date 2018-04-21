@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import { Subhead } from "rebass-emotion";
+import { Header } from "semantic-ui-react";
 import Markdown from "react-remarkable";
 
-import { Page, Header, Body, Menu, MenuItem } from "../layout";
+import { Page, Header as MainHeader, Body, Menu, MenuItem } from "../layout";
 
 import apiContent from "../docs/api";
 
@@ -13,6 +13,10 @@ const apis = [
     {
         name: "JARL",
         to: toApi("jarl-react")
+    },
+    {
+        name: "JARL",
+        to: toApi("jarl-react-native")
     }
 ];
 
@@ -77,7 +81,7 @@ const renderItem = item => {
 
 const Api = ({ apiName }) => (
     <Page>
-        <Header>JARL API</Header>
+        <MainHeader>JARL API</MainHeader>
         <Body>
             <Menu>
                 {apis.map(({ name, to }) => (
@@ -88,7 +92,7 @@ const Api = ({ apiName }) => (
             </Menu>
             {apiContent[apiName].map(item => (
                 <article key={item.displayName || item.name}>
-                    <Subhead>{item.displayName || item.name}</Subhead>
+                    <Header sub>{item.displayName || item.name}</Header>
                     {renderItem(item)}
                 </article>
             ))}

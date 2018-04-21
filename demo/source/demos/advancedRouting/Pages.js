@@ -1,9 +1,10 @@
 import React from "react";
-import Helmet from "react-helmet";
-
 import { routing } from "jarl-react";
 
-import { Layout, Menu, MenuItem } from "../../layout";
+import Helmet from "react-helmet";
+import { Menu } from "semantic-ui-react";
+
+import { Layout, MenuItem } from "../../layout";
 
 import HomePage from "./pages/Home";
 import ProductPage from "./pages/Product";
@@ -30,7 +31,11 @@ const Pages = ({ page, missingPath }) => (
             <MenuItem to={{ page: "home" }} data-test="home-link">
                 Home
             </MenuItem>
-            <MenuItem to={{ page: "product" }} data-test="product-link">
+            <MenuItem
+                to={{ page: "product" }}
+                data-test="product-link"
+                element={Menu.Item}
+            >
                 Product
             </MenuItem>
         </Menu>
