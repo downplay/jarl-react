@@ -21,6 +21,7 @@
     },
     "devDependencies": {
         "babel-eslint": "^8.2.2",
+        "discord.js": "^11.3.2",
         "eslint": "^4.6.1",
         "eslint-config-airbnb": "^16.1.0",
         "eslint-config-prettier": "^2.9.0",
