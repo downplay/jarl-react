@@ -22,9 +22,11 @@ const createMessage = async type => {
     const prefix = `[#${buildNum}](${buildUrl}):`;
     switch (type) {
         case "staging": {
+            const filePath = findCypressScreenshot();
             const stagingUrl = process.env.NOW_DEPLOY;
             notifyDiscord(
-                `${prefix} Deployed demo to staging URL ${stagingUrl} from ${commit}`
+                `${prefix} Deployed demo to staging URL ${stagingUrl} from ${commit}`,
+                filePath
             );
             break;
         }
