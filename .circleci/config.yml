@@ -88,10 +88,12 @@ jobs:
             - demo/dist
             - packages/jarl-react/*.js
             - packages/jarl-react/*/*.js
+            - packages/jarl-react/es/*/*.js
             - packages/jarl-react-native/*.js
             - packages/jarl-react-native/*/*.js
             - packages/jarl-react-redux/*.js
             - packages/jarl-react-redux/*/*.js
+            - packages/jarl-react-redux/es/*.js
 
   publish:
     <<: *defaults
@@ -190,7 +192,7 @@ jobs:
       - run:
           name: Run E2E against staging
           command: |
-            cd ../demo
+            cd demo
             export CYPRESS_baseUrl=${NOW_DEPLOY}
             yarn ci-cypress
       - run:
