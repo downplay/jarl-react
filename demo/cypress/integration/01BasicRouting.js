@@ -60,7 +60,9 @@ describe("Basic Routing", () => {
     it("clicking anchor reloads page", () => {
         cy.visit(`${root}/`);
         cy.get("[data-test=marker-button]").click();
-        cy.get("[data-test=marker-anchor]").click();
+        // Click in the top left to avoid flakiness problems cause if
+        // the anchor linewraps
+        cy.get("[data-test=marker-anchor]").click("topLeft");
         cy.get("[data-test=marker]").should("not.exist");
     });
 

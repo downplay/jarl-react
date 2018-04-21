@@ -6,7 +6,7 @@ import { Header, Label } from "semantic-ui-react";
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: 15rem 1fr 40rem;
+    grid-template-columns: 15rem 1fr 30rem;
     grid-template-rows: 8rem auto;
     padding: 3rem;
 `;
@@ -23,7 +23,7 @@ const ContentPanel = styled.div`
     padding: 0 2rem;
 `;
 const CodePanel = styled.div`
-    font-size: 90%;
+    font-size: 80%;
 `;
 
 const MainLayout = ({ children, code, menu }) => (
