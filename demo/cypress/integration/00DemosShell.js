@@ -24,13 +24,21 @@ describe("Demos Shell", () => {
         cy
             .get("[data-test=content] h1")
             .should("contain", "JARL: Version History");
-        const h2 = cy.get("[data-test=content] h2");
 
         if (process.env.JARL_VERSION) {
-            h2.eq(0).should("contain", process.env.JARL_VERSION);
+            cy
+                .get("[data-test=content] h2")
+                .eq(0)
+                .should("contain", process.env.JARL_VERSION);
         } else {
-            h2.eq(0).should("contain", "Next version");
-            h2.eq(1).should("contain", packageJson.version);
+            cy
+                .get("[data-test=content] h2")
+                .eq(0)
+                .should("contain", "Next version");
+            cy
+                .get("[data-test=content] h2")
+                .eq(1)
+                .should("contain", `v${packageJson.version}`);
         }
     });
 });

@@ -5,7 +5,7 @@
 *   Fix rendering CHANGELOG
 *   Added some E2E tests around the demo shell
 
-## 1.0.0-alpha.14
+## v1.0.0-alpha.14
 
 *   I screwed up. Had to bump another couple of versions to test the pipeline.
 *   Some improvments on the demo site:
@@ -15,7 +15,7 @@
     *   Added the CHANGELOG
     *   Added API docs for JARL Native
 
-## 1.0.0-alpha.12
+## v1.0.0-alpha.12
 
 ### CI/CD
 
@@ -26,23 +26,23 @@
 *   Created a Discord server: https://discord.gg/BVcQ6Z
 *   Added a Discord bot to make build announcments in #build
 
-## 1.0.0-alpha.11
+## v1.0.0-alpha.11
 
 *   Final deployment to production site was not working correctly, fixed this
 *   Run E2E against staging site, because why not
 
-## 1.0.0-alpha.10
+## v1.0.0-alpha.10
 
 *   Some more work on generating API docs
 *   Added version number from package.json to site header
 
-## 1.0.0-alpha.9
+## v1.0.0-alpha.9
 
 *   Moved away from Yarn workspaces (was being pretty buggy)
 *   Docker build and deployment of demo site (finally!)
 *   Docs and demos live at: https://jarl.downplay.co ❤️
 
-## 1.0.0-alpha.7
+## v1.0.0-alpha.7
 
 ### Deployment
 
@@ -62,22 +62,22 @@
 
 *   Fixed that active status of links would be wrong on first page load
 
-## 1.0.0-alpha.4
+## v1.0.0-alpha.4
 
 *   Fixed error due to missing actionTypes.js in `jarl-react-redux`
 
-## 1.0.0-alpha.3
+## v1.0.0-alpha.3
 
 *   Slightly relaxed error throwing in the case of an invalid Link. Don't really want to stop the whole app rendering (or even really throw at all) just because a Link was null, but we do want pretty obvious console errors if a location is unresolvable as that definitely indicates a bug.
 
-## 1.0.0-alpha.2
+## v1.0.0-alpha.2
 
 *   React Native support! A new package `jarl-react-native` brings a reasonably comprehensive RN compatible integration including:
     *   A router wrapper, `NativeProvider`, using createMemoryHistory
     *   A variant of the Link component using TouchableHighlight
     *   Back Button (Android) and Deep Linking support. Both optional via props on the NativeProvider.
 
-## 1.0.0-alpha
+## v1.0.0-alpha
 
 ### Breaking
 
@@ -104,7 +104,7 @@
 *   `Router` component is a new function-as-child version of `withLocation`
 *   Recent changes to `Link` support all the functionality of `withContext` and `withNavigate` (i.e. URL serialization, and navigate/redirect) with a function-as-child API.
 
-## 0.8.0
+## v0.8.0
 
 *   Breaking: renamed `component` prop on `Link` to `element` to be more consistent with PropTypes
 *   Breaking: changed the method signature of onNavigateStart and onNavigateEnd callbacks. They now emit an event object in the form `{ state, path, branch, action }` and are now consistent with onNavigateError.
@@ -118,30 +118,30 @@
 *   Added `sideEffects: false` to package.json, for Webpack 4's "pure module" support
 *   Bug fixes and other minor improvements
 
-## 0.7.2
+## v0.7.2
 
 *   Fixed nested match
 *   Add a `component` prop to Link to override default anchor rendering
 
-## 0.7.1
+## v0.7.1
 
 *   Fixed the build process for IE11 and other older browsers
 
-## 0.7.0
+## v0.7.0
 
 *   New feature: redirects. Can be triggered from `state`, `match`, or `resolve` by returning a `redirect` object. See examples in demos.
 *   Added a half-decent example to the README
 
-## 0.6.0
+## v0.6.0
 
 *   Now supports `match` and `stringify` functions on routes. These allow custom transforming both ways between state and URLs, for example converting :year/:month/:day into a Date object and back again
 *   Fix: Removed usage of Object.values due to no support in older browsers and requirement of a polyfill
 
-## 0.5.1
+## v0.5.1
 
 *   Fix: ES5 build was missing a file so imports would fail in some conditions
 
-## 0.5.0
+## v0.5.0
 
 *   Major: official support for query strings (adds dependency on `qs` from `hapijs`)
 *   Support most of path syntax within query strings, e.g. `/foo?q=:searchTime&bar=(:optionalParam)&*=:rest`
@@ -157,18 +157,18 @@
 *   Big sort out of the demos! A lot more use cases are now demonstrated and working properly
 *   Added tests to many things
 
-## 0.3.2
+## v0.3.2
 
 *   Easier integration with and a new demo for Redux
 *   `<Provider/>` component in `jarl-react-redux` is a standard integration that will (probably) do what you need
 *   Named matches now automatically run through decodeURIComponent to handle special characters properly
 *   Correctly reattach to history in CWRP (necessary for React Hot Reload among other things)
 
-## 0.3.1
+## v0.3.1
 
 *   Fix withNavigate's default props mapper
 
-## 0.3.0
+## v0.3.0
 
 *   Breaking: Rename resolve->stringify. Resolve is already an overloaded term in JS. Stringify is much clearer meaning.
 *   Breaking: Rename withRouting->withNavigate. This HOC only injects a `navigate` function so the name was confusing
@@ -180,27 +180,27 @@
 *   Started writing some proper documentation, updated README a bit
 *   Switched to custom build of `url-pattern` to support named wildcards with syntax: `/*:name`
 
-## 0.2.0
+## v0.2.0
 
 *   Added route matching and path resolution for nested routes
 
-## 0.1.2
+## v0.1.2
 
 *   Don't completely override Link's own onClick handler
 
-## 0.1.1
+## v0.1.1
 
 *   Call onClick handler when Link is clicked (e.g. allowing consumers to call `event.stopPropagation()`)
 
-## 0.1.0
+## v0.1.0
 
 *   Routes with dynamic path segments now resolve to URLs correctly
 
-## 0.0.8
+## v0.0.8
 
 *   Link now supports string values for `to` prop
 *   Add enzyme config and a Link test
 
-## 0.0.5
+## v0.0.5
 
 *   Initial release
