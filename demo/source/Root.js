@@ -1,24 +1,3 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import createHistory from "history/createBrowserHistory";
-import { RoutingProvider } from "jarl-react";
-import { hot } from "react-hot-loader";
-
-import "sanitize.css/sanitize.css";
-
-import routerCode from "!!raw-loader!./Root";
-
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Error from "./pages/Error";
-import Docs from "./pages/Docs";
-import Api from "./pages/Api";
-
-import { MainLayout, ErrorWrapper } from "./layout";
-import MainMenu from "./MainMenu";
-
-import { getDemo } from "./demos";
-
 /**
  * JARL demos
  *
@@ -33,6 +12,28 @@ import { getDemo } from "./demos";
  * each demo to have its own independent JARL Provider so we can show off all
  * the features without having to have a single routing table that's one giant mess!
  */
+
+import React, { Component } from "react";
+import { RoutingProvider } from "jarl-react";
+import createHistory from "history/createBrowserHistory";
+
+import Helmet from "react-helmet";
+
+import "sanitize.css/sanitize.css";
+
+import { hot } from "react-hot-loader";
+import routerCode from "!!raw-loader!./Root";
+
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+import Error from "./pages/Error";
+import Docs from "./pages/Docs";
+import Api from "./pages/Api";
+
+import { MainLayout, ErrorWrapper } from "./layout";
+import MainMenu from "./MainMenu";
+
+import { getDemo } from "./demos";
 
 /**
  * You need a `history` instance, here we're using a browserHistory for "real" URLs,
@@ -129,9 +130,15 @@ class Root extends Component {
             // `history` instance so browser history works right across the board.
             // Each demo has its own Router instance which operates as kind of a subcontroller
             // for our root router.
-            const { Root: DemoRoot, routes: demoRoutes } = getDemo(
-                demoName
-            ).content;
+            const {
+                Root: DemoRoot,
+                routes: demoRoutes,
+                code: demoCode
+            } = getDemo(demoName).content;
+
+            // Render code for the demo
+            code = demoCode;
+
             content = (
                 <ErrorWrapper onError={this.handleDemoError}>
                     <DemoRoot
@@ -144,7 +151,7 @@ class Root extends Component {
         } else {
             switch (page) {
                 case "index":
-                    code = routerCode;
+                    code = [{ name: "Root.js", code: routerCode }];
                     content = <Index />;
                     break;
                 case "docs":

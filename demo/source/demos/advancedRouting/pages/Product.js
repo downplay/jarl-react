@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { routing, Link } from "jarl-react";
+import { Tab, Tabs } from "rebass-emotion";
 
 import DetailsTab from "./tabs/DetailsTab";
 import RatingsTab from "./tabs/RatingsTab";
@@ -34,23 +35,23 @@ const Product = ({ tab }) => (
         <Header>This Product Will Change Everything</Header>
         <p>Buy Now for only 1 BTC!</p>
         <p>Click a tab for more information:</p>
-        <ul>
-            <li>
+        <Tabs>
+            <Tab>
                 <Link data-test="details-tab-link" to={toTab("details")}>
                     Details
                 </Link>
-            </li>
-            <li>
+            </Tab>
+            <Tab>
                 <Link data-test="ratings-tab-link" to={toTab("ratings")}>
                     Ratings
                 </Link>
-            </li>
-            <li>
+            </Tab>
+            <Tab>
                 <Link data-test="gallery-tab-link" to={toImage(1)}>
                     Gallery
                 </Link>
-            </li>
-        </ul>
+            </Tab>
+        </Tabs>
         {renderTab(tab)}
     </Fragment>
 );

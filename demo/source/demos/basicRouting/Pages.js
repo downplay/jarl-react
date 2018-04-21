@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import Helmet from "react-helmet";
-
 import { routing, Link } from "jarl-react";
+
+import Helmet from "react-helmet";
+import { Tabs, Tab, NavLink, Button } from "rebass-emotion";
 
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -42,20 +43,18 @@ class Pages extends Component {
         return (
             <article>
                 <Helmet titleTemplate="%s | Basic Routing | JARL Demos" />
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to={{ page: "home" }} data-test="home-link">
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={{ page: "about" }} data-test="about-link">
-                                About
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
+                <Tabs>
+                    <Tab>
+                        <Link to={{ page: "home" }} data-test="home-link">
+                            Home
+                        </Link>
+                    </Tab>
+                    <Tab>
+                        <Link to={{ page: "about" }} data-test="about-link">
+                            About
+                        </Link>
+                    </Tab>
+                </Tabs>
                 {renderPage(page, missingPath)}
                 {showMarker ? (
                     <div data-test="marker">
@@ -66,17 +65,20 @@ class Pages extends Component {
                         <br />
                         {/* Line break needed. Otherwise anchor got split onto two
                         lines causing Cypress to fail to click on it! */}
-                        <a data-test="marker-anchor" href={stringify("/about")}>
+                        <NavLink
+                            data-test="marker-anchor"
+                            href={stringify("/about")}
+                        >
                             Here is an anchor to test that!
-                        </a>
+                        </NavLink>
                     </div>
                 ) : (
-                    <button
+                    <Button
                         data-test="marker-button"
                         onClick={this.handleMarkerClick}
                     >
                         Marker
-                    </button>
+                    </Button>
                 )}
             </article>
         );

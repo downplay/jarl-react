@@ -2,7 +2,6 @@ import * as basicRouting from "./basicRouting";
 import * as queryStrings from "./queryStrings";
 import * as redirects from "./redirects";
 import * as advancedRouting from "./advancedRouting";
-import * as reduxIntegration from "./reduxIntegration";
 import * as codeSplitting from "./codeSplitting";
 
 const demos = [
@@ -14,12 +13,7 @@ const demos = [
         content: advancedRouting,
         title: "Advanced Routing"
     },
-    { name: "codeSplitting", content: codeSplitting, title: "Code Splitting" },
-    {
-        name: "reduxIntegration",
-        content: reduxIntegration,
-        title: "Redux Integration"
-    }
+    { name: "codeSplitting", content: codeSplitting, title: "Code Splitting" }
 ];
 
 export default demos;
