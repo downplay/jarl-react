@@ -5,8 +5,11 @@ const slackAddress = process.env.SLACK_NOTIFY_WEBHOOK;
 const notifySlack = async message => {
     const result = await fetch(slackAddress, {
         method: "POST",
-        body: {
+        body: JSON.stringify({
             text: message
+        }),
+        headers: {
+            "content-type": "application/json"
         }
     });
     if (result.status !== 200) {
@@ -48,7 +51,7 @@ const createMessage = async type => {
     }
 };
 
-const [, , type] = process.argv[2];
+const [, , type] = process.argv;
 
 /* eslint-disable no-console */
 createMessage(type)
