@@ -37,7 +37,9 @@ const createMessage = async type => {
             } else if (version) {
                 notifyDiscord(`${prefix} Building version ${version}`);
             } else {
-                notifyDiscord(`${prefix} Staging demos`);
+                notifyDiscord(
+                    `${prefix} Building demos for deployment to staging`
+                );
             }
             break;
         }

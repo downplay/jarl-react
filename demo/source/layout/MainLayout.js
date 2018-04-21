@@ -30,13 +30,13 @@ const MainLayout = ({ children, code, menu }) => (
     <Grid>
         <HeaderRow>
             <Header as="h1">
-                JARL Demos <small>v{process.env.JARL_VERSION}</small>
+                JARL Demos <small>{process.env.JARL_VERSION}</small>
             </Header>
             <Header sub>Just Another Routing Library (for React)</Header>
         </HeaderRow>
         <MenuSidebar>{menu}</MenuSidebar>
-        <ContentPanel>{children}</ContentPanel>
-        <CodePanel>
+        <ContentPanel data-test="content">{children}</ContentPanel>
+        <CodePanel data-test="code">
             {code &&
                 code.map(({ name, code: source }) => (
                     <Fragment key={name}>

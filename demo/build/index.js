@@ -9,6 +9,13 @@ import webpackAssets from "../server/webpackAssets";
 
 const packageJson = require("../package.json");
 
+if (
+    process.env.JARL_VERSION &&
+    process.env.JARL_VERSION !== `v${packageJson.version}`
+) {
+    throw new Error("Git tag mismatch with package.json version");
+}
+
 const context = {
     mode: "production",
     name: "JARL demos",
@@ -16,7 +23,9 @@ const context = {
     outputPath: "dist",
     manifestName: "asset-manifest.json",
     env: {
-        JARL_VERSION: `${packageJson.version}-${process.env.JARL_BUILD_NUMBER}`
+        JARL_VERSION: process.env.JARL_VERSION
+            ? process.env.JARL_VERSION
+            : `v${packageJson.version}-${process.env.JARL_BUILD_NUMBER}`
     }
 };
 

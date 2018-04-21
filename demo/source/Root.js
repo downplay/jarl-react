@@ -48,7 +48,7 @@ const routes = [
         state: { page: "index" }
     },
     {
-        path: "/",
+        path: "/changelog",
         state: { page: "changelog" }
     },
     { path: "/docs/:docName", state: { page: "docs" } },

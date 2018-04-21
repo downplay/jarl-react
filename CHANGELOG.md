@@ -1,5 +1,10 @@
 # JARL: Version History
 
+## Next version
+
+*   Fix rendering CHANGELOG
+*   Added some E2E tests around the demo shell
+
 ## 1.0.0-alpha.14
 
 *   I screwed up. Had to bump another couple of versions to test the pipeline.
