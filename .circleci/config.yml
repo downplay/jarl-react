@@ -39,6 +39,9 @@ tag: &tag
         JARL_VERSION=$(git describe)
         export JARL_VERSION=$JARL_VERSION
         echo "export JARL_VERSION=$JARL_VERSION" >> ${BASH_ENV}
+        env="export JARL_VERSION=$JARL_VERSION
+        JARL_VERSION=$JARL_VERSION"
+        echo "$env" >> ${BASH_ENV}
       fi
       
 # JARL CircleCI 2.0 configuration file
@@ -195,7 +198,9 @@ jobs:
             NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n "s/.*\(https:\/\/jarl-downplay-co-.*\.sh\).*/\1/p" )
             export NOW_DEPLOY=$NOW_DEPLOY
             yarn notify staging
-            echo "export NOW_DEPLOY=$NOW_DEPLOY" >> ${BASH_ENV}
+            env="export NOW_DEPLOY=$NOW_DEPLOY
+            NOW_DEPLOY=$NOW_DEPLOY"
+            echo "$env" >> ${BASH_ENV}
 
       - run:
           name: Run E2E against staging
