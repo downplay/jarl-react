@@ -1,6 +1,6 @@
 {
     "name": "jarl-react",
-    "version": "1.0.0-alpha.13",
+    "version": "1.0.0-alpha.14",
     "description": "Just Another Router Library for React",
     "main": "index.js",
     "module": "es/index.js",
