@@ -80,22 +80,29 @@ jobs:
           command: yarn ci-stop
           working_directory: demo
 
-      # Save entire workspace. Involves a lot of fluff we don't need so
-      # this could be improved, but it saves having to do another build.
+      # Save all the build artifacts
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - demo/dist
+            - packages/jarl-react/*.js
+            - packages/jarl-react/*/*.js
+            - packages/jarl-react-native/*.js
+            - packages/jarl-react-native/*/*.js
+            - packages/jarl-react-redux/*.js
+            - packages/jarl-react-redux/*/*.js
 
   publish:
     <<: *defaults
     steps:
+      - checkout
+
+      - *restore
+      - *setup
+      - *tag
 
       - attach_workspace:
           at: .
-
-      - *setup
-      - *tag
 
       # Create auth file for npm
       - run:
