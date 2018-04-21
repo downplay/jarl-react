@@ -9,7 +9,7 @@
         "ci-test": "lerna run ci-test --stream",
         "ci-e2e": "lerna run ci-e2e --stream",
         "ci-publish": "lerna exec -- npm publish",
-        "ci-notify": "node ./scripts/notify.js",
+        "notify": "node ./scripts/notify.js",
         "lint": "lerna run lint --stream",
         "bootstrap": "lerna bootstrap",
         "tag-version": "lerna publish --skip-npm",
