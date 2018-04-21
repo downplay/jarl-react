@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "react-emotion";
 import Helmet from "react-helmet";
-import { NavLink } from "rebass-emotion";
+import { Menu as BaseMenu } from "semantic-ui-react";
 
 import { Link } from "jarl-react";
 
@@ -38,22 +38,13 @@ export const Body = ({ children }) => (
     <BodyElement data-test="body">{children}</BodyElement>
 );
 
-const Indent = styled.div`
-    padding-left: 2rem;
-`;
-
-const Nav = styled.nav`
-    display: flex;
-    flex-direction: column;
-`;
-
-export const Menu = ({ children }) => <Nav>{children}</Nav>;
+export const Menu = ({ children }) => <BaseMenu vertical>{children}</BaseMenu>;
 
 // TODO: Test active on all URLs
 export const MenuItem = ({ children, to, ...rest }) => (
     <Link to={to}>
         {({ active, onClick, href }) => (
-            <NavLink
+            <BaseMenu.Item
                 {...rest}
                 active={active}
                 data-test-active={active}
@@ -61,16 +52,16 @@ export const MenuItem = ({ children, to, ...rest }) => (
                 onClick={onClick}
             >
                 {children}
-            </NavLink>
+            </BaseMenu.Item>
         )}
     </Link>
 );
 
 export const SubMenu = ({ children, title, ...rest }) => (
     <Fragment>
-        <MenuItem {...rest}>{title}</MenuItem>
-        <Indent>
-            <Menu>{children}</Menu>
-        </Indent>
+        <BaseMenu.Item header {...rest}>
+            {title}
+        </BaseMenu.Item>
+        {children}
     </Fragment>
 );

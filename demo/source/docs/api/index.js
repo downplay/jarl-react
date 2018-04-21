@@ -9,6 +9,9 @@ import JarlStateProvider from "!!./reactDocgenLoader!../../../../packages/jarl-r
 import JarlRouter from "!!./reactDocgenLoader!../../../../packages/jarl-react/source/Router";
 import JarlLink from "!!./reactDocgenLoader!../../../../packages/jarl-react/source/Link";
 
+import JarlNativeProvider from "!!./reactDocgenLoader!../../../../packages/jarl-react-native/source/NativeProvider";
+import JarlNativeLink from "!!./reactDocgenLoader!../../../../packages/jarl-react-native/source/Link";
+
 // Blacklist anything that we'll get from react-docs
 const blacklistNames = [
     // TODO: Do list all the actions but do it in a better form
@@ -18,21 +21,23 @@ const blacklistNames = [
 
 const blacklistFiles = ["RoutingProvider", "Link", "Router", "StateProvider"];
 
+const mapComponents = list =>
+    flatten(list).map(component => ({ ...component, kind: "component" }));
+
 export default {
-    "jarl-react": flatten([
+    "jarl-react": mapComponents([
         JarlRoutingProvider,
         JarlStateProvider,
         JarlRouter,
         JarlLink
-    ])
-        .map(component => ({ ...component, kind: "component" }))
-        .concat(
-            JarlApi.filter(
-                ({ name, context: { file } }) =>
-                    blacklistNames.indexOf(name) === -1 &&
-                    !blacklistFiles.some(
-                        fileName => file.indexOf(`/${fileName}.js`) !== -1
-                    )
-            )
+    ]).concat(
+        JarlApi.filter(
+            ({ name, context: { file } }) =>
+                blacklistNames.indexOf(name) === -1 &&
+                !blacklistFiles.some(
+                    fileName => file.indexOf(`/${fileName}.js`) !== -1
+                )
         )
+    ),
+    "jarl-react-native": mapComponents(JarlNativeProvider, JarlNativeLink)
 };

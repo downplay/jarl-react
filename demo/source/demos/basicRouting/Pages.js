@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { routing, Link } from "jarl-react";
 
 import Helmet from "react-helmet";
-import { Tabs, Tab, NavLink, Button } from "rebass-emotion";
+import { Menu, Button } from "semantic-ui-react";
 
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -43,18 +43,22 @@ class Pages extends Component {
         return (
             <article>
                 <Helmet titleTemplate="%s | Basic Routing | JARL Demos" />
-                <Tabs>
-                    <Tab>
-                        <Link to={{ page: "home" }} data-test="home-link">
-                            Home
-                        </Link>
-                    </Tab>
-                    <Tab>
-                        <Link to={{ page: "about" }} data-test="about-link">
-                            About
-                        </Link>
-                    </Tab>
-                </Tabs>
+                <Menu>
+                    <Link
+                        to={{ page: "home" }}
+                        data-test="home-link"
+                        element={Menu.Item}
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        to={{ page: "about" }}
+                        data-test="about-link"
+                        element={Menu.Item}
+                    >
+                        About
+                    </Link>
+                </Menu>
                 {renderPage(page, missingPath)}
                 {showMarker ? (
                     <div data-test="marker">
@@ -65,12 +69,9 @@ class Pages extends Component {
                         <br />
                         {/* Line break needed. Otherwise anchor got split onto two
                         lines causing Cypress to fail to click on it! */}
-                        <NavLink
-                            data-test="marker-anchor"
-                            href={stringify("/about")}
-                        >
+                        <a data-test="marker-anchor" href={stringify("/about")}>
                             Here is an anchor to test that!
-                        </NavLink>
+                        </a>
                     </div>
                 ) : (
                     <Button

@@ -1,8 +1,13 @@
 # JARL: Version History
 
-## 1.0.0-alpha.13
+## 1.0.0-alpha.14
 
-*   I screwed up. Had to push out another version to test the pipeline.
+*   I screwed up. Had to bump another couple of versions to test the pipeline.
+*   Some improvments on the demo site:
+    *   Syntax highlighted code examples
+    *   Removed broken Redux Integration demo
+    *   Switched UI over to Semantic UI
+    *   Added the CHANGELOG
 
 ## 1.0.0-alpha.12
 

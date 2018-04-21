@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
-import { routing, Link } from "jarl-react";
-import { Tab, Tabs } from "rebass-emotion";
+import { routing } from "jarl-react";
+import { Menu } from "semantic-ui-react";
 
 import DetailsTab from "./tabs/DetailsTab";
 import RatingsTab from "./tabs/RatingsTab";
 import GalleryTab, { toImage } from "./tabs/GalleryTab";
-import { Header } from "../../../layout/index";
+import { Header, MenuItem } from "../../../layout";
 
 /**
  * Function to generate a link to a specific tab
@@ -35,23 +35,25 @@ const Product = ({ tab }) => (
         <Header>This Product Will Change Everything</Header>
         <p>Buy Now for only 1 BTC!</p>
         <p>Click a tab for more information:</p>
-        <Tabs>
-            <Tab>
-                <Link data-test="details-tab-link" to={toTab("details")}>
-                    Details
-                </Link>
-            </Tab>
-            <Tab>
-                <Link data-test="ratings-tab-link" to={toTab("ratings")}>
-                    Ratings
-                </Link>
-            </Tab>
-            <Tab>
-                <Link data-test="gallery-tab-link" to={toImage(1)}>
-                    Gallery
-                </Link>
-            </Tab>
-        </Tabs>
+        <Menu pointing>
+            <MenuItem data-test="details-tab-link" to={toTab("details")}>
+                Details
+            </MenuItem>
+            <MenuItem
+                data-test="ratings-tab-link"
+                to={toTab("ratings")}
+                element={Menu.Item}
+            >
+                Ratings
+            </MenuItem>
+            <MenuItem
+                data-test="gallery-tab-link"
+                to={toImage(1)}
+                element={Menu.Item}
+            >
+                Gallery
+            </MenuItem>
+        </Menu>
         {renderTab(tab)}
     </Fragment>
 );

@@ -78,6 +78,14 @@ const makeWebpackConfig = ({
                             loader: "raw-loader"
                         }
                     ]
+                },
+                {
+                    test: /\.(svg|eot|woff2?|ttf|png)$/,
+                    loaders: [
+                        {
+                            loader: "file-loader"
+                        }
+                    ]
                 }
             ]
         }

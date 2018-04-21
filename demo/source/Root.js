@@ -28,6 +28,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Error from "./pages/Error";
 import Docs from "./pages/Docs";
+import Changelog from "./pages/Changelog";
 import Api from "./pages/Api";
 
 import { MainLayout, ErrorWrapper } from "./layout";
@@ -45,6 +46,10 @@ const routes = [
     {
         path: "/",
         state: { page: "index" }
+    },
+    {
+        path: "/",
+        state: { page: "changelog" }
     },
     { path: "/docs/:docName", state: { page: "docs" } },
     { path: "/api/:apiName", state: { page: "api" } },
@@ -156,6 +161,9 @@ class Root extends Component {
                     break;
                 case "docs":
                     content = <Docs docName={docName} />;
+                    break;
+                case "changelog":
+                    content = <Changelog />;
                     break;
                 case "api":
                     content = <Api apiName={apiName} />;
