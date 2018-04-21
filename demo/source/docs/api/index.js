@@ -9,8 +9,8 @@ import JarlStateProvider from "!!./reactDocgenLoader!../../../../packages/jarl-r
 import JarlRouter from "!!./reactDocgenLoader!../../../../packages/jarl-react/source/Router";
 import JarlLink from "!!./reactDocgenLoader!../../../../packages/jarl-react/source/Link";
 
-import JarlNativeProvider from "!!./reactDocgenLoader!../../../../packages/jarl-react-native/source/NativeProvider";
-import JarlNativeLink from "!!./reactDocgenLoader!../../../../packages/jarl-react-native/source/Link";
+import JarlNativeProvider from "!!./reactDocgenLoader!../../../../packages/jarl-react-native/NativeProvider";
+import JarlNativeLink from "!!./reactDocgenLoader!../../../../packages/jarl-react-native/Link";
 
 // Blacklist anything that we'll get from react-docs
 const blacklistNames = [
