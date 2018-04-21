@@ -94,6 +94,7 @@ jobs:
           root: .
           paths:
             - demo/dist
+            - demo/cypress/screenshots
             - packages/jarl-react/*.js
             - packages/jarl-react/*/*.js
             - packages/jarl-react/es/*/*.js
