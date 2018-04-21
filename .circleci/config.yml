@@ -34,6 +34,7 @@ tag: &tag
       if [[ `git describe 2>/dev/null` =~ ^v([0-9]+\.){2}[0-9]+(-[a-z]+(\.[0-9]+)?)?$ ]] ; then
         # Save version for later
         JARL_VERSION=$(git describe)
+        export JARL_VERSION=$JARL_VERSION
       fi
 
 # JARL CircleCI 2.0 configuration file
@@ -166,6 +167,7 @@ jobs:
           name: Tag and push image to Docker hub
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            echo $JARL_VERSION
             if [ "$JARL_VERSION"] ; then
               DOCKER_TAG=downplay/jarl-demos:${JARL_VERSION}
             else
@@ -173,11 +175,12 @@ jobs:
             fi
             docker tag app ${DOCKER_TAG}
             docker push ${DOCKER_TAG}
+            # Create a dockerfile for this tag
+            echo "FROM ${DOCKER_TAG}" >> now/Dockerfile
       # Now deployment
       - run:
           name: Deploy to now staging
           command: |
-            echo "FROM ${DOCKER_TAG}" >> now/Dockerfile
             yarn global add now
             cd now
             # Deploy and store URL in env
