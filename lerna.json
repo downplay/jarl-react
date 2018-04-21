@@ -1,10 +1,10 @@
 {
-  "lerna": "2.5.1",
-  "version": "1.0.0-alpha.11",
-  "packages": [
-    "packages/jarl-react",
-    "packages/jarl-react-redux",
-    "packages/jarl-react-native",
-    "demo"
-  ]
+    "lerna": "2.5.1",
+    "version": "1.0.0-alpha.12",
+    "packages": [
+        "packages/jarl-react",
+        "packages/jarl-react-redux",
+        "packages/jarl-react-native",
+        "demo"
+    ]
 }
