@@ -8,6 +8,7 @@
     *   Removed broken Redux Integration demo
     *   Switched UI over to Semantic UI
     *   Added the CHANGELOG
+    *   Added API docs for JARL Native
 
 ## 1.0.0-alpha.12
 
