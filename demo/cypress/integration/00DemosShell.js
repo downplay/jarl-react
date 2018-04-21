@@ -5,6 +5,7 @@ describe("Demos Shell", () => {
         cy.visit("/");
         cy.title().should("include", "JARL Demos");
         cy.get("[data-test=header]").should("contain", "Index");
+        cy.screenshot("HomePage");
     });
 
     it("shows not found page", () => {
