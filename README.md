@@ -230,6 +230,12 @@ To run e2e tests (via [cypress.io](https://cypress.io)):
 yarn e2e
 ```
 
+## Community
+
+We have a dedicated Discord server with CI announcements in #build: https://discord.gg/BVcQ6Z
+
+Or, come and join the conversation at Reactiflux: https://discordapp.com/invite/KWHrBDe
+
 ## Credits
 
 Pattern matching by `url-pattern`: https://github.com/snd/url-pattern (MIT license)

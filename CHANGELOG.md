@@ -1,10 +1,19 @@
 # JARL: Version History
 
-## Next version
+## 1.0.0-alpha.13
 
-*   Publish only on tagged build (docs go to staging site)
-*   Build number included on docs site
+*   I screwed up. Had to push out another version to test the pipeline.
+
+## 1.0.0-alpha.12
+
+### CI/CD
+
+*   Only tagged builds publish and deploy to production
+*   PRs and master untagged builds will deploy a staging demo site
+*   Build number added on docs site
 *   Really fixed prod deployment
+*   Created a Discord server: https://discord.gg/BVcQ6Z
+*   Added a Discord bot to make build announcments in #build
 
 ## 1.0.0-alpha.11
 
