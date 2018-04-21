@@ -40,8 +40,10 @@ const createMessage = async type => {
             } = process.env;
             if (pr) {
                 notifySlack(`${prefix} Pull request ${pr}`);
-            } else {
+            } else if (version) {
                 notifySlack(`${prefix} Building version ${version}`);
+            } else {
+                notifySlack(`${prefix} Staging demos`);
             }
             break;
         }
