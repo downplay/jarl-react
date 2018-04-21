@@ -1,6 +1,6 @@
 {
     "name": "jarl-react-native",
-    "version": "1.0.0-alpha.12",
+    "version": "1.0.0-alpha.13",
     "description": "React Native support for JARL",
     "main": "main.js",
     "sideEffects": false,
@@ -11,12 +11,21 @@
         "lint": "eslint . --max-warnings 0 --color",
         "coverage": "jest --coverage"
     },
-    "files": ["index.js", "Link.js", "NativeProvider.js"],
+    "files": [
+        "index.js",
+        "Link.js",
+        "NativeProvider.js"
+    ],
     "jest": {
-        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
+        "setupFiles": [
+            "raf/polyfill",
+            "./tools/configureJest.js"
+        ],
         "testRegex": "__tests__/.+\\.test\\.js$",
         "preset": "react-native",
-        "collectCoverageFrom": ["*.js"]
+        "collectCoverageFrom": [
+            "*.js"
+        ]
     },
     "keywords": [
         "react",
@@ -41,7 +50,7 @@
     "dependencies": {
         "history": "^4.7.2",
         "invariant": "^2.2.4",
-        "jarl-react": "^1.0.0-alpha.12",
+        "jarl-react": "^1.0.0-alpha.13",
         "prop-types": "^15.6.0",
         "warning": "^3.0.0"
     },

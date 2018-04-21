@@ -1,6 +1,6 @@
 {
     "name": "jarl-react-redux",
-    "version": "1.0.0-alpha.12",
+    "version": "1.0.0-alpha.13",
     "description": "Redux integration for JARL",
     "main": "index.js",
     "module": "es/index.js",
@@ -24,7 +24,10 @@
         "reducer.js"
     ],
     "jest": {
-        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
+        "setupFiles": [
+            "raf/polyfill",
+            "./tools/configureJest.js"
+        ],
         "testRegex": "__tests__/.+\\.test\\.js$"
     },
     "keywords": [
@@ -51,7 +54,7 @@
     },
     "dependencies": {
         "invariant": "^2.2.2",
-        "jarl-react": "^1.0.0-alpha.12",
+        "jarl-react": "^1.0.0-alpha.13",
         "prop-types": "^15.6.0"
     },
     "devDependencies": {
