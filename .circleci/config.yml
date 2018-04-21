@@ -4,6 +4,8 @@ defaults: &defaults
     # Cypress docker image for running E2E tests
     - image: cypress/base:8
   working_directory: ~/repo
+  environment:
+    BASH_ENV: ~/.bashrc
 
 restore: &restore
   restore_cache:
@@ -35,13 +37,15 @@ tag: &tag
         # Save version for later
         JARL_VERSION=$(git describe)
         export JARL_VERSION=$JARL_VERSION
+        echo "export JARL_VERSION=$JARL_VERSION" >> ${BASH_ENV}
       fi
-
+      
 # JARL CircleCI 2.0 configuration file
 version: 2
 jobs:
   build:
     <<: *defaults
+
     steps:
       - checkout
           
@@ -188,7 +192,10 @@ jobs:
             # Deploy and store URL in env
             # sed regexes are fairly arcane but got this working eventually
             NOW_DEPLOY=$(now -t ${NOW_TOKEN} | sed -n "s/.*\(https:\/\/jarl-downplay-co-.*\.sh\).*/\1/p" )
+            export NOW_DEPLOY=$NOW_DEPLOY
             yarn notify staging
+            echo "export NOW_DEPLOY=$NOW_DEPLOY" >> ${BASH_ENV}
+
       - run:
           name: Run E2E against staging
           command: |
