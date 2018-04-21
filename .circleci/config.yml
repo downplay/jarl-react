@@ -130,6 +130,7 @@ jobs:
               cd packages/jarl-react && npm publish
               cd ../jarl-react-native && npm publish
               cd ../jarl-react-redux && npm publish
+              cd ../..
               yarn notify published
             fi
 
