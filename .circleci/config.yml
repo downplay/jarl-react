@@ -4,8 +4,6 @@ defaults: &defaults
     # Cypress docker image for running E2E tests
     - image: cypress/base:8
   working_directory: ~/repo
-  environment:
-    BASH_ENV: env
 
 restore: &restore
   restore_cache:
@@ -37,11 +35,9 @@ tag: &tag
       if [[ `git describe 2>/dev/null` =~ ^v([0-9]+\.){2}[0-9]+(-[a-z]+(\.[0-9]+)?)?$ ]] ; then
         # Save version for later
         JARL_VERSION=$(git describe)
-        export JARL_VERSION=$JARL_VERSION
-        echo "export JARL_VERSION=$JARL_VERSION" >> ${BASH_ENV}
         env="export JARL_VERSION=$JARL_VERSION
         JARL_VERSION=$JARL_VERSION"
-        echo "$env" >> ${BASH_ENV}
+        echo "$env" >> ~/.bashrc
       fi
       
 # JARL CircleCI 2.0 configuration file
@@ -201,7 +197,7 @@ jobs:
             yarn notify staging
             env="export NOW_DEPLOY=$NOW_DEPLOY
             NOW_DEPLOY=$NOW_DEPLOY"
-            echo "$env" >> ${BASH_ENV}
+            echo "$env" >> ~/.bashrc
 
       - run:
           name: Run E2E against staging
