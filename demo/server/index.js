@@ -14,7 +14,7 @@ const context = {
     manifestName: "asset-manifest.json",
     outputPath: "dist",
     env: {
-        JARL_VERSION: packageJson.version
+        JARL_VERSION: `v${packageJson.version}`
     }
 };
 

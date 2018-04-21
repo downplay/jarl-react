@@ -12,7 +12,7 @@
         "notify": "node ./scripts/notify.js",
         "lint": "lerna run lint --stream",
         "bootstrap": "lerna bootstrap",
-        "tag-version": "lerna publish --skip-npm",
+        "tag-version": "lerna publish --skip-npm && git push --follow-tags",
         "precommit": "lint-staged"
     },
     "lint-staged": {

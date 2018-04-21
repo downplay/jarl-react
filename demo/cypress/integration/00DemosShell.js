@@ -7,6 +7,18 @@ describe("Demos Shell", () => {
         cy.visit("/");
         cy.title().should("include", "JARL Demos");
         cy.get("[data-test=header]").should("contain", "Index");
+        cy
+            .get("[data-test=version")
+            .should(
+                "contain",
+                process.env.JARL_VERSION
+                    ? process.env.JARL_VERSION
+                    : `v${packageJson.version}${
+                          process.env.CIRCLE_BUILD_NUM
+                              ? `-${process.env.CIRCLE_BUILD_NUM}`
+                              : ""
+                      }`
+            );
         // Note: This screenshot is for the CI bot to post with announcements
         // and should be left here with the same name
         cy.screenshot("HomePage");

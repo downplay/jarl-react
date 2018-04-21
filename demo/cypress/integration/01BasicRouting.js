@@ -8,12 +8,9 @@ describe("Basic Routing", () => {
         cy.title().should("include", "Basic Routing");
         cy.title().should("include", "Home");
         cy.get("[data-test=header]").should("contain", "Home");
-        cy.get(
-            "[data-test=code]".should(
-                "contain",
-                `import { routing, Link } from "jarl-react";`
-            )
-        );
+        cy
+            .get("[data-test=code]")
+            .should("contain", `import { routing, Link } from "jarl-react";`);
     });
 
     it("loads about page", () => {

@@ -1,6 +1,6 @@
 # JARL: Version History
 
-## Next version
+## v1.0.0-alpha.15
 
 *   Fix rendering CHANGELOG
 *   Added some E2E tests around the demo shell
