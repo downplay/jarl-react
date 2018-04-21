@@ -14,7 +14,7 @@ restore: &restore
 
 setup: &setup
   run:
-    name: Setup npm dependencies
+    name: Install dependencies and link packages
     command: |
       yarn
       yarn bootstrap
@@ -79,11 +79,11 @@ jobs:
       - run:
           command: yarn ci-stop
           working_directory: demo
+
+      # Save entire workspace. Involves a lot of fluff we don't need so
+      # this could be improved, but it saves having to do another build.
       - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is 
-          # taken to be the root directory of the workspace.
           root: .
-          # Must be relative path from root
           paths:
             - .
 
@@ -92,7 +92,6 @@ jobs:
     steps:
 
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
           at: .
 
       - *setup
@@ -158,19 +157,19 @@ jobs:
       - run:
           name: Tag and push image to Docker hub
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             if [ "$JARL_VERSION"] ; then
-              export DOCKER_TAG="downplay/jarl-demos:$JARL_VERSION"
+              export DOCKER_TAG=downplay/jarl-demos:${JARL_VERSION}
             else
-              export DOCKER_TAG="downplay/jarl-demos:$CIRCLE_SHA1"
+              export DOCKER_TAG=downplay/jarl-demos:${CIRCLE_SHA1}
             fi
-            docker tag app $DOCKER_TAG
-            docker push $DOCKER_TAG
+            docker tag app ${DOCKER_TAG}
+            docker push ${DOCKER_TAG}
       # Now deployment
       - run:
           name: Deploy to now staging
           command: |
-            echo "FROM $DOCKER_TAG" >> now/Dockerfile
+            echo "FROM ${DOCKER_TAG}" >> now/Dockerfile
             yarn global add now
             cd now
             # Deploy and store URL in env
