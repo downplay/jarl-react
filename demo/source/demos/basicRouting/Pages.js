@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { routing, Link } from "jarl-react";
+import { routing } from "jarl-react";
 
 import Helmet from "react-helmet";
 import { Menu, Button } from "semantic-ui-react";
+import { Layout, MenuItem } from "../../layout";
 
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -41,23 +42,15 @@ class Pages extends Component {
         const { showMarker } = this.state;
 
         return (
-            <article>
+            <Layout>
                 <Helmet titleTemplate="%s | Basic Routing | JARL Demos" />
                 <Menu>
-                    <Link
-                        to={{ page: "home" }}
-                        data-test="home-link"
-                        element={Menu.Item}
-                    >
+                    <MenuItem to={{ page: "home" }} data-test="home-link">
                         Home
-                    </Link>
-                    <Link
-                        to={{ page: "about" }}
-                        data-test="about-link"
-                        element={Menu.Item}
-                    >
+                    </MenuItem>
+                    <MenuItem to={{ page: "about" }} data-test="about-link">
                         About
-                    </Link>
+                    </MenuItem>
                 </Menu>
                 {renderPage(page, missingPath)}
                 {showMarker ? (
@@ -81,7 +74,7 @@ class Pages extends Component {
                         Marker
                     </Button>
                 )}
-            </article>
+            </Layout>
         );
     }
 }
