@@ -41,13 +41,14 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run:
-          name: Notify build
-          command: yarn notify build
           
       - *restore
       - *setup
       - *tag
+
+      - run:
+          name: Notify build
+          command: yarn notify build
 
       - save_cache:
           paths:
