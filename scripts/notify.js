@@ -24,11 +24,12 @@ const createMessage = async type => {
         CIRCLE_BUILD_NUM: buildNum,
         CIRCLE_BUILD_URL: buildUrl
     } = process.env;
+    const prefix = `[${buildNum}](${buildUrl}):`;
     switch (type) {
         case "staging": {
             const stagingUrl = process.env.NOW_DEPLOY;
             notifySlack(
-                `#${buildNum}: Deployed demo to staging URL ${stagingUrl} from ${commit}`
+                `${prefix} Deployed demo to staging URL ${stagingUrl} from ${commit}`
             );
             break;
         }
@@ -38,11 +39,9 @@ const createMessage = async type => {
                 JARL_VERSION: version
             } = process.env;
             if (pr) {
-                notifySlack(`#${buildNum}: Pull request ${pr} - ${buildUrl}`);
+                notifySlack(`${prefix} Pull request ${pr}`);
             } else {
-                notifySlack(
-                    `#${buildNum}: Building version ${version} - ${buildUrl}`
-                );
+                notifySlack(`${prefix} Building version ${version}`);
             }
             break;
         }
