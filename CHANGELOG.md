@@ -4,6 +4,7 @@
 
 *   Fix: Got `active` working everywhere properly, in particular inside demos
 *   Demo: Code splitting now loads something substantial and is actually code splitting properly
+*   Demo: Code splitting shows a PDF which can also be navigated via routing
 *   Build: Made Webpack more aggressive about chunks
 
 ## v1.0.0-beta.2
