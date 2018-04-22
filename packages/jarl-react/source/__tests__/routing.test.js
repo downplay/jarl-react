@@ -176,24 +176,8 @@ describe("isActive", () => {
         expect(props.active).toEqual(true);
     });
 
-    test("is not active when route is outside base path", () => {
-        const history = mockHistory("/bar");
-        const location = { page: "home" };
-        const to = { page: "home" };
-        const output = mount(
-            <MockProvider
-                location={location}
-                routes={routes}
-                history={history}
-                basePath="/foo"
-            >
-                <TestComponent to={to} />
-            </MockProvider>
-        );
-        const test = output.find(mockComponent);
-        const props = test.props();
-        expect(props.active).toEqual(false);
-    });
+    // Note: Was previously a test for "is not active when route is outside basePath" but
+    // that was actually impossible as URLs are all relative to the basePath by design.
 });
 
 describe("navigate", () => {
