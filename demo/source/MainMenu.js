@@ -8,7 +8,6 @@ const MainMenu = () => (
         <MenuItem to={{ page: "docs", docName: "getting-started" }}>
             Getting Started
         </MenuItem>
-        <MenuItem to={{ page: "changelog" }}>Changelog</MenuItem>
         <SubMenu title="Guides">
             <MenuItem to={{ page: "docs", docName: "path-variables" }}>
                 Path Variables
@@ -45,6 +44,7 @@ const MainMenu = () => (
                 JARL Native
             </MenuItem>
         </SubMenu>
+        <MenuItem to={{ page: "changelog" }}>Changelog</MenuItem>
     </Menu>
 );
 

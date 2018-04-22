@@ -30,6 +30,7 @@ const FullContentPanel = styled(ContentPanel)`
 
 const CodePanel = styled.div`
     font-size: 80%;
+    overflow: auto;
 `;
 
 const MainLayout = ({ children, code, menu }) => (
@@ -47,15 +48,16 @@ const MainLayout = ({ children, code, menu }) => (
         ) : (
             <FullContentPanel data-test="content">{children}</FullContentPanel>
         )}
-        {code &&
-            code.map(({ name, code: source }) => (
-                <CodePanel data-test="code">
+        {code && (
+            <CodePanel data-test="code">
+                {code.map(({ name, code: source }) => (
                     <Fragment key={name}>
                         <Label>{name}:</Label>
                         <Highlight language="jsx" source={source} />
                     </Fragment>
-                </CodePanel>
-            ))}
+                ))}
+            </CodePanel>
+        )}
     </Grid>
 );
 
