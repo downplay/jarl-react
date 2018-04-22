@@ -26,10 +26,7 @@ const routes = [
     {
         path: "/big-page",
         state: { page: "bigPage" },
-        resolve: () =>
-            wait(1000)
-                .then(() => import("./pages/BigPage"))
-                .then(page)
+        resolve: () => import("./pages/BigPage").then(page)
     }
 ];
 

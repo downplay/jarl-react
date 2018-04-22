@@ -38,7 +38,11 @@ const makeWebpackConfig = ({
         },
         cache: true,
         devtool: "source-map",
-
+        optimization: {
+            splitChunks: {
+                chunks: "all"
+            }
+        },
         stats: {
             colors: true,
             reasons: true
