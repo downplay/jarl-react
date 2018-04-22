@@ -264,19 +264,12 @@ describe("redirect", () => {
     });
 });
 
-describe.only("resolved", () => {
+describe("resolved", () => {
     test("passes resolved data props to component", async () => {
         const TestComponent = routing()(mockComponent);
         const resolveItem = Symbol("Bar");
-        const routes = [
-            {
-                path: "/",
-                state: { home: true },
-                resolve: () => Promise.resolve({ Foo: resolveItem })
-            }
-        ];
         const output = mount(
-            <MockProvider routes={routes} location={{}}>
+            <MockProvider resolved={{ Foo: resolveItem }}>
                 <TestComponent />
             </MockProvider>
         );
@@ -291,15 +284,8 @@ describe.only("resolved", () => {
             mockComponent
         );
         const resolveItem = Symbol("Bar");
-        const routes = [
-            {
-                path: "/",
-                state: { home: true },
-                resolve: () => Promise.resolve({ Foo: resolveItem })
-            }
-        ];
         const output = mount(
-            <MockProvider routes={routes} location={{}}>
+            <MockProvider resolved={{ Foo: resolveItem }}>
                 <TestComponent />
             </MockProvider>
         );

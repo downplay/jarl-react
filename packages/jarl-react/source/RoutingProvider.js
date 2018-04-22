@@ -16,6 +16,8 @@ export const routingContextShape = PropTypes.shape({
     getResolved: PropTypes.func.isRequired
 }).isRequired;
 
+const DEFAULT_STATE = {};
+
 /** Action type on initial navigation. */
 export const ACTION_INITIAL = "INITIAL";
 /** Action type when routes are reloaded. */
@@ -39,6 +41,8 @@ class RoutingProvider extends Component {
         ]).isRequired,
         /** Current location represented as a plain state object */
         location: PropTypes.object,
+        /** Resolved objects to be passed down via React's context */
+        resolved: PropTypes.object,
         /**
          * Handler for when a location change is requested by navigation (via Link,
          * by browser back/forward buttons, etc.)
@@ -69,7 +73,8 @@ class RoutingProvider extends Component {
     static defaultProps = {
         onChange: null,
         location: null,
-        context: () => ({}),
+        resolved: null,
+        context: () => DEFAULT_STATE,
         performInitialRouting: true,
         basePath: ""
     };
@@ -85,7 +90,6 @@ class RoutingProvider extends Component {
             "Invalid routes property: must be an array or a RouteMap instance"
         );
         invariant(props.history, "Provider must receive a history object");
-        this.resolved = {};
         this.state = {
             routes: ensureRouteMap(props.routes),
             validLocation: false
@@ -301,7 +305,6 @@ class RoutingProvider extends Component {
     }
 
     completeRouting = output => {
-        this.resolved = output.resolved;
         if (this.props.onChange) {
             this.props.onChange(output);
         }
@@ -316,7 +319,7 @@ class RoutingProvider extends Component {
     };
 
     handleGetLocation = () => this.props.location;
-    handleGetResolved = () => this.resolved;
+    handleGetResolved = () => this.props.resolved || DEFAULT_STATE;
 
     handleIsActive = (location, exact = false) => {
         // While router is in an unstable state on first render or after receiving new
