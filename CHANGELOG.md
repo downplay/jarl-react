@@ -3,6 +3,7 @@
 ## Next version
 
 *   Fix: Got `active` working everywhere properly, in particular inside demos
+*   Fix: Edge case crash on redirect demos
 *   Demo: Code splitting now loads something substantial and is actually code splitting properly
 *   Demo: Code splitting shows a PDF which can also be navigated via routing
 *   Build: Made Webpack more aggressive about chunks
