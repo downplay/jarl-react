@@ -350,18 +350,12 @@ class RoutingProvider extends Component {
         // matched branches to see if one is a parent of (or the same as) the other.
 
         // Get the branch to be checked
-        // TODO: Add a test that this works with basePath
         const toPath = this.normalizePath(this.handleStringify(location));
         // PERF: location result of match being thrown away here
         const { branch: toBranch } = this.state.routes.match(
             toPath,
             this.props.context()
         );
-
-        // Check that the path is actually within our basePath
-        if (!this.hasBasePath(toPath)) {
-            return false;
-        }
 
         // Get current branch
         const currentPath = this.normalizePath(
@@ -371,7 +365,6 @@ class RoutingProvider extends Component {
             currentPath,
             this.props.context()
         );
-
         // Can drop out quickly for obvious non-matches
         if (
             currentBranch.length === 0 ||

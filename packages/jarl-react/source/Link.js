@@ -81,9 +81,9 @@ class Link extends Component {
             // For future refactor: everything would be more efficient if dealing
             // purely in location objects rather than marshalling to and from URLs
             // constantly.
-            // Note: It is currently more efficient to check isActive based on
-            // the href rather than to, otherwise it just gets stringified again
-            active = href && this.context.routing.isActive(href);
+            // Note: Can't reuse the href here as it has the base path added on;
+            // ends up with double basepaths otherwise
+            active = href && this.context.routing.isActive(to);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(

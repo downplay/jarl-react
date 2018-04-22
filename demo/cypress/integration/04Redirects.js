@@ -87,4 +87,14 @@ describe("Redirects", () => {
             .get("[data-test=redirect-reason]")
             .should("contain", "Content was not found: 'not-a-real-page'");
     });
+
+    it("doesn't crash when visiting missing content after real content (regression)", () => {
+        cy.visit(`${root}`);
+        cy.get("[data-test=found-content-link]").click();
+        cy.get("[data-test=body]").should("contain", "a Norse or Danish chief");
+        cy.get("[data-test=missing-content-link]").click();
+        cy
+            .get("[data-test=redirect-reason]")
+            .should("contain", "Content was not found: 'not-a-real-page'");
+    });
 });

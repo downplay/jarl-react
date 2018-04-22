@@ -2,15 +2,15 @@ import React, { Fragment } from "react";
 import Markdown from "react-remarkable";
 import Helmet from "react-helmet";
 
-import changelog from "../../../CHANGELOG.md";
+import readme from "../../../README.md";
 
-const Changelog = () => (
+const About = () => (
     <Fragment>
         <Helmet>
-            <title>Changelog</title>
+            <title>About</title>
         </Helmet>
-        <Markdown source={changelog} />
+        <Markdown source={readme} />
     </Fragment>
 );
 
-export default Changelog;
+export default About;

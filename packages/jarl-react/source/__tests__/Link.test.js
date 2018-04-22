@@ -128,6 +128,28 @@ describe("<Link/>", () => {
             expect(wrapper.find("a").prop("href")).toEqual("/about");
         });
 
+        test("renders active link with basePath", () => {
+            const wrapper = mount(
+                <MockProvider
+                    routes={basicRoutes()}
+                    history={history}
+                    location={location}
+                    basePath="/base"
+                >
+                    <Link to="/about">
+                        {({ href, active }) => (
+                            <li className={active ? "active" : "not"}>
+                                <a href={href}>About</a>
+                            </li>
+                        )}
+                    </Link>
+                </MockProvider>
+            );
+            const anchor = wrapper.find("li");
+            expect(anchor.prop("className")).toEqual("active");
+            expect(wrapper.find("a").prop("href")).toEqual("/base/about");
+        });
+
         test("renders inactive link and navigates", () => {
             const wrapper = mount(
                 <MockProvider
