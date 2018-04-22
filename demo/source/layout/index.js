@@ -64,6 +64,6 @@ export const SubMenu = ({ children, title, ...rest }) => (
         <BaseMenu.Item header {...rest}>
             {title}
         </BaseMenu.Item>
-        {children}
+        <BaseMenu vertical>{children}</BaseMenu>
     </Fragment>
 );

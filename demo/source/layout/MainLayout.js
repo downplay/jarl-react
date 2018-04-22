@@ -5,7 +5,7 @@ import { Highlight } from "./MarkdownJsx";
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: 15rem 1fr 30rem;
+    grid-template-columns: 15rem 1.2fr 1fr;
     grid-template-rows: 8rem auto;
     padding: 3rem;
 `;
