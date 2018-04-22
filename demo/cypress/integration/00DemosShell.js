@@ -9,13 +9,12 @@ describe("Demos Shell", () => {
         cy.get("[data-test=header]").should("contain", "Index");
         const jarlVersion = Cypress.env("JARL_VERSION");
         const buildNum = Cypress.env("CIRCLE_BUILD_NUM");
-        cy
-            .get("[data-test=version")
-            .should(
-                "contain",
-                jarlVersion ||
-                    `v${packageJson.version}${buildNum ? `-${buildNum}` : ""}`
-            );
+        cy.get("[data-test=version").should(
+            "contain",
+            // Checking the buildnum here didn't work because we get a different
+            // buildNum on the 2nd job but the version was compiled in on the 1st job
+            jarlVersion || `v${packageJson.version}${buildNum ? "-" : ""}`
+        );
         // Note: This screenshot is for the CI bot to post with announcements
         // and should be left here with the same name
         cy.wait(1000); // Arbitrary wait for the font to load
