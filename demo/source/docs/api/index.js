@@ -39,5 +39,5 @@ export default {
                 )
         )
     ),
-    "jarl-react-native": mapComponents(JarlNativeProvider, JarlNativeLink)
+    "jarl-react-native": mapComponents([JarlNativeProvider, JarlNativeLink])
 };

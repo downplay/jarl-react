@@ -9,6 +9,8 @@ export { default as MainLayout } from "./MainLayout";
 export { default as Layout } from "./DemoLayout";
 export { default as ErrorWrapper } from "./ErrorWrapper";
 
+export { default as MarkdownJsx } from "./MarkdownJsx";
+
 const PageElement = styled.article`
     background-color: ${props =>
         props.theme ? props.theme.back : "transparent"};

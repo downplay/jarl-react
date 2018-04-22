@@ -19,8 +19,6 @@ import createHistory from "history/createBrowserHistory";
 
 import Helmet from "react-helmet";
 
-import "sanitize.css/sanitize.css";
-
 import { hot } from "react-hot-loader";
 import routerCode from "!!raw-loader!./Root";
 

@@ -4,7 +4,8 @@ JARL provides an official React Native integration in the form of the additional
 
 Complete example:
 
-```js
+```jsx
+import React from "react";
 import { NativeProvider, Link } from "jarl-react-native";
 import { withState } from "recompose";
 

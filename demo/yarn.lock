@@ -4277,17 +4277,17 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-jarl-react-redux@^1.0.0-alpha.13:
-  version "1.0.0-alpha.13"
-  resolved "https://registry.yarnpkg.com/jarl-react-redux/-/jarl-react-redux-1.0.0-alpha.13.tgz#d89edf580b6fd8c9a721de8d099160427fee0a48"
+jarl-react-redux@^1.0.0-alpha.15:
+  version "1.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/jarl-react-redux/-/jarl-react-redux-1.0.0-alpha.15.tgz#21c04fef0033f0e6e20b3e6c649025c8cb3fe1aa"
   dependencies:
     invariant "^2.2.2"
-    jarl-react "^1.0.0-alpha.13"
+    jarl-react "^1.0.0-alpha.15"
     prop-types "^15.6.0"
 
-jarl-react@^1.0.0-alpha.13:
-  version "1.0.0-alpha.13"
-  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-1.0.0-alpha.13.tgz#7dc3540e98a10aaee1b8290e17ebc0539f0d63ba"
+jarl-react@^1.0.0-alpha.15:
+  version "1.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-1.0.0-alpha.15.tgz#fbf90b5333c8e644766877a4c0468250e2b4a9f6"
   dependencies:
     hoist-non-react-statics "^2.0.0"
     invariant "^2.2.4"
@@ -5971,7 +5971,7 @@ pretty-bytes@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-4.0.2.tgz#b2bf82e7350d65c6c33aa95aaa5a4f6327f61cd9"
 
-prismjs@^1.8.4:
+prismjs@^1.14.0, prismjs@^1.8.4:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.14.0.tgz#bbccfdb8be5d850d26453933cb50122ca0362ae0"
   optionalDependencies:
@@ -6813,10 +6813,6 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safe-regex/-/safe-regex-1.1.0.tgz#40a3669f3b077d1e943d44629e157dd48023bf2e"
   dependencies:
     ret "~0.1.10"
-
-sanitize.css@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/sanitize.css/-/sanitize.css-5.0.0.tgz#84184b40678f72bb8898c768a27be7578257271a"
 
 sax@~1.2.1:
   version "1.2.4"
