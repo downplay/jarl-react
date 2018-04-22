@@ -4584,7 +4584,7 @@ loader-runner@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.3.0.tgz#f482aea82d543e07921700d5a46ef26fdac6b8a2"
 
-loader-utils@^1.0.2, loader-utils@^1.1.0:
+loader-utils@^1.0.0, loader-utils@^1.0.2, loader-utils@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.1.0.tgz#c98aef488bcceda2ffb5e2de646d6a754429f5cd"
   dependencies:
@@ -5086,6 +5086,10 @@ node-dir@^0.1.10:
   resolved "https://registry.yarnpkg.com/node-dir/-/node-dir-0.1.17.tgz#5f5665d93351335caabef8f1c554516cf5f1e4e5"
   dependencies:
     minimatch "^3.0.2"
+
+node-ensure@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/node-ensure/-/node-ensure-0.0.0.tgz#ecae764150de99861ec5c810fd5d096b183932a7"
 
 node-fetch@^1.0.1:
   version "1.7.3"
@@ -5598,6 +5602,13 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+pdfjs-dist@2.0.303:
+  version "2.0.303"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.0.303.tgz#8c00530f242286603bfcbfdd2ee917c182b9d441"
+  dependencies:
+    node-ensure "^0.0.0"
+    worker-loader "^1.1.0"
 
 pend@~1.2.0:
   version "1.2.0"
@@ -6200,6 +6211,13 @@ react-hot-loader@^4.0.1:
     hoist-non-react-statics "^2.5.0"
     prop-types "^15.6.1"
     shallowequal "^1.0.2"
+
+react-pdf-js@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/react-pdf-js/-/react-pdf-js-3.0.7.tgz#b586c490940b976a235f2932c4bad0addef40dec"
+  dependencies:
+    pdfjs-dist "2.0.303"
+    prop-types "^15.6.0"
 
 react-redux@^5.0.6:
   version "5.0.6"
@@ -8116,6 +8134,13 @@ worker-farm@^1.5.2:
   dependencies:
     errno "~0.1.7"
     xtend "~4.0.1"
+
+worker-loader@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-1.1.1.tgz#920d74ddac6816fc635392653ed8b4af1929fd92"
+  dependencies:
+    loader-utils "^1.0.0"
+    schema-utils "^0.4.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"
