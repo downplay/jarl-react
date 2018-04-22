@@ -1,9 +1,10 @@
 # JARL: Version History
 
-## Next version
+## v1.0.0-beta.1
 
 *   Really actually fix deployment for good this time
 *   Got the code samples and Markdown docs looking much better
+*   Decided this can probably be called beta now 🎉
 
 ## v1.0.0-alpha.15
 
