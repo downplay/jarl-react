@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { routing } from "jarl-react";
+
 import Helmet from "react-helmet";
+import { Menu } from "semantic-ui-react";
 
-import { routing, Link } from "jarl-react";
+import { Layout, MenuItem } from "../../layout";
 
+// The default content to display before the first component has laoded
 import Loading from "./pages/Loading";
 
 const renderPage = page => {
@@ -18,29 +22,25 @@ class Pages extends Component {
     render() {
         const { Page, page, missingPath } = this.props;
         return (
-            <article>
+            <Layout>
                 <Helmet titleTemplate="%s | Code Splitting | JARL Demos" />
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to={{ page: "home" }} data-test="home-link">
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={{ page: "bigPage" }}
-                                data-test="big-page-link"
-                            >
-                                About
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
-                {// The Page component is being injected from the routes
-                // table once the bundle has loaded
+                <Menu>
+                    <MenuItem to={{ page: "home" }} data-test="home-link">
+                        Home
+                    </MenuItem>
+                    <MenuItem
+                        to={{ page: "bigPage" }}
+                        data-test="big-page-link"
+                    >
+                        Big Page
+                    </MenuItem>
+                </Menu>
+                {/**
+                 * The Page component was injected from the onChange
+                 * Handler in Root.js
+                 */
                 Page ? <Page /> : renderPage(page, missingPath)}
-            </article>
+            </Layout>
         );
     }
 }

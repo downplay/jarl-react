@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import Helmet from "react-helmet";
-
 import { routing } from "jarl-react";
 
-import { Layout, Menu, MenuItem } from "../../layout";
+import Helmet from "react-helmet";
+import { Menu } from "semantic-ui-react";
+
+import { Layout, MenuItem } from "../../layout";
 
 import LandingPage from "./pages/Landing";
 import AdminPage from "./pages/Admin";

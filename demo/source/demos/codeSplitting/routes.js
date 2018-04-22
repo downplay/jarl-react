@@ -1,5 +1,13 @@
-// Extract dynamically loaded component into a prop called Page
-// This will end up injected into our routed props at render
+/**
+ * JARL Demos: Code Splitting
+ *
+ * This demonstrates a technique to lazy-load code splitted components
+ * during routing. By returning a Promise from a dynamic import in the
+ * `resolve` method we cause routing to wait for the component to load
+ * before completing navigation.
+ */
+
+// Map the `default` export to an object with a Page prop
 const page = ({ default: Page }) => ({ Page });
 
 const routes = [

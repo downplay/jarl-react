@@ -3,6 +3,7 @@ import { routing } from "jarl-react";
 
 import Helmet from "react-helmet";
 import { Menu, Button } from "semantic-ui-react";
+
 import { Layout, MenuItem } from "../../layout";
 
 import HomePage from "./pages/Home";
