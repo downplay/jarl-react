@@ -39,18 +39,10 @@ const Product = ({ tab }) => (
             <MenuItem data-test="details-tab-link" to={toTab("details")}>
                 Details
             </MenuItem>
-            <MenuItem
-                data-test="ratings-tab-link"
-                to={toTab("ratings")}
-                element={Menu.Item}
-            >
+            <MenuItem data-test="ratings-tab-link" to={toTab("ratings")}>
                 Ratings
             </MenuItem>
-            <MenuItem
-                data-test="gallery-tab-link"
-                to={toImage(1)}
-                element={Menu.Item}
-            >
+            <MenuItem data-test="gallery-tab-link" to={toImage(1)}>
                 Gallery
             </MenuItem>
         </Menu>

@@ -1,5 +1,10 @@
 # JARL: Version History
 
+## Next version
+
+*   Really actually fix deployment for good this time
+*   Got the code samples and Markdown docs looking much better
+
 ## v1.0.0-alpha.15
 
 *   Fix rendering CHANGELOG

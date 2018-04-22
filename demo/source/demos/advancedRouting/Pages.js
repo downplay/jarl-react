@@ -31,11 +31,7 @@ const Pages = ({ page, missingPath }) => (
             <MenuItem to={{ page: "home" }} data-test="home-link">
                 Home
             </MenuItem>
-            <MenuItem
-                to={{ page: "product" }}
-                data-test="product-link"
-                element={Menu.Item}
-            >
+            <MenuItem to={{ page: "product" }} data-test="product-link">
                 Product
             </MenuItem>
         </Menu>

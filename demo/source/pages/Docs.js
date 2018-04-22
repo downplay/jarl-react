@@ -1,7 +1,7 @@
 import React from "react";
-import Markdown from "react-remarkable";
 import docs from "../docs/guides";
+import { MarkdownJsx } from "../layout";
 
-const Docs = ({ docName }) => <Markdown source={docs[docName]} />;
+const Docs = ({ docName }) => <MarkdownJsx source={docs[docName]} />;
 
 export default Docs;

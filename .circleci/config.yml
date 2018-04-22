@@ -205,9 +205,9 @@ jobs:
       - run:
           name: Alias staging to production if tagged
           command: |
-            if [ "$JARL_VERSION"] ; then
+            if [ "$JARL_VERSION" ] ; then
               echo Deploying ${NOW_DEPLOY} to production environment...
-              now -t ${NOW_TOKEN} alias ${NOW_DEPLOY}
+              now -t ${NOW_TOKEN} alias ${NOW_DEPLOY} jarl.downplay.co
               yarn notify deployed
             fi
 
