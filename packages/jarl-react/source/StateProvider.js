@@ -11,7 +11,7 @@ class StateProvider extends Component {
      */
     constructor(props) {
         super(props);
-        this.state = { location: {} };
+        this.state = { location: {}, resolved: {} };
     }
 
     /**
@@ -23,7 +23,7 @@ class StateProvider extends Component {
         if (this.props.onChange) {
             this.props.onChange(event);
         }
-        this.setState({ location: event.location });
+        this.setState({ location: event.location, resolved: event.resolved });
     };
 
     render() {
@@ -33,6 +33,7 @@ class StateProvider extends Component {
             <RoutingProvider
                 {...others}
                 location={this.state.location}
+                resolved={this.state.resolved}
                 onChange={this.handleChange}
             />
         );

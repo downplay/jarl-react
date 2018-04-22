@@ -215,7 +215,7 @@ const unrollBranch = route => unroll(route, r => r.parent);
  *
  * May be passed into the `routes` prop of a RoutingProvider to configure your app.
  *
- * @param {Array<Route>} routes - an array of Route
+ * @param {Array<Route>} routes - an array of {Route} definitions to match against
  */
 class RouteMap {
     routes = [];

@@ -3,11 +3,11 @@ import { compose, withState } from "recompose";
 
 import { StateProvider } from "jarl-react";
 
+import routes from "./routes";
 import Pages from "./Pages";
 
 const Root = ({
     history,
-    routes,
     basePath,
     authenticated,
     setAuthenticated,
@@ -24,8 +24,9 @@ const Root = ({
             authenticated
         })}
         // Resolved content arrives in the onChange callback. In a real app you
-        // might want to raise a Flux action directly from your route to load the content
-        // into your global store. Redux examples will demonstrate this.
+        // might want to raise a Flux action directly from your route to load
+        // the content into your global store.
+        // Eventually this will be shown in a Redux example.
         onChange={({ resolved: { content } }) => setContentPage(content)}
     >
         <Pages

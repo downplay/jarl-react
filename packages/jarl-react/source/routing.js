@@ -46,6 +46,12 @@ import hocFactory from "./lib/hocFactory";
  */
 
 /**
+ * @callback mapResolvedCallback
+ * @param {Object} resolved - The object resolved in the most recent routing
+ * @returns {Object} The props to be passed to your component
+ */
+
+/**
  * Higher-order component to create a router component which receives location data
  * and methods from the RoutingProvider. Injected props are: `location`, `navigate`,
  * `redirect`, `stringify`, `isActive`. See method signature of mapProps for details.
@@ -54,8 +60,10 @@ import hocFactory from "./lib/hocFactory";
  * If omitted then all properties of location will be spread onto your component.
  * @param {mapRoutingCallback} [mapRoutingToProps] - Callback function to map routing props
  * to props that you want to receive on the mapped component.
+ * @param {mapResolvedCallback} [mapResolvedToProps] - Callback function to map resolved objects
+ * to props that you want to receive on the mapped component.
  */
-const routing = (mapLocationToProps, mapRoutingToProps) =>
+const routing = (mapLocationToProps, mapRoutingToProps, mapResolvedToProps) =>
     hocFactory(
         WrappedComponent =>
             class Routing extends Component {
@@ -68,7 +76,8 @@ const routing = (mapLocationToProps, mapRoutingToProps) =>
                         navigate,
                         stringify,
                         redirect,
-                        getLocation
+                        getLocation,
+                        getResolved
                     } = this.context.routing;
                     const location = mapLocationToProps
                         ? mapLocationToProps(getLocation())
@@ -84,6 +93,9 @@ const routing = (mapLocationToProps, mapRoutingToProps) =>
                               this.props
                           )
                         : {};
+                    const resolved = mapResolvedToProps
+                        ? mapResolvedToProps(getResolved())
+                        : getResolved();
 
                     // TODO: PERF: See if any caching could/should be done of the
                     // result of mapping functions
@@ -91,6 +103,7 @@ const routing = (mapLocationToProps, mapRoutingToProps) =>
                         <WrappedComponent
                             {...this.props}
                             {...location}
+                            {...resolved}
                             {...callbacks}
                         />
                     );

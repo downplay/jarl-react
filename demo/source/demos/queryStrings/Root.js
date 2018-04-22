@@ -2,9 +2,10 @@ import React from "react";
 
 import { StateProvider } from "jarl-react";
 
+import routes from "./routes";
 import Pages from "./Pages";
 
-const Root = ({ history, routes, basePath }) => (
+const Root = ({ history, basePath }) => (
     <StateProvider history={history} routes={routes} basePath={basePath}>
         <Pages />
     </StateProvider>

@@ -12,8 +12,11 @@ export const routingContextShape = PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     redirect: PropTypes.func.isRequired,
     stringify: PropTypes.func.isRequired,
-    getLocation: PropTypes.func.isRequired
+    getLocation: PropTypes.func.isRequired,
+    getResolved: PropTypes.func.isRequired
 }).isRequired;
+
+const DEFAULT_STATE = {};
 
 /** Action type on initial navigation. */
 export const ACTION_INITIAL = "INITIAL";
@@ -38,6 +41,8 @@ class RoutingProvider extends Component {
         ]).isRequired,
         /** Current location represented as a plain state object */
         location: PropTypes.object,
+        /** Resolved objects to be passed down via React's context */
+        resolved: PropTypes.object,
         /**
          * Handler for when a location change is requested by navigation (via Link,
          * by browser back/forward buttons, etc.)
@@ -68,7 +73,8 @@ class RoutingProvider extends Component {
     static defaultProps = {
         onChange: null,
         location: null,
-        context: () => ({}),
+        resolved: null,
+        context: () => DEFAULT_STATE,
         performInitialRouting: true,
         basePath: ""
     };
@@ -105,6 +111,7 @@ class RoutingProvider extends Component {
                 redirect: this.handleRedirect,
                 stringify: this.handleStringify,
                 getLocation: this.handleGetLocation,
+                getResolved: this.handleGetResolved,
                 isActive: this.handleIsActive
             }
         };
@@ -301,6 +308,9 @@ class RoutingProvider extends Component {
         if (this.props.onChange) {
             this.props.onChange(output);
         }
+        // Ensure location and resolved get picked up by children
+        // TODO: Switch to new Context API and simplify all of this
+        this.forceUpdate();
     };
 
     handleStringify = location => {
@@ -309,6 +319,7 @@ class RoutingProvider extends Component {
     };
 
     handleGetLocation = () => this.props.location;
+    handleGetResolved = () => this.props.resolved || DEFAULT_STATE;
 
     handleIsActive = (location, exact = false) => {
         // While router is in an unstable state on first render or after receiving new

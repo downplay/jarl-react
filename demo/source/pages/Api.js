@@ -22,22 +22,6 @@ const apis = [
 ];
 const apiTitle = apiName => apis.find(api => api.name === apiName).title;
 
-const Paragraph = text => (
-    // eslint-disable-next-line react/no-danger
-    <Markdown source={text} />
-);
-
-const Line = line => (
-    <Fragment>
-        {typeof line === "string" && <Markdown source={line} />}
-        {line.type === "text" && Paragraph(line.value)}
-        {line.children && line.children.map(Line)}
-    </Fragment>
-);
-
-// eslint-disable-next-line react/no-array-index-key
-const Row = ({ cells }) => cells.map((cell, i) => <td key={i}>{cell}</td>);
-
 const PreCell = ({ children, ...rest }) => (
     <Table.Cell {...rest}>
         <pre>{children}</pre>
@@ -52,51 +36,155 @@ const CodeCell = styled(PreCell)`
     font-style: italic;
 `;
 
+const flattenParas = root =>
+    root.children ? root.children.map(flattenParas).join("") : root.value || "";
+
+const Description = ({ value }) => {
+    let description = value;
+    if (value && value.children) {
+        description = flattenParas(value);
+    }
+    return <Markdown source={description} />;
+};
+
+const PropsHeaderRow = ({ showRequired }) => (
+    <Table.Header>
+        <Table.Row>
+            <Table.HeaderCell>name</Table.HeaderCell>
+            <Table.HeaderCell>type</Table.HeaderCell>
+            <Table.HeaderCell>default</Table.HeaderCell>
+            {showRequired && <Table.HeaderCell>required</Table.HeaderCell>}
+            <Table.HeaderCell>description</Table.HeaderCell>
+        </Table.Row>
+    </Table.Header>
+);
+
+const PropsRow = ({
+    name,
+    type,
+    defaultValue,
+    required,
+    description,
+    showRequired
+}) => (
+    <Table.Row>
+        <NameCell>{name}</NameCell>
+        <CodeCell>{type}</CodeCell>
+        <CodeCell>{defaultValue && defaultValue.value}</CodeCell>
+        {showRequired && <CodeCell>{required && "required"}</CodeCell>}
+        <Table.Cell>
+            <Description value={description} />
+        </Table.Cell>
+    </Table.Row>
+);
+
 const ComponentApi = ({ item }) => (
     <Fragment>
-        <Header sub>Details</Header>
-        <Markdown source={item.description} />
+        {item.description && <Markdown source={item.description} />}
         <Header sub>Props</Header>
-        <Table>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>name</Table.HeaderCell>
-                    <Table.HeaderCell>type</Table.HeaderCell>
-                    <Table.HeaderCell>default</Table.HeaderCell>
-                    <Table.HeaderCell>required</Table.HeaderCell>
-                    <Table.HeaderCell>description</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            {item.props && (
+        {item.props && (
+            <Table>
+                <PropsHeaderRow showRequired />
                 <Table.Body>
                     {Object.entries(item.props).map(([name, prop]) => (
-                        <Table.Row key={name}>
-                            <NameCell>{name}</NameCell>
-                            <CodeCell>{prop.type.name}</CodeCell>
-                            <CodeCell>
-                                {prop.defaultValue && prop.defaultValue.value}
-                            </CodeCell>
-                            <CodeCell>{prop.required && "required"}</CodeCell>
-                            <Table.Cell>
-                                <Markdown source={prop.description} />
-                            </Table.Cell>
-                        </Table.Row>
+                        <PropsRow
+                            {...{
+                                ...prop,
+                                name,
+                                type: prop.type.name,
+                                showRequired: true
+                            }}
+                            key={name}
+                        />
                     ))}
                 </Table.Body>
-            )}
+            </Table>
+        )}
+    </Fragment>
+);
+
+const translateType = type => {
+    if (!type) {
+        return "";
+    }
+    switch (type.type) {
+        case "NameExpression":
+            return type.name;
+        case "AllLiteral":
+            return "*";
+        case "TypeApplication":
+            return `${translateType(type.expression)}<${type.applications
+                .map(translateType)
+                .join(",")}>`;
+        case "OptionalType":
+            // TODO: These are for callbacks and should popup the callback detail
+            return translateType(type.expression);
+        default:
+            // eslint-disable-next-line no-console
+            console.log(type);
+            return "unknown";
+    }
+};
+
+const ClassParams = ({ item }) =>
+    item.params && (
+        <Table>
+            <PropsHeaderRow />
+            <Table.Body>
+                {item.params.map(
+                    ({
+                        name,
+                        default: defaultValue,
+                        type,
+                        required,
+                        description
+                    }) => (
+                        <PropsRow
+                            {...{
+                                name,
+                                type: translateType(type),
+                                defaultValue,
+                                required,
+                                description
+                            }}
+                            key={name}
+                        />
+                    )
+                )}
+            </Table.Body>
         </Table>
+    );
+
+const Member = ({ member }) => (
+    <Fragment>
+        <Header as="h3">{member.displayName || member.name}</Header>
+        {member.description && <Description value={member.description} />}
+        <Header sub>Arguments</Header>
+        <ClassParams item={member} />
     </Fragment>
 );
 
 const ClassApi = ({ item }) => (
     <Fragment>
+        {item.description && <Description value={item.description} />}
         <Header sub>Constructor</Header>
-        <table>
-            {item.params.map(({ title, name, default: def, description }) => (
-                <Row cells={[title, name, def, description]} />
-            ))}
-        </table>
-        <Header sub>Methods</Header>
+        <ClassParams item={item} />
+        <Header sub>Members</Header>
+        {item.members.instance.map(member => (
+            <Member
+                item={item}
+                member={member}
+                key={member.displayName || member.name}
+            />
+        ))}
+    </Fragment>
+);
+
+const ConstApi = ({ item }) => (
+    <Fragment>
+        {item.description && <Description value={item.description} />}
+        <Header sub>Arguments</Header>
+        <ClassParams item={item} />
     </Fragment>
 );
 
@@ -106,8 +194,12 @@ const renderItem = item => {
             return <ComponentApi item={item} />;
         case "class":
             return <ClassApi item={item} />;
+        case "constant":
+            return <ConstApi item={item} />;
         default:
-            return <pre>{JSON.stringify(item, null, "  ")}</pre>;
+            // eslint-disable-next-line no-console
+            console.log(item);
+            return null;
     }
 };
 

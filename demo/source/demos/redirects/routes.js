@@ -38,9 +38,11 @@ const routes = [
         resolve: ({ slug }) =>
             api
                 .get(slug)
-                // Happy path: when the content exists, resolve it to allow navigation
+                // Happy path: when the content exists, resolve it to
+                // allow navigation
                 .then(content => ({ content }))
-                // Catch because content doesn't exist; resolve this into a redirect
+                // Catch because content doesn't exist; resolve this into
+                // a redirect
                 .catch(e =>
                     redirect({
                         page: "landing",

@@ -133,22 +133,16 @@ class Root extends Component {
             // `history` instance so browser history works right across the board.
             // Each demo has its own Router instance which operates as kind of a subcontroller
             // for our root router.
-            const {
-                Root: DemoRoot,
-                routes: demoRoutes,
-                code: demoCode
-            } = getDemo(demoName).content;
+            const { Root: DemoRoot, code: demoCode } = getDemo(
+                demoName
+            ).content;
 
             // Render code for the demo
             code = demoCode;
 
             content = (
                 <ErrorWrapper onError={this.handleDemoError}>
-                    <DemoRoot
-                        routes={demoRoutes}
-                        history={history}
-                        basePath={`/${demoName}`}
-                    />
+                    <DemoRoot history={history} basePath={`/${demoName}`} />
                 </ErrorWrapper>
             );
         } else {

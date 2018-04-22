@@ -1,10 +1,10 @@
 # Data Loading
 
-First let's describe exactly what a data dependency is. It means that a particular route is _dependent_ on some specific data being available, in order to fully render correctly.
-
-Some analysis of this statement reveals a truth: data dependencies are inextricably bound to your routing. Libraries such as Apollo might try to abstract away or at least make this binding less painful, but the reality is that it is still there, just very cleverly hidden.
-
-JARL attempts to tackle this requirement head-on, rather than letting it be an afterthought.
+Most of the time in a real application, every route carries with it some data requirements.
+Normally in the React world we're encouraged to manage an `isLoading` flag in state and
+display some loading spinner while the data loads. This solution isn't ideal because we
+have to manage and check that flag everywhere. JARL makes it easy to manage your loading
+state at the router level rather than the component level.
 
 Let's take the previous example of a product page and see how this looks once we move the side-effects (actually loading the data) into our route map, using `resolve` on our routes.
 

@@ -48,6 +48,6 @@ class ProductPage extends Component {
 export default routing()(ProductPage);
 ```
 
-Here we start to encounter one of the bigger problems that JARL aims to tackle. This route has a "data dependency": this will be dealt with in the next part.
-
-Next: 03. Data Dependencies
+In this example we're optimistically loading the page and display a
+"Loading..." spinner while the data loads. See the [Data Loading](/docs/data-loading)
+guide for a better way to manage this.
