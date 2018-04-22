@@ -1,6 +1,6 @@
 # JARL: Version History
 
-## Next version
+## v1.0.0-beta.2
 
 *   New feature: improved API to accessing `resolve` objects. They are now available
     via the `routing` HOC or the `Router` FaC, alongside the `location`props
