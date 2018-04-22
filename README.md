@@ -11,6 +11,8 @@ The production grade "batteries included" **controlled component** router.
 [![Cypress end-to-end tests](https://img.shields.io/badge/cypress-dashboard-brightgreen.svg)](https://dashboard.cypress.io/#/projects/ps43vs/runs)
 [![Join the conversation on Discord](https://img.shields.io/discord/437254750946459648.svg)](https://discord.gg/BVcQ6Z)
 
+If you just want the docs: [JARL demos and documentation](http://jarl.downplay.co)
+
 ## Why another router?
 
 A web router simply performs a mapping between URL and state. I wanted
@@ -198,12 +200,11 @@ That's all the basics! Hopefully this gave a flavour of the power and simplicity
 
 ## Documentation
 
-Lack of documentation is the biggest reason you shouldn't use this router right now. If you want to see some detailed examples, take a look through the source code of the demos:
-https://github.com/downplay/jarl-react/tree/master/demo/source/demos
+Detailed documentation, and demos with annotated code samples, can be viewed at the following address:
 
-[Changelog](https://github.com/downplay/jarl-react/tree/master/CHANGELOG.md)
+[JARL demos and documentation](https://jarl.downplay.co)
 
-[Roadmap](https://github.com/downplay/jarl-react/tree/master/ROADMAP.md)
+[Changelog](https://jarl.downplay.co/changelog)
 
 ## Tests & Demos
 
