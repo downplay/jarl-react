@@ -5,7 +5,6 @@
         "packages/jarl-react",
         "packages/jarl-react-redux",
         "packages/jarl-react-native",
-        "demo",
-        "native"
+        "demo"
     ]
 }
