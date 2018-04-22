@@ -5,8 +5,7 @@ import routing from "./routing";
 
 /**
  * Function-as-child API to access current routed location. The current location
- * object will be passed to a children callback.
- * @component
+ * object and resolved data will be passed to a child callback.
  */
 export class Router extends Component {
     static propTypes = {
@@ -21,8 +20,10 @@ export class Router extends Component {
     };
 
     render() {
-        return this.props.children(this.props.location);
+        return this.props.children(this.props.location, this.props.resolved);
     }
 }
 
-export default routing(location => ({ location }))(Router);
+export default routing(location => ({ location }), null, resolved => ({
+    resolved
+}))(Router);

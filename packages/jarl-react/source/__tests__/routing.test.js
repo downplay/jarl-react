@@ -8,12 +8,16 @@ import routing from "../routing";
 import MockProvider from "./mocks/MockProvider";
 import mockHistory from "./mocks/mockHistory";
 
-describe("location", () => {
-    let mockComponent;
-    beforeEach(() => {
-        mockComponent = () => <div />;
-    });
+// TODO: Tests for stringify
 
+let mockComponent;
+beforeEach(() => {
+    mockComponent = () => <div />;
+});
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+describe("location", () => {
     test("passes arbitrary location props to component", () => {
         const TestComponent = routing()(mockComponent);
         const mockState = { foo: Symbol("bar") };
@@ -45,7 +49,6 @@ describe("location", () => {
 });
 
 describe("isActive", () => {
-    let mockComponent;
     let routes;
     let TestComponent;
     beforeEach(() => {
@@ -87,7 +90,6 @@ describe("isActive", () => {
                 ]
             }
         ];
-        mockComponent = () => <div />;
         TestComponent = routing(null, ({ isActive }, { to }) => ({
             active: isActive(to)
         }))(mockComponent);
@@ -195,11 +197,9 @@ describe("isActive", () => {
 });
 
 describe("navigate", () => {
-    let mockComponent;
     let history;
     let TestComponent;
     beforeEach(() => {
-        mockComponent = () => <div />;
         history = mockHistory();
         TestComponent = routing(() => ({}), ({ navigate }) => ({ navigate }))(
             mockComponent
@@ -231,11 +231,9 @@ describe("navigate", () => {
 });
 
 describe("redirect", () => {
-    let mockComponent;
     let history;
     let TestComponent;
     beforeEach(() => {
-        mockComponent = () => <div />;
         history = mockHistory();
         TestComponent = routing(() => ({}), ({ redirect }) => ({ redirect }))(
             mockComponent
@@ -266,4 +264,49 @@ describe("redirect", () => {
     });
 });
 
-// TODO: Tests for stringify
+describe.only("resolved", () => {
+    test("passes resolved data props to component", async () => {
+        const TestComponent = routing()(mockComponent);
+        const resolveItem = Symbol("Bar");
+        const routes = [
+            {
+                path: "/",
+                state: { home: true },
+                resolve: () => Promise.resolve({ Foo: resolveItem })
+            }
+        ];
+        const output = mount(
+            <MockProvider routes={routes} location={{}}>
+                <TestComponent />
+            </MockProvider>
+        );
+        await wait(10);
+        const test = output.find(mockComponent);
+        const props = test.props();
+        expect(props.Foo).toEqual(resolveItem);
+    });
+
+    test("passes mapped resolve props to component", async () => {
+        const TestComponent = routing(null, null, ({ Foo }) => ({ Bar: Foo }))(
+            mockComponent
+        );
+        const resolveItem = Symbol("Bar");
+        const routes = [
+            {
+                path: "/",
+                state: { home: true },
+                resolve: () => Promise.resolve({ Foo: resolveItem })
+            }
+        ];
+        const output = mount(
+            <MockProvider routes={routes} location={{}}>
+                <TestComponent />
+            </MockProvider>
+        );
+        await wait(10);
+        const test = output.find(mockComponent);
+        const props = test.props();
+        expect(props.Foo).toBeUndefined();
+        expect(props.Bar).toEqual(resolveItem);
+    });
+});

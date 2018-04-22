@@ -12,7 +12,8 @@ export const routingContextShape = PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     redirect: PropTypes.func.isRequired,
     stringify: PropTypes.func.isRequired,
-    getLocation: PropTypes.func.isRequired
+    getLocation: PropTypes.func.isRequired,
+    getResolved: PropTypes.func.isRequired
 }).isRequired;
 
 /** Action type on initial navigation. */
@@ -84,6 +85,7 @@ class RoutingProvider extends Component {
             "Invalid routes property: must be an array or a RouteMap instance"
         );
         invariant(props.history, "Provider must receive a history object");
+        this.resolved = {};
         this.state = {
             routes: ensureRouteMap(props.routes),
             validLocation: false
@@ -105,6 +107,7 @@ class RoutingProvider extends Component {
                 redirect: this.handleRedirect,
                 stringify: this.handleStringify,
                 getLocation: this.handleGetLocation,
+                getResolved: this.handleGetResolved,
                 isActive: this.handleIsActive
             }
         };
@@ -298,9 +301,13 @@ class RoutingProvider extends Component {
     }
 
     completeRouting = output => {
+        this.resolved = output.resolved;
         if (this.props.onChange) {
             this.props.onChange(output);
         }
+        // Ensure location and resolved get picked up by children
+        // TODO: Switch to new Context API and simplify all of this
+        this.forceUpdate();
     };
 
     handleStringify = location => {
@@ -309,6 +316,7 @@ class RoutingProvider extends Component {
     };
 
     handleGetLocation = () => this.props.location;
+    handleGetResolved = () => this.resolved;
 
     handleIsActive = (location, exact = false) => {
         // While router is in an unstable state on first render or after receiving new

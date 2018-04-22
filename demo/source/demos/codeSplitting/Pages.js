@@ -20,6 +20,8 @@ const renderPage = page => {
 
 class Pages extends Component {
     render() {
+        // Resolved objects are pass in along with location properties
+        // by `routing`
         const { Page, page, missingPath } = this.props;
         return (
             <Layout>
