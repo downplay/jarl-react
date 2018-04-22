@@ -33,6 +33,7 @@ import { MainLayout, ErrorWrapper } from "./layout";
 import MainMenu from "./MainMenu";
 
 import { getDemo } from "./demos";
+import About from "./pages/About";
 
 /**
  * You need a `history` instance, here we're using a browserHistory for "real" URLs,
@@ -43,6 +44,10 @@ const history = createHistory();
 const routes = [
     {
         path: "/",
+        state: { page: "about" }
+    },
+    {
+        path: "/demos",
         state: { page: "index" }
     },
     {
@@ -156,6 +161,9 @@ class Root extends Component {
                     break;
                 case "changelog":
                     content = <Changelog />;
+                    break;
+                case "about":
+                    content = <About />;
                     break;
                 case "api":
                     content = <Api apiName={apiName} />;
