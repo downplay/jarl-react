@@ -1,6 +1,11 @@
 # JARL: Version History
 
-## Next version
+## v1.0.0-beta.4
+
+*   Started testing React Native integration
+*   Interim release to get this working
+
+## v1.0.0-beta.3
 
 *   Fix: Got `active` working everywhere properly, in particular inside demos
 *   Fix: Edge case crash on redirect demos
