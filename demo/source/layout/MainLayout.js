@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter/prism";
-import { coy as style } from "react-syntax-highlighter/styles/prism";
 import styled from "react-emotion";
 import { Header, Label } from "semantic-ui-react";
+import { Highlight } from "./MarkdownJsx";
 
 const Grid = styled.div`
     display: grid;
@@ -19,9 +18,11 @@ const HeaderRow = styled.div`
 const MenuSidebar = styled.div`
     padding-right: 2rem;
 `;
+
 const ContentPanel = styled.div`
     padding: 0 2rem;
 `;
+
 const CodePanel = styled.div`
     font-size: 80%;
 `;
@@ -42,9 +43,7 @@ const MainLayout = ({ children, code, menu }) => (
                 code.map(({ name, code: source }) => (
                     <Fragment key={name}>
                         <Label>{name}:</Label>
-                        <SyntaxHighlighter language="jsx" style={style}>
-                            {source}
-                        </SyntaxHighlighter>
+                        <Highlight language="jsx" source={source} />
                     </Fragment>
                 ))}
         </CodePanel>

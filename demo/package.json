@@ -10,7 +10,8 @@
         "clean": "git clean -fdX .",
         "lint": "eslint . --max-warnings 0",
         "ci-stop": "pkill -SIGINT JARLDEMO",
-        "ci-cypress": "cypress run --record --key ${CYPRESS_DASHBOARD} --env JARL_VERSION=${JARL_VERSION},CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}",
+        "ci-cypress":
+            "cypress run --record --key ${CYPRESS_DASHBOARD} --env JARL_VERSION=${JARL_VERSION},CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}",
         "ci-start": "babel-node ./server/production.js",
         "local-e2e-run": "npm-run-all ci-cypress ci-stop",
         "local-e2e": "npm-run-all --parallel ci-start local-e2e-run"
@@ -60,7 +61,6 @@
         "react-hot-loader": "^4.0.1",
         "react-redux": "^5.0.6",
         "react-remarkable": "^1.1.3",
-        "react-syntax-highlighter": "^7.0.2",
         "recompose": "^0.26.0",
         "redux": "^3.7.2",
         "semantic-ui-css": "^2.3.1",
