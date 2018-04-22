@@ -190,7 +190,7 @@ class Root extends Component {
                 onChange={this.handleChange}
                 location={this.state.location}
             >
-                <Helmet titleTemplate="JARL Demos | %s" />
+                <Helmet titleTemplate="JARL | %s" />
                 {this.renderDemo()}
             </RoutingProvider>
         );
