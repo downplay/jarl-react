@@ -1,4 +1,6 @@
 import React from "react";
+import { routing, Link } from "jarl-react";
+
 import PDF from "react-pdf-js";
 
 class PdfViewer extends React.Component {
@@ -21,38 +23,29 @@ class PdfViewer extends React.Component {
     };
 
     renderPagination = (page, pages) => {
-        let previousButton = (
+        /**
+         * Hook the pagination into our routing
+         */
+        const linkTo = newPage => {
+            if (newPage < 1 || newPage > pages) {
+                return null;
+            }
+            return { ...this.props.location, page: newPage };
+        };
+        const previousButton = (
             <li className="previous" onClick={this.handlePrevious}>
-                <a href="#">
+                <Link to={linkTo(page - 1)}>
                     <i className="fa fa-arrow-left" /> Previous
-                </a>
+                </Link>
             </li>
         );
-        if (page === 1) {
-            previousButton = (
-                <li className="previous disabled">
-                    <a href="#">
-                        <i className="fa fa-arrow-left" /> Previous
-                    </a>
-                </li>
-            );
-        }
-        let nextButton = (
+        const nextButton = (
             <li className="next" onClick={this.handleNext}>
-                <a href="#">
+                <Link to={linkTo(page + 1)}>
                     Next <i className="fa fa-arrow-right" />
-                </a>
+                </Link>
             </li>
         );
-        if (page === pages) {
-            nextButton = (
-                <li className="next disabled">
-                    <a href="#">
-                        Next <i className="fa fa-arrow-right" />
-                    </a>
-                </li>
-            );
-        }
         return (
             <nav>
                 <ul className="pager">
@@ -67,7 +60,7 @@ class PdfViewer extends React.Component {
         let pagination = null;
         if (this.state.pages) {
             pagination = this.renderPagination(
-                this.state.page,
+                this.props.page,
                 this.state.pages
             );
         }
@@ -77,7 +70,7 @@ class PdfViewer extends React.Component {
                     file={this.props.file}
                     onDocumentComplete={this.onDocumentComplete}
                     onPageComplete={this.onPageComplete}
-                    page={this.state.page}
+                    page={this.props.page}
                 />
                 {pagination}
             </div>
@@ -85,4 +78,6 @@ class PdfViewer extends React.Component {
     }
 }
 
-export default PdfViewer;
+export default routing(location => ({ location, page: location.page }))(
+    PdfViewer
+);
