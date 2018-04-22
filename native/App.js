@@ -15,9 +15,19 @@ const styles = StyleSheet.create({
 });
 
 export default class App extends React.Component {
+    state = { location: null };
+
+    handleChange = ({ location }) => {
+        this.setState({ location });
+    };
+
     render() {
         return (
-            <NativeProvider routes={routes}>
+            <NativeProvider
+                routes={routes}
+                location={this.state.location}
+                onChange={this.handleChange}
+            >
                 <View style={styles.container}>
                     <Router>
                         {({ page }) => {
