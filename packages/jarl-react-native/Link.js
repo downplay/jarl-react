@@ -78,4 +78,5 @@ Link.defaultProps = {
     activeStyle: {}
 };
 
+/** @component */
 export default Link;

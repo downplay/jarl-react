@@ -11,14 +11,15 @@ const toApi = apiName => ({ page: "api", apiName });
 
 const apis = [
     {
-        name: "JARL",
-        to: toApi("jarl-react")
+        name: "jarl-react",
+        title: "JARL"
     },
     {
-        name: "JARL",
-        to: toApi("jarl-react-native")
+        name: "jarl-react-native",
+        title: "JARL Native"
     }
 ];
+const apiTitle = apiName => apis.find(api => api.name === apiName).title;
 
 const Paragraph = text => (
     // eslint-disable-next-line react/no-danger
@@ -81,12 +82,12 @@ const renderItem = item => {
 
 const Api = ({ apiName }) => (
     <Page>
-        <MainHeader>JARL API</MainHeader>
+        <MainHeader>{apiTitle(apiName)} API Reference</MainHeader>
         <Body>
             <Menu>
-                {apis.map(({ name, to }) => (
-                    <MenuItem key={name} to={to}>
-                        {name}
+                {apis.map(({ name, title }) => (
+                    <MenuItem key={name} to={toApi(name)}>
+                        {title}
                     </MenuItem>
                 ))}
             </Menu>

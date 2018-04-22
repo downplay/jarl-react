@@ -38,7 +38,6 @@ const MainMenu = () => (
             <MenuItem title="JARL" to={{ page: "api", apiName: "jarl-react" }}>
                 JARL
             </MenuItem>
-            <MenuItem title="JARL Redux">JARL Redux</MenuItem>
             <MenuItem
                 title="JARL Native"
                 to={{ page: "api", apiName: "jarl-react-native" }}
