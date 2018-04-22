@@ -23,10 +23,6 @@ const demos = [
         to: toDemo("redirects")
     },
     {
-        name: "Redux Integration",
-        to: toDemo("reduxIntegration")
-    },
-    {
         name: "Code Splitting",
         to: toDemo("codeSplitting")
     }

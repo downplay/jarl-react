@@ -5,8 +5,11 @@ import packageJson from "../../package.json";
 describe("Demos Shell", () => {
     it("loads home page", () => {
         cy.visit("/");
-        cy.title().should("include", "JARL Demos");
-        cy.get("[data-test=header]").should("contain", "Index");
+        cy.title().should("include", "About");
+        cy.get("[data-test=content] h1").should("contain", "JARL");
+        cy
+            .get("[data-test=content] h1+p")
+            .should("contain", "Just Another Router Library for React.");
         const jarlVersion = Cypress.env("JARL_VERSION");
         const buildNum = Cypress.env("CIRCLE_BUILD_NUM");
         cy.get("[data-test=version").should(

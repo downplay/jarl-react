@@ -1,4 +1,7 @@
 import React from "react";
+import PdfViewer from "./PdfViewer";
+
+import bigPdf from "./Game_Programming_lecture.pdf";
 
 import { Page, Header, Body } from "../../../layout";
 
@@ -6,23 +9,7 @@ const BigPage = () => (
     <Page>
         <Header>REALLY BIG PAGE</Header>
         <Body>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
-            <p>BIG</p>
+            <PdfViewer file={bigPdf} />
         </Body>
     </Page>
 );

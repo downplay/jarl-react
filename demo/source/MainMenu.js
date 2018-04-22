@@ -5,6 +5,7 @@ import demos from "./demos";
 
 const MainMenu = () => (
     <Menu>
+        <MenuItem to={{ page: "about" }}>About</MenuItem>
         <MenuItem to={{ page: "docs", docName: "getting-started" }}>
             Getting Started
         </MenuItem>

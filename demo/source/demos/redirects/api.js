@@ -1,7 +1,12 @@
-// A fake async API to demonstrate resolver redirect
+/**
+ * A fake async API to demonstrate resolver redirect
+ */
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const api = {
     async get(slug) {
+        await wait(300); // Simulate traffic
         if (slug === "about-us") {
             return {
                 title: "About JARL",
