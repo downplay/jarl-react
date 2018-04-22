@@ -229,7 +229,7 @@ class RouteMap {
      */
     mapPatterns(routes, parent) {
         // Instance the pattern and store the route
-        for (const route of routes) {
+        routes.forEach(route => {
             const [childPath, childQuery] = splitPath(route.path);
             const path = parent ? joinPaths(parent.path, childPath) : childPath;
             let query = convertToPatterns(childQuery);
@@ -296,7 +296,7 @@ class RouteMap {
             if (route.routes) {
                 this.mapPatterns(route.routes, mappedRoute);
             }
-        }
+        });
     }
 
     /**
