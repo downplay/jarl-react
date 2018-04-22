@@ -1,17 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default class App extends React.Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text>Open up App.js to start working on your app!</Text>
-                <Text>Changes you make will automatically reload.</Text>
-                <Text>Shake your phone to open the developer menu.</Text>
-            </View>
-        );
-    }
-}
+import { NativeProvider, Router, Link } from "jarl-react-native";
+
+import routes from "./routes";
 
 const styles = StyleSheet.create({
     container: {
@@ -21,3 +13,36 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
+
+export default class App extends React.Component {
+    render() {
+        return (
+            <NativeProvider routes={routes}>
+                <View style={styles.container}>
+                    <Router>
+                        {({ page }) => {
+                            switch (page) {
+                                case "home":
+                                    return (
+                                        <Fragment>
+                                            <Text>Home page</Text>
+                                        </Fragment>
+                                    );
+                                case "page2":
+                                    return (
+                                        <Fragment>
+                                            <Text>Page 2</Text>
+                                        </Fragment>
+                                    );
+                                default:
+                                    return null;
+                            }
+                        }}
+                    </Router>
+                    <Link to={{ page: "home" }}>Home</Link>
+                    <Link to={{ page: "page2" }}>Page 2</Link>
+                </View>
+            </NativeProvider>
+        );
+    }
+}
