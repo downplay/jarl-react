@@ -10,16 +10,26 @@
 // Map the `default` export to an object with a Page prop
 const page = ({ default: Page }) => ({ Page });
 
+// Use an artificial wait to simulate network traffic
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// TODO: Trigger a spinner while they're loading
 const routes = [
     {
         path: "/",
         state: { page: "home" },
-        resolve: () => import("./pages/Home").then(page)
+        resolve: () =>
+            wait(500)
+                .then(() => import("./pages/Home"))
+                .then(page)
     },
     {
         path: "/big-page",
         state: { page: "bigPage" },
-        resolve: () => import("./pages/BigPage").then(page)
+        resolve: () =>
+            wait(1000)
+                .then(() => import("./pages/BigPage"))
+                .then(page)
     }
 ];
 
