@@ -23,6 +23,11 @@ const ContentPanel = styled.div`
     padding: 0 2rem;
 `;
 
+const FullContentPanel = styled(ContentPanel)`
+    grid-column-start: 2;
+    grid-column-end: 4;
+`;
+
 const CodePanel = styled.div`
     font-size: 80%;
 `;
@@ -37,16 +42,20 @@ const MainLayout = ({ children, code, menu }) => (
             <Header sub>Just Another Routing Library (for React)</Header>
         </HeaderRow>
         <MenuSidebar>{menu}</MenuSidebar>
-        <ContentPanel data-test="content">{children}</ContentPanel>
-        <CodePanel data-test="code">
-            {code &&
-                code.map(({ name, code: source }) => (
+        {code ? (
+            <ContentPanel data-test="content">{children}</ContentPanel>
+        ) : (
+            <FullContentPanel data-test="content">{children}</FullContentPanel>
+        )}
+        {code &&
+            code.map(({ name, code: source }) => (
+                <CodePanel data-test="code">
                     <Fragment key={name}>
                         <Label>{name}:</Label>
                         <Highlight language="jsx" source={source} />
                     </Fragment>
-                ))}
-        </CodePanel>
+                </CodePanel>
+            ))}
     </Grid>
 );
 

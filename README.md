@@ -226,11 +226,13 @@ To run demo:
 yarn demo
 ```
 
-To run e2e tests (via [cypress.io](https://cypress.io)):
+To run E2E tests (using [Cypress](https://cypress.io)):
 
 ```
 yarn e2e
 ```
+
+Previous E2E test runs can be viewed on the awesome [Cypress Dashboard](https://dashboard.cypress.io/#/projects/ps43vs/runs).
 
 ## Community
 
