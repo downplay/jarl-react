@@ -67,3 +67,7 @@ typings/
 # Cypress test run Output
 demo/cypress/screenshots
 demo/cypress/videos
+
+# Editors / XDE
+.expo
+.idea

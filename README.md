@@ -234,6 +234,16 @@ yarn e2e
 
 Previous E2E test runs can be viewed on the awesome [Cypress Dashboard](https://dashboard.cypress.io/#/projects/ps43vs/runs).
 
+Note: to run the full suite (including Native builds) it might be necessary
+to increase the max number of watches as follows:
+
+```
+sudo sysctl -w kern.maxfiles=5242880
+sudo sysctl -w kern.maxfilesperproc=524288
+```
+
+See: https://github.com/react-community/create-react-native-app/issues/234
+
 ## Community
 
 We have a dedicated Discord server with CI announcements in #build: https://discord.gg/BVcQ6Z

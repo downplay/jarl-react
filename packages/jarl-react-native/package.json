@@ -11,21 +11,12 @@
         "lint": "eslint . --max-warnings 0 --color",
         "coverage": "jest --coverage"
     },
-    "files": [
-        "index.js",
-        "Link.js",
-        "NativeProvider.js"
-    ],
+    "files": ["main.js", "Link.js", "NativeProvider.js"],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill",
-            "./tools/configureJest.js"
-        ],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$",
         "preset": "react-native",
-        "collectCoverageFrom": [
-            "*.js"
-        ]
+        "collectCoverageFrom": ["*.js"]
     },
     "keywords": [
         "react",
@@ -78,7 +69,7 @@
         "jest": "^22.4.3",
         "react": "^16.3.1",
         "react-dom": "^16.3.1",
-        "react-native": "^0.55.1",
+        "react-native": "~0.54.1",
         "react-native-web": "^0.5.4"
     }
 }
