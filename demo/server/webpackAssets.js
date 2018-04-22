@@ -29,17 +29,18 @@ const withPath = asset => `/${asset}`;
 
 async function webpackAssets(context) {
     const assets = await parseWebpackAssetManifest(context);
+
+    const reduce = (...list) =>
+        list.reduce((acc, val) => {
+            if (assets[val]) {
+                list.push(withPath(assets[val]));
+            }
+            return list;
+        }, []);
+
     return {
-        scripts: [
-            withPath(assets["vendors~bundle.js"]),
-            withPath(assets["bundle.js"])
-        ],
-        styles: assets["bundle.css"]
-            ? [
-                  withPath(assets["vendors~bundle.css"]),
-                  withPath(assets["bundle.css"])
-              ]
-            : []
+        scripts: reduce("vendors~bundle.js", "bundle.js"),
+        styles: reduce("vendors~bundle.css", "bundle.css")
     };
 }
 

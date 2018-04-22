@@ -1,5 +1,11 @@
 # JARL: Version History
 
+## Next version
+
+*   Fix: Got `active` working everywhere properly, in particular inside demos
+*   Demo: Code splitting now loads something substantial and is actually code splitting properly
+*   Build: Made Webpack more aggressive about chunks
+
 ## v1.0.0-beta.2
 
 *   New feature: improved API to accessing `resolve` objects. They are now available

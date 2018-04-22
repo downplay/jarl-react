@@ -30,7 +30,7 @@ class PdfViewer extends React.Component {
             if (newPage < 1 || newPage > pages) {
                 return null;
             }
-            return { ...this.props.location, page: newPage };
+            return { ...this.props.location, pageNumber: newPage };
         };
         const previousButton = (
             <li className="previous" onClick={this.handlePrevious}>
@@ -78,6 +78,6 @@ class PdfViewer extends React.Component {
     }
 }
 
-export default routing(location => ({ location, page: location.page }))(
+export default routing(location => ({ location, page: location.pageNumber }))(
     PdfViewer
 );

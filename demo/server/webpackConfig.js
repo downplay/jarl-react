@@ -39,9 +39,11 @@ const makeWebpackConfig = ({
         cache: true,
         devtool: "source-map",
         optimization: {
-            splitChunks: {
-                chunks: "all"
-            }
+            splitChunks: DEV
+                ? {}
+                : {
+                      chunks: "all"
+                  }
         },
         stats: {
             colors: true,
@@ -84,7 +86,7 @@ const makeWebpackConfig = ({
                     ]
                 },
                 {
-                    test: /\.(svg|eot|woff2?|ttf|png)$/,
+                    test: /\.(svg|eot|woff2?|ttf|png|pdf)$/,
                     loaders: [
                         {
                             loader: "file-loader"

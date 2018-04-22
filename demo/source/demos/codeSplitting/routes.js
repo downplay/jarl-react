@@ -18,6 +18,7 @@ const routes = [
     {
         path: "/",
         state: { page: "home" },
+        // This route is resolving after an artifical network delay
         resolve: () =>
             wait(500)
                 .then(() => import("./pages/Home"))
@@ -25,8 +26,27 @@ const routes = [
     },
     {
         path: "/big-page",
-        state: { page: "bigPage" },
-        resolve: () => import("./pages/BigPage").then(page)
+        state: { page: "bigPage", pageNumber: "1" },
+        // Dynamic load a large page (with a large vendor addon)
+        resolve: () => import("./pages/BigPage").then(page),
+        // Page number defaults to 1 and gets converted to an integer
+        match: location => ({
+            ...location,
+            pageNumber: location.pageNumber
+                ? parseInt(location.pageNumber, 10)
+                : 1
+        }),
+        // And back to a string again
+        stringify: ({ pageNumber, ...rest }) => ({
+            pageNumber: pageNumber ? pageNumber.toString() : "1",
+            ...rest
+        }),
+        routes: [
+            {
+                // Pagination is driven through the routing too
+                path: "/:pageNumber"
+            }
+        ]
     }
 ];
 
