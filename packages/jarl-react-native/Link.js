@@ -62,9 +62,9 @@ Link.propTypes = {
     /** Specify a different component to render instead of `TouchableHighlight`. Ignored when children is a function. */
     element: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     /** Base style to be applied to the rendered element */
-    style: View.propTypes.style, // eslint-disable-line react/no-typos
+    style: PropTypes.object,
     /** Additional styles to apply when this link is active */
-    activeStyle: View.propTypes.style // eslint-disable-line react/no-typos
+    activeStyle: PropTypes.object
 };
 
 Link.defaultProps = {
