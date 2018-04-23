@@ -3635,19 +3635,19 @@ items@2.x.x:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/items/-/items-2.1.1.tgz#8bd16d9c83b19529de5aea321acaada78364a198"
 
-jarl-react-native@^1.0.0-beta.3:
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/jarl-react-native/-/jarl-react-native-1.0.0-beta.3.tgz#e3c7e6eb315f62c0692d4fae4597abb337f0c9d6"
+jarl-react-native@^1.0.0-beta.4:
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/jarl-react-native/-/jarl-react-native-1.0.0-beta.4.tgz#2c2dac492064ec3845935a0075d312fa87391c85"
   dependencies:
     history "^4.7.2"
     invariant "^2.2.4"
-    jarl-react "^1.0.0-beta.3"
+    jarl-react "^1.0.0-beta.4"
     prop-types "^15.6.0"
     warning "^3.0.0"
 
-jarl-react@^1.0.0-beta.3:
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-1.0.0-beta.3.tgz#0f7730d098416aabe757d9093ec4bb0c66b8c543"
+jarl-react@^1.0.0-beta.4:
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/jarl-react/-/jarl-react-1.0.0-beta.4.tgz#b6a183370044f257227090cd7025da2ecd03efdf"
   dependencies:
     hoist-non-react-statics "^2.0.0"
     invariant "^2.2.4"
