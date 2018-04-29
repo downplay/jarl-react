@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { routing } from "jarl-react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Segment } from "semantic-ui-react";
 
-import DetailsTab from "./tabs/DetailsTab";
-import RatingsTab from "./tabs/RatingsTab";
-import GalleryTab, { toImage } from "./tabs/GalleryTab";
+import DetailsTab from "./DetailsTab";
+import RatingsTab from "./RatingsTab";
+import GalleryTab, { toImage } from "./GalleryTab";
 import { Header, MenuItem } from "../../../layout";
 
 /**
@@ -35,7 +35,7 @@ const Product = ({ tab }) => (
         <Header>This Product Will Change Everything</Header>
         <p>Buy Now for only 1 BTC!</p>
         <p>Click a tab for more information:</p>
-        <Menu pointing>
+        <Menu tabular attached="top">
             <MenuItem data-test="details-tab-link" to={toTab("details")}>
                 Details
             </MenuItem>
@@ -46,7 +46,7 @@ const Product = ({ tab }) => (
                 Gallery
             </MenuItem>
         </Menu>
-        {renderTab(tab)}
+        <Segment attached="bottom">{renderTab(tab)}</Segment>
     </Fragment>
 );
 

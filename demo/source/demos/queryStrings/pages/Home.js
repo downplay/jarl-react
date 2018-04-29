@@ -1,13 +1,14 @@
 import React from "react";
-import { Page, Header, Body } from "../../../layout";
-import SearchForm from "../components/SearchForm";
+
+import md from "./Home.md";
+
+import { Page, Header, Body, MarkdownJsx } from "../../../layout";
 
 const Home = () => (
     <Page>
         <Header>Home</Header>
         <Body>
-            <p>Enter text to search</p>
-            <SearchForm />
+            <MarkdownJsx source={md} />
         </Body>
     </Page>
 );

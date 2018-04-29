@@ -13,6 +13,7 @@ import NotFound from "../../pages/NotFound";
 
 import * as lightTheme from "../../layout/themes/light";
 import * as darkTheme from "../../layout/themes/dark";
+import SearchForm from "./components/SearchForm";
 
 const themes = {
     light: lightTheme,
@@ -66,6 +67,9 @@ class Pages extends Component {
                     >
                         Toggle Theme
                     </MenuItem>
+                    <Menu position="right">
+                        <SearchForm />
+                    </Menu>
                 </Menu>
                 {/* Wrap page in a ThemeProvider. All routes have access to themeName, via route nesting. */}
                 <ThemeProvider theme={whichTheme}>

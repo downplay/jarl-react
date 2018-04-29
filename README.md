@@ -34,6 +34,7 @@ mapping between URLs and these objects. The router is a controlled component, me
 Some examples of state mapping:
 
 `/about` -> `{page: "about"}`
+
 `/product/:productId` -> `{page: "product", productId: <string>}`
 
 All routing can be described using this simple approach.
@@ -184,7 +185,8 @@ class SearchForm extends React.Component {
                     onChange={this.handleChange}
                     placeholder="Enter search term"
                 />
-                {/* Use the function-as-child pattern of Link to dynamically construct the search location and navigate programmatically using `onClick` */}
+                {/* Use the function-as-child pattern of Link to dynamically construct the search location
+                                                and navigate programmatically using `onClick` */}
                 <Link to={{ page: "search", search: this.state.searchText }}>
                     {({ onClick }) => <button onClick={onClick}>Search</button>}
                 </Link>
