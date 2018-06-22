@@ -118,11 +118,11 @@ class RoutingProvider extends Component {
     }
 
     componentDidMount() {
+        this.listen();
         if (this.props.performInitialRouting) {
             const path = this.getCurrentPath();
             this.doNavigation(path, ACTION_INITIAL);
         }
-        this.listen();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -149,7 +149,9 @@ class RoutingProvider extends Component {
     }
 
     componentWillUnmount() {
-        this.unlisten();
+        if (this.unlisten) {
+            this.unlisten();
+        }
     }
 
     getCurrentPath() {

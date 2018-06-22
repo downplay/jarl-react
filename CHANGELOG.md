@@ -1,5 +1,7 @@
 # JARL: Version History
 
+## Next version
+
 ## v1.0.0-beta.4
 
 *   Started testing React Native integration
