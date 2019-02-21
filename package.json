@@ -13,7 +13,8 @@
         "lint": "lerna run lint --stream",
         "bootstrap": "lerna bootstrap",
         "tag-version": "lerna publish --skip-npm && git push --follow-tags",
-        "precommit": "lint-staged"
+        "start-in-docker-win":
+            "docker run -it --mount type=bind,source=\"%cd%\",target=/app node:8-alpine /app/entrypoint.sh"
     },
     "lint-staged": {
         "**/*.{js,jsx}": ["eslint --fix --max-warnings 0", "git add"],
