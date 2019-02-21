@@ -14,7 +14,7 @@
         "bootstrap": "lerna bootstrap",
         "tag-version": "lerna publish --skip-npm && git push --follow-tags",
         "xprecommit": "lint-staged",
-        "start-in-docker-win":
+        "start-docker":
             "docker run -it --mount type=bind,source=\"%cd%\",target=/app node:8-alpine /app/entrypoint.sh"
     },
     "lint-staged": {
