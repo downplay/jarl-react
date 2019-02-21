@@ -9,9 +9,6 @@ const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
 // Maybe remove the trailing slash from the end
 const removeTrailingSlash = path =>
     path.length > 1 ? path.substring(0, path.length - 1) : path;
-// Join together any number of URL path segments and preserve consistent slashes
-export const joinPaths = (...paths) =>
-    removeTrailingSlash(removeSlashDupes(`/${paths.join("/")}/`));
 
 const isUrlPattern = pattern => pattern && pattern.match && pattern.stringify;
 
@@ -79,6 +76,25 @@ const splitPath = path => {
         );
     }
     return [split[0], split[1] ? qs.parse(split[1]) : {}];
+};
+
+// Merges together any number of URL path segments and queries,
+// preserving consistent slashes
+export const joinPaths = (...paths) => {
+    let joined = "";
+    let merged = {};
+    paths.forEach(path => {
+        const [segment, query] = splitPath(path);
+        joined = `${joined}/${segment}`;
+        merged = { ...merged, ...query };
+    });
+    const mergedKeys = Object.keys(merged);
+    return (
+        removeTrailingSlash(removeSlashDupes(`/${joined}/`)) +
+        (mergedKeys.length
+            ? `?${mergedKeys.map(key => `${key}=${merged[key]}`).join("&")}`
+            : "")
+    );
 };
 
 const matches = (pattern, value) => {

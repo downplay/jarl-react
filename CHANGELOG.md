@@ -1,5 +1,9 @@
 # JARL: Version History
 
+## v1.0.0-beta.5
+
+*   Minor fix to avoid mangling URLs in some contexts
+
 ## v1.0.0-beta.4
 
 *   Started testing React Native integration

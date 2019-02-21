@@ -1,10 +1,11 @@
 /* global describe test expect beforeEach afterEach jest */
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, render } from "enzyme";
 
 import mockHistory from "./mocks/mockHistory";
 import wait from "./mocks/wait";
 
+import Link from "../Link";
 import RoutingProvider from "../RoutingProvider";
 import RouteMap from "../RouteMap";
 import redirect from "../redirect";
@@ -187,6 +188,20 @@ describe("<RoutingProvider/>", () => {
                 />
             );
             expect(routes.match).not.toHaveBeenCalled();
+        });
+
+        test("don't add extra slash when just changing query", () => {
+            history.location.pathname = "/foo";
+            const rendered = render(
+                <RoutingProvider
+                    routes={routes}
+                    history={history}
+                    basePath="/foo"
+                >
+                    <Link to={{ page: "foo" }} />
+                </RoutingProvider>
+            );
+            expect(rendered[0].attribs.href).toEqual("/foo?foo=bar");
         });
 
         test("pathname and search are joined", () => {

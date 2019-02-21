@@ -1,50 +1,61 @@
 {
-    "extends": ["eslint-config-airbnb", "eslint-config-prettier"],
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "extends": [
+        "eslint-config-airbnb",
+        "eslint-config-prettier"
+    ],
     "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalDecorators": true
         }
     },
-    "env": {
-        "browser": true,
-        "node": true
-    },
     "rules": {
-        "max-len": [1, 120],
-        "react/prefer-stateless-function": 0,
-        "react/no-find-dom-node": 0,
-        "indent": 0,
-        "react/jsx-indent": 0,
-        "react/jsx-indent-props": 0,
-        "react/prop-types": 0,
-        "import/no-extraneous-dependencies": 0,
-        "jsx-a11y/no-static-element-interactions": 0,
         "arrow-parens": 0,
-        "react/jsx-wrap-multilines": 0,
         "comma-dangle": 0,
-        "react/jsx-closing-bracket-location": 0,
-        "jsx-a11y/anchor-is-valid": [2, { "components": [] }],
-        "jsx-a11y/href-no-hash": 0,
-        "react/jsx-filename-extension": 0,
         "import/extensions": 0,
+        "import/no-extraneous-dependencies": 0,
+        "import/no-mutable-exports": 0,
         "import/no-unresolved": 0,
         "import/no-webpack-loader-syntax": 0,
-        "no-await-in-loop": 0,
-        "no-plusplus": 0,
         "import/prefer-default-export": 0,
-        "no-restricted-syntax": 0,
-        "no-param-reassign": 0,
-        "no-unused-vars": 1,
-        "no-continue": 0,
-        "react/forbid-prop-types": 0,
-        "import/no-mutable-exports": 0,
-        "no-confusing-arrow": 0,
-        "no-cond-assign": 0,
-        "no-mixed-operators": 0,
-        "prefer-destructuring": 0,
+        "indent": 0,
+        "jsx-a11y/accessible-emoji": 0,
+        "jsx-a11y/anchor-is-valid": [
+            2,
+            {
+                "components": []
+            }
+        ],
         "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/href-no-hash": 0,
         "jsx-a11y/no-noninteractive-element-interactions": 0,
-        "jsx-a11y/accessible-emoji": 0
+        "jsx-a11y/no-static-element-interactions": 0,
+        "max-len": [
+            1,
+            120
+        ],
+        "no-await-in-loop": 0,
+        "no-cond-assign": 0,
+        "no-confusing-arrow": 0,
+        "no-continue": 0,
+        "no-mixed-operators": 0,
+        "no-param-reassign": 0,
+        "no-plusplus": 0,
+        "no-restricted-syntax": 0,
+        "no-unused-vars": 1,
+        "prefer-destructuring": 0,
+        "react/forbid-prop-types": 0,
+        "react/jsx-closing-bracket-location": 0,
+        "react/jsx-filename-extension": 0,
+        "react/jsx-indent": 0,
+        "react/jsx-indent-props": 0,
+        "react/jsx-wrap-multilines": 0,
+        "react/no-find-dom-node": 0,
+        "react/prefer-stateless-function": 0,
+        "react/prop-types": 0
     }
 }

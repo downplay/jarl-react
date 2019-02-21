@@ -26,6 +26,16 @@ describe("joinPaths", () => {
     test("it doesn't have a trailing slaahs", () => {
         expect(joinPaths("/foo", "/")).toEqual("/foo");
     });
+
+    test("don't add trailing slash to query segment", () => {
+        expect(joinPaths("foo.html", "?bar=foo")).toEqual("/foo.html?bar=foo");
+    });
+
+    test("merges query string parameters", () => {
+        expect(joinPaths("test?foo=bar", "test2?bar=baz")).toEqual(
+            "/test/test2?foo=bar&bar=baz"
+        );
+    });
 });
 
 describe("RouteMap", () => {
