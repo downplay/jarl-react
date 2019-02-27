@@ -212,6 +212,8 @@ Detailed documentation, and demos with annotated code samples, can be viewed at 
 git clone https://github.com/downplay/jarl-react
 cd jarl-react
 yarn
+yarn bootstrap
+yarn build
 ```
 
 To run unit tests:
