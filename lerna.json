@@ -1,5 +1,5 @@
 {
     "lerna": "2.5.1",
-    "version": "1.0.0-beta.4",
-    "packages": ["packages/jarl-react", "packages/jarl-react-redux", "demo"]
+    "version": "1.0.0-beta.5",
+    "packages": ["demo", "packages/jarl-react", "packages/jarl-react-redux"]
 }
