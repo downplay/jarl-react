@@ -64,7 +64,7 @@ describe("Redirects", () => {
             .url()
             .should(
                 "eq",
-                `${baseUrl}${root}?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+                `${baseUrl}${root}?because=Content%20was%20not%20found:%20%27not-a-real-page%27`
             );
         cy
             .get("[data-test=redirect-reason]")
@@ -81,7 +81,7 @@ describe("Redirects", () => {
             .url()
             .should(
                 "eq",
-                `${baseUrl}${root}?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+                `${baseUrl}${root}?because=Content%20was%20not%20found:%20%27not-a-real-page%27`
             );
         cy
             .get("[data-test=redirect-reason]")
