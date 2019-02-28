@@ -18,7 +18,7 @@ describe("Redirects", () => {
             .get("[data-test=moved-link]")
             .should("have.attr", "href", "/redirects/moved")
             .click();
-        cy.url().should("eq", `${baseUrl}${root}/?because=Permanently%20moved`);
+        cy.url().should("eq", `${baseUrl}${root}?because=Permanently%20moved`);
         cy
             .get("[data-test=redirect-reason]")
             .should("contain", "Permanently moved");
@@ -30,7 +30,7 @@ describe("Redirects", () => {
             .get("[data-test=admin-link]")
             .should("have.attr", "href", "/redirects/admin")
             .click();
-        cy.url().should("eq", `${baseUrl}${root}/?because=Not%20authorised`);
+        cy.url().should("eq", `${baseUrl}${root}?because=Not%20authorised`);
         cy
             .get("[data-test=redirect-reason]")
             .should("contain", "Not authorised");
@@ -64,7 +64,7 @@ describe("Redirects", () => {
             .url()
             .should(
                 "eq",
-                `${baseUrl}${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+                `${baseUrl}${root}?because=Content%20was%20not%20found:%20%27not-a-real-page%27`
             );
         cy
             .get("[data-test=redirect-reason]")
@@ -81,7 +81,7 @@ describe("Redirects", () => {
             .url()
             .should(
                 "eq",
-                `${baseUrl}${root}/?because=Content%20was%20not%20found%3A%20%27not-a-real-page%27`
+                `${baseUrl}${root}?because=Content%20was%20not%20found:%20%27not-a-real-page%27`
             );
         cy
             .get("[data-test=redirect-reason]")

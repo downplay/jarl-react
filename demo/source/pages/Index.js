@@ -21,11 +21,11 @@ const demos = [
     {
         name: "Redirects",
         to: toDemo("redirects")
-    },
-    {
+    }
+    /* {
         name: "Code Splitting",
         to: toDemo("codeSplitting")
-    }
+    } */
 ];
 
 const Index = () => (

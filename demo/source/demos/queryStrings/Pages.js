@@ -11,8 +11,8 @@ import HomePage from "./pages/Home";
 import SearchPage from "./pages/Search";
 import NotFound from "../../pages/NotFound";
 
-import * as lightTheme from "../../layout/themes/light";
-import * as darkTheme from "../../layout/themes/dark";
+import lightTheme from "../../layout/themes/light";
+import darkTheme from "../../layout/themes/dark";
 
 const themes = {
     light: lightTheme,

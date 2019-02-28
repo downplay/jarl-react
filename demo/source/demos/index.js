@@ -2,7 +2,7 @@ import * as basicRouting from "./basicRouting";
 import * as queryStrings from "./queryStrings";
 import * as redirects from "./redirects";
 import * as advancedRouting from "./advancedRouting";
-import * as codeSplitting from "./codeSplitting";
+// import * as codeSplitting from "./codeSplitting";
 
 const demos = [
     { name: "basicRouting", content: basicRouting, title: "Basic Routing" },
@@ -12,8 +12,8 @@ const demos = [
         title: "Advanced Routing"
     },
     { name: "queryStrings", content: queryStrings, title: "Query Strings" },
-    { name: "redirects", content: redirects, title: "Redirects" },
-    { name: "codeSplitting", content: codeSplitting, title: "Code Splitting" }
+    { name: "redirects", content: redirects, title: "Redirects" }
+    // { name: "codeSplitting", content: codeSplitting, title: "Code Splitting" }
 ];
 
 export default demos;

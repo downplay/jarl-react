@@ -1,2 +1,4 @@
-export const back = "#fff";
-export const fore = "#000";
+export default {
+    back: "#fff",
+    fore: "#000"
+};

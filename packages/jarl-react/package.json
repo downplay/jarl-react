@@ -29,15 +29,10 @@
         "StateProvider.js"
     ],
     "jest": {
-        "setupFiles": [
-            "raf/polyfill",
-            "./tools/configureJest.js"
-        ],
+        "setupFiles": ["raf/polyfill", "./tools/configureJest.js"],
         "testRegex": "__tests__/.+\\.test\\.js$",
-        "collectCoverageFrom": [
-            "source/*.js",
-            "source/lib/*.js"
-        ]
+        "collectCoverageFrom": ["source/*.js", "source/lib/*.js"],
+        "testURL": "http://localhost"
     },
     "keywords": [
         "react",
