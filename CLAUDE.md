@@ -30,4 +30,4 @@ Linting/formatting run automatically pre-commit via `lint-staged` + `husky`.
 
 ## TODOs
 
-Active and completed tasks for this project are tracked as tickets in `../../TODOS/jarl-react/`. When adding a TODO comment or TODO.md here, turn it into a ticket there instead.
+Active and completed tasks for this project are tracked as tickets in `<root>/TODOS/jarl-react/` (`<root>` is the repos root, one level above TODOS - resolve it fresh, don't hardcode it). When adding a TODO comment or TODO.md here, turn it into a ticket there instead.
