@@ -9,10 +9,7 @@ JARL ("Just Another Router Library for React") is a controlled-component router 
 ## Packages
 
 - `packages/jarl-react` — the core router library
-- `packages/jarl-react-native` — React Native bindings
-- `packages/jarl-react-redux` — Redux integration
 - `demo/` — example app(s) demonstrating usage, built with Vite
-- `native/` — standalone Expo example consumer app (not an npm workspace)
 
 ## Commands
 
@@ -30,10 +27,10 @@ Linting is via `oxlint` and formatting via `oxfmt` (both part of the Vite+ toolc
 separate ESLint/Prettier config. No pre-commit hook is currently wired up (husky/lint-staged were
 removed with the rest of the old tooling).
 
-Each package's tests run under Vitest with jsdom. The legacy `jarl-react`/`jarl-react-redux` test
-suites use Enzyme (`@cfaester/enzyme-adapter-react-18`, an unofficial adapter) — Enzyme has no
-official React 19 adapter, so some of these tests are known to fail post-upgrade; see the ticket 51
-PR description for details.
+Each package's tests run under Vitest with jsdom. The legacy `jarl-react` test suite uses Enzyme
+(`@cfaester/enzyme-adapter-react-18`, an unofficial adapter) — Enzyme has no official React 19
+adapter, so some of these tests are known to fail post-upgrade; see the ticket 51 PR description
+for details.
 
 ## TODOs
 

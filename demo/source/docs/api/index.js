@@ -9,9 +9,6 @@ import JarlStateProvider from "react-docgen-loader:../../../../packages/jarl-rea
 import JarlRouter from "react-docgen-loader:../../../../packages/jarl-react/source/Router";
 import JarlLink from "react-docgen-loader:../../../../packages/jarl-react/source/Link";
 
-import JarlNativeProvider from "react-docgen-loader:../../../../packages/jarl-react-native/NativeProvider";
-import JarlNativeLink from "react-docgen-loader:../../../../packages/jarl-react-native/Link";
-
 // Blacklist anything that we'll get from react-docs
 const blacklistNames = [
     // TODO: Do list all the actions but do it in a better form
@@ -37,5 +34,4 @@ export default {
                 !blacklistFiles.some((fileName) => file.indexOf(`/${fileName}.js`) !== -1),
         ),
     ),
-    "jarl-react-native": mapComponents([JarlNativeProvider, JarlNativeLink]),
 };

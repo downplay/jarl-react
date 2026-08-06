@@ -8,12 +8,12 @@ const MainMenu = () => (
         <MenuItem to={{ page: "about" }}>About</MenuItem>
         <MenuItem to={{ page: "docs", docName: "getting-started" }}>Getting Started</MenuItem>
         <SubMenu title="Guides">
-            <MenuItem to={{ page: "docs", docName: "path-variables" }}>Path Variables</MenuItem>
-            <MenuItem to={{ page: "docs", docName: "redux-integration" }}>
-                Redux Integration
+            <MenuItem to={{ page: "docs", docName: "path-variables" }}>
+                Path Variables
             </MenuItem>
-            <MenuItem to={{ page: "docs", docName: "react-native" }}>React Native</MenuItem>
-            <MenuItem to={{ page: "docs", docName: "data-loading" }}>Data Loading</MenuItem>
+            <MenuItem to={{ page: "docs", docName: "data-loading" }}>
+                Data Loading
+            </MenuItem>
         </SubMenu>
         <SubMenu title="Demos" to={{ page: "index" }}>
             {demos.map(({ name, title }) => (
@@ -29,9 +29,6 @@ const MainMenu = () => (
         <SubMenu title="API Reference">
             <MenuItem title="JARL" to={{ page: "api", apiName: "jarl-react" }}>
                 JARL
-            </MenuItem>
-            <MenuItem title="JARL Native" to={{ page: "api", apiName: "jarl-react-native" }}>
-                JARL Native
             </MenuItem>
         </SubMenu>
         <MenuItem to={{ page: "changelog" }}>Changelog</MenuItem>

@@ -20,7 +20,6 @@
         "express": "^4.19.2",
         "history": "^4.10.1",
         "jarl-react": "^1.0.0-beta.5",
-        "jarl-react-redux": "^1.0.0-beta.5",
         "prismjs": "^1.30.0",
         "prop-types": "^15.8.1",
         "ramda": "^0.25.0",

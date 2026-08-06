@@ -13,7 +13,7 @@ Demos also need some styling love, and actually publishing somewhere. Cypress te
 ## Integrations
 
 *   Server-side rendering. Improve story, create a written guide and a working example.
-*   _Deprecate_ Redux integration but write docs
+*   ~~_Deprecate_ Redux integration but write docs~~ Done: `jarl-react-redux` and `jarl-react-native` have been removed from the monorepo entirely (rather than ported) — see below.
 
 ## Misc task
 
@@ -43,6 +43,7 @@ Need to either detect this when we check if the keys are there, or throw a warni
 
 Some additional plans that are more "nice-to-have" and might wait until after 1.0.0 and possibly provided in separate packages:
 
+*   _Low priority_: possibly revisit React Native support at some point (dropped along with `jarl-react-redux` — see "Integrations" above). It's not yet clear this still makes sense given the direction of the new atoms-based core; would need re-evaluating from scratch rather than porting the old `jarl-react-native` package.
 *   Look at a whole new story for Redux, sync URL to Redux state automatically rather than other way around.
 *   Considering `redux-saga` support ... and maybe integrations with other popular state libraries
 *   Big refactor: some of the main classes have grown bloated and overly complex as functionality has been added in, making things hard to test and debug

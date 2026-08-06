@@ -3,7 +3,6 @@
     "private": true,
     "workspaces": [
         "packages/jarl-react",
-        "packages/jarl-react-redux",
         "demo"
     ],
     "scripts": {
