@@ -21,6 +21,9 @@
         "typecheck": "tsc --noEmit -p tsconfig.json"
     },
     "devDependencies": {
+        "@babel/plugin-syntax-jsx": "^8.0.1",
+        "@babel/preset-env": "^8.0.2",
+        "@babel/preset-typescript": "^8.0.1",
         "@types/enzyme": "^3.10.0",
         "@types/express": "^4.17.0",
         "@types/history": "^4.7.11",

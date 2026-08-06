@@ -10,7 +10,7 @@ import mockHistory from "./mocks/mockHistory";
 const create = (pathname?: string, search?: string) => ({
     history: mockHistory(pathname, search),
     children: <div />,
-    context: jest.fn(),
+    context: vi.fn(),
     routes: [
         {
             path: "/",
@@ -42,7 +42,7 @@ describe("<StateProvider/>", () => {
 
     test("passes through `onChange`", () => {
         const { routes, history, context, children } = create();
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         mount(
             <StateProvider
                 {...({ routes, history, context, children, onChange } as any)}

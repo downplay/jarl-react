@@ -1,13 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const routes: string = require("!!raw-loader!./routes");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const api: string = require("!!raw-loader!./api");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Root: string = require("!!raw-loader!./Root");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pages: string = require("!!raw-loader!./Pages");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Landing: string = require("!!raw-loader!./pages/Landing");
+import routes from "./routes.ts?raw";
+import api from "./api.ts?raw";
+import Root from "./Root.tsx?raw";
+import Pages from "./Pages.tsx?raw";
+import Landing from "./pages/Landing.tsx?raw";
 
 export default [
     {

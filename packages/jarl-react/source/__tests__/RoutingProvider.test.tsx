@@ -118,7 +118,7 @@ describe("<RoutingProvider/>", () => {
         let doNavigation: any;
 
         beforeEach(() => {
-            doNavigation = jest.spyOn(
+            doNavigation = vi.spyOn(
                 RoutingProvider.prototype as any,
                 "doNavigation"
             );
@@ -165,7 +165,7 @@ describe("<RoutingProvider/>", () => {
 
         test("basePath is honoured", () => {
             history.location.pathname = "/foo";
-            routes.match = jest.fn(() => ({ branch: [], location: {} }));
+            routes.match = vi.fn(() => ({ branch: [], location: {} }));
             shallow(
                 <RoutingProvider
                     routes={routes}
@@ -179,7 +179,7 @@ describe("<RoutingProvider/>", () => {
 
         test("route is ignored when basePath doesn't match", () => {
             history.location.pathname = "/bar";
-            routes.match = jest.fn();
+            routes.match = vi.fn();
             shallow(
                 <RoutingProvider
                     routes={routes}
@@ -218,9 +218,9 @@ describe("<RoutingProvider/>", () => {
         let contextCallback: any;
 
         beforeEach(() => {
-            onChange = jest.fn();
-            onError = jest.fn();
-            contextCallback = jest.fn();
+            onChange = vi.fn();
+            onError = vi.fn();
+            contextCallback = vi.fn();
             provider = shallow(
                 <RoutingProvider
                     routes={routes}

@@ -19,9 +19,7 @@ import createHistory from "history/createBrowserHistory";
 
 import Helmet from "react-helmet";
 
-import { hot } from "react-hot-loader";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const routerCode: string = require("!!raw-loader!./Root");
+import routerCode from "./Root.tsx?raw";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -214,4 +212,4 @@ class Root extends Component<{}, RootState> {
     }
 }
 
-export default hot(module)(Root);
+export default Root;

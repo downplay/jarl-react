@@ -81,7 +81,7 @@ describe("<Link/>", () => {
                 <Link to={{ page: "about" }}>Home</Link>
             </MockProvider>,
         );
-        const event = { preventDefault: jest.fn() };
+        const event = { preventDefault: vi.fn() };
         const link = app.find(Link);
         link.simulate("click", event);
         expect(event.preventDefault).toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe("<Link/>", () => {
         let history: any;
         let location: any;
         beforeEach(() => {
-            event = { preventDefault: jest.fn() };
+            event = { preventDefault: vi.fn() };
             history = mockHistory("/about");
             location = { page: "about" };
         });

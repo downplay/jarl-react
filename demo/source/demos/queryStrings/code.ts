@@ -1,11 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const routes: string = require("!!raw-loader!./routes");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pages: string = require("!!raw-loader!./Pages");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Search: string = require("!!raw-loader!./pages/Search");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const SearchForm: string = require("!!raw-loader!./components/SearchForm");
+import routes from "./routes.ts?raw";
+import Pages from "./Pages.tsx?raw";
+import Search from "./pages/Search.tsx?raw";
+import SearchForm from "./components/SearchForm.tsx?raw";
 
 export default [
     {

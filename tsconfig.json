@@ -2,26 +2,17 @@
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
         "paths": {
-            "jarl-react": ["./packages/jarl-react/source/index.ts"],
-            "jarl-react-redux": ["./packages/jarl-react-redux/source/index.ts"],
-            "jarl-react-native": ["./packages/jarl-react-native/main.ts"]
+            "jarl-react": ["./packages/jarl-react/source/index.ts"]
         },
-        "types": ["node", "jest"]
+        "types": ["node", "vitest/globals"]
     },
     "include": [
         "packages/jarl-react/source/**/*.ts",
         "packages/jarl-react/source/**/*.tsx",
         "packages/jarl-react/tools/**/*.ts",
-        "packages/jarl-react-redux/source/**/*.ts",
-        "packages/jarl-react-redux/source/**/*.tsx",
-        "packages/jarl-react-redux/tools/**/*.ts",
-        "packages/jarl-react-native/**/*.ts",
-        "packages/jarl-react-native/**/*.tsx",
         "scripts/**/*.ts",
         "demo/**/*.ts",
-        "demo/**/*.tsx",
-        "native/**/*.ts",
-        "native/**/*.tsx"
+        "demo/**/*.tsx"
     ],
     "exclude": [
         "node_modules",

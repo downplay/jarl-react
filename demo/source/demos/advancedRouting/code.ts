@@ -1,11 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const routes: string = require("!!raw-loader!./routes");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pages: string = require("!!raw-loader!./Pages");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Product: string = require("!!raw-loader!./pages/Product");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const GalleryTab: string = require("!!raw-loader!./pages/tabs/GalleryTab");
+import routes from "./routes.ts?raw";
+import Pages from "./Pages.tsx?raw";
+import Product from "./pages/Product.tsx?raw";
+import GalleryTab from "./pages/tabs/GalleryTab.tsx?raw";
 
 export default [
     {

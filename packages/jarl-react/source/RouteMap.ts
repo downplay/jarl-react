@@ -185,7 +185,7 @@ const matchQuery = (
                 ...location,
                 [wildCardKey]: {
                     ...location[wildCardKey],
-                    ...{ [key]: match[wildCardKey] }
+                    [key]: match[wildCardKey]
                 }
             };
         }

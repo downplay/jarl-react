@@ -1,22 +1,28 @@
 // Ambient module/global declarations for the demo app's untyped dynamic boundaries:
-// webpack loader-injected module specifiers and globals, and a handful of very old
-// (2018-era) packages that never shipped types and have no accurate `@types/*` for
-// the pinned versions in use here. Declared loosely (`any`) rather than depending on
-// mismatched upstream types - see packages/jarl-react-native/react-native.d.ts for
-// the same pattern used elsewhere in this port.
+// Vite-plugin-resolved module specifiers and a handful of very old (2018-era)
+// packages that never shipped types and have no accurate `@types/*` for the pinned
+// versions in use here. Declared loosely (`any`) rather than depending on
+// mismatched upstream types.
 
-// Webpack inline-loader import specifiers, e.g. `import x from "!!raw-loader!./Foo"`
-// or `import x from "!!./someLoader!../path/to/module"`. These are resolved by
-// webpack's loader chain at build time, not by TS/Node module resolution.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare module "!!*" {
+// `documentation-loader:path`/`react-docgen-loader:path` import specifiers (see
+// demo/source/docs/api/index.ts) are resolved by a Vite plugin (vite.config.js)
+// that runs documentation.js/react-docgen on `path` at build time and hands back
+// generated docgen JSON - not the actual module at `path` - so these are typed
+// `any` rather than resolved through normal module typing.
+declare module "documentation-loader:*" {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const content: any;
+    export default content;
+}
+declare module "react-docgen-loader:*" {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const content: any;
     export default content;
 }
 
-// Markdown files loaded via raw-loader (webpackConfig.js's `/\.md$/` rule).
-declare module "*.md" {
+// Any file loaded raw via Vite's built-in `?raw` suffix - markdown guide content,
+// and demo source files displayed verbatim in the demo pages' code panels.
+declare module "*?raw" {
     const content: string;
     export default content;
 }

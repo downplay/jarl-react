@@ -1,13 +1,13 @@
 /* global jest */
 
 const mockHistory = (pathname = "/", search = "") => ({
-    listen: jest.fn(),
+    listen: vi.fn(),
     location: {
         pathname,
         search,
     },
-    push: jest.fn(),
-    replace: jest.fn(),
+    push: vi.fn(),
+    replace: vi.fn(),
 });
 
 export default mockHistory;
