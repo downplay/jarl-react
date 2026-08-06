@@ -19,8 +19,7 @@ import createHistory from "history/createBrowserHistory";
 
 import Helmet from "react-helmet";
 
-import { hot } from "react-hot-loader";
-import routerCode from "!!raw-loader!./Root";
+import routerCode from "./Root?raw";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -44,15 +43,15 @@ const history = createHistory();
 const routes = [
     {
         path: "/",
-        state: { page: "about" }
+        state: { page: "about" },
     },
     {
         path: "/demos",
-        state: { page: "index" }
+        state: { page: "index" },
     },
     {
         path: "/changelog",
-        state: { page: "changelog" }
+        state: { page: "changelog" },
     },
     { path: "/docs/:docName", state: { page: "docs" } },
     { path: "/api/:apiName", state: { page: "api" } },
@@ -75,15 +74,15 @@ const routes = [
                 // this top-level router but this catch-all avoids errors, therefore
                 // allowing the demo's own router to operate freely within this set of paths.
                 path: "/*:rest",
-                state: { subPage: true }
-            }
-        ]
+                state: { subPage: true },
+            },
+        ],
     },
     {
         // Catch-all for 404 errors: matches any path and query.
         path: "/*:missingPath?*=:query",
-        state: { page: "notFound" }
-    }
+        state: { page: "notFound" },
+    },
 ];
 
 class Root extends Component {
@@ -91,13 +90,13 @@ class Root extends Component {
         location: {},
         hasError: false,
         error: null,
-        errorInfo: null
+        errorInfo: null,
     };
 
     handleChange = ({ location }) => {
         this.setState({
             // Update
-            location
+            location,
         });
         this.resetError();
     };
@@ -110,19 +109,12 @@ class Root extends Component {
         this.setState({
             hasError: false,
             error: null,
-            errorInfo: null
+            errorInfo: null,
         });
     }
 
     renderDemo() {
-        const {
-            page,
-            demoName,
-            missingPath,
-            query,
-            apiName,
-            docName
-        } = this.state.location;
+        const { page, demoName, missingPath, query, apiName, docName } = this.state.location;
 
         let content;
         let code;
@@ -130,17 +122,13 @@ class Root extends Component {
         if (this.state.hasError) {
             // Error caught by error boundary. Lets us debug and also easily test
             // errors inside routing
-            content = (
-                <Error error={this.state.error} info={this.state.errorInfo} />
-            );
+            content = <Error error={this.state.error} info={this.state.errorInfo} />;
         } else if (page === "demo") {
             // Render one of the demo sub apps: set its basePath and also pass in the same
             // `history` instance so browser history works right across the board.
             // Each demo has its own Router instance which operates as kind of a subcontroller
             // for our root router.
-            const { Root: DemoRoot, code: demoCode } = getDemo(
-                demoName
-            ).content;
+            const { Root: DemoRoot, code: demoCode } = getDemo(demoName).content;
 
             // Render code for the demo
             code = demoCode;
@@ -169,9 +157,7 @@ class Root extends Component {
                     content = <Api apiName={apiName} />;
                     break;
                 default:
-                    content = (
-                        <NotFound missingPath={missingPath} query={query} />
-                    );
+                    content = <NotFound missingPath={missingPath} query={query} />;
                     break;
             }
         }
@@ -197,4 +183,4 @@ class Root extends Component {
     }
 }
 
-export default hot(module)(Root);
+export default Root;

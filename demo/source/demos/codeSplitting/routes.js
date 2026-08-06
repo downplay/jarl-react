@@ -11,7 +11,7 @@
 const page = ({ default: Page }) => ({ Page });
 
 // Use an artificial wait to simulate network traffic
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // TODO: Trigger a spinner while they're loading
 const routes = [
@@ -22,7 +22,7 @@ const routes = [
         resolve: () =>
             wait(500)
                 .then(() => import("./pages/Home"))
-                .then(page)
+                .then(page),
     },
     {
         path: "/big-page",
@@ -30,24 +30,22 @@ const routes = [
         // Dynamic load a large page (with a large vendor addon)
         resolve: () => import("./pages/BigPage").then(page),
         // Page number defaults to 1 and gets converted to an integer
-        match: location => ({
+        match: (location) => ({
             ...location,
-            pageNumber: location.pageNumber
-                ? parseInt(location.pageNumber, 10)
-                : 1
+            pageNumber: location.pageNumber ? parseInt(location.pageNumber, 10) : 1,
         }),
         // And back to a string again
         stringify: ({ pageNumber, ...rest }) => ({
             pageNumber: pageNumber ? pageNumber.toString() : "1",
-            ...rest
+            ...rest,
         }),
         routes: [
             {
                 // Pagination is driven through the routing too
-                path: "/:pageNumber"
-            }
-        ]
-    }
+                path: "/:pageNumber",
+            },
+        ],
+    },
 ];
 
 export default routes;

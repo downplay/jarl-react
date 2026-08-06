@@ -1,18 +1,20 @@
-import path from "path";
-import reactServer from "./reactServer";
+const path = require("path");
+const express = require("express");
 
 // In CI our server process needs to have a title so we can
 // kill it from the command line after running E2E
 process.title = "JARLDEMO";
 
-const context = {
-    basePath: path.resolve(__dirname, ".."),
-    name: "JARL demos",
-    mode: "production",
-    port: 3210,
-    staticPath: "dist",
-    manifestName: "asset-manifest.json",
-    outputPath: "dist"
-};
+const port = process.env.PORT || 3210;
+const distPath = path.resolve(__dirname, "../dist");
 
-reactServer(context);
+const app = express();
+app.use(express.static(distPath));
+app.use((req, res) => {
+    res.sendFile(path.resolve(distPath, "index.html"));
+});
+
+app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`JARL demos running on http://localhost:${port}`);
+});

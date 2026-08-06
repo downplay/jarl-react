@@ -10,6 +10,6 @@ export class Redirect {
  * @param {*} to - the location to be redirected to
  * @returns {Redirect}
  */
-const redirect = to => new Redirect(to);
+const redirect = (to) => new Redirect(to);
 
 export default redirect;

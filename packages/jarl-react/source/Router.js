@@ -12,11 +12,11 @@ export class Router extends Component {
         /** A function to render the children of this component */
         children: PropTypes.func.isRequired,
         /** @private */
-        location: PropTypes.object
+        location: PropTypes.object,
     };
 
     static defaultProps = {
-        location: {}
+        location: {},
     };
 
     render() {
@@ -24,6 +24,10 @@ export class Router extends Component {
     }
 }
 
-export default routing(location => ({ location }), null, resolved => ({
-    resolved
-}))(Router);
+export default routing(
+    (location) => ({ location }),
+    null,
+    (resolved) => ({
+        resolved,
+    }),
+)(Router);

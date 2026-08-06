@@ -27,13 +27,13 @@ class NativeProvider extends Component {
          * Optional. The provider will create its own memory history but
          * you can provide your own if you need direct access to its API
          */
-        history: PropTypes.object
+        history: PropTypes.object,
     };
 
     static defaultProps = {
         handleBackButton: true,
         handleDeepLinking: true,
-        history: null
+        history: null,
     };
 
     constructor(props) {
@@ -52,12 +52,12 @@ class NativeProvider extends Component {
         if (this.props.handleDeepLinking) {
             Linking.getInitialURL()
                 .then(this.openUrl)
-                .catch(err =>
+                .catch((err) =>
                     // eslint-disable-next-line no-console
                     console.error(
                         "Error in NativeRouting while getting initial URL for deep linking",
-                        err
-                    )
+                        err,
+                    ),
                 );
             Linking.addEventListener("url", this.handleUrl);
         }
@@ -69,9 +69,9 @@ class NativeProvider extends Component {
         Linking.removeEventListener("url", this.handleUrl);
     }
 
-    handleUrl = event => this.openUrl(event.url);
+    handleUrl = (event) => this.openUrl(event.url);
 
-    openUrl = url => {
+    openUrl = (url) => {
         const path = url.replace(regex, "");
         this.history.push(path);
     };

@@ -7,16 +7,17 @@ describe("Demos Shell", () => {
         cy.visit("/");
         cy.title().should("include", "About");
         cy.get("[data-test=content] h1").should("contain", "JARL");
-        cy
-            .get("[data-test=content] h1+p")
-            .should("contain", "Just Another Router Library for React.");
+        cy.get("[data-test=content] h1+p").should(
+            "contain",
+            "Just Another Router Library for React.",
+        );
         const jarlVersion = Cypress.env("JARL_VERSION");
         const buildNum = Cypress.env("CIRCLE_BUILD_NUM");
         cy.get("[data-test=version").should(
             "contain",
             // Checking the buildnum here didn't work because we get a different
             // buildNum on the 2nd job but the version was compiled in on the 1st job
-            jarlVersion || `v${packageJson.version}${buildNum ? "-" : ""}`
+            jarlVersion || `v${packageJson.version}${buildNum ? "-" : ""}`,
         );
         // Note: This screenshot is for the CI bot to post with announcements
         // and should be left here with the same name
@@ -33,9 +34,7 @@ describe("Demos Shell", () => {
 
     it("shows the changelog", () => {
         cy.visit("/changelog");
-        cy
-            .get("[data-test=content] h1")
-            .should("contain", "JARL: Version History");
+        cy.get("[data-test=content] h1").should("contain", "JARL: Version History");
 
         // TODO: Annoyingly this next part of the test didn't work, JARL_VERSION
         // seems to be empty even when doing a build. Would be nice to make this work.

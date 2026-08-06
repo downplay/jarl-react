@@ -2,50 +2,35 @@
     "name": "jarl-react-native",
     "version": "1.0.0-beta.4",
     "description": "React Native support for JARL",
-    "main": "main.js",
-    "sideEffects": false,
-    "scripts": {
-        "test": "jest --watch",
-        "ci-test": "jest --colors",
-        "clean": "git clean -fdX .",
-        "lint": "eslint . --max-warnings 0 --color",
-        "coverage": "jest --coverage"
+    "keywords": [
+        "components",
+        "history",
+        "native",
+        "react",
+        "reactjs",
+        "router",
+        "routing",
+        "tools"
+    ],
+    "license": "MIT",
+    "author": "Peter Hurst",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/downplay/jarl-react.git"
     },
     "files": [
         "main.js",
         "Link.js",
         "NativeProvider.js"
     ],
-    "jest": {
-        "setupFiles": [
-            "raf/polyfill",
-            "./tools/configureJest.js"
-        ],
-        "testRegex": "__tests__/.+\\.test\\.js$",
-        "preset": "react-native",
-        "collectCoverageFrom": [
-            "*.js"
-        ]
-    },
-    "keywords": [
-        "react",
-        "reactjs",
-        "native",
-        "routing",
-        "router",
-        "components",
-        "tools",
-        "history"
-    ],
-    "author": "Peter Hurst",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/downplay/jarl-react.git"
-    },
-    "peerDependencies": {
-        "react": ">=15.0.0",
-        "react-native": ">=0.44.0"
+    "sideEffects": false,
+    "main": "main.js",
+    "scripts": {
+        "test": "jest --watch",
+        "ci-test": "jest --colors",
+        "clean": "git clean -fdX .",
+        "lint": "oxlint . --max-warnings 0",
+        "coverage": "jest --coverage"
     },
     "dependencies": {
         "history": "^4.7.2",
@@ -57,7 +42,6 @@
     "devDependencies": {
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.0",
-        "babel-eslint": "^8.1.0",
         "babel-jest": "^22.4.3",
         "babel-plugin-add-react-displayname": "^0.0.4",
         "babel-plugin-dev-expression": "^0.2.1",
@@ -80,5 +64,23 @@
         "react-dom": "^16.3.1",
         "react-native": "~0.54.1",
         "react-native-web": "^0.5.4"
+    },
+    "peerDependencies": {
+        "react": ">=15.0.0",
+        "react-native": ">=0.44.0"
+    },
+    "overrides": {
+        "cheerio": "1.0.0-rc.12"
+    },
+    "jest": {
+        "collectCoverageFrom": [
+            "*.js"
+        ],
+        "preset": "react-native",
+        "setupFiles": [
+            "raf/polyfill",
+            "./tools/configureJest.js"
+        ],
+        "testRegex": "__tests__/.+\\.test\\.js$"
     }
 }

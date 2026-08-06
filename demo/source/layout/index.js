@@ -12,17 +12,14 @@ export { default as ErrorWrapper } from "./ErrorWrapper";
 export { default as MarkdownJsx } from "./MarkdownJsx";
 
 const PageElement = styled.article`
-    background-color: ${props =>
-        props.theme ? props.theme.back : "transparent"};
-    color: ${props => (props.theme ? props.theme.fore : "transparent")};
+    background-color: ${(props) => (props.theme ? props.theme.back : "transparent")};
+    color: ${(props) => (props.theme ? props.theme.fore : "transparent")};
 `;
 
-export const Page = ({ children }) => (
-    <PageElement data-test="page">{children}</PageElement>
-);
+export const Page = ({ children }) => <PageElement data-test="page">{children}</PageElement>;
 
 const HeaderElement = styled.h1`
-    color: ${props => (props.theme ? props.theme.fore : "transparent")};
+    color: ${(props) => (props.theme ? props.theme.fore : "transparent")};
 `;
 
 export const Header = ({ children }) => (
@@ -36,9 +33,7 @@ export const Header = ({ children }) => (
 
 const BodyElement = styled.div``;
 
-export const Body = ({ children }) => (
-    <BodyElement data-test="body">{children}</BodyElement>
-);
+export const Body = ({ children }) => <BodyElement data-test="body">{children}</BodyElement>;
 
 export const Menu = ({ children }) => <BaseMenu vertical>{children}</BaseMenu>;
 

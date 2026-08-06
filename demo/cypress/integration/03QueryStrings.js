@@ -14,10 +14,7 @@ describe("Query Strings", () => {
 
     it("searches", () => {
         cy.visit(`${root}`);
-        cy
-            .get("[data-test=search-text]")
-            .focus()
-            .type("foo");
+        cy.get("[data-test=search-text]").focus().type("foo");
         cy.get("[data-test=search-button]").click();
         cy.url().should("contain", "/search?q=foo");
         cy.get("[data-test=header").should("contain", "Search");
@@ -28,33 +25,21 @@ describe("Query Strings", () => {
     describe("themes", () => {
         it("light theme", () => {
             cy.visit(`${root}`);
-            cy
-                .get("[data-test=page")
-                .should("have.css", "background-color", "rgb(255, 255, 255)");
-            cy
-                .get("[data-test=header")
-                .should("have.css", "color", "rgb(0, 0, 0)");
+            cy.get("[data-test=page").should("have.css", "background-color", "rgb(255, 255, 255)");
+            cy.get("[data-test=header").should("have.css", "color", "rgb(0, 0, 0)");
         });
 
         it("dark theme", () => {
             cy.visit(`${root}?theme=dark`);
-            cy
-                .get("[data-test=page")
-                .should("have.css", "background-color", "rgb(0, 0, 0)");
-            cy
-                .get("[data-test=header")
-                .should("have.css", "color", "rgb(255, 255, 255)");
+            cy.get("[data-test=page").should("have.css", "background-color", "rgb(0, 0, 0)");
+            cy.get("[data-test=header").should("have.css", "color", "rgb(255, 255, 255)");
         });
 
         it("toggles theme", () => {
             cy.visit(`${root}`);
             cy.get("[data-test=theme-link]").click();
-            cy
-                .get("[data-test=page")
-                .should("have.css", "background-color", "rgb(0, 0, 0)");
-            cy
-                .get("[data-test=header")
-                .should("have.css", "color", "rgb(255, 255, 255)");
+            cy.get("[data-test=page").should("have.css", "background-color", "rgb(0, 0, 0)");
+            cy.get("[data-test=header").should("have.css", "color", "rgb(255, 255, 255)");
         });
 
         it("toggles theme and preserves location", () => {
@@ -62,9 +47,7 @@ describe("Query Strings", () => {
             cy.get("[data-test=theme-link]").click();
             cy.url().should("contain", "/search?theme=dark&q=hello");
             cy.get("[data-test=search-results").should("contain", "hello");
-            cy
-                .get("[data-test=page")
-                .should("have.css", "background-color", "rgb(0, 0, 0)");
+            cy.get("[data-test=page").should("have.css", "background-color", "rgb(0, 0, 0)");
         });
     });
 });

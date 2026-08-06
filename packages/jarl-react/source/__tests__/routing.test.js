@@ -15,7 +15,7 @@ beforeEach(() => {
     mockComponent = () => <div />;
 });
 
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe("location", () => {
     test("passes arbitrary location props to component", () => {
@@ -24,7 +24,7 @@ describe("location", () => {
         const output = mount(
             <MockProvider location={mockState}>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -32,14 +32,12 @@ describe("location", () => {
     });
 
     test("maps specific props", () => {
-        const TestComponent = routing(({ foo }) => ({ baz: foo }))(
-            mockComponent
-        );
+        const TestComponent = routing(({ foo }) => ({ baz: foo }))(mockComponent);
         const mockState = { foo: Symbol("bar") };
         const output = mount(
             <MockProvider location={mockState}>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -57,41 +55,41 @@ describe("isActive", () => {
                 // Home route
                 path: "/",
                 state: {
-                    page: "home"
+                    page: "home",
                 },
                 routes: [
                     {
                         path: "/child",
                         state: {
-                            page: "child"
-                        }
-                    }
-                ]
+                            page: "child",
+                        },
+                    },
+                ],
             },
             {
                 // About route (sibling)
                 path: "/about",
                 state: {
-                    page: "about"
-                }
+                    page: "about",
+                },
             },
             {
                 path: "/product/:id",
                 state: {
-                    page: "product"
+                    page: "product",
                 },
                 routes: [
                     {
                         path: "/details",
                         state: {
-                            page: "details"
-                        }
-                    }
-                ]
-            }
+                            page: "details",
+                        },
+                    },
+                ],
+            },
         ];
         TestComponent = routing(null, ({ isActive }, { to }) => ({
-            active: isActive(to)
+            active: isActive(to),
         }))(mockComponent);
     });
 
@@ -101,7 +99,7 @@ describe("isActive", () => {
         const output = mount(
             <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -114,7 +112,7 @@ describe("isActive", () => {
         const output = mount(
             <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -127,7 +125,7 @@ describe("isActive", () => {
         const output = mount(
             <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -136,14 +134,14 @@ describe("isActive", () => {
 
     test("is not active for exact child of home", () => {
         TestComponent = routing(null, ({ isActive }, { to }) => ({
-            active: isActive(to, true)
+            active: isActive(to, true),
         }))(mockComponent);
         const location = { page: "child" };
         const to = { page: "home" };
         const output = mount(
             <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -156,7 +154,7 @@ describe("isActive", () => {
         const output = mount(
             <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -169,7 +167,7 @@ describe("isActive", () => {
         const output = mount(
             <MockProvider location={location} routes={routes}>
                 <TestComponent to={to} />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -185,16 +183,17 @@ describe("navigate", () => {
     let TestComponent;
     beforeEach(() => {
         history = mockHistory();
-        TestComponent = routing(() => ({}), ({ navigate }) => ({ navigate }))(
-            mockComponent
-        );
+        TestComponent = routing(
+            () => ({}),
+            ({ navigate }) => ({ navigate }),
+        )(mockComponent);
     });
 
     test("passes `navigate` prop to component", () => {
         const output = mount(
             <MockProvider>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -205,7 +204,7 @@ describe("navigate", () => {
         const output = mount(
             <MockProvider history={history}>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -219,16 +218,17 @@ describe("redirect", () => {
     let TestComponent;
     beforeEach(() => {
         history = mockHistory();
-        TestComponent = routing(() => ({}), ({ redirect }) => ({ redirect }))(
-            mockComponent
-        );
+        TestComponent = routing(
+            () => ({}),
+            ({ redirect }) => ({ redirect }),
+        )(mockComponent);
     });
 
     test("passes `redirect` prop to component", () => {
         const output = mount(
             <MockProvider>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -239,7 +239,7 @@ describe("redirect", () => {
         const output = mount(
             <MockProvider history={history}>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         const test = output.find(mockComponent);
         const props = test.props();
@@ -255,7 +255,7 @@ describe("resolved", () => {
         const output = mount(
             <MockProvider resolved={{ Foo: resolveItem }}>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         await wait(10);
         const test = output.find(mockComponent);
@@ -264,14 +264,12 @@ describe("resolved", () => {
     });
 
     test("passes mapped resolve props to component", async () => {
-        const TestComponent = routing(null, null, ({ Foo }) => ({ Bar: Foo }))(
-            mockComponent
-        );
+        const TestComponent = routing(null, null, ({ Foo }) => ({ Bar: Foo }))(mockComponent);
         const resolveItem = Symbol("Bar");
         const output = mount(
             <MockProvider resolved={{ Foo: resolveItem }}>
                 <TestComponent />
-            </MockProvider>
+            </MockProvider>,
         );
         await wait(10);
         const test = output.find(mockComponent);

@@ -7,7 +7,7 @@ export {
     navigateStart,
     navigateEnd,
     navigateTransitionIn,
-    navigateTransitionComplete
+    navigateTransitionComplete,
 } from "./actions";
 
 export {
@@ -16,5 +16,5 @@ export {
     NAVIGATE_ERROR,
     NAVIGATE_END,
     NAVIGATE_TRANSITION_IN,
-    NAVIGATE_TRANSITION_COMPLETE
+    NAVIGATE_TRANSITION_COMPLETE,
 } from "./actionTypes";

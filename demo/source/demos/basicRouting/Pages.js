@@ -29,7 +29,7 @@ class Pages extends Component {
         // and then is still found to be true after a navigationm, we know that
         // the navigation was handled correct. See the e2e tests for demo 1 for
         // more information
-        showMarker: false
+        showMarker: false,
     };
 
     handleMarkerClick = () => {
@@ -56,10 +56,9 @@ class Pages extends Component {
                 {renderPage(page, missingPath)}
                 {showMarker ? (
                     <div data-test="marker">
-                        This is showing because showMarker has been set to true
-                        in state. Navigating via JARL&rsquo;s Link component
-                        should not cause this state to reset, however clicking a
-                        normal anchor will.
+                        This is showing because showMarker has been set to true in state. Navigating
+                        via JARL&rsquo;s Link component should not cause this state to reset,
+                        however clicking a normal anchor will.
                         <br />
                         {/* Line break needed. Otherwise anchor got split onto two
                         lines causing Cypress to fail to click on it! */}
@@ -68,10 +67,7 @@ class Pages extends Component {
                         </a>
                     </div>
                 ) : (
-                    <Button
-                        data-test="marker-button"
-                        onClick={this.handleMarkerClick}
-                    >
+                    <Button data-test="marker-button" onClick={this.handleMarkerClick}>
                         Marker
                     </Button>
                 )}
@@ -82,5 +78,5 @@ class Pages extends Component {
 
 // Inject all fields from location state as props, along with the stringify function
 export default routing(null, ({ stringify }) => ({
-    stringify
+    stringify,
 }))(Pages);

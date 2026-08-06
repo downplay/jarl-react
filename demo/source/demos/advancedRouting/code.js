@@ -1,23 +1,23 @@
-import routes from "!!raw-loader!./routes";
-import Pages from "!!raw-loader!./Pages";
-import Product from "!!raw-loader!./pages/Product";
-import GalleryTab from "!!raw-loader!./pages/tabs/GalleryTab";
+import routes from "./routes?raw";
+import Pages from "./Pages?raw";
+import Product from "./pages/Product?raw";
+import GalleryTab from "./pages/tabs/GalleryTab?raw";
 
 export default [
     {
         name: "routes.js",
-        code: routes
+        code: routes,
     },
     {
         name: "Pages.js",
-        code: Pages
+        code: Pages,
     },
     {
         name: "pages/Product.js",
-        code: Product
+        code: Product,
     },
     {
         name: "pages/tabs/GalleryTab.js",
-        code: GalleryTab
-    }
+        code: GalleryTab,
+    },
 ];

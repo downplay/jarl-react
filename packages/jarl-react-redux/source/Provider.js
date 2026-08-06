@@ -14,7 +14,7 @@ class Provider extends Component {
         invariant(props.store, "Provider must receive a store");
         invariant(
             typeof props.store.getState === "function",
-            "Provider must be given a Redux store"
+            "Provider must be given a Redux store",
         );
     }
 
@@ -23,7 +23,7 @@ class Provider extends Component {
         return store.getState()[reducerMountPoint];
     }
 
-    handleChange = async event => {
+    handleChange = async (event) => {
         this.props.store.dispatch(navigateStart(event.state));
         if (this.props.onNavigateStart) {
             await this.props.onNavigateStart(event);
@@ -47,7 +47,7 @@ class Provider extends Component {
                 onChange={this.handleChange}
                 context={() => ({
                     dispatch: store.dispatch,
-                    getState: store.getState
+                    getState: store.getState,
                 })}
             />
         );

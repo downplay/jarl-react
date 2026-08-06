@@ -14,17 +14,15 @@ const create = (pathname, search) => ({
     routes: [
         {
             path: "/",
-            state: { home: true }
-        }
-    ]
+            state: { home: true },
+        },
+    ],
 });
 
 describe("<StateProvider/>", () => {
     test("renders a RoutingProvider", () => {
         const { routes, history, context, children } = create();
-        const provider = shallow(
-            <StateProvider {...{ routes, history, context, children }} />
-        );
+        const provider = shallow(<StateProvider {...{ routes, history, context, children }} />);
         const childProvider = provider.find(RoutingProvider);
 
         expect(childProvider.length).toEqual(1);
@@ -33,7 +31,7 @@ describe("<StateProvider/>", () => {
             routes,
             history,
             children,
-            location: {}
+            location: {},
         });
         expect(props.routes).toEqual(routes);
         expect(props.context).toEqual(expect.any(Function));
@@ -43,17 +41,13 @@ describe("<StateProvider/>", () => {
     test("passes through `onChange`", () => {
         const { routes, history, context, children } = create();
         const onChange = jest.fn();
-        mount(
-            <StateProvider
-                {...{ routes, history, context, children, onChange }}
-            />
-        );
+        mount(<StateProvider {...{ routes, history, context, children, onChange }} />);
         expect(onChange).toHaveBeenCalledWith({
             action: "INITIAL",
             branch: [{ path: "/", state: { home: true } }],
             location: { home: true },
             path: "/",
-            resolved: {}
+            resolved: {},
         });
     });
 });

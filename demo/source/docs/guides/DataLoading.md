@@ -16,7 +16,7 @@ import { RouteMap } from "jarl-react";
 const routes = new RouteMap([
     {
         path: "/",
-        state: { page: "home" }
+        state: { page: "home" },
     },
     {
         path: "/products/:productId",
@@ -25,8 +25,8 @@ const routes = new RouteMap([
             const result = await fetch(`/api/products/${productId}`);
             const product = await result.json();
             return { product };
-        }
-    }
+        },
+    },
 ]);
 
 export default routes;
@@ -44,33 +44,29 @@ import { RouteMap } from "jarl-react";
 const routes = new RouteMap([
     {
         path: "/",
-        state: { page: "home" }
+        state: { page: "home" },
     },
     {
         path: "/products/:productSlug",
         state: { page: "product" },
         resolve: async ({ productSlug }) => {
-            const response = await fetch(
-                `/api/productsBySlug?slug=${productSlug}`
-            );
+            const response = await fetch(`/api/productsBySlug?slug=${productSlug}`);
             if (!response.ok) {
                 return Promise.reject("Not found");
             }
             const product = await response.json();
             return { product };
-        }
+        },
     },
     {
         path: "/products/:productSlug",
         state: { page: "productSearch", notFound: true },
         resolve: async ({ productSlug }) => {
-            const response = await fetch(
-                `/api/productSearch?text=${productSlug.replace(" ", "")}`
-            );
+            const response = await fetch(`/api/productSearch?text=${productSlug.replace(" ", "")}`);
             const products = await response.json();
             return { products };
-        }
-    }
+        },
+    },
 ]);
 
 export default routes;

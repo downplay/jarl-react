@@ -12,12 +12,12 @@ import { RouteMap } from "jarl-react";
 const routes = new RouteMap([
     {
         path: "/",
-        state: { page: "home" }
+        state: { page: "home" },
     },
     {
         path: "/about",
-        state: { page: "about" }
-    }
+        state: { page: "about" },
+    },
 ]);
 
 export default routes;
@@ -41,9 +41,7 @@ import createHistory from "history/createBrowserHistory";
 const history = createHistory();
 
 // The provider will render our App component and pass in the routing state!
-export default () => (
-    <StateProvider routes={routes} history={history} component={App} />
-);
+export default () => <StateProvider routes={routes} history={history} component={App} />;
 ```
 
 Finally we can now make use of the router state inside our app. JARL does not ship with components like `<Route>` that you might be used to working with on other libraries. We take the philosophy that a Route component is essentially the same a much simpler JavaScript construct: the `if` statement! Since we end up with the state as defined in our route table, we can simply react to that state: in fact here the correct construct is a `switch`.

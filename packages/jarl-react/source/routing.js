@@ -65,20 +65,14 @@ import hocFactory from "./lib/hocFactory";
  */
 const routing = (mapLocationToProps, mapRoutingToProps, mapResolvedToProps) =>
     hocFactory(
-        WrappedComponent =>
+        (WrappedComponent) =>
             class Routing extends Component {
                 static contextTypes = {
-                    routing: routingContextShape
+                    routing: routingContextShape,
                 };
                 render() {
-                    const {
-                        isActive,
-                        navigate,
-                        stringify,
-                        redirect,
-                        getLocation,
-                        getResolved
-                    } = this.context.routing;
+                    const { isActive, navigate, stringify, redirect, getLocation, getResolved } =
+                        this.context.routing;
                     const location = mapLocationToProps
                         ? mapLocationToProps(getLocation())
                         : getLocation();
@@ -88,9 +82,9 @@ const routing = (mapLocationToProps, mapRoutingToProps, mapResolvedToProps) =>
                                   isActive,
                                   navigate,
                                   stringify,
-                                  redirect
+                                  redirect,
                               },
-                              this.props
+                              this.props,
                           )
                         : {};
                     const resolved = mapResolvedToProps
@@ -108,7 +102,7 @@ const routing = (mapLocationToProps, mapRoutingToProps, mapResolvedToProps) =>
                         />
                     );
                 }
-            }
+            },
     );
 
 export default routing;

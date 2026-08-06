@@ -12,12 +12,12 @@ import { RouteMap } from "jarl-react";
 const routes = new RouteMap([
     {
         path: "/",
-        state: { page: "home" }
+        state: { page: "home" },
     },
     {
         path: "/products/:productId",
-        state: { page: "product" }
-    }
+        state: { page: "product" },
+    },
 ]);
 
 export default routes;
@@ -31,15 +31,11 @@ import { routing } from "jarl-react";
 class ProductPage extends Component {
     componentDidMount() {
         fetch(`/api/products/${this.props.productId}`)
-            .then(result => result.json())
-            .then(product => this.setState({ product }));
+            .then((result) => result.json())
+            .then((product) => this.setState({ product }));
     }
     render() {
-        return this.state.product ? (
-            <ProductView product={this.state.product} />
-        ) : (
-            "Loading..."
-        );
+        return this.state.product ? <ProductView product={this.state.product} /> : "Loading...";
     }
 }
 

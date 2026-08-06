@@ -9,13 +9,13 @@ const demos = [
     {
         name: "advancedRouting",
         content: advancedRouting,
-        title: "Advanced Routing"
+        title: "Advanced Routing",
     },
     { name: "queryStrings", content: queryStrings, title: "Query Strings" },
-    { name: "redirects", content: redirects, title: "Redirects" }
+    { name: "redirects", content: redirects, title: "Redirects" },
     // { name: "codeSplitting", content: codeSplitting, title: "Code Splitting" }
 ];
 
 export default demos;
 
-export const getDemo = demoName => demos.find(demo => demo.name === demoName);
+export const getDemo = (demoName) => demos.find((demo) => demo.name === demoName);

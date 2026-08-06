@@ -6,11 +6,11 @@ import PDF from "react-pdf-js";
 class PdfViewer extends React.Component {
     state = {};
 
-    onDocumentComplete = pages => {
+    onDocumentComplete = (pages) => {
         this.setState({ page: 1, pages });
     };
 
-    onPageComplete = page => {
+    onPageComplete = (page) => {
         this.setState({ page });
     };
 
@@ -26,7 +26,7 @@ class PdfViewer extends React.Component {
         /**
          * Hook the pagination into our routing
          */
-        const linkTo = newPage => {
+        const linkTo = (newPage) => {
             if (newPage < 1 || newPage > pages) {
                 return null;
             }
@@ -59,10 +59,7 @@ class PdfViewer extends React.Component {
     render() {
         let pagination = null;
         if (this.state.pages) {
-            pagination = this.renderPagination(
-                this.props.page,
-                this.state.pages
-            );
+            pagination = this.renderPagination(this.props.page, this.state.pages);
         }
         return (
             <div>
@@ -78,6 +75,4 @@ class PdfViewer extends React.Component {
     }
 }
 
-export default routing(location => ({ location, page: location.pageNumber }))(
-    PdfViewer
-);
+export default routing((location) => ({ location, page: location.pageNumber }))(PdfViewer);

@@ -1,16 +1,16 @@
 const routes = [
     {
         path: "/",
-        state: { page: "home" }
+        state: { page: "home" },
     },
     {
         path: "/about",
-        state: { page: "about" }
+        state: { page: "about" },
     },
     {
         // 404 wildcard route
-        path: "/*:missingPath"
-    }
+        path: "/*:missingPath",
+    },
 ];
 
 export default routes;

@@ -10,12 +10,12 @@ import {
     dynamicRoutes,
     wildcardIndexedRoutes,
     wildcardRoutes,
-    queryStringRoutes
+    queryStringRoutes,
 } from "./dummy/routes";
 
 const nullMatch = {
     branch: [],
-    location: null
+    location: null,
 };
 
 describe("joinPaths", () => {
@@ -32,9 +32,7 @@ describe("joinPaths", () => {
     });
 
     test("merges query string parameters", () => {
-        expect(joinPaths("test?foo=bar", "test2?bar=baz")).toEqual(
-            "/test/test2?foo=bar&bar=baz"
-        );
+        expect(joinPaths("test?foo=bar", "test2?bar=baz")).toEqual("/test/test2?foo=bar&bar=baz");
     });
 });
 
@@ -51,8 +49,8 @@ describe("RouteMap", () => {
             expect(match.branch).toEqual([
                 {
                     path: "/",
-                    state: { page: "home" }
-                }
+                    state: { page: "home" },
+                },
             ]);
         }
         {
@@ -61,8 +59,8 @@ describe("RouteMap", () => {
             expect(match.branch).toEqual([
                 {
                     path: "/about",
-                    state: { page: "about" }
-                }
+                    state: { page: "about" },
+                },
             ]);
         }
     });
@@ -78,8 +76,8 @@ describe("RouteMap", () => {
         const routes = new RouteMap([
             {
                 path: "/",
-                state: { foo: true, bar: true }
-            }
+                state: { foo: true, bar: true },
+            },
         ]);
         const path = routes.stringify({ foo: true });
         expect(path).toEqual(null);
@@ -110,9 +108,9 @@ describe("RouteMap", () => {
             {
                 path: "/foo",
                 routes: [{ path: "/bar", state: { bar: true } }],
-                state: { foo: true }
+                state: { foo: true },
             },
-            { path: "/bar", state: { bar: true } }
+            { path: "/bar", state: { bar: true } },
         ]);
     });
 
@@ -142,11 +140,9 @@ describe("RouteMap", () => {
 
     test("it decodes more URI components", () => {
         const routes = dynamicRootRoutes();
-        const match = routes.match(
-            "/Content%20was%20not%20found%3A%20%27not-a-real-page%27"
-        );
+        const match = routes.match("/Content%20was%20not%20found%3A%20%27not-a-real-page%27");
         expect(match.location).toEqual({
-            id: "Content was not found: 'not-a-real-page'"
+            id: "Content was not found: 'not-a-real-page'",
         });
     });
 
@@ -174,16 +170,14 @@ describe("RouteMap", () => {
 
         describe("match", () => {
             test("throw when too many question marks", () => {
-                expect(
-                    () => new RouteMap([{ path: "/foo?bar?baz" }])
-                ).toThrow();
+                expect(() => new RouteMap([{ path: "/foo?bar?baz" }])).toThrow();
             });
 
             test("don't match plain path", () => {
                 const match = routes.match("/plain");
                 expect(match.location).toEqual({
                     status: 404,
-                    missingPath: "plain"
+                    missingPath: "plain",
                 });
             });
 
@@ -226,7 +220,7 @@ describe("RouteMap", () => {
                 const match = routes.match("/?q=something");
                 expect(match.location).toEqual({
                     search: true,
-                    searchTerm: "something"
+                    searchTerm: "something",
                 });
             });
 
@@ -234,18 +228,18 @@ describe("RouteMap", () => {
                 const match = routes.match("/?q=something%20else");
                 expect(match.location).toEqual({
                     search: true,
-                    searchTerm: "something else"
+                    searchTerm: "something else",
                 });
             });
 
             test("decodes more URI components", () => {
                 // Example taken from redirects demo, was failing on apostrophes
                 const match = routes.match(
-                    "/?q=Content%20was%20not%20found%3A%20%27not-a-real-page%27"
+                    "/?q=Content%20was%20not%20found%3A%20%27not-a-real-page%27",
                 );
                 expect(match.location).toEqual({
                     search: true,
-                    searchTerm: "Content was not found: 'not-a-real-page'"
+                    searchTerm: "Content was not found: 'not-a-real-page'",
                 });
             });
 
@@ -253,14 +247,14 @@ describe("RouteMap", () => {
                 const match = routes.match("/?optional=banana");
                 expect(match.location).toEqual({
                     home: true,
-                    optional: "banana"
+                    optional: "banana",
                 });
             });
 
             test("match without optional query", () => {
                 const match = routes.match("/");
                 expect(match.location).toEqual({
-                    home: true
+                    home: true,
                 });
             });
 
@@ -269,7 +263,7 @@ describe("RouteMap", () => {
                 expect(match.location).toEqual({
                     status: 404,
                     missingPath: "wildcard",
-                    rest: { charlie: "kelly" }
+                    rest: { charlie: "kelly" },
                 });
             });
 
@@ -278,7 +272,7 @@ describe("RouteMap", () => {
                     routes = new RouteMap([
                         {
                             path: "/",
-                            state: { page: "index" }
+                            state: { page: "index" },
                         },
                         {
                             path: "/:demoName?*=:all",
@@ -286,14 +280,14 @@ describe("RouteMap", () => {
                             routes: [
                                 {
                                     path: "/*:rest?*=:all",
-                                    state: { subPage: true }
-                                }
-                            ]
+                                    state: { subPage: true },
+                                },
+                            ],
                         },
                         {
                             path: "/*:missingPath?*=:query",
-                            state: { page: "notFound" }
-                        }
+                            state: { page: "notFound" },
+                        },
                     ]);
                 });
 
@@ -305,7 +299,7 @@ describe("RouteMap", () => {
                         demoName: "queryStrings",
                         rest: "search",
                         all: { q: "test" },
-                        subPage: true
+                        subPage: true,
                     });
                 });
             });
@@ -321,25 +315,25 @@ describe("RouteMap", () => {
                             routes: [
                                 {
                                     path: "/",
-                                    state: { page: "home" }
+                                    state: { page: "home" },
                                 },
                                 {
                                     // This fallback is needed to match the /search url without ?q
                                     path: "/search",
-                                    state: { page: "search" }
+                                    state: { page: "search" },
                                 },
                                 {
                                     // Because this parameter is non-optional so we only hit
                                     // this route when there is a search
                                     path: "/search?q=:searchTerm",
-                                    state: { page: "search" }
+                                    state: { page: "search" },
                                 },
                                 {
                                     // 404 wildcard route
-                                    path: "/*:missingPath"
-                                }
-                            ]
-                        }
+                                    path: "/*:missingPath",
+                                },
+                            ],
+                        },
                     ]);
                 });
 
@@ -347,7 +341,7 @@ describe("RouteMap", () => {
                     // This specific case is taken from queryString demos
                     const result = routes.match("/");
                     expect(result.location).toEqual({
-                        page: "home"
+                        page: "home",
                     });
                 });
 
@@ -356,14 +350,14 @@ describe("RouteMap", () => {
                     const result = routes.match("/?theme=bar");
                     expect(result.location).toEqual({
                         page: "home",
-                        themeName: "bar"
+                        themeName: "bar",
                     });
                 });
 
                 test("stringify correctly", () => {
                     const path = routes.stringify({
                         page: "home",
-                        themeName: "bar"
+                        themeName: "bar",
                     });
                     expect(path).toEqual("/?theme=bar");
                 });
@@ -385,7 +379,7 @@ describe("RouteMap", () => {
             test("stringify a named query token", () => {
                 const path = routes.stringify({
                     search: true,
-                    searchTerm: "something"
+                    searchTerm: "something",
                 });
                 expect(path).toEqual("/?q=something");
             });
@@ -393,14 +387,14 @@ describe("RouteMap", () => {
             test("stringify optional query token", () => {
                 const path = routes.stringify({
                     home: true,
-                    optional: "banana"
+                    optional: "banana",
                 });
                 expect(path).toEqual("/?optional=banana");
             });
 
             test("stringify without optional", () => {
                 const path = routes.stringify({
-                    home: true
+                    home: true,
                 });
                 expect(path).toEqual("/");
             });
@@ -409,7 +403,7 @@ describe("RouteMap", () => {
                 const path = routes.stringify({
                     mixed: true,
                     category: "fruit",
-                    field: "color"
+                    field: "color",
                 });
                 expect(path).toEqual("/mixed/fruit?sort=color");
             });
@@ -418,7 +412,7 @@ describe("RouteMap", () => {
                 const path = routes.stringify({
                     status: 404,
                     missingPath: "wildcard",
-                    rest: { charlie: "kelly" }
+                    rest: { charlie: "kelly" },
                 });
                 expect(path).toEqual("/wildcard?charlie=kelly");
             });
@@ -427,13 +421,13 @@ describe("RouteMap", () => {
                 routes = new RouteMap([
                     {
                         path: "/:demoName?*=:all",
-                        state: { page: "demo" }
-                    }
+                        state: { page: "demo" },
+                    },
                 ]);
                 // This was causing an error in demos as :all was not present in the location
                 const path = routes.stringify({
                     page: "demo",
-                    demoName: "hello"
+                    demoName: "hello",
                 });
                 expect(path).toEqual("/hello");
             });
@@ -443,27 +437,25 @@ describe("RouteMap", () => {
             test("periods in query can be matched", () => {
                 const path = routes.stringify({
                     page: "login",
-                    returnUrl: "http://example.com/foobar"
+                    returnUrl: "http://example.com/foobar",
                 });
-                expect(path).toEqual(
-                    "/login?returnUrl=http%3A%2F%2Fexample.com%2Ffoobar"
-                );
+                expect(path).toEqual("/login?returnUrl=http%3A%2F%2Fexample.com%2Ffoobar");
                 const { location } = routes.match(path);
                 expect(location).toEqual({
                     page: "login",
-                    returnUrl: "http://example.com/foobar"
+                    returnUrl: "http://example.com/foobar",
                 });
             });
 
             // TODO: See comment in relevant routes file. Really needs fixing.
             test.skip("wildcard in query can be optional", () => {
                 const path = routes.stringify({
-                    page: "login"
+                    page: "login",
                 });
                 expect(path).toEqual("/login");
                 const { location } = routes.match(path);
                 expect(location).toEqual({
-                    page: "login"
+                    page: "login",
                 });
             });
         });
@@ -476,7 +468,7 @@ describe("RouteMap", () => {
                 {
                     path: "/",
                     state: {},
-                    match: () => ({ matched: true })
+                    match: () => ({ matched: true }),
                 },
                 {
                     path: "/dates/:date",
@@ -487,29 +479,25 @@ describe("RouteMap", () => {
                             return false;
                         }
                         return {
-                            date: parsed
+                            date: parsed,
                         };
-                    }
+                    },
                 },
                 {
                     path: "/dates/*:bad",
-                    state: { badDate: true }
+                    state: { badDate: true },
                 },
                 {
                     path: "/products/:productId",
                     state: { page: "product" },
                     match: ({ productId, ...rest }) =>
-                        productId === "123"
-                            ? { product: { id: "123" }, ...rest }
-                            : false
+                        productId === "123" ? { product: { id: "123" }, ...rest } : false,
                 },
                 {
                     path: "/admin",
                     state: { page: "admin" },
                     match: (location, { role }) =>
-                        role === "admin"
-                            ? { ok: true, ...location }
-                            : redirect("/"),
+                        role === "admin" ? { ok: true, ...location } : redirect("/"),
                     routes: [
                         {
                             path: "/ban?users=:usersList",
@@ -520,12 +508,12 @@ describe("RouteMap", () => {
                                 ok
                                     ? {
                                           users: usersList.split(","),
-                                          ...rest
+                                          ...rest,
                                       }
-                                    : redirect("/login")
-                        }
-                    ]
-                }
+                                    : redirect("/login"),
+                        },
+                    ],
+                },
             ]);
         });
 
@@ -548,7 +536,7 @@ describe("RouteMap", () => {
             const { location } = routes.match("/products/123");
             expect(location).toEqual({
                 product: { id: "123" },
-                page: "product"
+                page: "product",
             });
         });
 
@@ -559,19 +547,19 @@ describe("RouteMap", () => {
 
         test("nested match prevents unauthorised", () => {
             const { location } = routes.match("/admin/ban?users=foo,bar,baz", {
-                role: "guest"
+                role: "guest",
             });
             expect(location).toEqual(redirect("/"));
         });
 
         test("nested match allows authorised and maps list", () => {
             const { location } = routes.match("/admin/ban?users=foo,bar,baz", {
-                role: "admin"
+                role: "admin",
             });
             expect(location).toEqual({
                 page: "admin",
                 action: "ban",
-                users: ["foo", "bar", "baz"]
+                users: ["foo", "bar", "baz"],
             });
         });
     });
@@ -586,52 +574,46 @@ describe("RouteMap", () => {
                 {
                     path: "/",
                     state: {},
-                    stringify: ({ matched }) => matched && {}
+                    stringify: ({ matched }) => matched && {},
                 },
                 {
                     path: "/dates/:date",
                     state: {},
                     stringify: ({ date }) =>
-                        date instanceof Date
-                            ? { date: format(date, "YYYY-MM-DD") }
-                            : false
+                        date instanceof Date ? { date: format(date, "YYYY-MM-DD") } : false,
                 },
                 {
                     path: "/dates/*:bad",
                     state: { badDate: true },
-                    stringify: ({ date }) =>
-                        date && { badDate: true, bad: date }
+                    stringify: ({ date }) => date && { badDate: true, bad: date },
                 },
                 {
                     path: "/products/:productId",
                     state: { page: "product" },
                     stringify: ({ product, ...rest }) =>
-                        product ? { productId: product.id, ...rest } : false
+                        product ? { productId: product.id, ...rest } : false,
                 },
                 {
                     path: "/admin",
                     state: { page: "admin" },
                     match: (location, { role }) =>
-                        role === "admin"
-                            ? { ok: true, ...location }
-                            : redirect("/"),
+                        role === "admin" ? { ok: true, ...location } : redirect("/"),
                     // Normally we don't need to do this, stringify will just fail
                     // if required state is not there; this is specifically to
                     // test whether stringify is resolving in the correct order (bottom-up)
                     // *and* passing location up the function chain
-                    stringify: location =>
-                        location.usersList ? location : false,
+                    stringify: (location) => (location.usersList ? location : false),
                     routes: [
                         {
                             path: "/ban?users=:usersList",
                             state: { action: "ban" },
                             stringify: ({ users, ...rest }) => ({
                                 usersList: users ? users.join(",") : undefined,
-                                ...rest
-                            })
-                        }
-                    ]
-                }
+                                ...rest,
+                            }),
+                        },
+                    ],
+                },
             ]);
         });
 
@@ -663,7 +645,7 @@ describe("RouteMap", () => {
         test("stringifies on different location key", () => {
             const path = routes.stringify({
                 page: "product",
-                product: { id: "123" }
+                product: { id: "123" },
             });
             expect(path).toEqual("/products/123");
         });
@@ -674,7 +656,7 @@ describe("RouteMap", () => {
             const path = routes.stringify({
                 page: "admin",
                 action: "ban",
-                users: ["foo", "bar", "baz"]
+                users: ["foo", "bar", "baz"],
             });
             expect(path).toEqual("/admin/ban?users=foo%2Cbar%2Cbaz");
         });

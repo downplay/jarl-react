@@ -1,8 +1,7 @@
 # Entrypoint when running inside docker only!
 
 cd /app
-yarn
-yarn bootstrap
-yarn build
+npm install
+npm run build
 cd demo
-yarn start
+npm run start

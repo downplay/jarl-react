@@ -7,10 +7,7 @@ const Content = ({ slug, content: { title, body } }) => (
         <Header>{title}</Header>
         <Body>
             <div dangerouslySetInnerHTML={{ __html: body }} />
-            <p>
-                This content was loaded asynchronously from the API. Slug for
-                this page: {slug}
-            </p>
+            <p>This content was loaded asynchronously from the API. Slug for this page: {slug}</p>
         </Body>
     </Page>
 );

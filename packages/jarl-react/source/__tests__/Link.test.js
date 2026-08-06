@@ -20,7 +20,7 @@ describe("<Link/>", () => {
         const anchor = render(
             <MockProvider routes={basicRoutes()} location={homeLocation}>
                 <Link to="/">Home</Link>
-            </MockProvider>
+            </MockProvider>,
         );
         expect(anchor[0].name).toEqual("a");
         expect(anchor.prop("href")).toEqual("/");
@@ -33,7 +33,7 @@ describe("<Link/>", () => {
                 <Link to={homeLocation} element="div">
                     Home
                 </Link>
-            </MockProvider>
+            </MockProvider>,
         );
         expect(anchor[0].name).toEqual("div");
         expect(anchor.prop("href")).toEqual("/");
@@ -44,7 +44,7 @@ describe("<Link/>", () => {
         const anchor = render(
             <MockProvider routes={basicRoutes()} location={homeLocation}>
                 <Link to={{ page: "home" }}>Home</Link>
-            </MockProvider>
+            </MockProvider>,
         );
         expect(anchor.prop("href")).toEqual("/");
         expect(anchor.text()).toEqual("Home");
@@ -52,26 +52,18 @@ describe("<Link/>", () => {
 
     test("basePath is prepended to URL", () => {
         const anchor = render(
-            <MockProvider
-                routes={basicRoutes()}
-                basePath="/foo"
-                location={homeLocation}
-            >
+            <MockProvider routes={basicRoutes()} basePath="/foo" location={homeLocation}>
                 <Link to={{ page: "home" }}>Home</Link>
-            </MockProvider>
+            </MockProvider>,
         );
         expect(anchor.prop("href")).toEqual("/foo");
     });
 
     test("paths are concatenated correctly", () => {
         const anchor = render(
-            <MockProvider
-                routes={basicRoutes()}
-                basePath="/foo"
-                location={homeLocation}
-            >
+            <MockProvider routes={basicRoutes()} basePath="/foo" location={homeLocation}>
                 <Link to={{ page: "about" }}>Home</Link>
-            </MockProvider>
+            </MockProvider>,
         );
         expect(anchor.prop("href")).toEqual("/foo/about");
     });
@@ -87,7 +79,7 @@ describe("<Link/>", () => {
                 performInitialRouting={false}
             >
                 <Link to={{ page: "about" }}>Home</Link>
-            </MockProvider>
+            </MockProvider>,
         );
         const event = { preventDefault: jest.fn() };
         const link = app.find(Link);
@@ -109,11 +101,7 @@ describe("<Link/>", () => {
         // TODO: Provide `replace` and `push` instead of onClick?
         test("renders active link", () => {
             const wrapper = mount(
-                <MockProvider
-                    routes={basicRoutes()}
-                    history={history}
-                    location={location}
-                >
+                <MockProvider routes={basicRoutes()} history={history} location={location}>
                     <Link to="/about">
                         {({ href, active }) => (
                             <li className={active ? "active" : "not"}>
@@ -121,7 +109,7 @@ describe("<Link/>", () => {
                             </li>
                         )}
                     </Link>
-                </MockProvider>
+                </MockProvider>,
             );
             const anchor = wrapper.find("li");
             expect(anchor.prop("className")).toEqual("active");
@@ -143,7 +131,7 @@ describe("<Link/>", () => {
                             </li>
                         )}
                     </Link>
-                </MockProvider>
+                </MockProvider>,
             );
             const anchor = wrapper.find("li");
             expect(anchor.prop("className")).toEqual("active");
@@ -152,11 +140,7 @@ describe("<Link/>", () => {
 
         test("renders inactive link and navigates", () => {
             const wrapper = mount(
-                <MockProvider
-                    routes={basicRoutes()}
-                    history={history}
-                    location={location}
-                >
+                <MockProvider routes={basicRoutes()} history={history} location={location}>
                     <Link to="/">
                         {({ href, active, onClick }) => (
                             <li
@@ -167,7 +151,7 @@ describe("<Link/>", () => {
                             </li>
                         )}
                     </Link>
-                </MockProvider>
+                </MockProvider>,
             );
             const anchor = wrapper.find("li");
             expect(anchor.prop("className")).toEqual("not");

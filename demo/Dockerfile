@@ -1,14 +1,11 @@
-FROM node:8.11.1-alpine
+FROM node:22-alpine
 
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY .babelrc /app/
 COPY package.json /app/
-COPY yarn.lock /app/
 
-# npm production install is smaller for some reason
-RUN npm install --production=true
+RUN npm install --omit=dev
 
 COPY dist /app/dist
 COPY server /app/server

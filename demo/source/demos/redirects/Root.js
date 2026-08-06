@@ -12,7 +12,7 @@ const Root = ({
     authenticated,
     setAuthenticated,
     contentPage,
-    setContentPage
+    setContentPage,
 }) => (
     <StateProvider
         history={history}
@@ -21,7 +21,7 @@ const Root = ({
         // Using the context callback here so that our authentication information
         // is available in match and resolve functions
         context={() => ({
-            authenticated
+            authenticated,
         })}
         // Resolved content arrives in the onChange callback. In a real app you
         // might want to raise a Flux action directly from your route to load
@@ -39,5 +39,5 @@ const Root = ({
 
 export default compose(
     withState("authenticated", "setAuthenticated", false),
-    withState("contentPage", "setContentPage", null)
+    withState("contentPage", "setContentPage", null),
 )(Root);

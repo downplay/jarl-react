@@ -1,0 +1,9 @@
+# oxfmt (this repo's formatter, see ticket 51) also honours this file.
+# These paths are intentionally out of scope for the monorepo tooling
+# restructure: `native/` is a standalone Expo example app (not an npm
+# workspace), and .circleci/ is CI config owned by a separate ticket.
+native/
+.circleci/
+CHANGELOG.md
+ROADMAP.md
+README.md

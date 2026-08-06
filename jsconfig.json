@@ -3,12 +3,6 @@
         "target": "ES6",
         "experimentalDecorators": true
     },
-    "exclude": [
-        "node_modules",
-        "bower_components"
-    ],
-    "include": [
-        "packages",
-        "demo"
-    ]
+    "exclude": ["node_modules", "bower_components"],
+    "include": ["packages", "demo"]
 }

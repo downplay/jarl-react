@@ -2,7 +2,7 @@
  * A fake async API to demonstrate resolver redirect
  */
 
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const api = {
     async get(slug) {
@@ -15,11 +15,11 @@ const api = {
                 <aside>/jɑːl/</aside>
                 <p><em><strong>noun</strong><span>historical</span></em></p>
                 <h3>a Norse or Danish chief.</h3>
-                `
+                `,
             };
         }
         throw new Error(`Content was not found: '${slug}'`);
-    }
+    },
 };
 
 export default api;

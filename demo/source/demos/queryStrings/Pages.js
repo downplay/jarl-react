@@ -16,7 +16,7 @@ import darkTheme from "../../layout/themes/dark";
 
 const themes = {
     light: lightTheme,
-    dark: darkTheme
+    dark: darkTheme,
 };
 
 // The properties are injected via the routing HOC
@@ -40,16 +40,10 @@ class Pages extends Component {
             <Layout>
                 <Helmet titleTemplate="%s | Query Strings | JARL Demos" />
                 <Menu>
-                    <MenuItem
-                        to={{ page: "home", themeName }}
-                        data-test="home-link"
-                    >
+                    <MenuItem to={{ page: "home", themeName }} data-test="home-link">
                         Home
                     </MenuItem>
-                    <MenuItem
-                        to={{ page: "search", themeName }}
-                        data-test="search-link"
-                    >
+                    <MenuItem to={{ page: "search", themeName }} data-test="search-link">
                         Search
                     </MenuItem>
                     <MenuItem
@@ -60,7 +54,7 @@ class Pages extends Component {
                             // but also need to make genuine errors not just fail silently
                             page: "home",
                             ...this.props.location,
-                            themeName: themeName === "dark" ? "light" : "dark"
+                            themeName: themeName === "dark" ? "light" : "dark",
                         }}
                         data-test="theme-link"
                     >
@@ -68,13 +62,11 @@ class Pages extends Component {
                     </MenuItem>
                 </Menu>
                 {/* Wrap page in a ThemeProvider. All routes have access to themeName, via route nesting. */}
-                <ThemeProvider theme={whichTheme}>
-                    {renderPage(this.props.location)}
-                </ThemeProvider>
+                <ThemeProvider theme={whichTheme}>{renderPage(this.props.location)}</ThemeProvider>
             </Layout>
         );
     }
 }
 
 // Custom mapping function to inject the entire location object instead of individual fields
-export default routing(location => ({ location }))(Pages);
+export default routing((location) => ({ location }))(Pages);

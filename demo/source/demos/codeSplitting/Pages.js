@@ -9,7 +9,7 @@ import { Layout, MenuItem } from "../../layout";
 // The default content to display before the first component has laoded
 import Loading from "./pages/Loading";
 
-const renderPage = page => {
+const renderPage = (page) => {
     switch (page) {
         default:
             // Until navigation complets we won't have a `page`
@@ -30,18 +30,17 @@ class Pages extends Component {
                     <MenuItem to={{ page: "home" }} data-test="home-link">
                         Home
                     </MenuItem>
-                    <MenuItem
-                        to={{ page: "bigPage" }}
-                        data-test="big-page-link"
-                    >
+                    <MenuItem to={{ page: "bigPage" }} data-test="big-page-link">
                         Big Page
                     </MenuItem>
                 </Menu>
-                {/**
-                 * The Page component was injected from the onChange
-                 * Handler in Root.js
-                 */
-                Page ? <Page /> : renderPage(page, missingPath)}
+                {
+                    /**
+                     * The Page component was injected from the onChange
+                     * Handler in Root.js
+                     */
+                    Page ? <Page /> : renderPage(page, missingPath)
+                }
             </Layout>
         );
     }

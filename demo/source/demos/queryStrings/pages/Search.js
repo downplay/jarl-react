@@ -7,9 +7,7 @@ const Search = ({ searchTerm }) => (
         <Header>Search</Header>
         <Body>
             <SearchForm initialValue={searchTerm} />
-            {searchTerm && (
-                <div data-test="search-results">Results for {searchTerm}</div>
-            )}
+            {searchTerm && <div data-test="search-results">Results for {searchTerm}</div>}
         </Body>
     </Page>
 );

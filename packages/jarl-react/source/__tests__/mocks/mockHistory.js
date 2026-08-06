@@ -4,10 +4,10 @@ const mockHistory = (pathname = "/", search = "") => ({
     listen: jest.fn(),
     location: {
         pathname,
-        search
+        search,
     },
     push: jest.fn(),
-    replace: jest.fn()
+    replace: jest.fn(),
 });
 
 export default mockHistory;

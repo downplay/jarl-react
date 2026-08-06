@@ -9,11 +9,7 @@ class Root extends Component {
     render() {
         const { history, basePath } = this.props;
         return (
-            <StateProvider
-                history={history}
-                routes={routes}
-                basePath={basePath}
-            >
+            <StateProvider history={history} routes={routes} basePath={basePath}>
                 <Pages />
             </StateProvider>
         );

@@ -1,4 +1,4 @@
-const safeJsonStringify = o => {
+const safeJsonStringify = (o) => {
     try {
         return JSON.stringify(o);
     } catch (e) {
