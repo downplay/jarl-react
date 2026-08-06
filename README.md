@@ -44,7 +44,6 @@ All routing can be described using this simple approach.
 *   Object-based locations (instead of URLs)
 *   Full querystring matching support
 *   Resolve promises during routing and redirect if required
-*   React Native support including back button and deep links
 *   And much more...
 
 ## Concrete Example
@@ -196,7 +195,7 @@ class SearchForm extends React.Component {
 export default SearchForm;
 ```
 
-That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. For more complex scenarios, there is also a `routing` higher-order component giving access to current location as well as all the router functions (serializing URLs from location objects, calling navigate or redirect, and checking whether links are active). More advanced demos (such as data preloading, code splitting, Redux integration) will be showcased in the demo site...
+That's all the basics! Hopefully this gave a flavour of the power and simplicity of this routing system. For more complex scenarios, there is also a `routing` higher-order component giving access to current location as well as all the router functions (serializing URLs from location objects, calling navigate or redirect, and checking whether links are active). More advanced demos (such as data preloading and code splitting) will be showcased in the demo site...
 
 ## Documentation
 
@@ -234,16 +233,6 @@ npm run --workspace demo local-e2e
 ```
 
 Previous E2E test runs can be viewed on the awesome [Cypress Dashboard](https://dashboard.cypress.io/#/projects/ps43vs/runs).
-
-Note: to run the full suite (including Native builds) it might be necessary
-to increase the max number of watches as follows:
-
-```
-sudo sysctl -w kern.maxfiles=5242880
-sudo sysctl -w kern.maxfilesperproc=524288
-```
-
-See: https://github.com/react-community/create-react-native-app/issues/234
 
 ## Community
 

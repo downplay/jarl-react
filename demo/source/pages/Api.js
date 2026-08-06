@@ -15,10 +15,6 @@ const apis = [
         name: "jarl-react",
         title: "JARL",
     },
-    {
-        name: "jarl-react-native",
-        title: "JARL Native",
-    },
 ];
 const apiTitle = (apiName) => apis.find((api) => api.name === apiName).title;
 
