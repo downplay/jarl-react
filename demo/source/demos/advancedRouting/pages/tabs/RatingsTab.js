@@ -7,9 +7,7 @@ const Stars = styled.span`
 
 const Rating = ({ stars, children }) => (
     <p>
-        <Stars>
-            {[1, 2, 3, 4, 5].map(number => (stars >= number ? "😀" : "🤢"))}
-        </Stars>{" "}
+        <Stars>{[1, 2, 3, 4, 5].map((number) => (stars >= number ? "😀" : "🤢"))}</Stars>{" "}
         <span>{children}</span>
     </p>
 );

@@ -1,8 +1,2 @@
-/lib
-/vendor
-es
+/dist
 node_modules
-umd
-wip
-/*.js
-!rollup.config.js

@@ -211,27 +211,26 @@ Detailed documentation, and demos with annotated code samples, can be viewed at 
 ```
 git clone https://github.com/downplay/jarl-react
 cd jarl-react
-yarn
-yarn bootstrap
-yarn build
+npm install
+npm run build
 ```
 
 To run unit tests:
 
 ```
-yarn test
+npm test
 ```
 
-To run demo:
+To run the demo/docs site:
 
 ```
-yarn demo
+npm run dev
 ```
 
 To run E2E tests (using [Cypress](https://cypress.io)):
 
 ```
-yarn e2e
+npm run --workspace demo local-e2e
 ```
 
 Previous E2E test runs can be viewed on the awesome [Cypress Dashboard](https://dashboard.cypress.io/#/projects/ps43vs/runs).

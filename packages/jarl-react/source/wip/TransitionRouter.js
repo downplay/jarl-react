@@ -8,9 +8,7 @@ class TransitionRouter extends Component {
 
     render() {
         return (
-            <RoutingProvider onChange={this.handleChange}>
-                {this.props.children}
-            </RoutingProvider>
+            <RoutingProvider onChange={this.handleChange}>{this.props.children}</RoutingProvider>
         );
     }
 }

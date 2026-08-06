@@ -13,7 +13,7 @@ export const routingContextShape = PropTypes.shape({
     redirect: PropTypes.func.isRequired,
     stringify: PropTypes.func.isRequired,
     getLocation: PropTypes.func.isRequired,
-    getResolved: PropTypes.func.isRequired
+    getResolved: PropTypes.func.isRequired,
 }).isRequired;
 
 const DEFAULT_STATE = {};
@@ -23,8 +23,7 @@ export const ACTION_INITIAL = "INITIAL";
 /** Action type when routes are reloaded. */
 export const ACTION_RELOAD = "RELOAD";
 
-const ensureRouteMap = routes =>
-    routes instanceof RouteMap ? routes : new RouteMap(routes);
+const ensureRouteMap = (routes) => (routes instanceof RouteMap ? routes : new RouteMap(routes));
 
 /**
  * The RoutingProvider provides routing functionality to the entire app or a subtree
@@ -35,10 +34,7 @@ const ensureRouteMap = routes =>
 class RoutingProvider extends Component {
     static propTypes = {
         /** An array of Routes, or a RouteMap instance. */
-        routes: PropTypes.oneOfType([
-            PropTypes.instanceOf(RouteMap),
-            PropTypes.array
-        ]).isRequired,
+        routes: PropTypes.oneOfType([PropTypes.instanceOf(RouteMap), PropTypes.array]).isRequired,
         /** Current location represented as a plain state object */
         location: PropTypes.object,
         /** Resolved objects to be passed down via React's context */
@@ -67,7 +63,7 @@ class RoutingProvider extends Component {
          * If the base path is *not* found during a routing event then the routing
          * event will simply be ignored.
          */
-        basePath: PropTypes.string
+        basePath: PropTypes.string,
     };
 
     static defaultProps = {
@@ -76,7 +72,7 @@ class RoutingProvider extends Component {
         resolved: null,
         context: () => DEFAULT_STATE,
         performInitialRouting: true,
-        basePath: ""
+        basePath: "",
     };
 
     static childContextTypes = { routing: routingContextShape };
@@ -84,15 +80,13 @@ class RoutingProvider extends Component {
     constructor(props) {
         super(props);
         invariant(
-            props.routes &&
-                (props.routes instanceof RouteMap ||
-                    Array.isArray(props.routes)),
-            "Invalid routes property: must be an array or a RouteMap instance"
+            props.routes && (props.routes instanceof RouteMap || Array.isArray(props.routes)),
+            "Invalid routes property: must be an array or a RouteMap instance",
         );
         invariant(props.history, "Provider must receive a history object");
         this.state = {
             routes: ensureRouteMap(props.routes),
-            validLocation: false
+            validLocation: false,
         };
         if (props.location) {
             try {
@@ -112,8 +106,8 @@ class RoutingProvider extends Component {
                 stringify: this.handleStringify,
                 getLocation: this.handleGetLocation,
                 getResolved: this.handleGetResolved,
-                isActive: this.handleIsActive
-            }
+                isActive: this.handleIsActive,
+            },
         };
     }
 
@@ -129,7 +123,7 @@ class RoutingProvider extends Component {
         if (nextProps.routes !== this.props.routes) {
             this.setState(
                 {
-                    routes: ensureRouteMap(nextProps.routes)
+                    routes: ensureRouteMap(nextProps.routes),
                 },
                 () => {
                     // Note: performInitialRouting is intentionally ignored, if a different
@@ -137,7 +131,7 @@ class RoutingProvider extends Component {
                     // TODO: Test for this
                     const path = this.getCurrentPath();
                     this.doNavigation(path, ACTION_RELOAD);
-                }
+                },
             );
         }
         if (nextProps.history !== this.props.history) {
@@ -156,10 +150,7 @@ class RoutingProvider extends Component {
         // TODO: This seems like a source of bugs since during navigation this is now
         // incorrect. Source of truth error. Probably need to actually store the real current path
         // in state or maybe private field.
-        return (
-            this.props.history.location.pathname +
-            this.props.history.location.search
-        );
+        return this.props.history.location.pathname + this.props.history.location.search;
     }
 
     hasBasePath(path) {
@@ -170,9 +161,7 @@ class RoutingProvider extends Component {
         // TODO: Also merge query string
         invariant(
             this.hasBasePath(path),
-            `Tried to normalize path ${path} without basePath ${
-                this.props.basePath
-            }`
+            `Tried to normalize path ${path} without basePath ${this.props.basePath}`,
         );
         return joinPaths(path.substring(this.props.basePath.length));
     }
@@ -198,31 +187,25 @@ class RoutingProvider extends Component {
                 : this.state.routes.stringify(location, this.props.context());
         // TODO: Start thinking about debug tooling
         // to track these errors in a nice UI and expose more informaton.
-        invariant(
-            path,
-            `Could not stringify location: ${safeJsonStringify(location)}`,
-            location
-        );
+        invariant(path, `Could not stringify location: ${safeJsonStringify(location)}`, location);
         return path;
     }
 
     checkValidLocation(location) {
         try {
             this.setState({
-                validLocation: !!this.ensurePath(location)
+                validLocation: !!this.ensurePath(location),
             });
         } catch (error) {
             warning(
                 error,
-                `Invalid location passed to RoutingProvider: ${safeJsonStringify(
-                    location
-                )}`,
-                error
+                `Invalid location passed to RoutingProvider: ${safeJsonStringify(location)}`,
+                error,
             );
         }
     }
 
-    handleRedirect = to => {
+    handleRedirect = (to) => {
         // Redirect causes a replace instead of push, so the browser history doesn't
         // contain URLs we know to be invalid
         // TODO: Specific E2E test for this, and consider that in some cases this
@@ -231,7 +214,7 @@ class RoutingProvider extends Component {
         this.props.history.replace(this.handleStringify(to));
     };
 
-    handleNavigate = to => {
+    handleNavigate = (to) => {
         this.props.history.push(this.handleStringify(to));
     };
 
@@ -242,10 +225,7 @@ class RoutingProvider extends Component {
         if (!this.hasBasePath(fullPath)) return;
         const path = this.normalizePath(fullPath);
 
-        const { branch, location } = this.state.routes.match(
-            path,
-            this.props.context()
-        );
+        const { branch, location } = this.state.routes.match(path, this.props.context());
         // Check for and follow redirects
         if (location instanceof Redirect) {
             this.handleRedirect(location.to);
@@ -256,8 +236,8 @@ class RoutingProvider extends Component {
             if (!leaf.resolve) {
                 return promise;
             }
-            return (promise || Promise.resolve({})).then(reduced =>
-                leaf.resolve(location, this.props.context()).then(result => {
+            return (promise || Promise.resolve({})).then((reduced) =>
+                leaf.resolve(location, this.props.context()).then((result) => {
                     // Convert redirect into a Promise rejection, this
                     // ensures that the Promise chain is broken immediately
                     const reduction =
@@ -265,7 +245,7 @@ class RoutingProvider extends Component {
                             ? Promise.reject(result)
                             : { ...reduced, ...result };
                     return reduction;
-                })
+                }),
             );
         }, null);
         const output = { location, path, branch, action, resolved: {} };
@@ -275,11 +255,11 @@ class RoutingProvider extends Component {
         }
         // All promises resolve in series, and navigation is over
         series
-            .then(resolved => {
+            .then((resolved) => {
                 output.resolved = resolved;
                 this.completeRouting(output);
             })
-            .catch(error => {
+            .catch((error) => {
                 // If a redirect was thrown, follow it
                 if (error instanceof Redirect) {
                     this.handleRedirect(error.to);
@@ -290,7 +270,7 @@ class RoutingProvider extends Component {
                         location,
                         path,
                         branch,
-                        action
+                        action,
                     });
                 } else {
                     // Unable to complete navigation, error not handled
@@ -298,13 +278,13 @@ class RoutingProvider extends Component {
                         false,
                         `Unhandled resolve failure during navigation to ${path}.
                          Handle the resolve with a redirect instead.`,
-                        error
+                        error,
                     );
                 }
             });
     }
 
-    completeRouting = output => {
+    completeRouting = (output) => {
         if (this.props.onChange) {
             this.props.onChange(output);
         }
@@ -313,7 +293,7 @@ class RoutingProvider extends Component {
         this.forceUpdate();
     };
 
-    handleStringify = location => {
+    handleStringify = (location) => {
         const stringified = this.ensurePath(location);
         return joinPaths(this.props.basePath, stringified);
     };
@@ -352,18 +332,13 @@ class RoutingProvider extends Component {
         // Get the branch to be checked
         const toPath = this.normalizePath(this.handleStringify(location));
         // PERF: location result of match being thrown away here
-        const { branch: toBranch } = this.state.routes.match(
-            toPath,
-            this.props.context()
-        );
+        const { branch: toBranch } = this.state.routes.match(toPath, this.props.context());
 
         // Get current branch
-        const currentPath = this.normalizePath(
-            this.handleStringify(this.props.location)
-        );
+        const currentPath = this.normalizePath(this.handleStringify(this.props.location));
         const { branch: currentBranch } = this.state.routes.match(
             currentPath,
-            this.props.context()
+            this.props.context(),
         );
         // Can drop out quickly for obvious non-matches
         if (
@@ -392,7 +367,7 @@ class RoutingProvider extends Component {
         // we are navigating to. If they match then this is (almost definitely) active.
         // Need to find the right mapped route that corresponds to the leaf.
         const mappedRoute = this.state.routes.routes.find(
-            route => route.route === currentBranch[toBranch.length - 1]
+            (route) => route.route === currentBranch[toBranch.length - 1],
         );
         return hydrateRoute(mappedRoute, this.props.location) === toPath;
     };

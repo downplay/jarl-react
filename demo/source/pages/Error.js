@@ -13,7 +13,9 @@ const Error = ({ error, info }) => (
                 {JSON.stringify(info)
                     .split("\\n")
                     // eslint-disable-next-line react/no-array-index-key
-                    .map((line, i) => <pre key={i}>{line}</pre>)}
+                    .map((line, i) => (
+                        <pre key={i}>{line}</pre>
+                    ))}
             </pre>
         </Body>
     </Page>

@@ -16,10 +16,10 @@ var P,
     regexGroupCount,
     stringConcatMap,
     stringify;
-escapeForRegex = function(string) {
+escapeForRegex = function (string) {
     return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 };
-concatMap = function(array, f) {
+concatMap = function (array, f) {
     var i, length, results;
     results = [];
     i = -1;
@@ -29,7 +29,7 @@ concatMap = function(array, f) {
     }
     return results;
 };
-stringConcatMap = function(array, f) {
+stringConcatMap = function (array, f) {
     var i, length, result;
     result = "";
     i = -1;
@@ -39,10 +39,10 @@ stringConcatMap = function(array, f) {
     }
     return result;
 };
-regexGroupCount = function(regex) {
+regexGroupCount = function (regex) {
     return new RegExp(regex.toString() + "|").exec("").length - 1;
 };
-keysAndValuesToObject = function(keys, values) {
+keysAndValuesToObject = function (keys, values) {
     var i, key, length, object, value;
     object = {};
     i = -1;
@@ -65,16 +65,16 @@ keysAndValuesToObject = function(keys, values) {
     return object;
 };
 P = {};
-P.Result = function(value, rest) {
+P.Result = function (value, rest) {
     this.value = value;
     this.rest = rest;
 };
-P.Tagged = function(tag, value) {
+P.Tagged = function (tag, value) {
     this.tag = tag;
     this.value = value;
 };
-P.tag = function(tag, parser) {
-    return function(input) {
+P.tag = function (tag, parser) {
+    return function (input) {
         var result, tagged;
         result = parser(input);
         if (result == null) {
@@ -84,8 +84,8 @@ P.tag = function(tag, parser) {
         return new P.Result(tagged, result.rest);
     };
 };
-P.regex = function(regex) {
-    return function(input) {
+P.regex = function (regex) {
+    return function (input) {
         var matches, result;
         matches = regex.exec(input);
         if (matches == null) {
@@ -95,10 +95,10 @@ P.regex = function(regex) {
         return new P.Result(result, input.slice(result.length));
     };
 };
-P.sequence = function() {
+P.sequence = function () {
     var parsers;
     parsers = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return function(input) {
+    return function (input) {
         var i, length, parser, rest, result, values;
         i = -1;
         length = parsers.length;
@@ -116,11 +116,10 @@ P.sequence = function() {
         return new P.Result(values, rest);
     };
 };
-P.pick = function() {
+P.pick = function () {
     var indexes, parsers;
-    (indexes = arguments[0]),
-        (parsers = 2 <= arguments.length ? slice.call(arguments, 1) : []);
-    return function(input) {
+    ((indexes = arguments[0]), (parsers = 2 <= arguments.length ? slice.call(arguments, 1) : []));
+    return function (input) {
         var array, result;
         result = P.sequence.apply(P, parsers)(input);
         if (result == null) {
@@ -131,32 +130,26 @@ P.pick = function() {
         return result;
     };
 };
-P.string = function(string) {
+P.string = function (string) {
     var length;
     length = string.length;
-    return function(input) {
+    return function (input) {
         if (input.slice(0, length) === string) {
             return new P.Result(string, input.slice(length));
         }
     };
 };
-P.lazy = function(fn) {
+P.lazy = function (fn) {
     var cached;
     cached = null;
-    return function(input) {
+    return function (input) {
         if (cached == null) {
             cached = fn();
         }
         return cached(input);
     };
 };
-P.baseMany = function(
-    parser,
-    end,
-    stringResult,
-    atLeastOneResultRequired,
-    input
-) {
+P.baseMany = function (parser, end, stringResult, atLeastOneResultRequired, input) {
     var endResult, parserResult, rest, results;
     rest = input;
     results = stringResult ? "" : [];
@@ -183,20 +176,20 @@ P.baseMany = function(
     }
     return new P.Result(results, rest);
 };
-P.many1 = function(parser) {
-    return function(input) {
+P.many1 = function (parser) {
+    return function (input) {
         return P.baseMany(parser, null, false, true, input);
     };
 };
-P.concatMany1Till = function(parser, end) {
-    return function(input) {
+P.concatMany1Till = function (parser, end) {
+    return function (input) {
         return P.baseMany(parser, end, true, true, input);
     };
 };
-P.firstChoice = function() {
+P.firstChoice = function () {
     var parsers;
     parsers = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return function(input) {
+    return function (input) {
         var i, length, parser, result;
         i = -1;
         length = parsers.length;
@@ -209,7 +202,7 @@ P.firstChoice = function() {
         }
     };
 };
-newParser = function(options) {
+newParser = function (options) {
     var U;
     U = {};
     U.wildcard = P.tag("wildcard", P.string(options.wildcardChar));
@@ -218,11 +211,11 @@ newParser = function(options) {
         P.pick(
             1,
             P.string(options.optionalSegmentStartChar),
-            P.lazy(function() {
+            P.lazy(function () {
                 return U.pattern;
             }),
-            P.string(options.optionalSegmentEndChar)
-        )
+            P.string(options.optionalSegmentEndChar),
+        ),
     );
     U.name = P.regex(new RegExp("^[" + options.segmentNameCharset + "]+"));
     U.namedWildcard = P.tag(
@@ -231,52 +224,46 @@ newParser = function(options) {
             2,
             P.string(options.wildcardChar),
             P.string(options.segmentNameStartChar),
-            P.lazy(function() {
+            P.lazy(function () {
                 return U.name;
-            })
-        )
+            }),
+        ),
     );
     U.named = P.tag(
         "named",
         P.pick(
             1,
             P.string(options.segmentNameStartChar),
-            P.lazy(function() {
+            P.lazy(function () {
                 return U.name;
-            })
-        )
+            }),
+        ),
     );
     U.escapedChar = P.pick(1, P.string(options.escapeChar), P.regex(/^./));
     U["static"] = P.tag(
         "static",
         P.concatMany1Till(
             P.firstChoice(
-                P.lazy(function() {
+                P.lazy(function () {
                     return U.escapedChar;
                 }),
-                P.regex(/^./)
+                P.regex(/^./),
             ),
             P.firstChoice(
                 P.string(options.segmentNameStartChar),
                 P.string(options.optionalSegmentStartChar),
                 P.string(options.optionalSegmentEndChar),
-                U.wildcard
-            )
-        )
+                U.wildcard,
+            ),
+        ),
     );
-    U.token = P.lazy(function() {
-        return P.firstChoice(
-            U.namedWildcard,
-            U.wildcard,
-            U.optional,
-            U.named,
-            U["static"]
-        );
+    U.token = P.lazy(function () {
+        return P.firstChoice(U.namedWildcard, U.wildcard, U.optional, U.named, U["static"]);
     });
     U.pattern = P.many1(
-        P.lazy(function() {
+        P.lazy(function () {
             return U.token;
-        })
+        }),
     );
     return U;
 };
@@ -287,11 +274,11 @@ defaultOptions = {
     segmentNameCharset: "a-zA-Z0-9",
     optionalSegmentStartChar: "(",
     optionalSegmentEndChar: ")",
-    wildcardChar: "*"
+    wildcardChar: "*",
 };
-baseAstNodeToRegexString = function(astNode, segmentValueCharset) {
+baseAstNodeToRegexString = function (astNode, segmentValueCharset) {
     if (Array.isArray(astNode)) {
-        return stringConcatMap(astNode, function(node) {
+        return stringConcatMap(astNode, function (node) {
             return baseAstNodeToRegexString(node, segmentValueCharset);
         });
     }
@@ -304,20 +291,16 @@ baseAstNodeToRegexString = function(astNode, segmentValueCharset) {
         case "static":
             return escapeForRegex(astNode.value);
         case "optional":
-            return (
-                "(?:" +
-                baseAstNodeToRegexString(astNode.value, segmentValueCharset) +
-                ")?"
-            );
+            return "(?:" + baseAstNodeToRegexString(astNode.value, segmentValueCharset) + ")?";
     }
 };
-astNodeToRegexString = function(astNode, segmentValueCharset) {
+astNodeToRegexString = function (astNode, segmentValueCharset) {
     if (segmentValueCharset == null) {
         segmentValueCharset = defaultOptions.segmentValueCharset;
     }
     return "^" + baseAstNodeToRegexString(astNode, segmentValueCharset) + "$";
 };
-astNodeToNames = function(astNode) {
+astNodeToNames = function (astNode) {
     if (Array.isArray(astNode)) {
         return concatMap(astNode, astNodeToNames);
     }
@@ -333,7 +316,7 @@ astNodeToNames = function(astNode) {
             return astNodeToNames(astNode.value);
     }
 };
-getParam = function(params, key, nextIndexes, sideEffects) {
+getParam = function (params, key, nextIndexes, sideEffects) {
     var index, maxIndex, result, value;
     if (sideEffects == null) {
         sideEffects = false;
@@ -361,23 +344,13 @@ getParam = function(params, key, nextIndexes, sideEffects) {
     }
     return result;
 };
-astNodeContainsSegmentsForProvidedParams = function(
-    astNode,
-    params,
-    nextIndexes
-) {
+astNodeContainsSegmentsForProvidedParams = function (astNode, params, nextIndexes) {
     var i, length;
     if (Array.isArray(astNode)) {
         i = -1;
         length = astNode.length;
         while (++i < length) {
-            if (
-                astNodeContainsSegmentsForProvidedParams(
-                    astNode[i],
-                    params,
-                    nextIndexes
-                )
-            ) {
+            if (astNodeContainsSegmentsForProvidedParams(astNode[i], params, nextIndexes)) {
                 return true;
             }
         }
@@ -391,16 +364,12 @@ astNodeContainsSegmentsForProvidedParams = function(
         case "static":
             return false;
         case "optional":
-            return astNodeContainsSegmentsForProvidedParams(
-                astNode.value,
-                params,
-                nextIndexes
-            );
+            return astNodeContainsSegmentsForProvidedParams(astNode.value, params, nextIndexes);
     }
 };
-stringify = function(astNode, params, nextIndexes) {
+stringify = function (astNode, params, nextIndexes) {
     if (Array.isArray(astNode)) {
-        return stringConcatMap(astNode, function(node) {
+        return stringConcatMap(astNode, function (node) {
             return stringify(node, params, nextIndexes);
         });
     }
@@ -413,20 +382,14 @@ stringify = function(astNode, params, nextIndexes) {
         case "static":
             return astNode.value;
         case "optional":
-            if (
-                astNodeContainsSegmentsForProvidedParams(
-                    astNode.value,
-                    params,
-                    nextIndexes
-                )
-            ) {
+            if (astNodeContainsSegmentsForProvidedParams(astNode.value, params, nextIndexes)) {
                 return stringify(astNode.value, params, nextIndexes);
             } else {
                 return "";
             }
     }
 };
-UrlPattern = function(arg1, arg2) {
+UrlPattern = function (arg1, arg2) {
     var groupCount, options, parsed, parser, withoutWhitespace;
     if (arg1 instanceof UrlPattern) {
         this.isRegex = arg1.isRegex;
@@ -444,7 +407,7 @@ UrlPattern = function(arg1, arg2) {
         if (arg2 != null) {
             if (!Array.isArray(arg2)) {
                 throw new Error(
-                    "if first argument is a regex the second argument may be an array of group names but you provided something else"
+                    "if first argument is a regex the second argument may be an array of group names but you provided something else",
                 );
             }
             groupCount = regexGroupCount(this.regex);
@@ -453,7 +416,7 @@ UrlPattern = function(arg1, arg2) {
                     "regex contains " +
                         groupCount +
                         " groups but array of group names contains " +
-                        arg2.length
+                        arg2.length,
                 );
             }
             this.names = arg2;
@@ -468,15 +431,12 @@ UrlPattern = function(arg1, arg2) {
         throw new Error("argument must not contain whitespace");
     }
     options = {
-        escapeChar:
-            (arg2 != null ? arg2.escapeChar : void 0) ||
-            defaultOptions.escapeChar,
+        escapeChar: (arg2 != null ? arg2.escapeChar : void 0) || defaultOptions.escapeChar,
         segmentNameStartChar:
             (arg2 != null ? arg2.segmentNameStartChar : void 0) ||
             defaultOptions.segmentNameStartChar,
         segmentNameCharset:
-            (arg2 != null ? arg2.segmentNameCharset : void 0) ||
-            defaultOptions.segmentNameCharset,
+            (arg2 != null ? arg2.segmentNameCharset : void 0) || defaultOptions.segmentNameCharset,
         segmentValueCharset:
             (arg2 != null ? arg2.segmentValueCharset : void 0) ||
             defaultOptions.segmentValueCharset,
@@ -486,9 +446,7 @@ UrlPattern = function(arg1, arg2) {
         optionalSegmentEndChar:
             (arg2 != null ? arg2.optionalSegmentEndChar : void 0) ||
             defaultOptions.optionalSegmentEndChar,
-        wildcardChar:
-            (arg2 != null ? arg2.wildcardChar : void 0) ||
-            defaultOptions.wildcardChar
+        wildcardChar: (arg2 != null ? arg2.wildcardChar : void 0) || defaultOptions.wildcardChar,
     };
     parser = newParser(options);
     parsed = parser.pattern(arg1);
@@ -499,12 +457,10 @@ UrlPattern = function(arg1, arg2) {
         throw new Error("could only partially parse pattern");
     }
     this.ast = parsed.value;
-    this.regex = new RegExp(
-        astNodeToRegexString(this.ast, options.segmentValueCharset)
-    );
+    this.regex = new RegExp(astNodeToRegexString(this.ast, options.segmentValueCharset));
     this.names = astNodeToNames(this.ast);
 };
-UrlPattern.prototype.match = function(url) {
+UrlPattern.prototype.match = function (url) {
     var groups, match;
     match = this.regex.exec(url);
     if (match == null) {
@@ -517,7 +473,7 @@ UrlPattern.prototype.match = function(url) {
         return groups;
     }
 };
-UrlPattern.prototype.stringify = function(params) {
+UrlPattern.prototype.stringify = function (params) {
     if (params == null) {
         params = {};
     }

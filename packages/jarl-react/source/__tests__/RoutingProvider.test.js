@@ -28,17 +28,17 @@ describe("<RoutingProvider/>", () => {
         routes = new RouteMap([
             {
                 path: "/",
-                state: { page: "index" }
+                state: { page: "index" },
             },
             {
                 path: "/?foo=bar",
-                state: { page: "foo" }
+                state: { page: "foo" },
             },
             {
                 path: "/test-resolve",
                 state: { page: "test-resolve" },
                 resolve: () =>
-                    new Promise(resolve => {
+                    new Promise((resolve) => {
                         resolveOneSignal = () => {
                             one = true;
                             resolve({ marker });
@@ -49,27 +49,27 @@ describe("<RoutingProvider/>", () => {
                         path: "/nested",
                         state: { page: "test-resolve", nested: true },
                         resolve: () =>
-                            new Promise(resolve => {
+                            new Promise((resolve) => {
                                 resolveTwoSignal = () => {
                                     two = true;
                                     resolve({ two });
                                 };
-                            })
-                    }
-                ]
+                            }),
+                    },
+                ],
             },
             {
                 path: "/redirected?because=:reason",
-                state: { page: "redirected" }
+                state: { page: "redirected" },
             },
             {
                 path: "/test-redirect-state",
-                state: redirect({ page: "redirected", reason: "state" })
+                state: redirect({ page: "redirected", reason: "state" }),
             },
             {
                 path: "/test-redirect-match",
                 state: {},
-                match: () => redirect({ page: "redirected", reason: "match" })
+                match: () => redirect({ page: "redirected", reason: "match" }),
             },
             {
                 path: "/test-match-location-context/:someState",
@@ -77,7 +77,7 @@ describe("<RoutingProvider/>", () => {
                 match: ({ someState }, { callback }) => {
                     callback(someState);
                     return { someState };
-                }
+                },
             },
             {
                 path: "/test-redirect-resolve?error=(:error)",
@@ -87,8 +87,8 @@ describe("<RoutingProvider/>", () => {
                         throw new Error("Something bad happened");
                     }
                     return redirect({ page: "redirected", reason: "resolve" });
-                }
-            }
+                },
+            },
         ]);
         history = mockHistory();
     });
@@ -107,9 +107,7 @@ describe("<RoutingProvider/>", () => {
         });
 
         test("converts array to RouteMap", () => {
-            const provider = shallow(
-                <RoutingProvider routes={routes} history={history} />
-            );
+            const provider = shallow(<RoutingProvider routes={routes} history={history} />);
             expect(provider.state("routes")).toEqual(expect.any(RouteMap));
         });
     });
@@ -118,10 +116,7 @@ describe("<RoutingProvider/>", () => {
         let doNavigation;
 
         beforeEach(() => {
-            doNavigation = jest.spyOn(
-                RoutingProvider.prototype,
-                "doNavigation"
-            );
+            doNavigation = jest.spyOn(RoutingProvider.prototype, "doNavigation");
         });
 
         afterEach(() => {
@@ -135,11 +130,7 @@ describe("<RoutingProvider/>", () => {
 
         test("is disabled with `performInitialRouting`", () => {
             shallow(
-                <RoutingProvider
-                    routes={routes}
-                    history={history}
-                    performInitialRouting={false}
-                />
+                <RoutingProvider routes={routes} history={history} performInitialRouting={false} />,
             );
             expect(doNavigation).not.toHaveBeenCalled();
         });
@@ -148,16 +139,12 @@ describe("<RoutingProvider/>", () => {
             let listenCallback;
             history = {
                 ...history,
-                listen: callback => {
+                listen: (callback) => {
                     listenCallback = callback;
-                }
+                },
             };
             shallow(
-                <RoutingProvider
-                    routes={routes}
-                    history={history}
-                    performInitialRouting={false}
-                />
+                <RoutingProvider routes={routes} history={history} performInitialRouting={false} />,
             );
             listenCallback({ pathname: "/", search: "?foo=bar" }, "PUSH");
             expect(doNavigation).toHaveBeenCalledWith("/?foo=bar", "PUSH");
@@ -166,13 +153,7 @@ describe("<RoutingProvider/>", () => {
         test("basePath is honoured", () => {
             history.location.pathname = "/foo";
             routes.match = jest.fn(() => ({ branch: [], location: {} }));
-            shallow(
-                <RoutingProvider
-                    routes={routes}
-                    history={history}
-                    basePath="/foo"
-                />
-            );
+            shallow(<RoutingProvider routes={routes} history={history} basePath="/foo" />);
             expect(doNavigation).toHaveBeenCalledWith("/foo", "INITIAL");
             expect(routes.match).toHaveBeenCalledWith("/", {});
         });
@@ -180,26 +161,16 @@ describe("<RoutingProvider/>", () => {
         test("route is ignored when basePath doesn't match", () => {
             history.location.pathname = "/bar";
             routes.match = jest.fn();
-            shallow(
-                <RoutingProvider
-                    routes={routes}
-                    history={history}
-                    basePath="/foo"
-                />
-            );
+            shallow(<RoutingProvider routes={routes} history={history} basePath="/foo" />);
             expect(routes.match).not.toHaveBeenCalled();
         });
 
         test("don't add extra slash when just changing query", () => {
             history.location.pathname = "/foo";
             const rendered = render(
-                <RoutingProvider
-                    routes={routes}
-                    history={history}
-                    basePath="/foo"
-                >
+                <RoutingProvider routes={routes} history={history} basePath="/foo">
                     <Link to={{ page: "foo" }} />
-                </RoutingProvider>
+                </RoutingProvider>,
             );
             expect(rendered[0].attribs.href).toEqual("/foo?foo=bar");
         });
@@ -229,7 +200,7 @@ describe("<RoutingProvider/>", () => {
                     onError={onError}
                     performInitialRouting={false}
                     context={() => ({ callback: contextCallback })}
-                />
+                />,
             ).instance();
             expect(onChange).not.toHaveBeenCalled();
         });
@@ -239,8 +210,8 @@ describe("<RoutingProvider/>", () => {
             expect(onChange).toHaveBeenCalledWith(
                 expect.objectContaining({
                     path: "/",
-                    location: { page: "index" }
-                })
+                    location: { page: "index" },
+                }),
             );
         });
 
@@ -260,15 +231,15 @@ describe("<RoutingProvider/>", () => {
                             {
                                 path: "/nested",
                                 resolve: expect.any(Function),
-                                state: { nested: true, page: "test-resolve" }
-                            }
+                                state: { nested: true, page: "test-resolve" },
+                            },
                         ],
-                        state: { page: "test-resolve" }
-                    }
+                        state: { page: "test-resolve" },
+                    },
                 ],
                 location: { page: "test-resolve" },
                 path: "/test-resolve",
-                resolved: { marker }
+                resolved: { marker },
             });
             expect(one).toEqual(true);
         });
@@ -297,9 +268,9 @@ describe("<RoutingProvider/>", () => {
                 expect.objectContaining({
                     resolved: {
                         marker,
-                        two
-                    }
-                })
+                        two,
+                    },
+                }),
             );
             expect(one).toEqual(true);
             expect(two).toEqual(true);
@@ -307,16 +278,12 @@ describe("<RoutingProvider/>", () => {
 
         test("redirect from state is followed", () => {
             provider.doNavigation("/test-redirect-state");
-            expect(history.replace).toHaveBeenCalledWith(
-                "/redirected?because=state"
-            );
+            expect(history.replace).toHaveBeenCalledWith("/redirected?because=state");
         });
 
         test("redirect from matcher is followed", () => {
             provider.doNavigation("/test-redirect-match");
-            expect(history.replace).toHaveBeenCalledWith(
-                "/redirected?because=match"
-            );
+            expect(history.replace).toHaveBeenCalledWith("/redirected?because=match");
         });
 
         test("location and context are passed into matcher", () => {
@@ -327,29 +294,24 @@ describe("<RoutingProvider/>", () => {
         test("redirect from resolver is followed", async () => {
             provider.doNavigation("/test-redirect-resolve");
             await wait(0);
-            expect(history.replace).toHaveBeenCalledWith(
-                "/redirected?because=resolve"
-            );
+            expect(history.replace).toHaveBeenCalledWith("/redirected?because=resolve");
         });
 
         test("error in resolve is passed to handler", async () => {
-            provider.doNavigation(
-                "/test-redirect-resolve?error=true",
-                "INITIAL"
-            );
+            provider.doNavigation("/test-redirect-resolve?error=true", "INITIAL");
             await wait(0);
             expect(onError).toHaveBeenCalledWith({
                 branch: [
                     {
                         path: "/test-redirect-resolve?error=(:error)",
                         resolve: expect.any(Function),
-                        state: {}
-                    }
+                        state: {},
+                    },
                 ],
                 error: new Error("Something bad happened"),
                 path: "/test-redirect-resolve?error=true",
                 location: { error: "true" },
-                action: "INITIAL"
+                action: "INITIAL",
             });
         });
 
@@ -366,7 +328,7 @@ describe("<RoutingProvider/>", () => {
                     history={history}
                     performInitialRouting={false}
                     basePath="/foo"
-                />
+                />,
             );
             router = wrapper.instance();
         });

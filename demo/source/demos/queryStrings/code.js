@@ -1,23 +1,23 @@
-import routes from "!!raw-loader!./routes";
-import Pages from "!!raw-loader!./Pages";
-import Search from "!!raw-loader!./pages/Search";
-import SearchForm from "!!raw-loader!./components/SearchForm";
+import routes from "./routes?raw";
+import Pages from "./Pages?raw";
+import Search from "./pages/Search?raw";
+import SearchForm from "./components/SearchForm?raw";
 
 export default [
     {
         name: "routes.js",
-        code: routes
+        code: routes,
     },
     {
         name: "Pages.js",
-        code: Pages
+        code: Pages,
     },
     {
         name: "pages/Search.js",
-        code: Search
+        code: Search,
     },
     {
         name: "components/SearchForm.js",
-        code: SearchForm
-    }
+        code: SearchForm,
+    },
 ];

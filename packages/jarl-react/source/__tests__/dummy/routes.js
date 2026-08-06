@@ -4,20 +4,20 @@ export const basicRoutes = () =>
     new RouteMap([
         {
             path: "/",
-            state: { page: "home" }
+            state: { page: "home" },
         },
         {
             path: "/about",
-            state: { page: "about" }
-        }
+            state: { page: "about" },
+        },
     ]);
 
 export const dynamicRoutes = () =>
     new RouteMap([
         {
             path: "/foo/:id",
-            state: { foo: "bar" }
-        }
+            state: { foo: "bar" },
+        },
     ]);
 
 export const childRoutes = () =>
@@ -28,9 +28,9 @@ export const childRoutes = () =>
             routes: [
                 {
                     path: "/",
-                    state: { tested: true }
-                }
-            ]
+                    state: { tested: true },
+                },
+            ],
         },
         {
             path: "/foo",
@@ -38,58 +38,58 @@ export const childRoutes = () =>
             routes: [
                 {
                     path: "/bar",
-                    state: { bar: true }
-                }
-            ]
-        }
+                    state: { bar: true },
+                },
+            ],
+        },
     ]);
 
 export const dynamicRootRoutes = () =>
     new RouteMap([
         {
-            path: "/:id"
-        }
+            path: "/:id",
+        },
     ]);
 
 export const wildcardRoutes = () =>
     new RouteMap([
         {
-            path: "/*:path"
-        }
+            path: "/*:path",
+        },
     ]);
 
 export const wildcardIndexedRoutes = () =>
     new RouteMap([
         {
-            path: "/*:first/*:second"
-        }
+            path: "/*:first/*:second",
+        },
     ]);
 
 export const queryStringRoutes = () =>
     new RouteMap([
         {
             path: "/?foo",
-            state: { foo: true }
+            state: { foo: true },
         },
         {
             path: "/plain?foo",
-            state: { plain: false }
+            state: { plain: false },
         },
         {
             path: "/overload",
-            state: { overload: true }
+            state: { overload: true },
         },
         {
             path: "/overload?foo",
-            state: { overload: true, foo: true }
+            state: { overload: true, foo: true },
         },
         {
             path: "/?foo=bar",
-            state: { foobar: true }
+            state: { foobar: true },
         },
         {
             path: "/?foo=bar&bar=foo",
-            state: { foo: true, bar: true }
+            state: { foo: true, bar: true },
         },
         {
             path: "/?nested",
@@ -97,13 +97,13 @@ export const queryStringRoutes = () =>
             routes: [
                 {
                     path: "/?tested",
-                    state: { tested: true }
-                }
-            ]
+                    state: { tested: true },
+                },
+            ],
         },
         {
             path: "/mixed/:category?sort=:field",
-            state: { mixed: true }
+            state: { mixed: true },
         },
         // TODO: Making this query optional broke the URL (key didn't even get stringified).
         // Need to fix this because to work around the `.` issue in query parts
@@ -114,14 +114,14 @@ export const queryStringRoutes = () =>
         { path: "/login?returnUrl=*:returnUrl", state: { page: "login" } },
         {
             path: "/?q=:searchTerm",
-            state: { search: true }
+            state: { search: true },
         },
         {
             path: "/?optional=(:optional)",
-            state: { home: true }
+            state: { home: true },
         },
         {
             path: "/*:missingPath?*=:rest",
-            state: { status: 404 }
-        }
+            state: { status: 404 },
+        },
     ]);

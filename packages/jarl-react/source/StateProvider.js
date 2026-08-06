@@ -17,7 +17,7 @@ class StateProvider extends Component {
     /**
      * Use local component state to store navigation state
      */
-    handleChange = event => {
+    handleChange = (event) => {
         // TODO: Handle cancellation gracefully, with demo, also a redux example using isDirty in reducer
         // Want to cancel it in onChange or from routing? Maybe both.
         if (this.props.onChange) {

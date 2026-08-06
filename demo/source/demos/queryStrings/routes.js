@@ -8,24 +8,24 @@ const routes = [
         routes: [
             {
                 path: "/",
-                state: { page: "home" }
+                state: { page: "home" },
             },
             {
                 // This fallback is needed to match the /search url without ?q
                 path: "/search",
-                state: { page: "search" }
+                state: { page: "search" },
             },
             {
                 // Because this parameter is non-optional so we only hit this route when there is a search
                 path: "/search?q=:searchTerm",
-                state: { page: "search" }
+                state: { page: "search" },
             },
             {
                 // 404 wildcard route
-                path: "/*:missingPath?*=:query"
-            }
-        ]
-    }
+                path: "/*:missingPath?*=:query",
+            },
+        ],
+    },
 ];
 
 export default routes;

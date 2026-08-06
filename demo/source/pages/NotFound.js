@@ -2,8 +2,7 @@ import React from "react";
 
 import { Page, Header, Body } from "../layout";
 
-const queryToString = query =>
-    query ? Object.entries(query).map(([k, v]) => `${k}=${v}`) : "";
+const queryToString = (query) => (query ? Object.entries(query).map(([k, v]) => `${k}=${v}`) : "");
 
 const NotFound = ({ missingPath, query }) => (
     <Page>

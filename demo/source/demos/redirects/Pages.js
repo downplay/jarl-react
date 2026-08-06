@@ -38,9 +38,7 @@ class Pages extends Component {
                 // tries to render the Found Content page. Not sure if there's a more
                 // solid approach. Maybe finding a way to keep inbound and outbound
                 // state completely separate.
-                return contentPage ? (
-                    <ContentPage slug={slug} content={contentPage} />
-                ) : null;
+                return contentPage ? <ContentPage slug={slug} content={contentPage} /> : null;
             // Note: there is no case for the "moved" page because it never exists
         }
     }

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import Markdown from "react-remarkable";
 import Helmet from "react-helmet";
 
-import readme from "../../../README.md";
+import readme from "../../../README.md?raw";
 
 const About = () => (
     <Fragment>

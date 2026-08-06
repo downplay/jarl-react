@@ -8,13 +8,13 @@ const routes = [
         // back to this landing page, with additional state to inform the user of
         // the cause of the redirect.
         path: "/?because=(:reason)",
-        state: { page: "landing" }
+        state: { page: "landing" },
     },
     {
         // A static redirect. Because state always returns a `redirect` object
         // this acts like a 304 Permanently Moved redirect
         path: "/moved",
-        state: redirect({ page: "landing", reason: "Permanently moved" })
+        state: redirect({ page: "landing", reason: "Permanently moved" }),
     },
     {
         // Synchronous conditional redirect. Here the match function returns a
@@ -23,9 +23,7 @@ const routes = [
         path: "/admin",
         state: { page: "admin" },
         match: (state, { authenticated }) =>
-            authenticated
-                ? state
-                : redirect({ page: "landing", reason: "Not authorised" })
+            authenticated ? state : redirect({ page: "landing", reason: "Not authorised" }),
     },
     {
         // Asynchronous redirect is performed through the `resolve` handler.
@@ -40,16 +38,16 @@ const routes = [
                 .get(slug)
                 // Happy path: when the content exists, resolve it to
                 // allow navigation
-                .then(content => ({ content }))
+                .then((content) => ({ content }))
                 // Catch because content doesn't exist; resolve this into
                 // a redirect
-                .catch(e =>
+                .catch((e) =>
                     redirect({
                         page: "landing",
-                        reason: e.message
-                    })
-                )
-    }
+                        reason: e.message,
+                    }),
+                ),
+    },
 ];
 
 export default routes;

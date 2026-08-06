@@ -4,7 +4,7 @@ import { compose, withState } from "recompose";
 import { routing } from "jarl-react";
 
 class SearchForm extends Component {
-    handleChange = event => {
+    handleChange = (event) => {
         this.props.setText(event.target.value);
     };
 
@@ -12,7 +12,7 @@ class SearchForm extends Component {
         this.props.navigate({
             page: "search",
             searchTerm: this.props.text,
-            themeName: this.props.themeName
+            themeName: this.props.themeName,
         });
     };
 
@@ -25,11 +25,7 @@ class SearchForm extends Component {
                     value={this.props.text}
                     data-test="search-text"
                 />
-                <button
-                    type="button"
-                    onClick={this.handleClick}
-                    data-test="search-button"
-                >
+                <button type="button" onClick={this.handleClick} data-test="search-button">
                     Search
                 </button>
             </div>
@@ -44,6 +40,6 @@ export default compose(
     // not even needed here
     routing(
         ({ themeName }) => ({ themeName }),
-        ({ navigate }) => ({ navigate })
-    )
+        ({ navigate }) => ({ navigate }),
+    ),
 )(SearchForm);

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import Markdown from "react-remarkable";
 import Helmet from "react-helmet";
 
-import changelog from "../../../CHANGELOG.md";
+import changelog from "../../../CHANGELOG.md?raw";
 
 const Changelog = () => (
     <Fragment>

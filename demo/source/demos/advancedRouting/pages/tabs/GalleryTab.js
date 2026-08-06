@@ -10,30 +10,22 @@ import { routing, Link } from "jarl-react";
 
 import { galleryData } from "../../../../data";
 
-export const toImage = imageId => ({
+export const toImage = (imageId) => ({
     page: "product",
     tab: "gallery",
-    imageId
+    imageId,
 });
 
 const GalleryTab = ({ imageId }) => (
     <Fragment>
         <h2 data-test="gallery-tab">Gallery</h2>
         {galleryData[imageId] ? (
-            <img
-                src={galleryData[imageId].url}
-                alt="Full size pic"
-                data-test="image-full-size"
-            />
+            <img src={galleryData[imageId].url} alt="Full size pic" data-test="image-full-size" />
         ) : (
             <p data-test="missing-image">Image id {imageId} not found!</p>
         )}
         {Object.entries(galleryData).map(([id, image]) => (
-            <Link
-                to={toImage(id)}
-                data-test={`gallery-image-link-${id}`}
-                key={id}
-            >
+            <Link to={toImage(id)} data-test={`gallery-image-link-${id}`} key={id}>
                 <img width="100" src={image.url} alt="Gallery pic" />
             </Link>
         ))}

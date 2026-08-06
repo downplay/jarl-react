@@ -1,4 +1,4 @@
 export default {
     back: "#fff",
-    fore: "#000"
+    fore: "#000",
 };

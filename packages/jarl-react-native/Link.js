@@ -64,7 +64,7 @@ Link.propTypes = {
     /** Base style to be applied to the rendered element */
     style: PropTypes.object,
     /** Additional styles to apply when this link is active */
-    activeStyle: PropTypes.object
+    activeStyle: PropTypes.object,
 };
 
 Link.defaultProps = {
@@ -75,7 +75,7 @@ Link.defaultProps = {
     innerRef: null,
     element: TouchableHighlight,
     style: {},
-    activeStyle: {}
+    activeStyle: {},
 };
 
 export default Link;

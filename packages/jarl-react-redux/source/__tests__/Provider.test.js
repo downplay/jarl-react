@@ -9,14 +9,14 @@ import mockHistory from "../../../jarl-react/source/__tests__/mocks/mockHistory"
 
 const mockStore = () => ({
     getState: () => ({ navigation: {} }),
-    dispatch: jest.fn()
+    dispatch: jest.fn(),
 });
 
 const create = (pathname, search) => ({
     store: mockStore(),
     history: mockHistory(pathname, search),
     children: <div />,
-    context: jest.fn()
+    context: jest.fn(),
 });
 
 describe("<Provider/>", () => {
@@ -33,14 +33,9 @@ describe("<Provider/>", () => {
     test("renders a RoutingProvider", () => {
         const { store, history, children, context } = create();
         const provider = shallow(
-            <Provider
-                routes={[]}
-                store={store}
-                history={history}
-                context={context}
-            >
+            <Provider routes={[]} store={store} history={history} context={context}>
                 {children}
-            </Provider>
+            </Provider>,
         );
         const childProvider = provider.find(RoutingProvider);
 
@@ -49,7 +44,7 @@ describe("<Provider/>", () => {
         expect(props).toMatchObject({
             history,
             children,
-            state: {}
+            state: {},
         });
         expect(props.routes).toEqual([]);
         expect(props.context).toEqual(expect.any(Function));

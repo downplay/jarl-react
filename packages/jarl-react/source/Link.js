@@ -32,7 +32,7 @@ class Link extends Component {
          */
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         /** Specify a different component to render instead of `a`. Ignored when children is a function. */
-        element: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+        element: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
     };
 
     static defaultProps = {
@@ -42,14 +42,14 @@ class Link extends Component {
         redirect: false,
         children: null,
         innerRef: null,
-        element: "a"
+        element: "a",
     };
 
     static contextTypes = {
-        routing: routingContextShape
+        routing: routingContextShape,
     };
 
-    handleClick = e => {
+    handleClick = (e) => {
         e.preventDefault();
         if (this.props.onClick) {
             this.props.onClick(e);
@@ -87,15 +87,9 @@ class Link extends Component {
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(
-                `JARL: Error trying to render <Link to={${safeJsonStringify(
-                    to
-                )}}/>.
-                ${
-                    href
-                        ? `\nPath '${href}' was resolved, error was in isActive.`
-                        : ""
-                }`,
-                e
+                `JARL: Error trying to render <Link to={${safeJsonStringify(to)}}/>.
+                ${href ? `\nPath '${href}' was resolved, error was in isActive.` : ""}`,
+                e,
             );
         }
         const handleClick = to && this.handleClick;
@@ -105,9 +99,7 @@ class Link extends Component {
         }
         // Standard component API
         const combinedClassNames =
-            activeClassName && active
-                ? `${className} ${activeClassName}`
-                : className;
+            activeClassName && active ? `${className} ${activeClassName}` : className;
         return (
             <Element
                 {...others}

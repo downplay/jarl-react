@@ -24,7 +24,7 @@ const highlight = (code, language = "jsx") => {
 const options = { highlight };
 
 const dangerousHtml = memoize((source, language = "jsx") => ({
-    __html: Prism.highlight(source, Prism.languages[language], language)
+    __html: Prism.highlight(source, Prism.languages[language], language),
 }));
 
 export const Highlight = ({ source }) => (
@@ -37,8 +37,6 @@ export const Highlight = ({ source }) => (
     </pre>
 );
 
-const MarkdownJsx = ({ source }) => (
-    <Markdown options={options} source={source} />
-);
+const MarkdownJsx = ({ source }) => <Markdown options={options} source={source} />;
 
 export default MarkdownJsx;

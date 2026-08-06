@@ -3,7 +3,7 @@ import {
     NAVIGATE_END,
     NAVIGATE_TRANSITION_BEGIN,
     NAVIGATE_TRANSITION_IN,
-    NAVIGATE_TRANSITION_COMPLETE
+    NAVIGATE_TRANSITION_COMPLETE,
 } from "./actionTypes";
 
 const navigationReducer = (
@@ -13,9 +13,9 @@ const navigationReducer = (
         isTransitioning: false,
         location: {},
         path: "",
-        destination: null
+        destination: null,
     },
-    action = {}
+    action = {},
 ) => {
     switch (action.type) {
         case NAVIGATE_START:
@@ -25,23 +25,23 @@ const navigationReducer = (
                 ...state,
                 isNavigating: false,
                 path: action.path,
-                location: action.destination
+                location: action.destination,
             };
         case NAVIGATE_TRANSITION_BEGIN:
             return {
                 ...state,
                 isEntering: true,
-                isTransitioning: true
+                isTransitioning: true,
             };
         case NAVIGATE_TRANSITION_IN:
             return {
                 ...state,
-                isEntering: false
+                isEntering: false,
             };
         case NAVIGATE_TRANSITION_COMPLETE:
             return {
                 ...state,
-                isTransitioning: false
+                isTransitioning: false,
             };
         default:
             return state;

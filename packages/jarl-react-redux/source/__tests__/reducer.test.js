@@ -11,7 +11,7 @@ describe("reducer", () => {
             isTransitioning: false,
             location: {},
             destination: null,
-            path: ""
+            path: "",
         });
     });
 
@@ -22,7 +22,7 @@ describe("reducer", () => {
             isTransitioning: false,
             location: { foo: "bar" },
             destination: null,
-            path: "/"
+            path: "/",
         });
     });
 });

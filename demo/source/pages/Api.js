@@ -8,19 +8,19 @@ import { Page, Header as MainHeader, Body, MenuItem } from "../layout";
 
 import apiContent from "../docs/api";
 
-const toApi = apiName => ({ page: "api", apiName });
+const toApi = (apiName) => ({ page: "api", apiName });
 
 const apis = [
     {
         name: "jarl-react",
-        title: "JARL"
+        title: "JARL",
     },
     {
         name: "jarl-react-native",
-        title: "JARL Native"
-    }
+        title: "JARL Native",
+    },
 ];
-const apiTitle = apiName => apis.find(api => api.name === apiName).title;
+const apiTitle = (apiName) => apis.find((api) => api.name === apiName).title;
 
 const PreCell = ({ children, ...rest }) => (
     <Table.Cell {...rest}>
@@ -36,7 +36,7 @@ const CodeCell = styled(PreCell)`
     font-style: italic;
 `;
 
-const flattenParas = root =>
+const flattenParas = (root) =>
     root.children ? root.children.map(flattenParas).join("") : root.value || "";
 
 const Description = ({ value }) => {
@@ -59,14 +59,7 @@ const PropsHeaderRow = ({ showRequired }) => (
     </Table.Header>
 );
 
-const PropsRow = ({
-    name,
-    type,
-    defaultValue,
-    required,
-    description,
-    showRequired
-}) => (
+const PropsRow = ({ name, type, defaultValue, required, description, showRequired }) => (
     <Table.Row>
         <NameCell>{name}</NameCell>
         <CodeCell>{type}</CodeCell>
@@ -92,7 +85,7 @@ const ComponentApi = ({ item }) => (
                                 ...prop,
                                 name,
                                 type: prop.type.name,
-                                showRequired: true
+                                showRequired: true,
                             }}
                             key={name}
                         />
@@ -103,7 +96,7 @@ const ComponentApi = ({ item }) => (
     </Fragment>
 );
 
-const translateType = type => {
+const translateType = (type) => {
     if (!type) {
         return "";
     }
@@ -131,26 +124,18 @@ const ClassParams = ({ item }) =>
         <Table>
             <PropsHeaderRow />
             <Table.Body>
-                {item.params.map(
-                    ({
-                        name,
-                        default: defaultValue,
-                        type,
-                        required,
-                        description
-                    }) => (
-                        <PropsRow
-                            {...{
-                                name,
-                                type: translateType(type),
-                                defaultValue,
-                                required,
-                                description
-                            }}
-                            key={name}
-                        />
-                    )
-                )}
+                {item.params.map(({ name, default: defaultValue, type, required, description }) => (
+                    <PropsRow
+                        {...{
+                            name,
+                            type: translateType(type),
+                            defaultValue,
+                            required,
+                            description,
+                        }}
+                        key={name}
+                    />
+                ))}
             </Table.Body>
         </Table>
     );
@@ -170,12 +155,8 @@ const ClassApi = ({ item }) => (
         <Header sub>Constructor</Header>
         <ClassParams item={item} />
         <Header sub>Members</Header>
-        {item.members.instance.map(member => (
-            <Member
-                item={item}
-                member={member}
-                key={member.displayName || member.name}
-            />
+        {item.members.instance.map((member) => (
+            <Member item={item} member={member} key={member.displayName || member.name} />
         ))}
     </Fragment>
 );
@@ -188,7 +169,7 @@ const ConstApi = ({ item }) => (
     </Fragment>
 );
 
-const renderItem = item => {
+const renderItem = (item) => {
     switch (item.kind) {
         case "component":
             return <ComponentApi item={item} />;
@@ -214,7 +195,7 @@ const Api = ({ apiName }) => (
         </Menu>
         <MainHeader>{apiTitle(apiName)} API Reference</MainHeader>
         <Body>
-            {apiContent[apiName].map(item => (
+            {apiContent[apiName].map((item) => (
                 <Segment key={item.displayName || item.name}>
                     <Header as="h2">{item.displayName || item.name}</Header>
                     {renderItem(item)}

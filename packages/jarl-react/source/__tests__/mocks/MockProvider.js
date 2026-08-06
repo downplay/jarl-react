@@ -6,8 +6,8 @@ import mockHistory from "./mockHistory";
 const indexRoute = [
     {
         path: "/",
-        state: { home: true }
-    }
+        state: { home: true },
+    },
 ];
 
 export default ({ routes = indexRoute, children, ...props }) => (

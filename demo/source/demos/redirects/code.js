@@ -1,28 +1,28 @@
-import routes from "!!raw-loader!./routes";
-import api from "!!raw-loader!./api";
-import Root from "!!raw-loader!./Root";
-import Pages from "!!raw-loader!./Pages";
-import Landing from "!!raw-loader!./pages/Landing";
+import routes from "./routes?raw";
+import api from "./api?raw";
+import Root from "./Root?raw";
+import Pages from "./Pages?raw";
+import Landing from "./pages/Landing?raw";
 
 export default [
     {
         name: "routes.js",
-        code: routes
+        code: routes,
     },
     {
         name: "api.js",
-        code: api
+        code: api,
     },
     {
         name: "Root.js",
-        code: Root
+        code: Root,
     },
     {
         name: "Pages.js",
-        code: Pages
+        code: Pages,
     },
     {
         name: "Landing.js",
-        code: Landing
-    }
+        code: Landing,
+    },
 ];

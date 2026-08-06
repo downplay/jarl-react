@@ -2,20 +2,17 @@ import qs from "qs";
 import UrlPattern from "./vendor/url-pattern";
 import { Redirect } from "./redirect";
 
-const noop = a => a;
+const noop = (a) => a;
 
 // Removes any double slashes
-const removeSlashDupes = path => path.replace(/\/\/+/g, "/");
+const removeSlashDupes = (path) => path.replace(/\/\/+/g, "/");
 // Maybe remove the trailing slash from the end
-const removeTrailingSlash = path =>
-    path.length > 1 ? path.substring(0, path.length - 1) : path;
+const removeTrailingSlash = (path) => (path.length > 1 ? path.substring(0, path.length - 1) : path);
 
-const isUrlPattern = pattern => pattern && pattern.match && pattern.stringify;
+const isUrlPattern = (pattern) => pattern && pattern.match && pattern.stringify;
 
-const isOptional = pattern =>
-    isUrlPattern(pattern) &&
-    pattern.ast.length > 1 &&
-    pattern.ast[1].tag === "optional";
+const isOptional = (pattern) =>
+    isUrlPattern(pattern) && pattern.ast.length > 1 && pattern.ast[1].tag === "optional";
 
 const getQueryWildcardStateKey = ({ ast }) => {
     const names = UrlPattern.astNodeToNames(ast);
@@ -23,12 +20,12 @@ const getQueryWildcardStateKey = ({ ast }) => {
 };
 
 const populateKeys = (keyMap, route) => {
-    const setKey = key => {
+    const setKey = (key) => {
         keyMap[key] = true;
     };
     Object.keys(route.state).forEach(setKey);
     route.pattern.names.forEach(setKey);
-    Object.keys(route.query).forEach(key => {
+    Object.keys(route.query).forEach((key) => {
         const q = route.query[key];
         // TODO: Bit of a mess to sort out regarding optional here and above
         if (key === "*" || !isUrlPattern(q) || isOptional(q)) {
@@ -45,9 +42,7 @@ const routeHasKey = (route, key, value) => {
         (route.pattern && route.pattern.names.indexOf(key) >= 0) ||
         // Check in any query pattern
         Object.keys(route.query).some(
-            q =>
-                isUrlPattern(route.query[q]) &&
-                route.query[q].names.indexOf(key) >= 0
+            (q) => isUrlPattern(route.query[q]) && route.query[q].names.indexOf(key) >= 0,
         )
     ) {
         return true;
@@ -58,22 +53,18 @@ const routeHasKey = (route, key, value) => {
 // TODO: This won't support qs's nested/array queries
 // TODO: Also no support for having truthy bool props with no
 // equals sign like /foo?boolProp
-const convertToPatterns = query => {
+const convertToPatterns = (query) => {
     const patterns = {};
     for (const key of Object.keys(query)) {
-        patterns[key] = query[key]
-            ? new UrlPattern(`/${query[key]}`)
-            : query[key];
+        patterns[key] = query[key] ? new UrlPattern(`/${query[key]}`) : query[key];
     }
     return patterns;
 };
 
-const splitPath = path => {
+const splitPath = (path) => {
     const split = path.split("?");
     if (split.length > 2) {
-        throw new Error(
-            `Path may only contain one query string delimiter: ${path}`
-        );
+        throw new Error(`Path may only contain one query string delimiter: ${path}`);
     }
     return [split[0], split[1] ? qs.parse(split[1]) : {}];
 };
@@ -83,7 +74,7 @@ const splitPath = path => {
 export const joinPaths = (...paths) => {
     let joined = "";
     let merged = {};
-    paths.forEach(path => {
+    paths.forEach((path) => {
         const [segment, query] = splitPath(path);
         joined = `${joined}/${segment}`;
         merged = { ...merged, ...query };
@@ -91,9 +82,7 @@ export const joinPaths = (...paths) => {
     const mergedKeys = Object.keys(merged);
     return (
         removeTrailingSlash(removeSlashDupes(`/${joined}/`)) +
-        (mergedKeys.length
-            ? `?${mergedKeys.map(key => `${key}=${merged[key]}`).join("&")}`
-            : "")
+        (mergedKeys.length ? `?${mergedKeys.map((key) => `${key}=${merged[key]}`).join("&")}` : "")
     );
 };
 
@@ -110,8 +99,7 @@ const matches = (pattern, value) => {
 // Some components weren't getting encoded even though they break pattern matching
 // (e.g. apostrophes)
 // https://stackoverflow.com/questions/18251399/why-doesnt-encodeuricomponent-encode-single-quotes-apostrophes
-const rfc3986EncodeURIComponent = str =>
-    encodeURIComponent(str).replace(/[!'()*]/g, escape);
+const rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape);
 
 const matchQuery = (pattern, query) => {
     let location = {};
@@ -124,15 +112,12 @@ const matchQuery = (pattern, query) => {
         }
         // `qs` decodes URI components, need to re-encode them for url-pattern's
         // matching to work properly.
-        const match = matches(
-            pattern[key],
-            rfc3986EncodeURIComponent(query[key])
-        );
+        const match = matches(pattern[key], rfc3986EncodeURIComponent(query[key]));
         if (!match) {
             return false;
         }
         // Decode matched values again
-        Object.keys(match).forEach(k => {
+        Object.keys(match).forEach((k) => {
             match[k] = decodeURIComponent(match[k]);
         });
         location = { ...location, ...match };
@@ -147,12 +132,12 @@ const matchQuery = (pattern, query) => {
         }
         const match = matches(
             pattern[key in pattern ? key : "*"],
-            rfc3986EncodeURIComponent(query[key])
+            rfc3986EncodeURIComponent(query[key]),
         );
         if (!match) {
             return false;
         }
-        Object.keys(match).forEach(k => {
+        Object.keys(match).forEach((k) => {
             match[k] = decodeURIComponent(match[k]);
         });
         if (key in pattern) {
@@ -170,8 +155,8 @@ const matchQuery = (pattern, query) => {
                 ...location,
                 [wildCardKey]: {
                     ...location[wildCardKey],
-                    ...{ [key]: match[wildCardKey] }
-                }
+                    [key]: match[wildCardKey],
+                },
             };
         }
     }
@@ -192,10 +177,7 @@ const hydrateQuery = (pattern, location) => {
                 continue;
             }
             for (const namedKey of Object.keys(rest)) {
-                query[namedKey] = stringifyQueryValue(
-                    { [wildKey]: rest[namedKey] },
-                    pattern["*"]
-                );
+                query[namedKey] = stringifyQueryValue({ [wildKey]: rest[namedKey] }, pattern["*"]);
             }
         } else {
             // Merge normal property onto query
@@ -211,15 +193,13 @@ const hydrateQuery = (pattern, location) => {
 
 export const hydrateRoute = (route, location) => {
     const pathPart = route.pattern.stringify(location);
-    const queryPart =
-        route.query && qs.stringify(hydrateQuery(route.query, location));
+    const queryPart = route.query && qs.stringify(hydrateQuery(route.query, location));
     return queryPart ? `${pathPart}?${queryPart}` : pathPart;
 };
 
-const unroll = (item, next) =>
-    item ? [...unroll(next(item), next), item.route] : [];
+const unroll = (item, next) => (item ? [...unroll(next(item), next), item.route] : []);
 
-const unrollBranch = route => unroll(route, r => r.parent);
+const unrollBranch = (route) => unroll(route, (r) => r.parent);
 
 // TODO: This class should be broken down into functional parser components
 // It's too big and unwieldy to debug effectively now
@@ -245,7 +225,7 @@ class RouteMap {
      */
     mapPatterns(routes, parent) {
         // Instance the pattern and store the route
-        routes.forEach(route => {
+        routes.forEach((route) => {
             const [childPath, childQuery] = splitPath(route.path);
             const path = parent ? joinPaths(parent.path, childPath) : childPath;
             let query = convertToPatterns(childQuery);
@@ -305,7 +285,7 @@ class RouteMap {
                 match,
                 stringify,
                 state,
-                pattern: path ? new UrlPattern(path) : null
+                pattern: path ? new UrlPattern(path) : null,
             };
             this.routes.push(mappedRoute);
             // Flatten nested routes
@@ -352,7 +332,7 @@ class RouteMap {
                 if (matched) {
                     return {
                         branch: unrollBranch(route),
-                        location: matched
+                        location: matched,
                     };
                 }
             }
@@ -396,7 +376,7 @@ class RouteMap {
                     break;
                 }
             }
-            if (ok && !Object.keys(keyMap).some(key => keyMap[key])) {
+            if (ok && !Object.keys(keyMap).some((key) => keyMap[key])) {
                 return hydrateRoute(route, locationToCheck);
             }
         }

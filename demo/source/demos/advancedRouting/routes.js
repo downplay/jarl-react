@@ -1,7 +1,7 @@
 const routes = [
     {
         path: "/",
-        state: { page: "home" }
+        state: { page: "home" },
     },
     {
         path: "/product",
@@ -12,18 +12,18 @@ const routes = [
         // This custom stringifier means it doesn't matter which location
         // object is used, we still get /product.
         // TODO: A better match/stringify example.
-        stringify: state => ({ tab: "details", ...state }),
+        stringify: (state) => ({ tab: "details", ...state }),
         routes: [
             {
                 path: "/ratings",
-                state: { tab: "ratings" }
+                state: { tab: "ratings" },
             },
             {
                 path: "/gallery/:imageId",
-                state: { tab: "gallery" }
-            }
-        ]
-    }
+                state: { tab: "gallery" },
+            },
+        ],
+    },
 ];
 
 export default routes;

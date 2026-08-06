@@ -3,25 +3,25 @@ import React from "react";
 import { Page, Header, Body, Menu, MenuItem } from "../layout";
 
 // TODO: Fix why this doesn't work without `all`
-const toDemo = demoName => ({ page: "demo", demoName, all: {} });
+const toDemo = (demoName) => ({ page: "demo", demoName, all: {} });
 
 const demos = [
     {
         name: "Basic Routing",
-        to: toDemo("basicRouting")
+        to: toDemo("basicRouting"),
     },
     {
         name: "Query Strings",
-        to: toDemo("queryStrings")
+        to: toDemo("queryStrings"),
     },
     {
         name: "Advanced Routing",
-        to: toDemo("advancedRouting")
+        to: toDemo("advancedRouting"),
     },
     {
         name: "Redirects",
-        to: toDemo("redirects")
-    }
+        to: toDemo("redirects"),
+    },
     /* {
         name: "Code Splitting",
         to: toDemo("codeSplitting")

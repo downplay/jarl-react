@@ -15,7 +15,7 @@ export const ROUTE_CHANGE = "ROUTE_CHANGE";
 ```js
 export const routeChange = ({ location }) => ({
     type: ROUTE_CHANGE,
-    location
+    location,
 });
 ```
 
@@ -36,7 +36,7 @@ And finally you just need to drive the RoutingProvider with the location supplie
 `App.js`:
 
 ```js
-const renderPage = location => {
+const renderPage = (location) => {
     switch (location.page) {
         case "loading":
             return "Loading...";
@@ -104,16 +104,15 @@ const routes = [
         path: "/products/:productId",
         // Product id is matched by router, we return a Promise from a thunk
         // to fetch the data before the page loads.
-        resolve: ({ productId }, { dispatch }) =>
-            dispatch(fetchProduct(productId))
+        resolve: ({ productId }, { dispatch }) => dispatch(fetchProduct(productId)),
     },
     {
         // Authenticated route
         path: "/admin",
         // Redirect to login based on isAdmin flag in store
         match: (location, { getState }) =>
-            getState().user.isAdmin ? location : redirect({ page: "login" })
-    }
+            getState().user.isAdmin ? location : redirect({ page: "login" }),
+    },
 ];
 ```
 

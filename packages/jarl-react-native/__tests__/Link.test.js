@@ -17,7 +17,7 @@ test("Renders a TouchableHighlight", () => {
     const anchor = render(
         <MockProvider routes={basicRoutes()} location={homeLocation}>
             <Link to="/">Home</Link>
-        </MockProvider>
+        </MockProvider>,
     );
     expect(anchor[0].name).toEqual("view");
     expect(anchor.text()).toEqual("Home");

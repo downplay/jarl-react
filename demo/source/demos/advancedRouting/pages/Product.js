@@ -12,12 +12,12 @@ import { Header, MenuItem } from "../../../layout";
  *
  * In a real app this might be a memoized selector
  */
-const toTab = tab => ({
+const toTab = (tab) => ({
     page: "product",
-    tab
+    tab,
 });
 
-const renderTab = tab => {
+const renderTab = (tab) => {
     switch (tab) {
         case "details":
             return <DetailsTab />;

@@ -4,29 +4,36 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Overview
 
-JARL ("Just Another Router Library for React") is a controlled-component router for React, managed as a Lerna monorepo.
+JARL ("Just Another Router Library for React") is a controlled-component router for React, managed as an npm workspaces monorepo. Packages are bundled with rolldown; the demo/docs site is built with Vite.
 
 ## Packages
 
 - `packages/jarl-react` — the core router library
 - `packages/jarl-react-native` — React Native bindings
 - `packages/jarl-react-redux` — Redux integration
-- `demo/` — example app(s) demonstrating usage
-- `native/` — native-specific assets
+- `demo/` — example app(s) demonstrating usage, built with Vite
+- `native/` — standalone Expo example consumer app (not an npm workspace)
 
 ## Commands
 
 ```bash
-npm run bootstrap   # lerna bootstrap (link workspace packages)
-npm run build       # build all packages (scripts/build.js)
-npm test            # lerna run test across packages
-npm run ci-test      # CI test run
-npm run ci-e2e       # Cypress end-to-end tests
-npm run lint         # lerna run lint across packages
-npm start            # run the demo app (cd demo && npm start)
+npm install          # installs and links all workspace packages
+npm run build         # build all packages (rolldown) and the demo (vite build)
+npm test              # run each package's tests (vitest)
+npm run ci-test        # CI test run
+npm run lint            # oxlint across the repo
+npm run format           # oxfmt across the repo
+npm run dev / npm start   # run the demo app's Vite dev server (cd demo && npm run dev)
 ```
 
-Linting/formatting run automatically pre-commit via `lint-staged` + `husky`.
+Linting is via `oxlint` and formatting via `oxfmt` (both part of the Vite+ toolchain) — there is no
+separate ESLint/Prettier config. No pre-commit hook is currently wired up (husky/lint-staged were
+removed with the rest of the old tooling).
+
+Each package's tests run under Vitest with jsdom. The legacy `jarl-react`/`jarl-react-redux` test
+suites use Enzyme (`@cfaester/enzyme-adapter-react-18`, an unofficial adapter) — Enzyme has no
+official React 19 adapter, so some of these tests are known to fail post-upgrade; see the ticket 51
+PR description for details.
 
 ## TODOs
 
