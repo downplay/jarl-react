@@ -1,0 +1,93 @@
+name: CI
+
+# GitHub Actions CI for the jarl-react v2 rewrite, replacing the old
+# CircleCI + Now (Zeit) pipeline. See docs/legacy-ci.md for a full record of
+# what that pipeline used to do (build/test/deploy steps, caching, secrets)
+# so nothing gets silently lost in the switch.
+#
+# IMPORTANT — this workflow is EXPECTED TO FAIL for a while:
+#
+# It calls the *conventional* v2 scripts (`npm run build`, `npm test`,
+# `npm run test:e2e`) that several sibling tickets are introducing in
+# parallel (51 tooling, 52 TS conversion, 54 atoms core, 55 bindings, 57
+# Playwright e2e port). Until those land on master those scripts may not
+# exist yet, or may fail. That's expected and by design, not a regression
+# to chase down here.
+#
+# Do NOT add this workflow as a required status check in branch protection
+# yet (branch protection is a repo setting anyway, out of scope for this
+# workflow file) — turning the whole pipeline green is itself the milestone
+# that marks the v2 rewrite as substantially complete.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build & unit test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+  e2e:
+    name: End-to-end tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    # The Playwright e2e suite is being ported from the old Cypress suite by
+    # ticket 57, in parallel with this one. Until that lands, `npm run
+    # test:e2e` may not exist yet, or may fail for reasons unrelated to this
+    # workflow. continue-on-error keeps that from failing the whole run in
+    # the interim — flip it off once ticket 57 has merged and the suite is
+    # reliably runnable.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+
+  deploy:
+    name: Deploy (placeholder — not yet implemented)
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    # Deploy target is undecided as of ticket 60 — probably AWS, served as a
+    # subdomain of the randomdev business site (ticket 58 builds the site
+    # this will eventually deploy; ticket 50 is the parent v2 epic tracking
+    # the hosting decision). Intentionally disabled via `if: false` so it
+    # never runs and never reports a false pass/fail — this job is where the
+    # real deploy steps will hang once the target service is chosen.
+    if: false
+    steps:
+      - name: Deploy target not yet decided
+        run: |
+          echo "Placeholder job — no deploy steps written yet."
+          echo "See docs/legacy-ci.md for what the old Now (Zeit) deploy did,"
+          echo "and ticket 58/60 on the TODOS board for the new target."
