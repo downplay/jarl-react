@@ -2,7 +2,7 @@
 
 Now we've seen how to set up some static URLs, let's look at something a bit more advanced. Routing isn't much use if we have to define every single URL statically!
 
-JARL uses the [`url-pattern`](https://github.com/snd/url-pattern) package to match URLs. This uses a colon to denote dynamic path segments. We can now create a route as follows to display a product with a specific id:
+JARL's path syntax uses a colon to denote dynamic path segments. We can now create a route as follows to display a product with a specific id:
 
 routes.js:
 
