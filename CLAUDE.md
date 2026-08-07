@@ -4,33 +4,45 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Overview
 
-JARL ("Just Another Router Library for React") is a controlled-component router for React, managed as an npm workspaces monorepo. Packages are bundled with rolldown; the demo/docs site is built with Vite.
+JARL ("JARL: Atomic Routing Library") is a controlled-component router for React, managed as an npm workspaces monorepo. Packages are bundled with rolldown; the demo/docs site is built with Vite.
 
 ## Packages
 
-- `packages/jarl-react` — the core router library
-- `demo/` — example app(s) demonstrating usage, built with Vite
+- `packages/jarl-atoms` — framework-agnostic routing atoms (jotai; no React dependency)
+- `packages/jarl-react` — React bindings (components + hooks) over `jarl-atoms`
+- `packages/docs` — the docs/demo site: a self-contained Vite SSR/SSG build that
+  dogfoods the two packages above for its own navigation
+- `e2e/` — Playwright suite plus the minimal Vite fixture app it drives. A separate
+  npm project (not a workspace) with its own deps: `npm run test:e2e:install` first.
+
+The two packages are deliberately separate import paths: `jarl-react` does **not** re-export
+`jarl-atoms`. Consumers get route atoms from `jarl-atoms` and the React bindings from
+`jarl-react`, so the framework boundary stays visible and `jarl-atoms` is usable on its own.
+
+Each package's `vitest.config.ts` / `tsconfig.json` alias `jarl-atoms` to its TypeScript
+**source** rather than its built `dist/`, so tests and typechecks never depend on build order
+or run against a stale build.
 
 ## Commands
 
 ```bash
 npm install          # installs and links all workspace packages
-npm run build         # build all packages (rolldown) and the demo (vite build)
+npm run build         # build all packages (rolldown) and the docs site (vite SSG)
 npm test              # run each package's tests (vitest)
 npm run ci-test        # CI test run
 npm run lint            # oxlint across the repo
 npm run format           # oxfmt across the repo
-npm run dev / npm start   # run the demo app's Vite dev server (cd demo && npm run dev)
+npm run dev / npm start   # run the docs site's Vite dev server
+npm run typecheck         # tsc over packages/ and scripts/ (e2e typechecks separately)
+npm run test:e2e          # Playwright suite (see test:e2e:install)
 ```
 
 Linting is via `oxlint` and formatting via `oxfmt` (both part of the Vite+ toolchain) — there is no
 separate ESLint/Prettier config. No pre-commit hook is currently wired up (husky/lint-staged were
 removed with the rest of the old tooling).
 
-Each package's tests run under Vitest with jsdom. The legacy `jarl-react` test suite uses Enzyme
-(`@cfaester/enzyme-adapter-react-18`, an unofficial adapter) — Enzyme has no official React 19
-adapter, so some of these tests are known to fail post-upgrade; see the ticket 51 PR description
-for details.
+Each package's tests run under Vitest with jsdom (the atoms talk to
+`window.location`/`history` via jotai-location, and the bindings render React).
 
 ## TODOs
 
