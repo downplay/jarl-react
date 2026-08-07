@@ -9,7 +9,7 @@ describe("Demos Shell", () => {
         cy.get("[data-test=content] h1").should("contain", "JARL");
         cy.get("[data-test=content] h1+p").should(
             "contain",
-            "Just Another Router Library for React.",
+            "JARL: Atomic Routing Library.",
         );
         const jarlVersion = Cypress.env("JARL_VERSION");
         const buildNum = Cypress.env("CIRCLE_BUILD_NUM");

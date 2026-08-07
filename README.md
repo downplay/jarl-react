@@ -1,6 +1,6 @@
 # JARL
 
-Just Another Router Library for React.
+JARL: Atomic Routing Library.
 
 The production grade "batteries included" **controlled component** router.
 

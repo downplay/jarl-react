@@ -10,7 +10,7 @@ test.describe("Demos Shell", () => {
         );
         await expect(
             page.locator("[data-test=content] h1 + p")
-        ).toContainText("Just Another Router Library for React.");
+        ).toContainText("JARL: Atomic Routing Library.");
         // The original test compared against the exact package version
         // (with CI build-number wrangling); we just check a version string
         // is rendered at all, which is enough to exercise the fixture.

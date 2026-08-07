@@ -1,7 +1,7 @@
 {
     "name": "jarl-react",
     "version": "2.0.0",
-    "description": "Just Another Router Library for React - React bindings for jarl-atoms",
+    "description": "JARL: Atomic Routing Library - React bindings for jarl-atoms",
     "keywords": [
         "components",
         "history",

@@ -50,7 +50,7 @@ const MainLayout = ({ children, code, menu }: MainLayoutProps) => (
             <Header as="h1">
                 JARL Demos <small data-test="version">{process.env.JARL_VERSION}</small>
             </Header>
-            <Header sub>Just Another Routing Library (for React)</Header>
+            <Header sub>JARL: Atomic Routing Library</Header>
         </HeaderRow>
         <MenuSidebar>{menu}</MenuSidebar>
         {code ? (
