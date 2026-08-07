@@ -2,7 +2,6 @@
     "name": "jarl-react-packages",
     "private": true,
     "workspaces": [
-        "packages/jarl-atoms",
         "packages/jarl-react",
         "demo"
     ],
@@ -13,6 +12,8 @@
         "dev": "npm run dev --workspace demo",
         "test": "npm run test --workspaces --if-present",
         "ci-test": "npm run ci-test --workspaces --if-present",
+        "test:e2e:install": "npm --prefix e2e install && npx --prefix e2e playwright install --with-deps chromium",
+        "test:e2e": "npm --prefix e2e run test",
         "ci-publish": "npm publish --workspaces",
         "notify": "node ./scripts/notify.ts",
         "lint": "oxlint .",
@@ -47,7 +48,7 @@
         "oxfmt": "^0.62.0",
         "oxlint": "^1.77.0",
         "rolldown": "^1.2.3",
-        "typescript": "^6.0.3",
+        "typescript": "^7.0.2",
         "vite": "^8.2.1",
         "vitest": "^4.1.10"
     },
