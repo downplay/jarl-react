@@ -1,6 +1,6 @@
-// Redirect support for the v2 atomic model, covering v1's `Redirect`/
-// `redirect()` (packages/jarl-react/source/redirect.js), exercised by the
-// 04Redirects.js Cypress suite (demo/cypress/integration/04Redirects.js):
+// Redirect support for the v2 atomic model, covering what v1 did with its
+// `Redirect` / `redirect()` (removed with the rest of the v1 implementation;
+// see the docs site's v1 History page), exercised by the 04Redirects suite:
 // a route whose `state` is a Redirect gets followed immediately on match
 // (no click required), and a `resolve` function can likewise return a
 // Redirect to defer the decision until after async data has loaded.
