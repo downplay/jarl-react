@@ -8,7 +8,9 @@ JARL ("Just Another Router Library for React") is a controlled-component router 
 
 ## Packages
 
-- `packages/jarl-react` — the core router library
+- `packages/jarl-atoms` — framework-agnostic routing atoms (jotai; no React dependency)
+- `packages/jarl-react` — the React router library (v1 implementation; being replaced by
+  React bindings over `jarl-atoms` — see ticket 55)
 - `demo/` — example app(s) demonstrating usage, built with Vite
 
 ## Commands
