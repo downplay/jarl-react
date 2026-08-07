@@ -1,6 +1,6 @@
 # JARL
 
-Just Another Router Library for React.
+JARL: Atomic Routing Library.
 
 The production grade "batteries included" **controlled component** router.
 
@@ -220,19 +220,18 @@ To run unit tests:
 npm test
 ```
 
-To run the demo/docs site:
+To run the docs/demo site (`packages/docs`):
 
 ```
 npm run dev
 ```
 
-To run E2E tests (using [Cypress](https://cypress.io)):
+To run E2E tests (using [Playwright](https://playwright.dev)):
 
 ```
-npm run --workspace demo local-e2e
+npm run test:e2e:install   # once, to install the suite's deps and browsers
+npm run test:e2e
 ```
-
-Previous E2E test runs can be viewed on the awesome [Cypress Dashboard](https://dashboard.cypress.io/#/projects/ps43vs/runs).
 
 ## Community
 

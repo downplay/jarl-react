@@ -1,6 +1,6 @@
 # jarl-react
 
-JARL: Just Another Router Library for React.
+JARL: Atomic Routing Library.
 
 ## This Package
 
