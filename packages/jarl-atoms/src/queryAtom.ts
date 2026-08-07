@@ -2,8 +2,8 @@
 // draft only ever matched path segments (`// TODO: Combine query parameters
 // too`); these atoms fill that gap.
 //
-// v1 (RouteMap.js) leans on `qs` for parsing/stringifying, and lets a route
-// declare a whole map of named UrlPattern query matchers. That's a lot of
+// v1 (RouteMap.js) leaned on `qs` for parsing/stringifying, and let a route
+// declare a whole map of named query matchers. That's a lot of
 // surface area to port 1:1 into the atomic model in one pass. Instead this
 // implements the common, composable subset: a single named query param as
 // its own RouteAtom-shaped leaf (`queryParamAtom`), plus a raw whole-query

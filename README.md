@@ -241,10 +241,6 @@ Or, come and join the conversation at Reactiflux: https://discordapp.com/invite/
 
 ## Credits
 
-Pattern matching by `url-pattern`: https://github.com/snd/url-pattern (MIT license)
-
-(Currently using custom build at this fork: https://github.com/downplay/url-pattern)
-
 Query string parsing by `qs`: https://github.com/ljharb/qs
 
 Some ideas and inspiration from `redux-first-router`: https://github.com/faceyspacey/redux-first-router

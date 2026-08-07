@@ -49,10 +49,10 @@ Some additional plans that are more "nice-to-have" and might wait until after 1.
 *   Big refactor: some of the main classes have grown bloated and overly complex as functionality has been added in, making things hard to test and debug
 *   Finish the WIP transitions components and make some cool demos
 *   Default values for path vars: /:fooName=bar/ ... how does that work with qs?
-*   Optional path segments. The `url-pattern` syntax supports this but JARL doesn't
+*   Optional path segments. Not currently supported; would need a route atom that matches zero-or-one segment and reverses back to an empty string.
 *   Query strings: support nesting and arrays. I use `qs` to parse query strings, it supports an advanced syntax for nesting and arrays, but this is not understood by matching or stringification.
 *   Query strings: support compound interpolations for optional query keys. This means multiple interpolations on a single token, a good example might be: `/range?start=(:startYear-:startMonth-:startDay)&end=(:endYear-:endMonth-:endDay)`. This will not work and is pretty hard to support right now.
-*   Alternatively: replace `qs` with a completely custom parser, possibly extending `url-pattern` to achieve this. This would make it easier to add some new sugar to the syntax:
+*   Alternatively: replace `qs` with a completely custom parser built on the query atoms. This would make it easier to add some new sugar to the syntax:
     *   Query shorthand for a frequent usage pattern: `?:first&(:second)` would expand to `?first=:first&second=(:second)`
     *   Arrays: `qs`'s array syntax is pretty ugly and it's hard to see how I would combine it with the variable syntax. A neater syntax to consider is: `?foo=:values[,]` where ',' is a separator. An advantage of this is that it could work in path segments too.
 *   At some point, move to new context API. Preferably support both old and new versions.
