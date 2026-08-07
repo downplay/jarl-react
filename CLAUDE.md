@@ -9,9 +9,16 @@ JARL ("Just Another Router Library for React") is a controlled-component router 
 ## Packages
 
 - `packages/jarl-atoms` — framework-agnostic routing atoms (jotai; no React dependency)
-- `packages/jarl-react` — the React router library (v1 implementation; being replaced by
-  React bindings over `jarl-atoms` — see ticket 55)
+- `packages/jarl-react` — React bindings (components + hooks) over `jarl-atoms`
 - `demo/` — example app(s) demonstrating usage, built with Vite
+
+The two packages are deliberately separate import paths: `jarl-react` does **not** re-export
+`jarl-atoms`. Consumers get route atoms from `jarl-atoms` and the React bindings from
+`jarl-react`, so the framework boundary stays visible and `jarl-atoms` is usable on its own.
+
+Each package's `vitest.config.ts` / `tsconfig.json` alias `jarl-atoms` to its TypeScript
+**source** rather than its built `dist/`, so tests and typechecks never depend on build order
+or run against a stale build.
 
 ## Commands
 
@@ -29,10 +36,8 @@ Linting is via `oxlint` and formatting via `oxfmt` (both part of the Vite+ toolc
 separate ESLint/Prettier config. No pre-commit hook is currently wired up (husky/lint-staged were
 removed with the rest of the old tooling).
 
-Each package's tests run under Vitest with jsdom. The legacy `jarl-react` test suite uses Enzyme
-(`@cfaester/enzyme-adapter-react-18`, an unofficial adapter) — Enzyme has no official React 19
-adapter, so some of these tests are known to fail post-upgrade; see the ticket 51 PR description
-for details.
+Each package's tests run under Vitest with jsdom (the atoms talk to
+`window.location`/`history` via jotai-location, and the bindings render React).
 
 ## TODOs
 

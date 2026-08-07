@@ -1,17 +1,17 @@
 {
     "name": "jarl-react",
-    "version": "1.0.0-beta.5",
-    "description": "Just Another Router Library for React",
+    "version": "2.0.0",
+    "description": "Just Another Router Library for React - React bindings for jarl-atoms",
     "keywords": [
         "components",
         "history",
-        "hoc",
+        "hooks",
+        "jotai",
         "react",
         "reactjs",
         "router",
         "routing",
         "ssr",
-        "tools",
         "url"
     ],
     "license": "MIT",
@@ -20,46 +20,53 @@
         "type": "git",
         "url": "https://github.com/downplay/jarl-react.git"
     },
-    "files": [
-        "dist"
-    ],
     "type": "module",
     "sideEffects": false,
-    "main": "dist/index.cjs",
-    "module": "dist/index.mjs",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/index.mjs",
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
             "require": "./dist/index.cjs"
         },
         "./package.json": "./package.json"
     },
+    "files": [
+        "dist"
+    ],
     "scripts": {
+        "build": "tsc -b && rolldown -c",
+        "watch": "rolldown -c -w",
+        "clean": "rm -rf dist",
         "test": "vitest run",
         "test:watch": "vitest",
         "ci-test": "vitest run",
-        "build": "rolldown -c",
-        "watch": "rolldown -c -w",
-        "clean": "git clean -fdX .",
-        "lint": "oxlint source --max-warnings 0"
+        "typecheck": "tsc --noEmit",
+        "lint": "oxlint src --max-warnings 0"
     },
     "dependencies": {
-        "hoist-non-react-statics": "^3.3.2",
-        "invariant": "^2.2.4",
-        "qs": "^6.5.1",
-        "warning": "^4.0.3"
-    },
-    "devDependencies": {
-        "@cfaester/enzyme-adapter-react-18": "^0.8.0",
-        "@vitejs/plugin-react": "^6.0.5",
-        "date-fns": "^1.29.0",
-        "enzyme": "^3.11.0",
-        "prop-types": "^15.8.1",
-        "react": "^19.2.8",
-        "react-dom": "^19.2.8"
+        "jarl-atoms": "^2.0.0",
+        "jotai": "^2.20.2"
     },
     "peerDependencies": {
-        "prop-types": ">=15.0.0",
-        "react": ">=18.0.0"
+        "react": "^18.0.0 || ^19.0.0"
+    },
+    "devDependencies": {
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^7.0.0",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.4",
+        "@vitejs/plugin-react": "^6.0.5",
+        "jsdom": "^30.0.1",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
+        "rolldown": "^1.2.3",
+        "rolldown-plugin-dts": "^0.28.0",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10"
     }
 }
