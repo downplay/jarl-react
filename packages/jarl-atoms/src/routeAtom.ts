@@ -5,12 +5,23 @@
 // dependency this package intentionally doesn't have (React bindings are a
 // separate concern — see ticket 55). "jotai/vanilla" has everything atoms
 // need: atom(), Getter, WritableAtom.
-import { Getter, WritableAtom, atom } from "jotai/vanilla";
+import { Getter, SetStateAction, WritableAtom, atom } from "jotai/vanilla";
 import { atomWithLocation } from "jotai-location";
+import { normalizePathname, splitHref, Path } from "./href";
 
-export type Path = string;
+export type { Path };
 
 export type DefaultParams = {};
+
+/**
+ * Options that can be passed as an (optional) extra argument when writing to
+ * a RouteAtom, e.g. `set(routeAtom, values, { replace: true })`. Mirrors
+ * jotai-location's own applyLocation options, so a `replace` navigation here
+ * results in `history.replaceState` rather than `history.pushState` - used
+ * by redirectAtom to avoid polluting browser history with a route that's
+ * about to be replaced anyway.
+ */
+export type NavOptions = { replace?: boolean };
 
 export type ExtractRouteOptionalParam<PathType extends Path> =
   PathType extends `${infer Param}?`
@@ -35,7 +46,28 @@ export type ExtractRouteParams<PathType extends string> =
       : ExtractRouteOptionalParam<ParamWithOptionalRegExp>
     : {};
 
-const locationAtom = atomWithLocation();
+// Exported so queryAtom/redirectAtom/resolvedAtom can compose on top of the
+// same underlying location without each creating their own history binding.
+/**
+ * The location shape jotai-location's `atomWithLocation` reads and writes.
+ * Declared here rather than imported: jotai-location exports its `Location`
+ * type only from `jotai-location/dist/atomWithLocation`, not from the package
+ * entry point, so the inferred type of `locationAtom` below can't be *named*
+ * when emitting declarations (TS2883) - and reaching into the package's dist/
+ * internals to name it would be worse. Structurally identical, so assignment
+ * both ways still typechecks.
+ */
+export type JarlLocation = {
+  pathname?: string;
+  searchParams?: URLSearchParams;
+  hash?: string;
+};
+
+export const locationAtom: WritableAtom<
+  JarlLocation,
+  [SetStateAction<JarlLocation>, { replace?: boolean }?],
+  void
+> = atomWithLocation();
 
 export type RouteReturn<T extends DefaultParams = DefaultParams> = {
   reverse: (values: T) => string;
@@ -58,7 +90,7 @@ export type RouteReturn<T extends DefaultParams = DefaultParams> = {
 // versions used — hence `[T]` (a single-argument tuple) and `void` here.
 export type RouteAtom<T extends DefaultParams> = WritableAtom<
   RouteReturn<T>,
-  [T],
+  [T, NavOptions?],
   void
 >;
 
@@ -66,7 +98,7 @@ export type RouteAtom<T extends DefaultParams> = WritableAtom<
 // routeAtom overload, and the type plumbing they'd need) were explored here
 // and are preserved with context in ../DESIGN-NOTES.md rather than dropped.
 
-type RouteOptions<Parent extends DefaultParams> = {
+export type RouteOptions<Parent extends DefaultParams> = {
   parent?: RouteAtom<Parent>;
 };
 
@@ -110,35 +142,94 @@ export const routeAtom = <
         values: { ...values, ...parent.values },
       };
     },
-    (get, set, action) => {
-      set(locationAtom, { pathname: reverse(get)(action) });
+    (get, set, action, navOptions) => {
+      // Every write recomputes the full href (path, and query if any query
+      // atoms are composed into this chain via `reverse`) and replaces the
+      // location wholesale - a route only ever preserves the query params it
+      // explicitly declares, matching v1's per-route stringify semantics.
+      const [pathname, searchParams] = splitHref(reverse(get)(action));
+      set(locationAtom, (prev) => ({ ...prev, pathname, searchParams }), navOptions);
     }
   );
 };
 
-export const rootAtom = atom<RouteReturn<DefaultParams>, [DefaultParams], void>(
-  (get) => {
-    const location = get(locationAtom);
-    const path = location.pathname || "/";
-    const segments = path === "/" ? [""] : path.split("/");
-    // Handle trailing slash
-    // TODO: Should redirect really but not sure where to do effects yet
-    if (segments.length > 1 && segments[segments.length - 1] === "") {
-      segments.pop();
-    }
-    return {
-      // root always matches
-      match: true,
-      exact: segments.length === 1,
-      rest: { path: segments.slice(1) },
-      reverse: () => "/",
-      values: {},
-    };
-  },
-  (get, set, action) => {
-    set(locationAtom, { pathname: "/" });
+export type RootOptions = {
+  /**
+   * Scopes this router to a subtree of the URL, mirroring v1's
+   * RoutingProvider `basePath` prop: the prefix is stripped from the
+   * pathname before matching begins, and prepended again by `reverse`/write.
+   *
+   * Unlike v1 (which simply *ignored* navigation events outside basePath,
+   * leaving the router frozen on its last good state) this makes the whole
+   * tree report `match: false` when the current location falls outside
+   * basePath - there's no "previous state" to fall back to in a pull-based
+   * atom, and treating it as a plain non-match is the closer fit for the
+   * atomic model. Documented as a deliberate deviation, see PR body.
+   */
+  basePath?: Path;
+};
+
+const stripBasePath = (
+  pathname: string,
+  basePath: string
+): string | undefined => {
+  if (!basePath) return pathname;
+  if (pathname === basePath) return "/";
+  if (pathname.indexOf(`${basePath}/`) === 0) {
+    return pathname.slice(basePath.length) || "/";
   }
-);
+  return undefined;
+};
+
+/**
+ * Creates a root RouteAtom. Call this directly (instead of using the default
+ * `rootAtom` export) when the app needs to be scoped under a basePath.
+ */
+export const createRootAtom = (
+  options?: RootOptions
+): RouteAtom<DefaultParams> => {
+  const basePath = options?.basePath
+    ? normalizePathname(options.basePath)
+    : "";
+  return atom(
+    (get) => {
+      const location = get(locationAtom);
+      const path = location.pathname || "/";
+      const withinBase = stripBasePath(path, basePath);
+      if (withinBase === undefined) {
+        // Outside of this router's basePath entirely: nothing matches.
+        return {
+          match: false,
+          exact: false,
+          values: undefined,
+          reverse: () => basePath || "/",
+        };
+      }
+      const segments = withinBase === "/" ? [""] : withinBase.split("/");
+      // Handle trailing slash
+      if (segments.length > 1 && segments[segments.length - 1] === "") {
+        segments.pop();
+      }
+      return {
+        // root always matches (as long as we're within basePath)
+        match: true,
+        exact: segments.length === 1,
+        rest: { path: segments.slice(1) },
+        reverse: () => basePath || "/",
+        values: {},
+      };
+    },
+    (get, set, action, navOptions) => {
+      set(
+        locationAtom,
+        (prev) => ({ ...prev, pathname: basePath || "/", searchParams: new URLSearchParams() }),
+        navOptions
+      );
+    }
+  );
+};
+
+export const rootAtom = createRootAtom();
 
 export const staticRouteAtom = <Parent extends DefaultParams>(
   name: string,
@@ -189,9 +280,9 @@ export const transformRouteAtom = <
       }
       return { ...parent, values: transformed, reverse: reverse(get) };
     },
-    (get, set, action) => {
+    (get, set, action, navOptions) => {
       const transformed = setter(action, get);
-      set(parentAtom, transformed);
+      set(parentAtom, transformed, navOptions);
     }
   );
 };

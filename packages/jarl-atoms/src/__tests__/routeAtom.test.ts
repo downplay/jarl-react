@@ -1,9 +1,11 @@
-import { describe, expect, it } from "vitest";
 import { createStore } from "jotai/vanilla";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   DefaultParams,
-  paramRouteAtom,
   RouteReturn,
+  createRootAtom,
+  locationAtom,
+  paramRouteAtom,
   rootAtom,
   routeAtom,
   staticRouteAtom,
@@ -20,6 +22,14 @@ function assertMatch<T extends DefaultParams>(
     throw new Error("expected route to match, but it did not");
   }
 }
+
+const seed = (
+  store: ReturnType<typeof createStore>,
+  pathname: string,
+  search = ""
+) => {
+  store.set(locationAtom, { pathname, searchParams: new URLSearchParams(search) });
+};
 
 describe("rootAtom", () => {
   it("matches the root path exactly by default", () => {
@@ -160,5 +170,132 @@ describe("transformRouteAtom", () => {
     const underlying = store.get(user);
     assertMatch(underlying);
     expect(underlying.values).toEqual({ id: "99" });
+  });
+});
+
+describe("routeAtom", () => {
+  let store: ReturnType<typeof createStore>;
+
+  beforeEach(() => {
+    store = createStore();
+  });
+
+  it("matches a static route", () => {
+    const fooAtom = staticRouteAtom("foo");
+    seed(store, "/foo");
+    const result = store.get(fooAtom);
+    expect(result.match).toBe(true);
+    if (result.match) {
+      expect(result.exact).toBe(true);
+    }
+  });
+
+  it("does not match a different static route", () => {
+    const fooAtom = staticRouteAtom("foo");
+    seed(store, "/bar");
+    expect(store.get(fooAtom).match).toBe(false);
+  });
+
+  it("matches a param route and captures the value", () => {
+    const idAtom = paramRouteAtom("id");
+    seed(store, "/42");
+    const result = store.get(idAtom);
+    expect(result.match).toBe(true);
+    if (result.match) {
+      expect(result.values).toEqual({ id: "42" });
+    }
+  });
+
+  it("navigating writes the new pathname", () => {
+    const fooAtom = staticRouteAtom("foo");
+    seed(store, "/");
+    store.set(fooAtom, {});
+    expect(store.get(locationAtom).pathname).toBe("/foo");
+  });
+
+  it("navigating via a plain route drops any unrelated existing query string", () => {
+    // Regression test: the original draft called
+    // `set(locationAtom, { pathname })`, and since jotai-location's base
+    // atom is a plain (non-merging) atom, that silently wiped out
+    // searchParams/hash on every navigation. Now it's explicit: a route
+    // without composed query atoms produces no query at all.
+    const fooAtom = staticRouteAtom("foo");
+    seed(store, "/", "a=1&b=2");
+    store.set(fooAtom, {});
+    expect(store.get(locationAtom).searchParams?.toString()).toBe("");
+  });
+
+  describe("navOptions", () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it("defaults to a push navigation", () => {
+      const fooAtom = staticRouteAtom("foo");
+      seed(store, "/");
+      const pushSpy = vi.spyOn(window.history, "pushState");
+      const replaceSpy = vi.spyOn(window.history, "replaceState");
+      store.set(fooAtom, {});
+      expect(pushSpy).toHaveBeenCalled();
+      expect(replaceSpy).not.toHaveBeenCalled();
+    });
+
+    it("replace: true performs a replace navigation instead", () => {
+      const fooAtom = staticRouteAtom("foo");
+      seed(store, "/");
+      const pushSpy = vi.spyOn(window.history, "pushState");
+      const replaceSpy = vi.spyOn(window.history, "replaceState");
+      store.set(fooAtom, {}, { replace: true });
+      expect(replaceSpy).toHaveBeenCalled();
+      expect(pushSpy).not.toHaveBeenCalled();
+    });
+  });
+});
+
+describe("createRootAtom with basePath", () => {
+  let store: ReturnType<typeof createStore>;
+
+  beforeEach(() => {
+    store = createStore();
+  });
+
+  it("matches at the base path itself", () => {
+    const appRoot = createRootAtom({ basePath: "/app" });
+    seed(store, "/app");
+    const result = store.get(appRoot);
+    expect(result.match).toBe(true);
+    if (result.match) {
+      expect(result.exact).toBe(true);
+    }
+  });
+
+  it("strips the base path before matching children", () => {
+    const appRoot = createRootAtom({ basePath: "/app" });
+    const fooAtom = staticRouteAtom("foo", { parent: appRoot });
+    seed(store, "/app/foo");
+    expect(store.get(fooAtom).match).toBe(true);
+  });
+
+  it("does not match locations outside of the base path", () => {
+    const appRoot = createRootAtom({ basePath: "/app" });
+    seed(store, "/other");
+    expect(store.get(appRoot).match).toBe(false);
+  });
+
+  it("does not treat a similarly-prefixed path as inside the base path", () => {
+    // "/app-other" should NOT be considered inside basePath "/app"
+    const appRoot = createRootAtom({ basePath: "/app" });
+    seed(store, "/app-other");
+    expect(store.get(appRoot).match).toBe(false);
+  });
+
+  it("reverse()/write prepend the base path", () => {
+    const appRoot = createRootAtom({ basePath: "/app" });
+    const fooAtom = staticRouteAtom("foo", { parent: appRoot });
+    seed(store, "/app");
+    const href = store.get(fooAtom).reverse({});
+    expect(href).toBe("/app/foo");
+    store.set(fooAtom, {});
+    expect(store.get(locationAtom).pathname).toBe("/app/foo");
   });
 });
